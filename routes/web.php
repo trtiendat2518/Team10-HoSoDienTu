@@ -17,10 +17,10 @@ Route::get('/', function () {
     return view('student.pages.home');
 });
 
-Route::get('/admin', function () {
-    return view('lecturer.pages.dashboard');
-});
+Route::get('/admin/dashboard', 'Lecturer\AuthController@index')->middleware('checkloged');
 
-Route::get('/admin-login', function () {
-    return view('lecturer.auth.login');
+Route::prefix('admin')->group(function(){
+    Route::get('/login', 'Lecturer\AuthController@get_login')->middleware('checkss');
+    Route::post('/loged-in', 'Lecturer\AuthController@post_login');
+    Route::get('/logout', 'Lecturer\AuthController@get_logout');
 });
