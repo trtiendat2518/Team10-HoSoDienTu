@@ -14,5 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('student.pages.home');
+});
+
+Route::get('/admin', function () {
+    return view('lecturer.pages.dashboard');
+});
+
+Route::get('/admin-login', function () {
+    return view('lecturer.auth.login');
 });
