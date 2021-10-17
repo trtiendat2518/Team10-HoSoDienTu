@@ -10,7 +10,7 @@
 
 		<!-- Favicon -->
 		<link rel="icon" href="{{asset('public/lecturer/images/vlu.ico')}}" type="image/x-icon"/>
-		<link rel="shortcut icon" type="image/x-icon" href="{{asset('public/lecturer/images/brand/favicon.ico')}}" />
+		<link rel="shortcut icon" type="image/x-icon" href="{{asset('public/lecturer/images/vlu.ico')}}" />
 		<!-- Title -->
 		<title>Admin VLU</title>
 
