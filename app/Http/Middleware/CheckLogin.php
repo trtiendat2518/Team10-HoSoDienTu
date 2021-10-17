@@ -16,7 +16,7 @@ class CheckLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!session()->has('admin_id')){
+        if( (!session()->has('admin_id')) && (!session()->has('lecturer_id')) ) {
             return redirect('admin/login')->with('fail', 'Bạn cần đăng nhập để vào hệ thống!');
         }
         return $next($request);

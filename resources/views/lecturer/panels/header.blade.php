@@ -67,7 +67,12 @@
 							<span class="text-gray-white">
 								<span class="ml-2">
 									@php
-            							echo Session::get('admin_fullname')
+									if(Session::get('admin_id')){
+            							echo Session::get('admin_fullname');
+									}
+									else if(Session::get('lecturer_id')){
+										echo Session::get('lecturer_fullname');
+									}
             						@endphp
 								</span>
 							</span>
