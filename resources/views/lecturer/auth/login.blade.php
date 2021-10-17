@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="form-group text-center">
                                     <div class="col-xs-12 p-b-20">
-                                        <button class="btn btn-block btn-lg btn-googleplus" type="submit">Đăng nhập Offcie 365</button>
+                                        <a href="{{ route('connectMs') }}" class="btn btn-block btn-lg btn-googleplus">Đăng nhập Offcie 365</a>
                                     </div>
                                 </div>
                             </form>

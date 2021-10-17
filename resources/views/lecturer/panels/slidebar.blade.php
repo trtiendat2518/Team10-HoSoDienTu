@@ -9,12 +9,19 @@
 			<a href="#" class="ml-2">
 				<span class="text-dark app-sidebar__user-name font-weight-semibold">
 					@php
-            			echo Session::get('admin_fullname')
-            		@endphp
+					if(Session::get('admin_id')){
+						echo Session::get('admin_fullname');
+					}
+					else if(Session::get('lecturer_id')){
+						echo Session::get('lecturer_fullname');
+					}
+					@endphp
 				</span>
 				<br>
 				@if (Session::get('admin_id'))
-					<span class="text-muted app-sidebar__user-name text-sm"> Administrator</span>
+				<span class="text-muted app-sidebar__user-name text-sm"> Administrator</span>
+				@elseif (Session::get('lecturer_id'))
+				<span class="text-muted app-sidebar__user-name text-sm"> BCN Khoa</span>
 				@endif
 			</a>
 		</div>
