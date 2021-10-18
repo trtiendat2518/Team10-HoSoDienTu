@@ -9,7 +9,7 @@ class Lecturer extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'lecturer_fullname', 'lecturer_email', 'lecturer_provider'
+        'lecturer_fullname', 'lecturer_email', 'lecturer_code'
     ];
     protected $primaryKey = 'lecturer_id';
     protected $table = 'tbl_lecturer';

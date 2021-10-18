@@ -4,15 +4,16 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta content="" name="description">
-		<meta content="Team 10" name="author">
+		<meta name="description" content="{{$meta_desc}}">
+		<link rel="canonical" href="{{$url_canonical}}">
+		<meta content="CAP - Team 10" name="author">
 		<meta name="keywords" content=""/>
 
 		<!-- Favicon -->
 		<link rel="icon" href="{{asset('public/lecturer/images/vlu.ico')}}" type="image/x-icon"/>
 		<link rel="shortcut icon" type="image/x-icon" href="{{asset('public/lecturer/images/vlu.ico')}}" />
 		<!-- Title -->
-		<title>Admin VLU</title>
+		<title>{{$meta_title}}</title>
 
 		<!--Bootstrap.min css-->
 		<link rel="stylesheet" href="{{asset('public/lecturer/plugins/bootstrap/css/bootstrap.min.css')}}">

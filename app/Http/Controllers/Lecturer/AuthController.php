@@ -14,11 +14,6 @@ session_start();
 
 class AuthController extends Controller
 {
-    public function index(Request $request)
-    {
-        return view('lecturer.pages.dashboard');
-    }
-
     public function get_login(Request $request)
     {
         return view('lecturer.auth.login');
@@ -66,7 +61,8 @@ class AuthController extends Controller
         return redirect()->intended('admin/login');
     }
 
-    public function login_ms(){
+    public function login_ms()
+    {
         return Socialite::driver('graph')->redirect();
     }
 
@@ -74,34 +70,35 @@ class AuthController extends Controller
     {
         $users = Socialite::driver('graph')->stateless()->user();
 
-        $authUser = $this->findOrCreateUser($users, 'Microsoft VLU');
+        $authUser = $this->findOrCreateUser($users);
         if($authUser){
             //$account = Customer::where('customer_id',$authUser->user)->first();
             $request->session()->put('lecturer_fullname',$authUser->lecturer_fullname);
             $request->session()->put('lecturer_email',$authUser->lecturer_email);
-            $request->session()->put('lecturer_id',$authUser->lecturer_id);
+            $request->session()->put('lecturer_id',$authUser->lecturer_code);
         }else {
             $request->session()->put('lecturer_fullname',$authUser->lecturer_fullname);
             $request->session()->put('lecturer_email',$authUser->lecturer_email);
-            $request->session()->put('lecturer_id',$authUser->lecturer_id);
+            $request->session()->put('lecturer_id',$authUser->lecturer_code);
         }
+        //dd($users);
         return redirect()->intended('admin/dashboard');
     }
 
-    public function findOrCreateUser($users, $provider)
+    public function findOrCreateUser($users)
     {
         $authUser = Lecturer::where('tbl_lecturer.lecturer_email', $users->email)->first();
 
         if($authUser){
-          return $authUser;
-      }else{
-          $social_gg = new Lecturer([
-            'lecturer_email' => $users->email,
-            'lecturer_fullname' => $users->name,
-            'lecturer_provider' => $provider 
-        ]);
-          $social_gg->save();
-          return $social_gg;
-      }
-  } 
+            return $authUser;
+        }else{
+            $social_gg = new Lecturer([
+                'lecturer_email' => $users->email,
+                'lecturer_fullname' => $users->givenName . ' ' . $users->surname,
+                'lecturer_code' => $users->id 
+            ]);
+            $social_gg->save();
+            return $social_gg;
+        }
+    } 
 }

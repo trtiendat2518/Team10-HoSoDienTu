@@ -19,9 +19,17 @@
 				</span>
 				<br>
 				@if (Session::get('admin_id'))
-				<span class="text-muted app-sidebar__user-name text-sm"> Administrator</span>
+				<span class="app-sidebar__user-name text-sm"> Quản trị viên</span>
 				@elseif (Session::get('lecturer_id'))
-				<span class="text-muted app-sidebar__user-name text-sm"> BCN Khoa</span>
+					@foreach ($check_role as $check)
+						@if ($check->lecturer_role==1)
+							<span class="app-sidebar__user-name text-sm"> BCN Khoa</span>
+						@elseif ($check->lecturer_role==2)
+							<span class="app-sidebar__user-name text-sm"> Chủ nhiệm sinh viên</span>
+						@else
+							<span class="app-sidebar__user-name text-sm"> Giảng viên mới</span>
+						@endif
+					@endforeach
 				@endif
 			</a>
 		</div>
