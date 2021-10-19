@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('public/student/img/vlu.ico')}}">
-    <title>Xtreme admin Template - The Ultimate Multipurpose admin template</title>
+    <title>Đăng nhập</title>
     <!-- Custom CSS -->
     <link href="{{ asset('public/lecturer/css/style.min.css')}}" rel="stylesheet">
     <!---Font icons css-->
@@ -21,7 +21,7 @@
 
 <body>
     <div class="main-wrapper">
-        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" style="background:url(public/lecturer/images/brand/auth-bg.jpg) no-repeat center center;">
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center background-login">
             <div class="auth-box">
                 <div id="loginform">
                     <div class="logo">
@@ -31,20 +31,32 @@
                     <!-- Form -->
                     <div class="row">
                         <div class="col-12">
-                            <form class="form-horizontal m-t-20" id="loginform" action="index.html">
-                                <div class="input-group mb-3">
+                            <form class="form-horizontal m-t-20" id="loginform" action="{{ url('admin/loged-in') }}" method="POST">
+                                @csrf
+                                <div class="results">
+                                    @if (Session::get('fail'))
+                                    <div class="alert alert-danger">
+                                      {{ Session::get('fail') }}
+                                    </div>
+                                    @endif
+                                </div>
+                                <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="ti-user"></i></span>
                                     </div>
                                     <input type="text" class="form-control form-control-lg" placeholder="Tên đăng nhập" aria-label="Username" aria-describedby="basic-addon1" name="admin_username">
                                 </div>
-                                <div class="input-group mb-3">
+                                <span class="text-danger">@error('admin_username') {{ $message }} @enderror</span>
+
+                                <div class="input-group mt-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon2"><i class="ti-pencil"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Mật khẩu" aria-label="Password" aria-describedby="basic-addon1" name="admin_password">
+                                    <input type="password" class="form-control form-control-lg" placeholder="Mật khẩu" aria-label="Password" aria-describedby="basic-addon1" name="admin_password">
                                 </div>
-                                <div class="form-group row">
+                                <span class="text-danger">@error('admin_password') {{ $message }} @enderror</span>
+
+                                <div class="form-group row mt-3">
                                     <div class="col-md-12">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck1">
@@ -62,62 +74,21 @@
                                 </div>
                                 <div class="form-group text-center">
                                     <div class="col-xs-12 p-b-20">
-                                        <button class="btn btn-block btn-lg btn-googleplus" type="submit">Đăng nhập Offcie 365</button>
+                                        <a href="{{ route('connectMs') }}" class="btn btn-block btn-lg btn-googleplus">Đăng nhập Offcie 365</a>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div id="recoverform">
-                    <div class="logo">
-                        <span class="db"><img src="../../assets/images/logo-icon.png" alt="logo" /></span>
-                        <h5 class="font-medium m-b-20">Recover Password</h5>
-                        <span>Enter your Email and instructions will be sent to you!</span>
-                    </div>
-                    <div class="row m-t-20">
-                        <!-- Form -->
-                        <form class="col-12" action="index.html">
-                            <!-- email -->
-                            <div class="form-group row">
-                                <div class="col-12">
-                                    <input class="form-control form-control-lg" type="email" required="" placeholder="Username">
-                                </div>
-                            </div>
-                            <!-- pwd -->
-                            <div class="row m-t-20">
-                                <div class="col-12">
-                                    <button class="btn btn-block btn-lg btn-danger" type="submit" name="action">Reset</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
-        <!-- ============================================================== -->
-        <!-- Login box.scss -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Page wrapper scss in scafholding.scss -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Page wrapper scss in scafholding.scss -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Right Sidebar -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Right Sidebar -->
-        <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- All Required js -->
-    <!-- ============================================================== -->
-    <script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
+
+    <script src="{{asset('public/lecturer/js/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="../../assets/libs/popper.js/dist/umd/popper.min.js"></script>
-    <script src="../../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="{{asset('public/lecturer/plugins/bootstrap/popper.min.js')}}"></script>
+    <script src="{{asset('public/lecturer/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
     <!-- ============================================================== -->
 </body>
 

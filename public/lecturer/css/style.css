@@ -148,6 +148,17 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 .app-sidebar__user {
 	
 }
+.styling-edit{
+	font-size: 20px;
+	color: #00C851;
+}
+.styling-delete{
+	font-size: 20px;
+	color: #e3242b;
+}
+.blue-background{
+	background-color: #1753fc;
+}
 body {
 	margin: 0;
 	font-family:  'Poppins', sans-serif;
