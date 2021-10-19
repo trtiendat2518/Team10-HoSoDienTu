@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->group(function(){
-    Route::get('/dashboard', 'Lecturer\AuthController@index')->middleware('checkloged');
+    Route::resource('dashboard', 'Lecturer\DashboardController')->only('index')->middleware('checkloged');
 
     Route::get('/login', 'Lecturer\AuthController@get_login')->middleware('checkss');
     Route::post('/loged-in', 'Lecturer\AuthController@post_login');

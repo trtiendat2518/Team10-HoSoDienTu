@@ -15,9 +15,9 @@ class CreateLecturerTable extends Migration
     {
         Schema::create('tbl_lecturer', function (Blueprint $table) {
             $table->increments('lecturer_id');
-            $table->string('lecturer_fullname',30);
+            $table->string('lecturer_fullname',255);
             $table->string('lecturer_email',100);
-            $table->string('lecturer_provider',50);
+            $table->string('lecturer_code',50);
             $table->integer('lecturer_role');
         });
     }

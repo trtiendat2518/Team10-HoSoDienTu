@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('public/student/img/vlu.ico')}}">
-    <title>Xtreme admin Template - The Ultimate Multipurpose admin template</title>
+    <title>Đăng nhập</title>
     <!-- Custom CSS -->
     <link href="{{ asset('public/lecturer/css/style.min.css')}}" rel="stylesheet">
     <!---Font icons css-->
