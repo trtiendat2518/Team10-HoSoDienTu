@@ -52,7 +52,7 @@
 
 					<li class="mb-2"><span class="side-menu__label"><strong>&mdash; Trang chủ &mdash;</strong></span></li>
 					<li class="slide">
-						<a class="side-menu__item"  data-toggle="slide" href="{{ route('dashboard.index') }}">
+						<a class="side-menu__item" href="{{ route('dashboard.index') }}">
 							<i class="side-menu__icon typcn typcn-device-desktop"></i>
 							<span class="side-menu__label">Dashboard</span>
 						</a>
@@ -60,13 +60,13 @@
 
 					<li class="mt-5 mb-2"><span class="side-menu__label"><strong>&mdash; Quản lý tài khoản &mdash;</strong></span></li>
 					<li class="slide">
-						<a class="side-menu__item"  data-toggle="slide" href="#">
+						<a class="side-menu__item" href="{{ route('giang-vien.index') }}">
 							<i class="side-menu__icon fa fa-users"></i>
 							<span class="side-menu__label">Giảng viên</span>
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item"  data-toggle="slide" href="#">
+						<a class="side-menu__item" href="#">
 							<i class="side-menu__icon fa fa-graduation-cap"></i>
 							<span class="side-menu__label">Sinh viên</span>
 						</a>
@@ -74,37 +74,37 @@
 
 					<li class="mt-5 mb-2"><span class="side-menu__label"><strong>&mdash; Quản lý chung &mdash;</strong></span></li>
 					<li class="slide">
-						<a class="side-menu__item"  data-toggle="slide" href="#">
+						<a class="side-menu__item" href="#">
 							<i class="side-menu__icon fa fa-th-large"></i>
 							<span class="side-menu__label">Khoa</span>
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item"  data-toggle="slide" href="#">
+						<a class="side-menu__item" href="#">
 							<i class="side-menu__icon fa fa-th-list"></i>
 							<span class="side-menu__label">Chuyên ngành</span>
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item"  data-toggle="slide" href="#">
+						<a class="side-menu__item" href="#">
 							<i class="side-menu__icon fa fa-book"></i>
 							<span class="side-menu__label">Khóa học</span>
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item"  data-toggle="slide" href="#">
+						<a class="side-menu__item" href="#">
 							<i class="side-menu__icon fa fa-file-text"></i>
 							<span class="side-menu__label">Thủ tục sinh viên</span>
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item"  data-toggle="slide" href="#">
+						<a class="side-menu__item" href="#">
 							<i class="side-menu__icon fa fa-money"></i>
 							<span class="side-menu__label">Học phí sinh viên</span>
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item"  data-toggle="slide" href="#">
+						<a class="side-menu__item" href="#">
 							<i class="side-menu__icon fa fa-newspaper-o"></i>
 							<span class="side-menu__label">Bài viết - Tin tức</span>
 						</a>

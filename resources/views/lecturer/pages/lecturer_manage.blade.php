@@ -1,6 +1,6 @@
 @extends('lecturer.layout');
 @section('lecturer-content')
-<div class="app-content  my-3 my-md-5 toggle-content">
+<div class="app-content  my-3 my-md-5 toggle-content" id="app">
 	<div class="side-app" style="padding-top: 0px;">
 		<!-- page-header -->
 		<div class="page-header">
@@ -10,7 +10,7 @@
 		</div>
 		<!-- End page-header -->
 
-		<div class="row">
+		{{-- <div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
 					<div class="card-header">
@@ -51,7 +51,8 @@
 					<!-- table-responsive -->
 				</div>
 			</div><!-- col end -->
-		</div>
+		</div> --}}
+		<lecturer-manage-component></lecturer-manage-component>
 	</div>
 </div>
 @endsection

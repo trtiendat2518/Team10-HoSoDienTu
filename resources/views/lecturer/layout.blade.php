@@ -102,5 +102,6 @@
 		<script src="{{asset('public/lecturer/js/index1.js')}}"></script>
 		<!-- Custom js-->
 		<script src="{{asset('public/lecturer/js/custom.js')}}"></script>
+		<script src="{{ asset('public/js/app.js') }}"></script>
 	</body>
 	</html>
