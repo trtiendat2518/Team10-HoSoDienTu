@@ -2123,6 +2123,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2130,8 +2142,19 @@ __webpack_require__.r(__webpack_exports__);
       lecturer_id: '',
       pagination: {
         current_page: 1
-      }
+      },
+      currentEntries: 5,
+      showEntries: [5, 10, 25, 50]
     };
+  },
+  watch: {
+    currentEntries: function currentEntries(number) {
+      if (number === 5) {
+        this.fetchLecturers();
+      } else {
+        this.fetchLecturers();
+      }
+    }
   },
   mounted: function mounted() {
     this.fetchLecturers();
@@ -2141,7 +2164,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var vm = this;
-      page_url = 'giang-vien/list?page=' + this.pagination.current_page;
+      page_url = 'giang-vien/list/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -37850,6 +37873,52 @@ var render = function() {
         _c("div", { staticClass: "card" }, [
           _vm._m(0),
           _vm._v(" "),
+          _c("div", { staticClass: "between:flex bottom:margin-3" }, [
+            _c("div", { staticClass: "center:flex-items" }, [
+              _c("span", { staticClass: "right:marign-1" }, [
+                _vm._v("Hiển thị")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.currentEntries,
+                      expression: "currentEntries"
+                    }
+                  ],
+                  staticClass: "select form-control-styling",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.currentEntries = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                _vm._l(_vm.showEntries, function(entry) {
+                  return _c(
+                    "option",
+                    { key: entry, domProps: { value: entry } },
+                    [_vm._v(_vm._s(entry))]
+                  )
+                }),
+                0
+              )
+            ])
+          ]),
+          _vm._v(" "),
           _c(
             "div",
             { staticClass: "table-responsive" },
@@ -37877,10 +37946,20 @@ var render = function() {
                               expression: "lecturers.length"
                             }
                           ],
-                          key: lecturer.lecturer_code
+                          key: lecturer.lecturer_id
                         },
                         [
-                          _c("td"),
+                          _c(
+                            "td",
+                            [
+                              _c("center", [
+                                _c("input", {
+                                  attrs: { type: "checkbox", name: "", id: "" }
+                                })
+                              ])
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c("td", [
                             _c("a", { attrs: { href: "#" } }, [
@@ -37946,13 +38025,13 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "blue-background text-white" }, [
       _c("tr", [
-        _c("th", { staticClass: "text-white w-10" }, [_vm._v("ID")]),
+        _c("th", { staticClass: "w-5" }),
         _vm._v(" "),
         _c("th", { staticClass: "text-white w-30" }, [_vm._v("Họ tên")]),
         _vm._v(" "),
         _c("th", { staticClass: "text-white w-30" }, [_vm._v("Địa chỉ Email")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-white w-10" }, [_vm._v("Vai trò")]),
+        _c("th", { staticClass: "text-white w-30" }, [_vm._v("Vai trò")]),
         _vm._v(" "),
         _c("th", { staticClass: "w-5" }),
         _vm._v(" "),

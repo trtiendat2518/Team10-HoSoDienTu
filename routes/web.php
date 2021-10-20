@@ -28,7 +28,7 @@ Route::prefix('admin')->group(function(){
     Route::get('/microsoft-callback','Lecturer\AuthController@callback_ms');
 
     Route::prefix('quan-ly-tai-khoan')->group(function(){
-        Route::get('giang-vien/list','Lecturer\LecturerManageController@list')->name('giang-vien.list');
+        Route::get('giang-vien/list/{currentEntries}','Lecturer\LecturerManageController@list')->name('giang-vien.list');
         Route::resource('giang-vien', 'Lecturer\LecturerManageController');
     });
 });

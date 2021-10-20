@@ -29,9 +29,9 @@ class LecturerManageController extends Controller
         return view('lecturer.pages.lecturer_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
     }
 
-    public function list()
+    public function list($currentEntries)
     {
-        return LecturerManageResource::collection(Lecturer::orderby('lecturer_id','DESC')->paginate(5));
+        return LecturerManageResource::collection(Lecturer::orderby('lecturer_id','DESC')->paginate($currentEntries));
     }
 
     /**

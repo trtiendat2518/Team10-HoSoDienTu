@@ -6,21 +6,33 @@
 					<div class="card-header">
 						<h3 class="card-title">Danh sách giảng viên</h3>
 					</div>
+
+					<div class="between:flex bottom:margin-3">
+						<div class="center:flex-items">
+							<span class="right:marign-1">Hiển thị</span>
+							<select class="select form-control-styling" v-model="currentEntries">
+								<option v-for="entry in showEntries" :key="entry" :value="entry">{{ entry }}</option>
+							</select>
+						</div>
+					</div>
+
 					<div class="table-responsive">
-						<table class="table card-table table-vcenter text-nowrap table-nowrap" >
+						<table class="table card-table table-vcenter text-nowrap table-nowrap">
 							<thead  class="blue-background text-white">
 								<tr >
-									<th class="text-white w-10">ID</th>
+									<th class="w-5"></th>
 									<th class="text-white w-30">Họ tên</th>
 									<th class="text-white w-30">Địa chỉ Email</th>
-									<th class="text-white w-10">Vai trò</th>
+									<th class="text-white w-30">Vai trò</th>
 									<th class="w-5"></th>
 									<th class="w-5"></th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-show="lecturers.length" v-for="lecturer in lecturers" :key="lecturer.lecturer_code">
-									<td></td>
+								<tr v-show="lecturers.length" v-for="lecturer in lecturers" :key="lecturer.lecturer_id">
+									<td>
+										<center><input type="checkbox" name="" id=""></center>
+									</td>
 									<td><a href="#">{{ lecturer.lecturer_fullname }}</a></td>
 									<td>{{ lecturer.lecturer_email }}</td>
 									<td>
@@ -63,9 +75,20 @@
 				lecturers:[],
 				lecturer_id:'',
 				pagination:{
-                    current_page: 1,
-                },
+					current_page: 1,
+				},
+				currentEntries: 5,
+				showEntries: [5, 10, 25, 50]
 			};
+		},
+		watch: {
+			currentEntries(number) {
+				if(number===5) {
+					this.fetchLecturers();
+				}else{
+					this.fetchLecturers();
+				}
+			}
 		},
 		mounted() {
 			this.fetchLecturers();
@@ -73,15 +96,15 @@
 		methods: {
 			fetchLecturers(page_url) {
 				let vm = this;
-                page_url = 'giang-vien/list?page='+this.pagination.current_page;
-                fetch(page_url)
-                .then(res => res.json())
-                .then(res => {
-                    this.lecturers = res.data;
-                    this.pagination = res.meta;
-                })
-                .catch(err => console.log(err));
-			}
+				page_url = 'giang-vien/list/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.lecturers = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 		}
 	};
 </script>
