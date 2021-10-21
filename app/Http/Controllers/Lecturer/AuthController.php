@@ -71,18 +71,23 @@ class AuthController extends Controller
         $users = Socialite::driver('graph')->stateless()->user();
 
         $authUser = $this->findOrCreateUser($users);
-        if($authUser){
-            //$account = Customer::where('customer_id',$authUser->user)->first();
-            $request->session()->put('lecturer_fullname',$authUser->lecturer_fullname);
-            $request->session()->put('lecturer_email',$authUser->lecturer_email);
-            $request->session()->put('lecturer_id',$authUser->lecturer_code);
-        }else {
-            $request->session()->put('lecturer_fullname',$authUser->lecturer_fullname);
-            $request->session()->put('lecturer_email',$authUser->lecturer_email);
-            $request->session()->put('lecturer_id',$authUser->lecturer_code);
+
+        if($authUser->lecturer_status==0){
+            if($authUser){
+                //$account = Customer::where('customer_id',$authUser->user)->first();
+                $request->session()->put('lecturer_fullname',$authUser->lecturer_fullname);
+                $request->session()->put('lecturer_email',$authUser->lecturer_email);
+                $request->session()->put('lecturer_id',$authUser->lecturer_code);
+            }else {
+                $request->session()->put('lecturer_fullname',$authUser->lecturer_fullname);
+                $request->session()->put('lecturer_email',$authUser->lecturer_email);
+                $request->session()->put('lecturer_id',$authUser->lecturer_code);
+            }
+            //dd($users);
+            return redirect()->intended('admin/dashboard');
+        }else{
+            return redirect()->intended('admin/login')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
         }
-        //dd($users);
-        return redirect()->intended('admin/dashboard');
     }
 
     public function findOrCreateUser($users)

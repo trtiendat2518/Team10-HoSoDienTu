@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Middleware\CheckLogin;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,8 +28,13 @@ Route::prefix('admin')->group(function(){
     Route::get('/microsoft-callback','Lecturer\AuthController@callback_ms');
 
     Route::prefix('quan-ly-tai-khoan')->group(function(){
-        Route::get('giang-vien/list/{currentEntries}','Lecturer\LecturerManageController@list')->name('giang-vien.list');
-        Route::get('giang-vien/search/{query}/{currentEntries}','Lecturer\LecturerManageController@search')->name('giang-vien.search');
-        Route::resource('giang-vien', 'Lecturer\LecturerManageController');
+        //Giang vien
+        Route::middleware([CheckLogin::class])->group(function () {
+            Route::get('giang-vien/list/{currentEntries}','Lecturer\LecturerManageController@list')->name('giang-vien.list');
+            Route::get('giang-vien/search/{query}/{currentEntries}','Lecturer\LecturerManageController@search')->name('giang-vien.search');
+            Route::patch('giang-vien/change/{lecturer}', 'Lecturer\LecturerManageController@change')->name('giang-vien.change');
+            Route::resource('giang-vien', 'Lecturer\LecturerManageController');
+        });
     });
 });
+

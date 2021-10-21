@@ -2296,7 +2296,17 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(err);
       });
     },
-    statusLecturer: function statusLecturer() {}
+    change: function change(lecturer_id) {
+      var _this4 = this;
+
+      axios.patch("giang-vien/change/".concat(lecturer_id)).then(function (res) {
+        _this4.fetchLecturers();
+
+        _this4.$snotify.warning('Đã thay đổi trạng thái', 'Thành công!');
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    }
   }
 });
 
@@ -6943,7 +6953,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-21753eae] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-21753eae] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n}\n.td-styling[data-v-21753eae] {\n\ttext-align: center;\n}\n.not-allowed[data-v-21753eae] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-21753eae] {\n\tcursor: pointer;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-21753eae] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-21753eae] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-21753eae] {\n\ttext-align: center;\n}\n.not-allowed[data-v-21753eae] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-21753eae] {\n\tcursor: pointer;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -38670,7 +38680,7 @@ var render = function() {
                                         staticClass: "fa fa-eye btn-eye",
                                         on: {
                                           click: function($event) {
-                                            return _vm.statusLecturer(
+                                            return _vm.change(
                                               lecturer.lecturer_id
                                             )
                                           }
@@ -38683,8 +38693,8 @@ var render = function() {
                                           "fa fa-eye-slash btn-eye-slash",
                                         on: {
                                           click: function($event) {
-                                            return _vm.statusLecturer(
-                                              _vm.calecturerte.lecturer_id
+                                            return _vm.change(
+                                              lecturer.lecturer_id
                                             )
                                           }
                                         }
