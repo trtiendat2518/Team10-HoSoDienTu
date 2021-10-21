@@ -2197,11 +2197,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2236,7 +2231,7 @@ __webpack_require__.r(__webpack_exports__);
       if (keyword === '') {
         this.fetchLecturers();
       } else {
-        this.searchLecturers();
+        this.search();
       }
     }
   },
@@ -2258,7 +2253,7 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(err);
       });
     },
-    searchLecturers: function searchLecturers(page_url) {
+    search: function search(page_url) {
       var _this2 = this;
 
       var vm = this;
@@ -2305,6 +2300,38 @@ __webpack_require__.r(__webpack_exports__);
         _this4.$snotify.warning('Đã thay đổi trạng thái', 'Thành công!');
       })["catch"](function (err) {
         return console.log(err);
+      });
+    },
+    destroy: function destroy(lecturer_id) {
+      var _this5 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('không thể hoàn tác sau khi xóa', 'Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this5.$snotify.remove(toast.id);
+
+            axios["delete"]("giang-vien/".concat(lecturer_id)).then(function (res) {
+              _this5.$snotify.success('Dữ liệu đã bị xóa vĩnh viễn', 'Đã xóa!');
+
+              _this5.fetchLecturers();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this5.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
       });
     }
   }
@@ -38706,28 +38733,30 @@ var render = function() {
                                 "td",
                                 { staticStyle: { "text-align": "center" } },
                                 [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass:
-                                        "active btn btn-outline-success btn-lg",
-                                      attrs: { href: "" },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.show(lecturer)
-                                        }
+                                  _c("button", {
+                                    staticClass:
+                                      "active btn btn-outline-success btn-lg fa fa-pencil-square-o",
+                                    attrs: { href: "" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.show(lecturer)
                                       }
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fa fa-pencil-square-o"
-                                      })
-                                    ]
-                                  )
+                                    }
+                                  })
                                 ]
                               ),
                               _vm._v(" "),
-                              _vm._m(3, true)
+                              _c("td", [
+                                _c("button", {
+                                  staticClass:
+                                    "active btn btn-danger btn-lg fa fa-trash",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.destroy(lecturer.lecturer_id)
+                                    }
+                                  }
+                                })
+                              ])
                             ]
                           )
                         }),
@@ -38744,7 +38773,7 @@ var render = function() {
                               }
                             ]
                           },
-                          [_vm._m(4)]
+                          [_vm._m(3)]
                         )
                       ],
                       2
@@ -38757,9 +38786,7 @@ var render = function() {
                       attrs: { pagination: _vm.pagination, offset: 5 },
                       on: {
                         paginate: function($event) {
-                          _vm.query === ""
-                            ? _vm.fetchLecturers()
-                            : _vm.searchLecturers()
+                          _vm.query === "" ? _vm.fetchLecturers() : _vm.search()
                         }
                       }
                     })
@@ -38803,7 +38830,7 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-content" }, [
-                    _vm._m(5),
+                    _vm._m(4),
                     _vm._v(" "),
                     _c("div", { staticClass: "modal-body" }, [
                       _c("label", [_vm._v("Họ và tên")]),
@@ -38932,7 +38959,7 @@ var render = function() {
                         : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _vm._m(6)
+                    _vm._m(5)
                   ])
                 ]
               )
@@ -38984,24 +39011,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "w-5" })
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        {
-          staticClass: "active btn btn-danger btn-lg",
-          attrs: {
-            "ui-toggle-class": "",
-            onclick: "return confirm('Bạn có chắc chắn muốn xóa không?')"
-          }
-        },
-        [_c("i", { staticClass: "fa fa-trash" })]
-      )
     ])
   },
   function() {
