@@ -8,6 +8,18 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
+import Snotify, { SnotifyPosition } from 'vue-snotify'
+import Form from 'vform'
+
+window.Form = Form
+const SnotifyOptions = {
+    toast: {
+        position: SnotifyPosition.rightTop
+    }
+};
+Vue.use(Snotify, SnotifyOptions)
+
+Vue.config.productionTip = false
 Vue.component('pagination', require('./components/pagination/PaginationComponent.vue').default);
 Vue.component('lecturer-manage-component', require('./components/admin/LecturerManageComponent.vue').default);
 

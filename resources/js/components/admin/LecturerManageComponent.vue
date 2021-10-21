@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<vue-snotify></vue-snotify>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -35,6 +36,7 @@
 									<th class="text-white w-30">Họ tên</th>
 									<th class="text-white w-30">Địa chỉ Email</th>
 									<th class="text-white w-30">Vai trò</th>
+									<th class="text-white w-20">Trạng thái</th>
 									<th class="w-5"></th>
 									<th class="w-5"></th>
 								</tr>
@@ -57,36 +59,83 @@
 											<p>Giảng viên mới</p>
 										</div>
 									</td>
-									<td style="text-align: center">
-										<a href="" class="active styling-edit" ui-toggle-class="">
-											<i class="fa fa-pencil-square-o text-success text-active"></i>
-										</a>
-									</td>
-									<td>
-										<a href="" class="active styling-delete" ui-toggle-class="" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
-											<i class="fa fa-trash text-danger text"></i>
-										</a>
-									</td>
-								</tr>
-								<tr v-show="!lecturers.length">
-									<td colspan="8">
-										<div class="alert alert-danger">
-											Không tìm thấy kết quả phù hợp!
+									<td class="td-styling">
+										<div v-if="lecturer.lecturer_status==0">
+											<button class="fa fa-eye btn-eye" @click="statusLecturer(lecturer.lecturer_id)"></button>
+										</div>
+										<div v-else>
+											<button class="fa fa-eye-slash btn-eye-slash" @click="statusLecturer(calecturerte.lecturer_id)"></button>
 										</div>
 									</td>
-								</tr>
-							</tbody>
-						</table>
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchLecturers() : searchLecturers() "></pagination>
-					</div>
-					<!-- table-responsive -->
+									<td style="text-align: center">
+										<button href="" class="active btn btn-outline-success btn-lg" @click="show(lecturer)">
+										<i class="fa fa-pencil-square-o"></i>
+									</button>
+								</td>
+								<td>
+									<button class="active btn btn-danger btn-lg" ui-toggle-class="" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
+										<i class="fa fa-trash"></i>
+									</button>
+								</td>
+							</tr>
+							<tr v-show="!lecturers.length">
+								<td colspan="8">
+									<div class="alert alert-danger">
+										Không tìm thấy kết quả phù hợp!
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchLecturers() : searchLecturers() "></pagination>
 				</div>
-			</div><!-- col end -->
+				<!-- table-responsive -->
+			</div>
+		</div><!-- col end -->
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="LecturerModal" tabindex="-1" role="dialog" aria-labelledby="LecturerModalTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="LecturerModalTitle">Cập nhật tài khoản</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<label>Họ và tên</label>
+						<input v-model="form.lecturer_fullname" type="text" name="lecturer_fullname"class="form-control not-allowed mb-3" disabled>
+
+						<label>Địa chỉ Email</label>
+						<input v-model="form.lecturer_email" type="text" name="lecturer_email" class="form-control not-allowed" disabled>
+
+						
+						<label class="mt-3">Vai trò</label>
+						<select v-model="form.lecturer_role" name="lecturer_role" class="form-control select-option">
+							<option value="0">Giảng viên mới</option>
+							<option value="1">Ban chủ nhiệm khoa</option>
+							<option value="2">Chủ nhiệm sinh viên</option>
+						</select>
+						<div class="text-danger mt-2" v-if="form.errors.has('category_status')" v-html="form.errors.get('category_status')"></div>
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="submit" class="btn btn-primary">Cập nhật</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
+	<!-- Modal end-->
+</div>
 </template>
 
 <script>
+	import 'vue-snotify/styles/material.css'
 	export default {
 		data() {
 			return {
@@ -98,6 +147,14 @@
 				currentEntries: 5,
 				showEntries: [5, 10, 25, 50],
 				query: '',
+				editMode: false,
+				form: new Form({
+                    lecturer_id:'',
+                    lecturer_fullname:'',
+                    lecturer_email:'',
+                    lecturer_status: '',
+                    lecturer_role: ''
+                }),
 			};
 		},
 		watch: {
@@ -142,9 +199,53 @@
 				})
 				.catch(err => console.log(err));
 			},
+			show: function(lecturer){
+                this.editMode = true;
+                this.form.reset();
+                this.form.clear();
+                this.form.fill(lecturer);
+                $('#LecturerModal').modal('show');
+            },
+            update: function(){
+                this.form.put('giang-vien/'+this.form.lecturer_id)
+                .then(res => {
+                    this.fetchLecturers();
+                    $('#LecturerModal').modal('hide');
+                    if(this.form.successful){
+                        this.$snotify.success('Vai trò của tài khoản đã thay đổi','Thành công!');
+                    }else{
+                        this.$snotify.error('Không thể chỉnh sửa', 'Lỗi!');
+                    }
+                })
+                .catch(err => console.log(err));
+            },
+			statusLecturer() {
+
+			}
 		}
 	};
 </script>
 
 <style scoped>
+	.btn-eye {
+		font-size: 18px;
+		cursor: pointer;
+		background: none;
+		border: none;
+	}
+	.btn-eye-slash {
+		font-size: 18px;
+		cursor: pointer; 
+		background: none;
+		border: none;
+	}
+	.td-styling {
+		text-align: center;
+	}
+	.not-allowed {
+		cursor: not-allowed;
+	}
+	.select-option {
+		cursor: pointer;
+	}
 </style>
