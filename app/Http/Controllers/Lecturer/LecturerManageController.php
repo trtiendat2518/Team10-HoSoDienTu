@@ -12,7 +12,7 @@ session_start();
 class LecturerManageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a view of the list.
      *
      * @return \Illuminate\Http\Response
      */
@@ -29,9 +29,24 @@ class LecturerManageController extends Controller
         return view('lecturer.pages.lecturer_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function list($currentEntries)
     {
         return LecturerManageResource::collection(Lecturer::orderby('lecturer_id','DESC')->paginate($currentEntries));
+    }
+
+    /**
+     * Search the resource in the list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search($query, $currentEntries)
+    {
+        return LecturerManageResource::collection(Lecturer::where('lecturer_fullname','LIKE','%'.$query.'%')->orwhere('lecturer_email','LIKE','%'.$query.'%')->orderby('lecturer_id','DESC')->paginate($currentEntries));
     }
 
     /**

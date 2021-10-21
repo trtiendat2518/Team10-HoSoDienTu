@@ -7,14 +7,25 @@
 						<h3 class="card-title">Danh sách giảng viên</h3>
 					</div>
 
-					<div class="between:flex bottom:margin-3">
-						<div class="center:flex-items">
-							<span class="right:marign-1">Hiển thị</span>
-							<select class="select form-control-styling" v-model="currentEntries">
-								<option v-for="entry in showEntries" :key="entry" :value="entry">{{ entry }}</option>
-							</select>
+					<div class="row">
+						<div class="col-md-2">
+							<div class="between:flex bottom:margin-3 ml-2">
+								<div class="center:flex-items">
+									<span class="right:marign-1">Hiển thị</span>
+									<select class="select form-control-styling" v-model="currentEntries">
+										<option v-for="entry in showEntries" :key="entry" :value="entry">{{ entry }}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-danger mt-2 ml-3"><i class="fa fa-trash"></i> Xóa</button>
 						</div>
 					</div>
+					
 
 					<div class="table-responsive">
 						<table class="table card-table table-vcenter text-nowrap table-nowrap">
@@ -57,9 +68,16 @@
 										</a>
 									</td>
 								</tr>
+								<tr v-show="!lecturers.length">
+									<td colspan="8">
+										<div class="alert alert-danger">
+											Không tìm thấy kết quả phù hợp!
+										</div>
+									</td>
+								</tr>
 							</tbody>
 						</table>
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchLecturers()"></pagination>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchLecturers() : searchLecturers() "></pagination>
 					</div>
 					<!-- table-responsive -->
 				</div>
@@ -78,7 +96,8 @@
 					current_page: 1,
 				},
 				currentEntries: 5,
-				showEntries: [5, 10, 25, 50]
+				showEntries: [5, 10, 25, 50],
+				query: '',
 			};
 		},
 		watch: {
@@ -87,6 +106,13 @@
 					this.fetchLecturers();
 				}else{
 					this.fetchLecturers();
+				}
+			},
+			query: function(keyword){
+				if(keyword === ''){
+					this.fetchLecturers();
+				}else{
+					this.searchLecturers();
 				}
 			}
 		},
@@ -97,6 +123,17 @@
 			fetchLecturers(page_url) {
 				let vm = this;
 				page_url = 'giang-vien/list/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.lecturers = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
+			searchLecturers(page_url){
+				let vm = this;
+				page_url = 'giang-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {

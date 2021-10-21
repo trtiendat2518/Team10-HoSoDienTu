@@ -29,6 +29,7 @@ Route::prefix('admin')->group(function(){
 
     Route::prefix('quan-ly-tai-khoan')->group(function(){
         Route::get('giang-vien/list/{currentEntries}','Lecturer\LecturerManageController@list')->name('giang-vien.list');
+        Route::get('giang-vien/search/{query}/{currentEntries}','Lecturer\LecturerManageController@search')->name('giang-vien.search');
         Route::resource('giang-vien', 'Lecturer\LecturerManageController');
     });
 });
