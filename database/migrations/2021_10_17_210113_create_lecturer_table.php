@@ -18,7 +18,8 @@ class CreateLecturerTable extends Migration
             $table->string('lecturer_fullname',255);
             $table->string('lecturer_email',100);
             $table->string('lecturer_code',50);
-            $table->integer('lecturer_role');
+            $table->integer('lecturer_role')->default(0);
+            $table->integer('lecturer_status')->default(0);
         });
     }
 

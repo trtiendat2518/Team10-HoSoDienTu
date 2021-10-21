@@ -78,9 +78,11 @@ class LecturerManageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $lecturer)
     {
-        //
+        $lec = Lecturer::find($lecturer);
+        $lec->lecturer_role = $request->lecturer_role;
+        $lec->save();
     }
 
     /**
