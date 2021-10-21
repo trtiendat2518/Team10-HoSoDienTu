@@ -64,13 +64,24 @@
 				<div class="dropdown header-user">
 					<a class="nav-link leading-none siderbar-link"  data-toggle="sidebar-right" data-target=".sidebar-right">
 						<span class="mr-3 d-none d-lg-block ">
-							<span class="text-gray-white"><span class="ml-2">Alison</span></span>
+							<span class="text-gray-white">
+								<span class="ml-2">
+									@php
+									if(Session::get('admin_id')){
+            							echo Session::get('admin_fullname');
+									}
+									else if(Session::get('lecturer_id')){
+										echo Session::get('lecturer_fullname');
+									}
+            						@endphp
+								</span>
+							</span>
 						</span>
 						<span class="avatar avatar-md brround"><img src="{{asset('public/lecturer/images/users/female/33.png')}}"" alt="Profile-img" class="avatar avatar-md brround"></span>
 					</a>
 				</div><!-- profile -->
 				<div class="dropdown">
-					<a  class="nav-link icon siderbar-link" data-toggle="sidebar-right" data-target=".sidebar-right">
+					<a href="{{ url('admin/logout') }}" class="nav-link icon siderbar-link" data-toggle="sidebar-right" data-target=".sidebar-right">
 						<i class="fa fa-sign-out"></i>
 					</a>
 				</div><!-- Right-siebar-->
