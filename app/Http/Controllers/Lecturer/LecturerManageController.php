@@ -86,6 +86,25 @@ class LecturerManageController extends Controller
     }
 
     /**
+     * Change the status for the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function change(Request $request, $lecturer)
+    {
+        $lec = Lecturer::find($lecturer);
+        if($lec->lecturer_status==0){
+            $lec->lecturer_status=1;
+            $lec->save();
+        }else{
+            $lec->lecturer_status=0;
+            $lec->save();
+        }
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

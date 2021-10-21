@@ -61,10 +61,10 @@
 									</td>
 									<td class="td-styling">
 										<div v-if="lecturer.lecturer_status==0">
-											<button class="fa fa-eye btn-eye" @click="statusLecturer(lecturer.lecturer_id)"></button>
+											<button class="fa fa-eye btn-eye" @click="change(lecturer.lecturer_id)"></button>
 										</div>
 										<div v-else>
-											<button class="fa fa-eye-slash btn-eye-slash" @click="statusLecturer(calecturerte.lecturer_id)"></button>
+											<button class="fa fa-eye-slash btn-eye-slash" @click="change(lecturer.lecturer_id)"></button>
 										</div>
 									</td>
 									<td style="text-align: center">
@@ -219,8 +219,13 @@
                 })
                 .catch(err => console.log(err));
             },
-			statusLecturer() {
-
+			change(lecturer_id) {
+				axios.patch(`giang-vien/change/${lecturer_id}`)
+                .then(res => {
+                    this.fetchLecturers();
+                    this.$snotify.warning('Đã thay đổi trạng thái','Thành công!');
+                })
+                .catch(err => console.log(err));
 			}
 		}
 	};
@@ -238,6 +243,7 @@
 		cursor: pointer; 
 		background: none;
 		border: none;
+		color: #868e96de;
 	}
 	.td-styling {
 		text-align: center;
