@@ -225,6 +225,7 @@
 						</div>
 					</div>
 				</div>
+
 				<div class="col-xl-5 col-lg-12 col-md-12">
 					<div class="card">
 						<div class="card-header custom-header">

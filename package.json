@@ -25,6 +25,9 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "cross-env": "^7.0.3"
+        "alga-js": "^0.0.9",
+        "cross-env": "^7.0.3",
+        "vform": "^2.1.1",
+        "vue-snotify": "^3.2.1"
     }
 }
