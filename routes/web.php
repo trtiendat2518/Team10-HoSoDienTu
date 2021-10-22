@@ -33,6 +33,7 @@ Route::prefix('admin')->group(function(){
             Route::get('giang-vien/list/{currentEntries}','Lecturer\LecturerManageController@list')->name('giang-vien.list');
             Route::get('giang-vien/search/{query}/{currentEntries}','Lecturer\LecturerManageController@search')->name('giang-vien.search');
             Route::patch('giang-vien/change/{lecturer}', 'Lecturer\LecturerManageController@change')->name('giang-vien.change');
+            Route::post('giang-vien/destroyall/', 'Lecturer\LecturerManageController@destroyall')->name('giang-vien.destroyall/{lecturer}');
             Route::resource('giang-vien', 'Lecturer\LecturerManageController');
         });
     });

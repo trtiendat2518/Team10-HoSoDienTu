@@ -2197,6 +2197,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2216,7 +2218,9 @@ __webpack_require__.r(__webpack_exports__);
         lecturer_email: '',
         lecturer_status: '',
         lecturer_role: ''
-      })
+      }),
+      selected: [],
+      selectAll: false
     };
   },
   watch: {
@@ -2239,6 +2243,9 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchLecturers();
   },
   methods: {
+    empty: function empty() {
+      return this.lecturers.length < 1;
+    },
     fetchLecturers: function fetchLecturers(page_url) {
       var _this = this;
 
@@ -2283,9 +2290,9 @@ __webpack_require__.r(__webpack_exports__);
         $('#LecturerModal').modal('hide');
 
         if (_this3.form.successful) {
-          _this3.$snotify.success('Vai trò của tài khoản đã thay đổi', 'Thành công!');
+          _this3.$snotify.success('Vai trò của tài khoản đã thay đổi');
         } else {
-          _this3.$snotify.error('Không thể chỉnh sửa', 'Lỗi!');
+          _this3.$snotify.error('Không thể chỉnh sửa');
         }
       })["catch"](function (err) {
         return console.log(err);
@@ -2297,7 +2304,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.patch("giang-vien/change/".concat(lecturer_id)).then(function (res) {
         _this4.fetchLecturers();
 
-        _this4.$snotify.warning('Đã thay đổi trạng thái', 'Thành công!');
+        _this4.$snotify.warning('Đã thay đổi trạng thái');
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -2306,7 +2313,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this5 = this;
 
       this.$snotify.clear();
-      this.$snotify.confirm('không thể hoàn tác sau khi xóa', 'Xác nhận xóa', {
+      this.$snotify.confirm('Xác nhận xóa', {
         timeout: 5000,
         showProgressBar: true,
         closeOnClick: false,
@@ -2317,7 +2324,7 @@ __webpack_require__.r(__webpack_exports__);
             _this5.$snotify.remove(toast.id);
 
             axios["delete"]("giang-vien/".concat(lecturer_id)).then(function (res) {
-              _this5.$snotify.success('Dữ liệu đã bị xóa vĩnh viễn', 'Đã xóa!');
+              _this5.$snotify.success('Đã xóa!');
 
               _this5.fetchLecturers();
             })["catch"](function (err) {
@@ -2333,6 +2340,49 @@ __webpack_require__.r(__webpack_exports__);
           bold: true
         }]
       });
+    },
+    destroyall: function destroyall() {
+      var _this6 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+
+            axios.post('giang-vien/destroyall', {
+              lecturer: _this6.selected
+            }).then(function (res) {
+              _this6.$snotify.success('Đã xóa!');
+
+              _this6.fetchLecturers();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    select: function select() {
+      this.selected = [];
+
+      if (!this.selectAll) {
+        for (var i in this.lecturers) {
+          this.selected.push(this.lecturers[i].lecturer_id);
+        }
+      }
     }
   }
 });
@@ -38626,7 +38676,21 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _vm._m(1)
+              _c("div", { staticClass: "col-md-2" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                    on: {
+                      click: function($event) {
+                        return _vm.destroyall()
+                      }
+                    }
+                  },
+                  [_vm._v(" Xóa nhiều")]
+                )
+              ])
             ]),
             _vm._v(" "),
             _c(
@@ -38640,7 +38704,74 @@ var render = function() {
                       "table card-table table-vcenter text-nowrap table-nowrap"
                   },
                   [
-                    _vm._m(2),
+                    _c("thead", { staticClass: "blue-background text-white" }, [
+                      _c("tr", [
+                        _c("th", { staticClass: "w-5" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.selectAll,
+                                expression: "selectAll"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "checkbox", disabled: _vm.empty() },
+                            domProps: {
+                              checked: Array.isArray(_vm.selectAll)
+                                ? _vm._i(_vm.selectAll, null) > -1
+                                : _vm.selectAll
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.select()
+                              },
+                              change: function($event) {
+                                var $$a = _vm.selectAll,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.selectAll = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.selectAll = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.selectAll = $$c
+                                }
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-white w-30" }, [
+                          _vm._v("Họ tên")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-white w-30" }, [
+                          _vm._v("Địa chỉ Email")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-white w-30" }, [
+                          _vm._v("Vai trò")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-white w-20" }, [
+                          _vm._v("Trạng thái")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "w-5" }),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "w-5" })
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c(
                       "tbody",
@@ -38665,10 +38796,47 @@ var render = function() {
                                 [
                                   _c("center", [
                                     _c("input", {
-                                      attrs: {
-                                        type: "checkbox",
-                                        name: "",
-                                        id: ""
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.selected,
+                                          expression: "selected"
+                                        }
+                                      ],
+                                      attrs: { type: "checkbox" },
+                                      domProps: {
+                                        value: lecturer.lecturer_id,
+                                        checked: Array.isArray(_vm.selected)
+                                          ? _vm._i(
+                                              _vm.selected,
+                                              lecturer.lecturer_id
+                                            ) > -1
+                                          : _vm.selected
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = _vm.selected,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = lecturer.lecturer_id,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                (_vm.selected = $$a.concat([
+                                                  $$v
+                                                ]))
+                                            } else {
+                                              $$i > -1 &&
+                                                (_vm.selected = $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1)))
+                                            }
+                                          } else {
+                                            _vm.selected = $$c
+                                          }
+                                        }
                                       }
                                     })
                                   ])
@@ -38689,14 +38857,20 @@ var render = function() {
                               _c("td", [
                                 lecturer.lecturer_role == 2
                                   ? _c("div", [
-                                      _c("p", [_vm._v("Chủ nhiệm sinh viên")])
+                                      _vm._v(
+                                        "\n\t\t\t\t\t\t\t\t\t\tChủ nhiệm sinh viên\n\t\t\t\t\t\t\t\t\t"
+                                      )
                                     ])
                                   : lecturer.lecturer_role == 1
                                   ? _c("div", [
-                                      _c("p", [_vm._v("Ban chủ nhiệm khoa")])
+                                      _vm._v(
+                                        "\n\t\t\t\t\t\t\t\t\t\tBan chủ nhiệm khoa\n\t\t\t\t\t\t\t\t\t"
+                                      )
                                     ])
                                   : _c("div", [
-                                      _c("p", [_vm._v("Giảng viên mới")])
+                                      _vm._v(
+                                        "\n\t\t\t\t\t\t\t\t\t\tGiảng viên mới\n\t\t\t\t\t\t\t\t\t"
+                                      )
                                     ])
                               ]),
                               _vm._v(" "),
@@ -38773,7 +38947,7 @@ var render = function() {
                               }
                             ]
                           },
-                          [_vm._m(3)]
+                          [_vm._m(1)]
                         )
                       ],
                       2
@@ -38830,7 +39004,7 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-content" }, [
-                    _vm._m(4),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("div", { staticClass: "modal-body" }, [
                       _c("label", [_vm._v("Họ và tên")]),
@@ -38959,7 +39133,7 @@ var render = function() {
                         : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _vm._m(5)
+                    _vm._m(3)
                   ])
                 ]
               )
@@ -38978,39 +39152,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h3", { staticClass: "card-title" }, [_vm._v("Danh sách giảng viên")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-2" }, [
-      _c("button", { staticClass: "btn btn-danger mt-2 ml-3" }, [
-        _c("i", { staticClass: "fa fa-trash" }),
-        _vm._v(" Xóa")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: "blue-background text-white" }, [
-      _c("tr", [
-        _c("th", { staticClass: "w-5" }),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-white w-30" }, [_vm._v("Họ tên")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-white w-30" }, [_vm._v("Địa chỉ Email")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-white w-30" }, [_vm._v("Vai trò")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-white w-20" }, [_vm._v("Trạng thái")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "w-5" }),
-        _vm._v(" "),
-        _c("th", { staticClass: "w-5" })
-      ])
     ])
   },
   function() {

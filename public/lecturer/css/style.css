@@ -1948,7 +1948,7 @@ pre code {
 	border: 1px solid rgba(107,122,144,0.1);
 }
 .table thead th, .text-wrap table thead th {
-	vertical-align: bottom;
+	vertical-align: center;
 	border-bottom: 2px solid rgba(107,122,144,0.1);
 }
 .table tbody+tbody, .text-wrap table tbody+tbody {
