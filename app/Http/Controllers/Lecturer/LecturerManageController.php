@@ -110,8 +110,24 @@ class LecturerManageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($lecturer)
     {
-        //
+        $lec = Lecturer::find($lecturer);
+        $lec->delete();
+    }
+
+    /**
+     * Remove all the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyall(Request $request, $lecturer = null)
+    {
+        if ($request->lecturer) {
+            foreach ($request->lecturer as $id) {
+                Lecturer::where('lecturer_id', $id)->delete();
+            }
+        }
     }
 }

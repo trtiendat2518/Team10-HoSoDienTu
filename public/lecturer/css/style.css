@@ -139,6 +139,14 @@ html {
 article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
 	display: block;
 }
+.title-head {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    height: auto;
+    width: auto;
+    margin-top: 15px;
+}
 .nav-sidebar li ul li:last-child{
 	border-bottom:0px;
 }
@@ -252,7 +260,7 @@ sup {
 	top: -.5em;
 }
 a {
-	color: #e66c2c;
+	color: #1753fc;
 	text-decoration: none;
 	background-color: transparent;
 	-webkit-text-decoration-skip: objects;
@@ -1940,7 +1948,7 @@ pre code {
 	border: 1px solid rgba(107,122,144,0.1);
 }
 .table thead th, .text-wrap table thead th {
-	vertical-align: bottom;
+	vertical-align: center;
 	border-bottom: 2px solid rgba(107,122,144,0.1);
 }
 .table tbody+tbody, .text-wrap table tbody+tbody {
@@ -7918,8 +7926,8 @@ ul li ul:hover {
 .page-item.active .page-link {
 	z-index: 1;
 	color: #fff;
-	background-color: #e66c2c;
-	border:1px solid #e66c2c;
+	background-color: #1753fc;
+	border:1px solid #1753fc;
 }
 .page-item.disabled .page-link {
 	color: #ced4da;
@@ -12944,13 +12952,12 @@ body.fixed-header .header {
 	text-decoration: none;
 }
 .header-brand-img {
-	height: 2.5rem;
+	height: 4.2rem;
 	line-height: 2rem;
 	vertical-align: middle;
 	margin-right: .5rem;
 	width: auto;
 	margin:0 auto;
-	margin-top:11px;
 }
 .header-avatar {
 	width: 2rem;
@@ -15868,7 +15875,7 @@ feCz66HNQhyoUIndT6pXQpWta+PA3e1h3yExMyH1EsOo6f8PXnNPyHGLRfchOSF9WSX7exs=*/
 	align-items: center;
 	border-top-left-radius: 7px !important;
 	border-top-right-radius: 7px !important;
-	border-left:2px solid #e66c2c;
+	border-left:2px solid #1753fc;
 	border-bottom: 1px solid rgba(107,122,144,0.1);
 }
 .card-header.border-0+.card-body {
@@ -24807,7 +24814,7 @@ Inbox Message Style
  	margin:0;
  }
  .app-header.header{
- 	background: #fff;
+ 	background: #e66c2c;
  	border-bottom: 1px solid rgba(107,122,144,0.1);
  	z-index: 1030;
  	position: fixed;

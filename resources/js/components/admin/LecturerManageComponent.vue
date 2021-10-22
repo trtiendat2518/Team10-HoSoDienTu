@@ -23,16 +23,17 @@
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
 						<div class="col-md-2">
-							<button class="btn btn-danger mt-2 ml-3"><i class="fa fa-trash"></i> Xóa</button>
+							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()"> Xóa nhiều</button>
 						</div>
 					</div>
 					
-
 					<div class="table-responsive">
 						<table class="table card-table table-vcenter text-nowrap table-nowrap">
 							<thead  class="blue-background text-white">
-								<tr >
-									<th class="w-5"></th>
+								<tr>
+									<th class="w-5">
+										<input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll">
+									</th>
 									<th class="text-white w-30">Họ tên</th>
 									<th class="text-white w-30">Địa chỉ Email</th>
 									<th class="text-white w-30">Vai trò</th>
@@ -44,19 +45,19 @@
 							<tbody>
 								<tr v-show="lecturers.length" v-for="lecturer in lecturers" :key="lecturer.lecturer_id">
 									<td>
-										<center><input type="checkbox" name="" id=""></center>
+										<center><input type="checkbox" :value="lecturer.lecturer_id" v-model="selected"></center>
 									</td>
 									<td><a href="#">{{ lecturer.lecturer_fullname }}</a></td>
 									<td>{{ lecturer.lecturer_email }}</td>
 									<td>
 										<div v-if="lecturer.lecturer_role==2">
-											<p>Chủ nhiệm sinh viên</p>
+											Chủ nhiệm sinh viên
 										</div>
 										<div v-else-if="lecturer.lecturer_role==1">
-											<p>Ban chủ nhiệm khoa</p>
+											Ban chủ nhiệm khoa
 										</div>
 										<div v-else>
-											<p>Giảng viên mới</p>
+											Giảng viên mới
 										</div>
 									</td>
 									<td class="td-styling">
@@ -68,70 +69,66 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button href="" class="active btn btn-outline-success btn-lg" @click="show(lecturer)">
-										<i class="fa fa-pencil-square-o"></i>
-									</button>
-								</td>
-								<td>
-									<button class="active btn btn-danger btn-lg" ui-toggle-class="" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
-										<i class="fa fa-trash"></i>
-									</button>
-								</td>
-							</tr>
-							<tr v-show="!lecturers.length">
-								<td colspan="8">
-									<div class="alert alert-danger">
-										Không tìm thấy kết quả phù hợp!
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchLecturers() : searchLecturers() "></pagination>
+										<button href="" class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(lecturer)"></button>
+									</td>
+									<td>
+										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(lecturer.lecturer_id)"></button>
+									</td>
+								</tr>
+								<tr v-show="!lecturers.length">
+									<td colspan="8">
+										<div class="alert alert-danger">
+											Không tìm thấy kết quả phù hợp!
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchLecturers() : search() "></pagination>
+					</div>
+					<!-- table-responsive -->
 				</div>
-				<!-- table-responsive -->
-			</div>
-		</div><!-- col end -->
-	</div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="LecturerModal" tabindex="-1" role="dialog" aria-labelledby="LecturerModalTitle" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="LecturerModalTitle">Cập nhật tài khoản</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<label>Họ và tên</label>
-						<input v-model="form.lecturer_fullname" type="text" name="lecturer_fullname"class="form-control not-allowed mb-3" disabled>
-
-						<label>Địa chỉ Email</label>
-						<input v-model="form.lecturer_email" type="text" name="lecturer_email" class="form-control not-allowed" disabled>
-
-						
-						<label class="mt-3">Vai trò</label>
-						<select v-model="form.lecturer_role" name="lecturer_role" class="form-control select-option">
-							<option value="0">Giảng viên mới</option>
-							<option value="1">Ban chủ nhiệm khoa</option>
-							<option value="2">Chủ nhiệm sinh viên</option>
-						</select>
-						<div class="text-danger mt-2" v-if="form.errors.has('category_status')" v-html="form.errors.get('category_status')"></div>
-						
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-						<button type="submit" class="btn btn-primary">Cập nhật</button>
-					</div>
-				</div>
-			</form>
+			</div><!-- col end -->
 		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="LecturerModal" tabindex="-1" role="dialog" aria-labelledby="LecturerModalTitle" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="LecturerModalTitle">Cập nhật tài khoản</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<label>Họ và tên</label>
+							<input v-model="form.lecturer_fullname" type="text" name="lecturer_fullname"class="form-control not-allowed mb-3" disabled>
+
+							<label>Địa chỉ Email</label>
+							<input v-model="form.lecturer_email" type="text" name="lecturer_email" class="form-control not-allowed" disabled>
+
+							
+							<label class="mt-3">Vai trò</label>
+							<select v-model="form.lecturer_role" name="lecturer_role" class="form-control select-option">
+								<option value="0">Giảng viên mới</option>
+								<option value="1">Ban chủ nhiệm khoa</option>
+								<option value="2">Chủ nhiệm sinh viên</option>
+							</select>
+							<div class="text-danger mt-2" v-if="form.errors.has('category_status')" v-html="form.errors.get('category_status')"></div>
+							
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+							<button type="submit" class="btn btn-primary">Cập nhật</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Modal end-->
 	</div>
-	<!-- Modal end-->
-</div>
 </template>
 
 <script>
@@ -155,6 +152,8 @@
                     lecturer_status: '',
                     lecturer_role: ''
                 }),
+                selected: [],
+                selectAll: false
 			};
 		},
 		watch: {
@@ -169,7 +168,7 @@
 				if(keyword === ''){
 					this.fetchLecturers();
 				}else{
-					this.searchLecturers();
+					this.search();
 				}
 			}
 		},
@@ -177,6 +176,9 @@
 			this.fetchLecturers();
 		},
 		methods: {
+            empty() {
+            	return (this.lecturers.length < 1);
+            },
 			fetchLecturers(page_url) {
 				let vm = this;
 				page_url = 'giang-vien/list/'+this.currentEntries+'?page='+this.pagination.current_page;
@@ -188,7 +190,7 @@
 				})
 				.catch(err => console.log(err));
 			},
-			searchLecturers(page_url){
+			search(page_url) {
 				let vm = this;
 				page_url = 'giang-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
@@ -199,22 +201,22 @@
 				})
 				.catch(err => console.log(err));
 			},
-			show: function(lecturer){
+			show: function(lecturer) {
                 this.editMode = true;
                 this.form.reset();
                 this.form.clear();
                 this.form.fill(lecturer);
                 $('#LecturerModal').modal('show');
             },
-            update: function(){
+            update: function() {
                 this.form.put('giang-vien/'+this.form.lecturer_id)
                 .then(res => {
                     this.fetchLecturers();
                     $('#LecturerModal').modal('hide');
                     if(this.form.successful){
-                        this.$snotify.success('Vai trò của tài khoản đã thay đổi','Thành công!');
+                        this.$snotify.success('Vai trò của tài khoản đã thay đổi');
                     }else{
-                        this.$snotify.error('Không thể chỉnh sửa', 'Lỗi!');
+                        this.$snotify.error('Không thể chỉnh sửa');
                     }
                 })
                 .catch(err => console.log(err));
@@ -223,10 +225,74 @@
 				axios.patch(`giang-vien/change/${lecturer_id}`)
                 .then(res => {
                     this.fetchLecturers();
-                    this.$snotify.warning('Đã thay đổi trạng thái','Thành công!');
+                    this.$snotify.warning('Đã thay đổi trạng thái');
                 })
                 .catch(err => console.log(err));
-			}
+			},
+			destroy(lecturer_id) {
+                this.$snotify.clear();
+                this.$snotify.confirm('Xác nhận xóa', {
+                    timeout: 5000,
+                    showProgressBar: true,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    buttons: [{
+                        text: 'Xóa', 
+                        action: toast =>{
+                            this.$snotify.remove(toast.id);
+                            axios.delete(`giang-vien/${lecturer_id}`)
+                            .then(res => {
+                                this.$snotify.success('Đã xóa!');
+                                this.fetchLecturers();
+                            })
+                            .catch(err => console.log(err));
+                        }, 
+                        bold: false
+                    },{
+                        text: 'Đóng', 
+                        action: toast => { 
+                            this.$snotify.remove(toast.id); 
+                        }, 
+                        bold: true
+                    }]
+                });
+            },
+            destroyall() {
+            	this.$snotify.clear();
+                this.$snotify.confirm('Xác nhận xóa', {
+                    timeout: 5000,
+                    showProgressBar: true,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    buttons: [{
+                        text: 'Xóa', 
+                        action: toast =>{
+                            this.$snotify.remove(toast.id);
+                            axios.post('giang-vien/destroyall', { lecturer: this.selected })
+                            .then(res => {
+                                this.$snotify.success('Đã xóa!');
+                                this.fetchLecturers();
+                            })
+                            .catch(err => console.log(err));
+                        }, 
+                        bold: false
+                    },{
+                        text: 'Đóng', 
+                        action: toast => { 
+                            this.$snotify.remove(toast.id); 
+                        }, 
+                        bold: true
+                    }]
+                });
+            },
+            select() {
+            	this.selected = [];
+            	if(!this.selectAll){
+            		for(let i in this.lecturers){
+            			this.selected.push(this.lecturers[i].lecturer_id);
+            		}
+            	}
+            }
 		}
 	};
 </script>
