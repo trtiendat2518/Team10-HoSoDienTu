@@ -45,13 +45,13 @@
 
 		<div class="page">
 			<div class="page-main">
-				@include('lecturer.panels.header');
+				@include('admin.panels.header');
 
-				@include('lecturer.panels.slidebar');
+				@include('admin.panels.slidebar');
 				
-				@yield('lecturer-content');
+				@yield('admin-content');
 
-				@include('lecturer.panels.footer');
+				@include('admin.panels.footer');
 			</div>
 		</div>
 		<!-- End Page -->

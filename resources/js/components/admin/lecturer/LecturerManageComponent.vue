@@ -23,7 +23,7 @@
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
 						<div class="col-md-2">
-							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()"> Xóa nhiều</button>
+							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"> Xóa nhiều</button>
 						</div>
 					</div>
 					
@@ -181,7 +181,7 @@
             },
 			fetchLecturers(page_url) {
 				let vm = this;
-				page_url = 'giang-vien/list/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = 'giang-vien/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {

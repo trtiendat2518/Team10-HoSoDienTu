@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Lecturer;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lecturer;
 use Session;
-session_start();
 
 class DashboardController extends Controller
 {
@@ -25,7 +24,7 @@ class DashboardController extends Controller
         
         $check_role = Lecturer::where('lecturer_code', Session::get('lecturer_id'))->limit(1)->get();
 
-        return view('lecturer.pages.dashboard')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
+        return view('admin.pages.dashboard')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
     }
 
     /**

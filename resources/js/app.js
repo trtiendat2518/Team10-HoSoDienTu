@@ -21,7 +21,10 @@ Vue.use(Snotify, SnotifyOptions)
 
 Vue.config.productionTip = false
 Vue.component('pagination', require('./components/pagination/PaginationComponent.vue').default);
-Vue.component('lecturer-manage-component', require('./components/admin/LecturerManageComponent.vue').default);
+
+//Lecturer Manage
+Vue.component('lecturer-manage-component', require('./components/admin/lecturer/LecturerManageComponent.vue').default);
+Vue.component('update-lecturer-info-component', require('./components/admin/lecturer/UpdateLecturerInfoComponent.vue').default);
 
 const app = new Vue({
     el: '#app',
