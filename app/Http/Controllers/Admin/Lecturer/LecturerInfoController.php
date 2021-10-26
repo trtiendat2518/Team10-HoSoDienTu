@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Lecturer;
 
 use App\Http\Resources\LecturerManageResource;
+use App\Http\Resources\LectureInfoResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lecturer;
@@ -25,7 +26,7 @@ class LecturerInfoController extends Controller
         
         $check_role = Lecturer::where('lecturer_code', Session::get('lecturer_id'))->limit(1)->get();
 
-        return view('admin.pages.lecturer.lecturer_info')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
+        return view('admin.pages.info.view')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
     }
 
     /**

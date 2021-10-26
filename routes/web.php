@@ -29,7 +29,8 @@ Route::prefix('admin')->group(function(){
 
     Route::middleware([CheckLogin::class])->group(function () {
         Route::prefix('quan-ly-tai-khoan')->group(function(){
-            //Giang vien     
+            //Giang vien  
+            Route::get('giang-vien/detail/{lecturer}','Admin\Lecturer\LecturerManageController@detail')->name('giang-vien.detail');   
             Route::get('giang-vien/search/{query}/{currentEntries}','Admin\Lecturer\LecturerManageController@search')->name('giang-vien.search');
             Route::patch('giang-vien/change/{lecturer}', 'Admin\Lecturer\LecturerManageController@change')->name('giang-vien.change');
             Route::post('giang-vien/destroyall/', 'Admin\Lecturer\LecturerManageController@destroyall')->name('giang-vien.destroyall/{lecturer}');

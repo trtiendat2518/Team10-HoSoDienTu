@@ -1,5 +1,15 @@
-<template>
-	<div>
+@extends('admin.layout');
+@section('admin-content')
+<div class="app-content  my-3 my-md-5 toggle-content" id="app">
+	<div class="side-app" style="padding-top: 0px;">
+		<!-- page-header -->
+		<div class="page-header">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item active" aria-current="page" style="font-size: 30px">{{ $meta_title }}</li>
+			</ol>
+		</div>
+		<!-- End page-header -->
+		<!-- row -->
 		<div class="row">
 			<div class="col-lg-12 col-xl-4 col-md-12 col-sm-12">
 				<div class="card">
@@ -51,8 +61,39 @@
 						<div class="row">
 							<div class="col-lg-6 col-md-12">
 								<div class="form-group">
+									<label class="form-label">Dân tộc</label>
+									<select class="form-control">
+										<option value="" disabled selected="">---</option>
+										<option value="0">Kinh</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-12">
+								<div class="form-group">
+									<label class="form-label">Tôn giáo</label>
+									<select class="form-control">
+										<option value="" disabled selected="">---</option>
+										<option value="0">Bla blad</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-4 col-md-12">
+								<div class="form-group">
 									<label class="form-label">Ngày sinh</label>
 									<input type="date" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-12">
+								<div class="form-group">
+									<label class="form-label">Giới tính</label>
+									<select class="form-control">
+										<option value="" disabled selected="">---</option>
+										<option value="0">Nam</option>
+										<option value="1">Nữ</option>
+									</select>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-12">
@@ -72,11 +113,30 @@
 							</div>
 							<div class="col-lg-6 col-md-12">
 								<div class="form-group">
+									<label class="form-label">Quốc gia</label>
+									<select class="form-control">
+										<option value="" disabled selected="">---</option>
+										<option value="0">Việt Nam</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-6 col-md-12">
+								<div class="form-group">
 									<label class="form-label">Số điện thoại</label>
 									<input type="number" class="form-control" placeholder="Nhập số điện thoại liên lạc">
 								</div>
 							</div>
+							<div class="col-lg-6 col-md-12">
+								<div class="form-group">
+									<label class="form-label">Điện thoại bàn</label>
+									<input type="number" class="form-control" placeholder="Nhập số điện thoại bàn">
+								</div>
+							</div>
 						</div>
+
 						<div class="row">
 							<div class="col-lg-6 col-md-12">
 								<div class="form-group">
@@ -106,18 +166,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- row end -->
 	</div>
-</template>
-
-<script>
-	export default {
-		data() {
-			return {
-
-			}
-		}
-	};
-</script>
-
-<style lang="css" scoped>
-</style>
+</div>
+@endsection

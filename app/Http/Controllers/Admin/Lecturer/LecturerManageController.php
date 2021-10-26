@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin\Lecturer;
 
 use App\Http\Resources\LecturerManageResource;
+use App\Http\Resources\LectureInfoResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lecturer;
+use App\Models\LecturerInfo;
 use Session;
 
 class LecturerManageController extends Controller
@@ -101,6 +103,12 @@ class LecturerManageController extends Controller
         }
     }
 
+    /**
+     * Change status of resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function change(Request $request, $lecturer)
     {
         $lec = Lecturer::find($lecturer);
@@ -111,5 +119,10 @@ class LecturerManageController extends Controller
             $lec->lecturer_status=0;
             $lec->save();
         }
+    }
+
+    public function detail($lecturer)
+    {
+        return LectureInfoResource::collection(LecturerInfo::where('lecturer_code',$lecturer)->paginate(1));
     }
 }

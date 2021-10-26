@@ -20,8 +20,12 @@ class CreateAdminLecturerTable extends Migration
             $table->string('lecturer_avatar',255);
             $table->timestamp('lecturer_birthday');
             $table->integer('lecturer_gender');
+            $table->string('lecturer_ethnic',255);
+            $table->string('lecturer_religion',255);
             $table->string('lecturer_phone',10);
+            $table->string('lecturer_deskphone',10);
             $table->string('lecturer_address',100);
+            $table->string('lecturer_country',255);
             $table->string('lecturer_identify_card',12);
             $table->string('lecturer_birth_place',50);
             $table->string('lecturer_other_email',100);
