@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Lecturer;
+namespace App\Http\Controllers\Admin\Lecturer;
 
 use App\Http\Resources\LecturerManageResource;
+use App\Http\Resources\LectureInfoResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lecturer;
+use App\Models\LecturerInfo;
 use Session;
-session_start();
 
 class LecturerManageController extends Controller
 {
@@ -26,17 +27,7 @@ class LecturerManageController extends Controller
         
         $check_role = Lecturer::where('lecturer_code', Session::get('lecturer_id'))->limit(1)->get();
 
-        return view('lecturer.pages.lecturer_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function list($currentEntries)
-    {
-        return LecturerManageResource::collection(Lecturer::orderby('lecturer_id','DESC')->paginate($currentEntries));
+        return view('admin.pages.lecturer.lecturer_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
     }
 
     /**
@@ -66,9 +57,9 @@ class LecturerManageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($currentEntries)
     {
-        //
+        return LecturerManageResource::collection(Lecturer::orderby('lecturer_id','DESC')->paginate($currentEntries));
     }
 
     /**
@@ -83,25 +74,6 @@ class LecturerManageController extends Controller
         $lec = Lecturer::find($lecturer);
         $lec->lecturer_role = $request->lecturer_role;
         $lec->save();
-    }
-
-    /**
-     * Change the status for the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function change(Request $request, $lecturer)
-    {
-        $lec = Lecturer::find($lecturer);
-        if($lec->lecturer_status==0){
-            $lec->lecturer_status=1;
-            $lec->save();
-        }else{
-            $lec->lecturer_status=0;
-            $lec->save();
-        }
     }
 
     /**
@@ -129,5 +101,28 @@ class LecturerManageController extends Controller
                 Lecturer::where('lecturer_id', $id)->delete();
             }
         }
+    }
+
+    /**
+     * Change status of resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function change(Request $request, $lecturer)
+    {
+        $lec = Lecturer::find($lecturer);
+        if($lec->lecturer_status==0){
+            $lec->lecturer_status=1;
+            $lec->save();
+        }else{
+            $lec->lecturer_status=0;
+            $lec->save();
+        }
+    }
+
+    public function detail($lecturer)
+    {
+        return LectureInfoResource::collection(LecturerInfo::where('lecturer_code',$lecturer)->paginate(1));
     }
 }
