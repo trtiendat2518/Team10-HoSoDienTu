@@ -66,7 +66,7 @@
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item" href="#">
+						<a class="side-menu__item" href="{{ route('student.index') }}">
 							<i class="side-menu__icon fa fa-graduation-cap"></i>
 							<span class="side-menu__label">Sinh viên</span>
 						</a>

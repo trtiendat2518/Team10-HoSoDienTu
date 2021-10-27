@@ -47,7 +47,7 @@
 									<td>
 										<center><input type="checkbox" :value="lecturer.lecturer_id" v-model="selected"></center>
 									</td>
-									<td @click="detail(lecturer)"><a href="#">{{ lecturer.lecturer_fullname }}</a></td>
+									<td @click="detail(lecturer)"><a href="javascript:void(0)">{{ lecturer.lecturer_fullname }}</a></td>
 									<td>{{ lecturer.lecturer_email }}</td>
 									<td>
 										<div v-if="lecturer.lecturer_role==2">
