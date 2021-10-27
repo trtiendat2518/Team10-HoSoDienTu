@@ -31,8 +31,9 @@ Vue.component('pagination', require('./components/pagination/PaginationComponent
 //Information
 Vue.component('update-info-component', require('./components/admin/pages/info/UpdateInfoComponent.vue').default);
 
-//Lecturer Manage
-Vue.component('lecturer-manage-component', require('./components/admin/pages/lecturer/LecturerManageComponent.vue').default);
+//Users
+Vue.component('lecturer-manage-component', require('./components/admin/pages/users/LecturerManageComponent.vue').default);
+Vue.component('student-manage-component', require('./components/admin/pages/users/StudentManageComponent.vue').default);
 
 const app = new Vue({
     el: '#app',

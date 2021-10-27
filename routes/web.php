@@ -29,8 +29,9 @@ Route::prefix('admin')->group(function(){
 
     Route::middleware([CheckLogin::class])->group(function () {
         Route::prefix('quan-ly-tai-khoan')->group(function(){
-            //Giang vien
+            //Quan ly tai khoan
             Route::get('/giang-vien','Admin\ViewController@lecturer_manage')->name('lecturer.index');
+            Route::get('/sinh-vien','Admin\ViewController@student_manage')->name('student.index');
         });
     });
 });
