@@ -1,5 +1,5 @@
-@extends('lecturer.layout');
-@section('lecturer-content')
+@extends('admin.layout');
+@section('admin-content')
 <div class="app-content  my-3 my-md-5 toggle-content" id="app">
 	<div class="side-app" style="padding-top: 0px;">
 		<!-- page-header -->
@@ -9,7 +9,7 @@
 			</ol>
 		</div>
 		<!-- End page-header -->
-		<lecturer-manage-component></lecturer-manage-component>
+		<student-manage-component></student-manage-component>
 	</div>
 </div>
 @endsection

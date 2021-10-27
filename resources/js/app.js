@@ -6,10 +6,34 @@
 
 require('./bootstrap');
 
+import Snotify, { SnotifyPosition } from 'vue-snotify'
+import Form from 'vform'
+
+window.Form = Form
 window.Vue = require('vue').default;
 
+
+const SnotifyOptions = {
+    toast: {
+        position: SnotifyPosition.rightTop
+    }
+};
+Vue.use(Snotify, SnotifyOptions)
+
+Vue.config.productionTip = false
+
+//Dashboard
+Vue.component('dashboard-component', require('./components/admin/pages/DashboardComponent.vue').default);
+
+//Pagination
 Vue.component('pagination', require('./components/pagination/PaginationComponent.vue').default);
-Vue.component('lecturer-manage-component', require('./components/admin/LecturerManageComponent.vue').default);
+
+//Information
+Vue.component('update-info-component', require('./components/admin/pages/info/UpdateInfoComponent.vue').default);
+
+//Users
+Vue.component('lecturer-manage-component', require('./components/admin/pages/users/LecturerManageComponent.vue').default);
+Vue.component('student-manage-component', require('./components/admin/pages/users/StudentManageComponent.vue').default);
 
 const app = new Vue({
     el: '#app',
