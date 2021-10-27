@@ -28,6 +28,7 @@ Route::prefix('admin')->group(function(){
         Route::resource('giang-vien', 'Admin\Users\LecturerManageController');
         
         //Sinh vien
+        Route::get('sinh-vien/search/{query}/{currentEntries}','Admin\Users\StudentManageController@search')->name('sinh-vien.search');
         Route::resource('sinh-vien', 'Admin\Users\StudentManageController');
         Route::resource('thong-tin-giang-vien', 'Admin\Users\LecturerInfoController');
     });

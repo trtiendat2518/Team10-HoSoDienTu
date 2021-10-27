@@ -2827,14 +2827,14 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.fetchStudents();
       }
-    } // query(keyword){
-    // 	if(keyword === ''){
-    // 		this.fetchStudents();
-    // 	}else{
-    // 		this.search();
-    // 	}
-    // },
-
+    },
+    query: function query(keyword) {
+      if (keyword === '') {
+        this.fetchStudents();
+      } else {
+        this.search();
+      }
+    }
   },
   mounted: function mounted() {
     this.fetchStudents();
@@ -2856,18 +2856,21 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
-    } // search(page_url) {
-    // 	let vm = this;
-    // 	page_url = '../../api/admin/quan-ly-tai-khoan/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.students = res.data;
-    // 		this.pagination = res.meta;
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
-    // show(student) {
+    },
+    search: function search(page_url) {
+      var _this2 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/quan-ly-tai-khoan/sinh-vien/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this2.students = res.data;
+        _this2.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    } // show(student) {
     // 	this.editMode = true;
     // 	this.form.reset();
     // 	this.form.clear();
@@ -40881,6 +40884,30 @@ var render = function() {
                     ])
                   ]
                 )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-8" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control mt-2",
+                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
+                  domProps: { value: _vm.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                })
               ])
             ]),
             _vm._v(" "),
@@ -40899,150 +40926,173 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      _vm._l(_vm.students, function(student) {
-                        return _c(
+                      [
+                        _vm._l(_vm.students, function(student) {
+                          return _c(
+                            "tr",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.students.length,
+                                  expression: "students.length"
+                                }
+                              ],
+                              key: student.student_id
+                            },
+                            [
+                              _c(
+                                "td",
+                                [
+                                  _c("center", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.selected,
+                                          expression: "selected"
+                                        }
+                                      ],
+                                      attrs: { type: "checkbox" },
+                                      domProps: {
+                                        value: student.student_id,
+                                        checked: Array.isArray(_vm.selected)
+                                          ? _vm._i(
+                                              _vm.selected,
+                                              student.student_id
+                                            ) > -1
+                                          : _vm.selected
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = _vm.selected,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = student.student_id,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                (_vm.selected = $$a.concat([
+                                                  $$v
+                                                ]))
+                                            } else {
+                                              $$i > -1 &&
+                                                (_vm.selected = $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1)))
+                                            }
+                                          } else {
+                                            _vm.selected = $$c
+                                          }
+                                        }
+                                      }
+                                    })
+                                  ])
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(student.student_code))]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.detail(student)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "a",
+                                    { attrs: { href: "javascript:void(0)" } },
+                                    [_vm._v(_vm._s(student.student_fullname))]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(student.student_email))]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "td-styling" }, [
+                                student.student_status == 0
+                                  ? _c("div", [
+                                      _c("button", {
+                                        staticClass: "fa fa-eye btn-eye",
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.change(
+                                              student.student_id
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  : _c("div", [
+                                      _c("button", {
+                                        staticClass:
+                                          "fa fa-eye-slash btn-eye-slash",
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.change(
+                                              student.student_id
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticStyle: { "text-align": "center" } },
+                                [
+                                  _c("button", {
+                                    staticClass:
+                                      "active btn btn-outline-success btn-lg fa fa-pencil-square-o",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.show(student)
+                                      }
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("button", {
+                                  staticClass:
+                                    "active btn btn-danger btn-lg fa fa-trash",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.destroy(student.student_id)
+                                    }
+                                  }
+                                })
+                              ])
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _c(
                           "tr",
                           {
                             directives: [
                               {
                                 name: "show",
                                 rawName: "v-show",
-                                value: _vm.students.length,
-                                expression: "students.length"
+                                value: !_vm.students.length,
+                                expression: "!students.length"
                               }
-                            ],
-                            key: student.student_id
+                            ]
                           },
-                          [
-                            _c(
-                              "td",
-                              [
-                                _c("center", [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.selected,
-                                        expression: "selected"
-                                      }
-                                    ],
-                                    attrs: { type: "checkbox" },
-                                    domProps: {
-                                      value: student.student_id,
-                                      checked: Array.isArray(_vm.selected)
-                                        ? _vm._i(
-                                            _vm.selected,
-                                            student.student_id
-                                          ) > -1
-                                        : _vm.selected
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        var $$a = _vm.selected,
-                                          $$el = $event.target,
-                                          $$c = $$el.checked ? true : false
-                                        if (Array.isArray($$a)) {
-                                          var $$v = student.student_id,
-                                            $$i = _vm._i($$a, $$v)
-                                          if ($$el.checked) {
-                                            $$i < 0 &&
-                                              (_vm.selected = $$a.concat([$$v]))
-                                          } else {
-                                            $$i > -1 &&
-                                              (_vm.selected = $$a
-                                                .slice(0, $$i)
-                                                .concat($$a.slice($$i + 1)))
-                                          }
-                                        } else {
-                                          _vm.selected = $$c
-                                        }
-                                      }
-                                    }
-                                  })
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(student.student_code))]),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              {
-                                on: {
-                                  click: function($event) {
-                                    return _vm.detail(student)
-                                  }
-                                }
-                              },
-                              [
-                                _c(
-                                  "a",
-                                  { attrs: { href: "javascript:void(0)" } },
-                                  [_vm._v(_vm._s(student.student_fullname))]
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(student.student_email))]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "td-styling" }, [
-                              student.student_status == 0
-                                ? _c("div", [
-                                    _c("button", {
-                                      staticClass: "fa fa-eye btn-eye",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.change(student.student_id)
-                                        }
-                                      }
-                                    })
-                                  ])
-                                : _c("div", [
-                                    _c("button", {
-                                      staticClass:
-                                        "fa fa-eye-slash btn-eye-slash",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.change(student.student_id)
-                                        }
-                                      }
-                                    })
-                                  ])
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              { staticStyle: { "text-align": "center" } },
-                              [
-                                _c("button", {
-                                  staticClass:
-                                    "active btn btn-outline-success btn-lg fa fa-pencil-square-o",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.show(student)
-                                    }
-                                  }
-                                })
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("button", {
-                                staticClass:
-                                  "active btn btn-danger btn-lg fa fa-trash",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.destroy(student.student_id)
-                                  }
-                                }
-                              })
-                            ])
-                          ]
+                          [_vm._m(2)]
                         )
-                      }),
-                      0
+                      ],
+                      2
                     )
                   ]
                 ),
@@ -41052,7 +41102,7 @@ var render = function() {
                       attrs: { pagination: _vm.pagination, offset: 5 },
                       on: {
                         paginate: function($event) {
-                          return _vm.fetchStudents()
+                          _vm.query === "" ? _vm.fetchStudents() : _vm.search()
                         }
                       }
                     })
@@ -41097,6 +41147,18 @@ var staticRenderFns = [
         _c("th", { staticClass: "w-5" }),
         _vm._v(" "),
         _c("th", { staticClass: "w-5" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { attrs: { colspan: "8" } }, [
+      _c("div", { staticClass: "alert alert-danger" }, [
+        _vm._v(
+          "\n\t\t\t\t\t\t\t\t\t\tKhông tìm thấy kết quả phù hợp!\n\t\t\t\t\t\t\t\t\t"
+        )
       ])
     ])
   }
