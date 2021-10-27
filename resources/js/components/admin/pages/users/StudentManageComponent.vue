@@ -179,7 +179,7 @@
 			},
 			fetchStudents(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/quan-ly-tai-khoan/sinh-vien/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/user-sv/sinh-vien/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -190,7 +190,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/quan-ly-tai-khoan/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/user-sv/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -207,7 +207,7 @@
 				$('#StudentModal').modal('show');
 			},
 			update() {
-				this.form.put('../../api/admin/quan-ly-tai-khoan/sinh-vien/'+this.form.student_id)
+				this.form.put('../../api/admin/user-sv/sinh-vien/'+this.form.student_id)
 				.then(res => {
 					this.fetchStudents();
 					$('#StudentModal').modal('hide');
@@ -219,14 +219,14 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// change(student_id) {
-			// 	axios.patch(`../../api/admin/quan-ly-tai-khoan/sinh-vien/change/${student_id}`)
-			// 	.then(res => {
-			// 		this.fetchStudents();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			change(student_id) {
+				axios.patch(`../../api/admin/user-sv/sing-vien/change/${student_id}`)
+				.then(res => {
+					this.fetchStudents();
+					this.$snotify.warning('Đã thay đổi trạng thái');
+				})
+				.catch(err => console.log(err));
+			},
 			// destroy(student_id) {
 			// 	this.$snotify.clear();
 			// 	this.$snotify.confirm('Xác nhận xóa', {
@@ -238,7 +238,7 @@
 			// 			text: 'Xóa', 
 			// 			action: toast =>{
 			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/quan-ly-tai-khoan/sinh-vien/${student_id}`)
+			// 				axios.delete(`../../api/admin/user-sv/sinh-vien/${student_id}`)
 			// 				.then(res => {
 			// 					this.$snotify.success('Đã xóa!');
 			// 					this.fetchStudents();
@@ -266,7 +266,7 @@
 			// 			text: 'Xóa', 
 			// 			action: toast =>{
 			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/quan-ly-tai-khoan/sinh-vien/destroyall', { student: this.selected })
+			// 				axios.post('../../api/admin/user-sv/sinh-vien/destroyall', { student: this.selected })
 			// 				.then(res => {
 			// 					this.$snotify.success('Đã xóa!');
 			// 					this.fetchStudents();
@@ -293,7 +293,7 @@
 			// },
 			// detail(student, page_url) {
 			// 	let vm = this;
-			// 	page_url = `../../api/admin/quan-ly-tai-khoan/sinh-vien/detail/${student.student_id}`;
+			// 	page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;
 			// 	fetch(page_url)
 			// 	.then(res => res.json())
 			// 	.then(res => {

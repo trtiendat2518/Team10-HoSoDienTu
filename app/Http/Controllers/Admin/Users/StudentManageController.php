@@ -97,4 +97,22 @@ class StudentManageController extends Controller
     {
         //
     }
+
+    /**
+     * Change status of resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function change(Request $request, $student)
+    {
+        $stu = Student::find($student);
+        if($stu->student_status==0){
+            $stu->student_status=1;
+            $stu->save();
+        }else{
+            $stu->student_status=0;
+            $stu->save();
+        }
+    }
 }
