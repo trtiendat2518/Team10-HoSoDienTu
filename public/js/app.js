@@ -2488,8 +2488,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2795,6 +2793,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2813,6 +2855,7 @@ __webpack_require__.r(__webpack_exports__);
         student_code: '',
         student_fullname: '',
         student_email: '',
+        student_role: '',
         student_status: ''
       }),
       selected: [],
@@ -2870,27 +2913,31 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
-    } // show(student) {
-    // 	this.editMode = true;
-    // 	this.form.reset();
-    // 	this.form.clear();
-    // 	this.form.fill(student);
-    // 	$('#StudentModal').modal('show');
-    // },
-    // update() {
-    // 	this.form.put('../../api/admin/quan-ly-tai-khoan/sinh-vien/'+this.form.student_id)
-    // 	.then(res => {
-    // 		this.fetchStudents();
-    // 		$('#StudentModal').modal('hide');
-    // 		if(this.form.successful){
-    // 			this.$snotify.success('Vai trò của tài khoản đã thay đổi');
-    // 		}else{
-    // 			this.$snotify.error('Không thể chỉnh sửa');
-    // 		}
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
-    // change(student_id) {
+    },
+    show: function show(student) {
+      this.editMode = true;
+      this.form.reset();
+      this.form.clear();
+      this.form.fill(student);
+      $('#StudentModal').modal('show');
+    },
+    update: function update() {
+      var _this3 = this;
+
+      this.form.put('../../api/admin/quan-ly-tai-khoan/sinh-vien/' + this.form.student_id).then(function (res) {
+        _this3.fetchStudents();
+
+        $('#StudentModal').modal('hide');
+
+        if (_this3.form.successful) {
+          _this3.$snotify.success('Vai trò của tài khoản đã thay đổi');
+        } else {
+          _this3.$snotify.error('Không thể chỉnh sửa');
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    } // change(student_id) {
     // 	axios.patch(`../../api/admin/quan-ly-tai-khoan/sinh-vien/change/${student_id}`)
     // 	.then(res => {
     // 		this.fetchStudents();
@@ -40415,18 +40462,7 @@ var render = function() {
                             _vm._v("Chủ nhiệm sinh viên")
                           ])
                         ]
-                      ),
-                      _vm._v(" "),
-                      _vm.form.errors.has("category_status")
-                        ? _c("div", {
-                            staticClass: "text-danger mt-2",
-                            domProps: {
-                              innerHTML: _vm._s(
-                                _vm.form.errors.get("category_status")
-                              )
-                            }
-                          })
-                        : _vm._e()
+                      )
                     ]),
                     _vm._v(" "),
                     _vm._m(3)
@@ -41017,6 +41053,20 @@ var render = function() {
                               _vm._v(" "),
                               _c("td", [_vm._v(_vm._s(student.student_email))]),
                               _vm._v(" "),
+                              _c("td", [
+                                student.student_role == 1
+                                  ? _c("div", [
+                                      _vm._v(
+                                        "\n\t\t\t\t\t\t\t\t\t\tĐã ra trường\n\t\t\t\t\t\t\t\t\t"
+                                      )
+                                    ])
+                                  : _c("div", [
+                                      _vm._v(
+                                        "\n\t\t\t\t\t\t\t\t\t\tCòn đang học\n\t\t\t\t\t\t\t\t\t"
+                                      )
+                                    ])
+                              ]),
+                              _vm._v(" "),
                               _c("td", { staticClass: "td-styling" }, [
                                 student.student_status == 0
                                   ? _c("div", [
@@ -41112,7 +41162,162 @@ var render = function() {
             )
           ])
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "StudentModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "StudentModalTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.update()
+                    },
+                    keydown: function($event) {
+                      return _vm.form.onKeydown($event)
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-content" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c("label", [_vm._v("Họ và tên")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.student_fullname,
+                            expression: "form.student_fullname"
+                          }
+                        ],
+                        staticClass: "form-control not-allowed mb-3",
+                        attrs: {
+                          type: "text",
+                          name: "student_fullname",
+                          disabled: ""
+                        },
+                        domProps: { value: _vm.form.student_fullname },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "student_fullname",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Địa chỉ Email")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.student_email,
+                            expression: "form.student_email"
+                          }
+                        ],
+                        staticClass: "form-control not-allowed",
+                        attrs: {
+                          type: "text",
+                          name: "student_email",
+                          disabled: ""
+                        },
+                        domProps: { value: _vm.form.student_email },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "student_email",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { staticClass: "mt-3" }, [_vm._v("Vai trò")]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.student_role,
+                              expression: "form.student_role"
+                            }
+                          ],
+                          staticClass: "form-control select-option",
+                          attrs: { name: "student_role" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "student_role",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "0" } }, [
+                            _vm._v("Còn đang học")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "1" } }, [
+                            _vm._v("Đã ra trường")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(4)
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
+      )
     ],
     1
   )
@@ -41142,6 +41347,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "text-white w-30" }, [_vm._v("Địa chỉ Email")]),
         _vm._v(" "),
+        _c("th", { staticClass: "text-white w-30" }, [_vm._v("Học tập")]),
+        _vm._v(" "),
         _c("th", { staticClass: "text-white w-30" }, [_vm._v("Trạng thái")]),
         _vm._v(" "),
         _c("th", { staticClass: "w-5" }),
@@ -41160,6 +41367,52 @@ var staticRenderFns = [
           "\n\t\t\t\t\t\t\t\t\t\tKhông tìm thấy kết quả phù hợp!\n\t\t\t\t\t\t\t\t\t"
         )
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "StudentModalTitle" } },
+        [_vm._v("Cập nhật tài khoản")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Đóng")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("Cập nhật")]
+      )
     ])
   }
 ]

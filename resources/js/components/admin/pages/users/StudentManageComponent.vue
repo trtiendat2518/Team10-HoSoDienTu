@@ -37,6 +37,7 @@
 									<th class="text-white w-30">Mã số sinh viên</th>
 									<th class="text-white w-30">Họ tên</th>
 									<th class="text-white w-30">Địa chỉ Email</th>
+									<th class="text-white w-30">Học tập</th>
 									<th class="text-white w-30">Trạng thái</th>
 									<th class="w-5"></th>
 									<th class="w-5"></th>
@@ -50,6 +51,14 @@
 									<td>{{ student.student_code }}</td>
 									<td @click="detail(student)"><a href="javascript:void(0)">{{ student.student_fullname }}</a></td>
 									<td>{{ student.student_email }}</td>
+									<td>
+										<div v-if="student.student_role==1">
+											Đã ra trường
+										</div>
+										<div v-else>
+											Còn đang học
+										</div>
+									</td>
 									<td class="td-styling">
 										<div v-if="student.student_status==0">
 											<button class="fa fa-eye btn-eye" @click="change(student.student_id)"></button>
@@ -80,6 +89,41 @@
 				</div>
 			</div><!-- col end -->
 		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="StudentModal" tabindex="-1" role="dialog" aria-labelledby="StudentModalTitle" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="StudentModalTitle">Cập nhật tài khoản</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<label>Họ và tên</label>
+							<input v-model="form.student_fullname" type="text" name="student_fullname"class="form-control not-allowed mb-3" disabled>
+
+							<label>Địa chỉ Email</label>
+							<input v-model="form.student_email" type="text" name="student_email" class="form-control not-allowed" disabled>
+
+							
+							<label class="mt-3">Vai trò</label>
+							<select v-model="form.student_role" name="student_role" class="form-control select-option">
+								<option value="0">Còn đang học</option>
+								<option value="1">Đã ra trường</option>
+							</select>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+							<button type="submit" class="btn btn-primary">Cập nhật</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Modal end-->
 	</div>
 </template>
 
@@ -102,6 +146,7 @@
 					student_code:'',
 					student_fullname:'',
 					student_email:'',
+					student_role:'',
 					student_status: ''
 				}),
 				selected: [],
@@ -154,26 +199,26 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// show(student) {
-			// 	this.editMode = true;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	this.form.fill(student);
-			// 	$('#StudentModal').modal('show');
-			// },
-			// update() {
-			// 	this.form.put('../../api/admin/quan-ly-tai-khoan/sinh-vien/'+this.form.student_id)
-			// 	.then(res => {
-			// 		this.fetchStudents();
-			// 		$('#StudentModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Vai trò của tài khoản đã thay đổi');
-			// 		}else{
-			// 			this.$snotify.error('Không thể chỉnh sửa');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			show(student) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				this.form.fill(student);
+				$('#StudentModal').modal('show');
+			},
+			update() {
+				this.form.put('../../api/admin/quan-ly-tai-khoan/sinh-vien/'+this.form.student_id)
+				.then(res => {
+					this.fetchStudents();
+					$('#StudentModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Vai trò của tài khoản đã thay đổi');
+					}else{
+						this.$snotify.error('Không thể chỉnh sửa');
+					}
+				})
+				.catch(err => console.log(err));
+			},
 			// change(student_id) {
 			// 	axios.patch(`../../api/admin/quan-ly-tai-khoan/sinh-vien/change/${student_id}`)
 			// 	.then(res => {

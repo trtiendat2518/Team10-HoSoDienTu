@@ -116,8 +116,6 @@
 								<option value="1">Ban chủ nhiệm khoa</option>
 								<option value="2">Chủ nhiệm sinh viên</option>
 							</select>
-							<div class="text-danger mt-2" v-if="form.errors.has('category_status')" v-html="form.errors.get('category_status')"></div>
-							
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
