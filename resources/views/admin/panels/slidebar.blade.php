@@ -3,7 +3,7 @@
 <aside class="app-sidebar toggle-sidebar">
 	<div class="app-sidebar__user pb-0">
 		<div class="user-body">
-			<span class="avatar avatar-xxl brround text-center cover-image" data-image-src="{{asset('public/lecturer/images/users/female/33.png')}}""></span>
+			<span class="avatar avatar-xxl brround text-center cover-image" data-image-src="{{asset('public/lecturer/images/users/female/33.png')}}"></span>
 		</div>
 		<div class="user-info mt-3">
 			<a href="#" class="ml-2">
@@ -21,15 +21,15 @@
 				@if (Session::get('admin_id'))
 				<span class="app-sidebar__user-name text-sm"> Quản trị viên</span>
 				@elseif (Session::get('lecturer_id'))
-					@foreach ($check_role as $check)
-						@if ($check->lecturer_role==1)
-							<span class="app-sidebar__user-name text-sm"> BCN Khoa</span>
-						@elseif ($check->lecturer_role==2)
-							<span class="app-sidebar__user-name text-sm"> Chủ nhiệm sinh viên</span>
-						@else
-							<span class="app-sidebar__user-name text-sm"> Giảng viên mới</span>
-						@endif
-					@endforeach
+				@foreach ($check_role as $check)
+				@if ($check->lecturer_role==1)
+				<span class="app-sidebar__user-name text-sm"> BCN Khoa</span>
+				@elseif ($check->lecturer_role==2)
+				<span class="app-sidebar__user-name text-sm"> Chủ nhiệm sinh viên</span>
+				@else
+				<span class="app-sidebar__user-name text-sm"> Giảng viên mới</span>
+				@endif
+				@endforeach
 				@endif
 			</a>
 		</div>
@@ -60,13 +60,13 @@
 
 					<li class="mt-5 mb-2"><span class="side-menu__label"><strong>&mdash; Quản lý tài khoản &mdash;</strong></span></li>
 					<li class="slide">
-						<a class="side-menu__item" href="{{ route('giang-vien.index') }}">
+						<a class="side-menu__item" href="{{ route('lecturer.index') }}">
 							<i class="side-menu__icon fa fa-users"></i>
 							<span class="side-menu__label">Giảng viên</span>
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item" href="#">
+						<a class="side-menu__item" href="{{ route('student.index') }}">
 							<i class="side-menu__icon fa fa-graduation-cap"></i>
 							<span class="side-menu__label">Sinh viên</span>
 						</a>

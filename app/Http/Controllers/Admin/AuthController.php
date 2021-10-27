@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Lecturer;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
@@ -16,7 +16,7 @@ class AuthController extends Controller
 {
     public function get_login(Request $request)
     {
-        return view('lecturer.auth.login');
+        return view('admin.auth.login');
     }
 
     public function post_login(Request $request)
@@ -71,7 +71,6 @@ class AuthController extends Controller
         $users = Socialite::driver('graph')->stateless()->user();
 
         $authUser = $this->findOrCreateUser($users);
-        
 
         if($authUser->lecturer_status==0){
             if($authUser){

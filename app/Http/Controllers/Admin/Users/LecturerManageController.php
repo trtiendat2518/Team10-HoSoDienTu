@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Lecturer;
+namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Resources\LecturerManageResource;
+use App\Http\Resources\LectureInfoResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lecturer;
+use App\Models\LecturerInfo;
 use Session;
-session_start();
 
 class LecturerManageController extends Controller
 {
@@ -16,27 +17,9 @@ class LecturerManageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        //---SEO
-        $meta_title = "Quản lý tài khoản";
-        $meta_desc = "Quản lý tài khoản giảng viên";
-        $url_canonical = $request->url();
-        //------
-        
-        $check_role = Lecturer::where('lecturer_code', Session::get('lecturer_id'))->limit(1)->get();
-
-        return view('lecturer.pages.lecturer_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function list($currentEntries)
-    {
-        return LecturerManageResource::collection(Lecturer::orderby('lecturer_id','DESC')->paginate($currentEntries));
+        //
     }
 
     /**
@@ -66,9 +49,9 @@ class LecturerManageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($currentEntries)
     {
-        //
+        return LecturerManageResource::collection(Lecturer::orderby('lecturer_id','DESC')->paginate($currentEntries));
     }
 
     /**
@@ -86,9 +69,35 @@ class LecturerManageController extends Controller
     }
 
     /**
-     * Change the status for the resource.
+     * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($lecturer)
+    {
+        $lec = Lecturer::find($lecturer);
+        $lec->delete();
+    }
+
+    /**
+     * Remove all the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyall(Request $request, $lecturer = null)
+    {
+        if ($request->lecturer) {
+            foreach ($request->lecturer as $id) {
+                Lecturer::where('lecturer_id', $id)->delete();
+            }
+        }
+    }
+
+    /**
+     * Change status of resource from storage.
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -104,14 +113,8 @@ class LecturerManageController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function detail($lecturer)
     {
-        //
+        return LectureInfoResource::collection(LecturerInfo::where('lecturer_code',$lecturer)->paginate(1));
     }
 }

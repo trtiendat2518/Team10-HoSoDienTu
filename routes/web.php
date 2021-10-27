@@ -18,22 +18,20 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->group(function(){
-    Route::resource('dashboard', 'Lecturer\DashboardController')->only('index')->middleware('checkloged');
+    Route::resource('dashboard', 'Admin\DashboardController')->only('index')->middleware('checkloged');
 
-    Route::get('/login', 'Lecturer\AuthController@get_login')->middleware('checkss');
-    Route::post('/loged-in', 'Lecturer\AuthController@post_login');
-    Route::get('/logout', 'Lecturer\AuthController@get_logout');
+    Route::get('/login', 'Admin\AuthController@get_login')->middleware('checkss');
+    Route::post('/loged-in', 'Admin\AuthController@post_login');
+    Route::get('/logout', 'Admin\AuthController@get_logout');
 
-    Route::get('/microsoft','Lecturer\AuthController@login_ms')->name('connectMs');
-    Route::get('/microsoft-callback','Lecturer\AuthController@callback_ms');
+    Route::get('/microsoft','Admin\AuthController@login_ms')->name('connectMs');
+    Route::get('/microsoft-callback','Admin\AuthController@callback_ms');
 
-    Route::prefix('quan-ly-tai-khoan')->group(function(){
-        //Giang vien
-        Route::middleware([CheckLogin::class])->group(function () {
-            Route::get('giang-vien/list/{currentEntries}','Lecturer\LecturerManageController@list')->name('giang-vien.list');
-            Route::get('giang-vien/search/{query}/{currentEntries}','Lecturer\LecturerManageController@search')->name('giang-vien.search');
-            Route::patch('giang-vien/change/{lecturer}', 'Lecturer\LecturerManageController@change')->name('giang-vien.change');
-            Route::resource('giang-vien', 'Lecturer\LecturerManageController');
+    Route::middleware([CheckLogin::class])->group(function () {
+        Route::prefix('quan-ly-tai-khoan')->group(function(){
+            //Quan ly tai khoan
+            Route::get('/giang-vien','Admin\ViewController@lecturer_manage')->name('lecturer.index');
+            Route::get('/sinh-vien','Admin\ViewController@student_manage')->name('student.index');
         });
     });
 });
