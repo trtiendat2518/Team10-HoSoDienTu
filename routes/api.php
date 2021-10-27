@@ -17,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('admin')->group(function(){
+    Route::prefix('quan-ly-tai-khoan')->group(function(){
+        //Giang Vien
+        Route::get('giang-vien/detail/{lecturer}','Admin\Lecturer\LecturerManageController@detail')->name('giang-vien.detail');   
+        Route::get('giang-vien/search/{query}/{currentEntries}','Admin\Lecturer\LecturerManageController@search')->name('giang-vien.search');
+        Route::patch('giang-vien/change/{lecturer}', 'Admin\Lecturer\LecturerManageController@change')->name('giang-vien.change');
+        Route::post('giang-vien/destroyall/', 'Admin\Lecturer\LecturerManageController@destroyall')->name('giang-vien.destroyall/{lecturer}');
+        Route::resource('giang-vien', 'Admin\Lecturer\LecturerManageController');
+        
+        Route::resource('thong-tin-giang-vien', 'Admin\Lecturer\LecturerInfoController');
+    });
+});

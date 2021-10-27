@@ -17,17 +17,9 @@ class LecturerManageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        //---SEO
-        $meta_title = "Quản lý tài khoản";
-        $meta_desc = "Quản lý tài khoản giảng viên";
-        $url_canonical = $request->url();
-        //------
-        
-        $check_role = Lecturer::where('lecturer_code', Session::get('lecturer_id'))->limit(1)->get();
-
-        return view('admin.pages.lecturer.lecturer_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
+        //
     }
 
     /**

@@ -276,7 +276,7 @@
 				},
 				fetchLecturers(page_url) {
 					let vm = this;
-					page_url = 'giang-vien/'+this.currentEntries+'?page='+this.pagination.current_page;
+					page_url = '../../api/admin/quan-ly-tai-khoan/giang-vien/'+this.currentEntries+'?page='+this.pagination.current_page;
 					fetch(page_url)
 					.then(res => res.json())
 					.then(res => {
@@ -287,7 +287,7 @@
 				},
 				search(page_url) {
 					let vm = this;
-					page_url = 'giang-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+					page_url = '../../api/admin/quan-ly-tai-khoan/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 					fetch(page_url)
 					.then(res => res.json())
 					.then(res => {
@@ -304,7 +304,7 @@
 					$('#LecturerModal').modal('show');
 				},
 				update() {
-					this.form.put('giang-vien/'+this.form.lecturer_id)
+					this.form.put('../../api/admin/quan-ly-tai-khoan/giang-vien/'+this.form.lecturer_id)
 					.then(res => {
 						this.fetchLecturers();
 						$('#LecturerModal').modal('hide');
@@ -317,7 +317,7 @@
 					.catch(err => console.log(err));
 				},
 				change(lecturer_id) {
-					axios.patch(`giang-vien/change/${lecturer_id}`)
+					axios.patch(`../../api/admin/quan-ly-tai-khoan/giang-vien/change/${lecturer_id}`)
 					.then(res => {
 						this.fetchLecturers();
 						this.$snotify.warning('Đã thay đổi trạng thái');
@@ -335,7 +335,7 @@
 							text: 'Xóa', 
 							action: toast =>{
 								this.$snotify.remove(toast.id);
-								axios.delete(`giang-vien/${lecturer_id}`)
+								axios.delete(`../../api/admin/quan-ly-tai-khoan/giang-vien/${lecturer_id}`)
 								.then(res => {
 									this.$snotify.success('Đã xóa!');
 									this.fetchLecturers();
@@ -363,7 +363,7 @@
 							text: 'Xóa', 
 							action: toast =>{
 								this.$snotify.remove(toast.id);
-								axios.post('giang-vien/destroyall', { lecturer: this.selected })
+								axios.post('../../api/admin/quan-ly-tai-khoan/giang-vien/destroyall', { lecturer: this.selected })
 								.then(res => {
 									this.$snotify.success('Đã xóa!');
 									this.fetchLecturers();
@@ -390,7 +390,7 @@
 				},
 				detail(lecturer, page_url) {
 					let vm = this;
-					page_url = `giang-vien/detail/${lecturer.lecturer_id}`;
+					page_url = `../../api/admin/quan-ly-tai-khoan/giang-vien/detail/${lecturer.lecturer_id}`;
 					fetch(page_url)
 					.then(res => res.json())
 					.then(res => {
