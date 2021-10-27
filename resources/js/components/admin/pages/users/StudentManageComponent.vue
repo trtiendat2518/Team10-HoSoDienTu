@@ -19,10 +19,10 @@
 								</div>
 							</div>
 						</div>
-						<!-- <div class="col-md-8">
+						<div class="col-md-8">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
-						<div class="col-md-2">
+						<!-- <div class="col-md-2">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"> Xóa nhiều</button>
 						</div> -->
 					</div>
@@ -65,16 +65,16 @@
 										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(student.student_id)"></button>
 									</td>
 								</tr>
-								<!-- <tr v-show="!students.length">
+								<tr v-show="!students.length">
 									<td colspan="8">
 										<div class="alert alert-danger">
 											Không tìm thấy kết quả phù hợp!
 										</div>
 									</td>
-								</tr> -->
+								</tr>
 							</tbody>
 						</table>
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchStudents()"></pagination>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchStudents() : search() "></pagination>
 					</div>
 					<!-- table-responsive -->
 				</div>
@@ -117,13 +117,13 @@
 					this.fetchStudents();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchStudents();
-			// 	}else{
-			// 		this.search();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchStudents();
+				}else{
+					this.search();
+				}
+			},
 		},
 		mounted() {
 			this.fetchStudents();
@@ -143,17 +143,17 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/quan-ly-tai-khoan/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.students = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			search(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/quan-ly-tai-khoan/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.students = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			// show(student) {
 			// 	this.editMode = true;
 			// 	this.form.reset();
