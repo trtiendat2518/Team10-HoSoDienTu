@@ -22,9 +22,9 @@
 						<div class="col-md-8">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
-						<!-- <div class="col-md-2">
+						<div class="col-md-2">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"> Xóa nhiều</button>
-						</div> -->
+						</div>
 					</div>
 					
 					<div class="table-responsive">
@@ -32,7 +32,7 @@
 							<thead  class="blue-background text-white">
 								<tr>
 									<th class="w-5">
-										<!-- <input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll"> -->
+										<input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll">
 									</th>
 									<th class="text-white w-30">Mã số sinh viên</th>
 									<th class="text-white w-30">Họ tên</th>
@@ -227,70 +227,70 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// destroy(student_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/user-sv/sinh-vien/${student_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchStudents();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/user-sv/sinh-vien/destroyall', { student: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchStudents();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.students){
-			// 			this.selected.push(this.students[i].student_id);
-			// 		}
-			// 	}
-			// },
+			destroy(student_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/user-sv/sinh-vien/${student_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchStudents();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/user-sv/sinh-vien/destroyall', { student: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchStudents();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			select() {
+				this.selected = [];
+				if(!this.selectAll){
+					for(let i in this.students){
+						this.selected.push(this.students[i].student_id);
+					}
+				}
+			},
 			// detail(student, page_url) {
 			// 	let vm = this;
 			// 	page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;

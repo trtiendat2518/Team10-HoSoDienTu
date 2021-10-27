@@ -93,9 +93,25 @@ class StudentManageController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy($student)
     {
-        //
+        $stu = Student::find($student);
+        $stu->delete();
+    }
+
+    /**
+     * Remove all the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyall(Request $request, $student = null)
+    {
+        if ($request->student) {
+            foreach ($request->student as $id) {
+                Student::where('student_id', $id)->delete();
+            }
+        }
     }
 
     /**

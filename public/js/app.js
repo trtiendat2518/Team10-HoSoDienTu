@@ -2948,71 +2948,82 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
-    } // destroy(student_id) {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.delete(`../../api/admin/user-sv/sinh-vien/${student_id}`)
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchStudents();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
-    // destroyall() {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.post('../../api/admin/user-sv/sinh-vien/destroyall', { student: this.selected })
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchStudents();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
-    // select() {
-    // 	this.selected = [];
-    // 	if(!this.selectAll){
-    // 		for(let i in this.students){
-    // 			this.selected.push(this.students[i].student_id);
-    // 		}
-    // 	}
-    // },
-    // detail(student, page_url) {
+    },
+    destroy: function destroy(student_id) {
+      var _this5 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this5.$snotify.remove(toast.id);
+
+            axios["delete"]("../../api/admin/user-sv/sinh-vien/".concat(student_id)).then(function (res) {
+              _this5.$snotify.success('Đã xóa!');
+
+              _this5.fetchStudents();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this5.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    destroyall: function destroyall() {
+      var _this6 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+
+            axios.post('../../api/admin/user-sv/sinh-vien/destroyall', {
+              student: _this6.selected
+            }).then(function (res) {
+              _this6.$snotify.success('Đã xóa!');
+
+              _this6.fetchStudents();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    select: function select() {
+      this.selected = [];
+
+      if (!this.selectAll) {
+        for (var i in this.students) {
+          this.selected.push(this.students[i].student_id);
+        }
+      }
+    } // detail(student, page_url) {
     // 	let vm = this;
     // 	page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;
     // 	fetch(page_url)
@@ -40947,6 +40958,23 @@ var render = function() {
                     }
                   }
                 })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                    attrs: { disabled: !_vm.selected.length },
+                    on: {
+                      click: function($event) {
+                        return _vm.destroyall()
+                      }
+                    }
+                  },
+                  [_vm._v(" Xóa nhiều")]
+                )
               ])
             ]),
             _vm._v(" "),
@@ -40961,7 +40989,78 @@ var render = function() {
                       "table card-table table-vcenter text-nowrap table-nowrap"
                   },
                   [
-                    _vm._m(1),
+                    _c("thead", { staticClass: "blue-background text-white" }, [
+                      _c("tr", [
+                        _c("th", { staticClass: "w-5" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.selectAll,
+                                expression: "selectAll"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "checkbox", disabled: _vm.empty() },
+                            domProps: {
+                              checked: Array.isArray(_vm.selectAll)
+                                ? _vm._i(_vm.selectAll, null) > -1
+                                : _vm.selectAll
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.select()
+                              },
+                              change: function($event) {
+                                var $$a = _vm.selectAll,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.selectAll = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.selectAll = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.selectAll = $$c
+                                }
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-white w-30" }, [
+                          _vm._v("Mã số sinh viên")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-white w-30" }, [
+                          _vm._v("Họ tên")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-white w-30" }, [
+                          _vm._v("Địa chỉ Email")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-white w-30" }, [
+                          _vm._v("Học tập")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-white w-30" }, [
+                          _vm._v("Trạng thái")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "w-5" }),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "w-5" })
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c(
                       "tbody",
@@ -41142,7 +41241,7 @@ var render = function() {
                               }
                             ]
                           },
-                          [_vm._m(2)]
+                          [_vm._m(1)]
                         )
                       ],
                       2
@@ -41199,7 +41298,7 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-content" }, [
-                    _vm._m(3),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("div", { staticClass: "modal-body" }, [
                       _c("label", [_vm._v("Họ và tên")]),
@@ -41313,7 +41412,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(4)
+                    _vm._m(3)
                   ])
                 ]
               )
@@ -41332,32 +41431,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h3", { staticClass: "card-title" }, [_vm._v("Danh sách sinh viên")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: "blue-background text-white" }, [
-      _c("tr", [
-        _c("th", { staticClass: "w-5" }),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-white w-30" }, [
-          _vm._v("Mã số sinh viên")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-white w-30" }, [_vm._v("Họ tên")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-white w-30" }, [_vm._v("Địa chỉ Email")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-white w-30" }, [_vm._v("Học tập")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-white w-30" }, [_vm._v("Trạng thái")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "w-5" }),
-        _vm._v(" "),
-        _c("th", { staticClass: "w-5" })
-      ])
     ])
   },
   function() {
