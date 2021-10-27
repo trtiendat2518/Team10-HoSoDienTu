@@ -60,13 +60,13 @@
 
 					<li class="mt-5 mb-2"><span class="side-menu__label"><strong>&mdash; Quản lý tài khoản &mdash;</strong></span></li>
 					<li class="slide">
-						<a class="side-menu__item" href="{{ route('giang-vien.index') }}">
+						<a class="side-menu__item" href="{{ route('lecturer.index') }}">
 							<i class="side-menu__icon fa fa-users"></i>
 							<span class="side-menu__label">Giảng viên</span>
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item" href="#">
+						<a class="side-menu__item" href="{{ route('student.index') }}">
 							<i class="side-menu__icon fa fa-graduation-cap"></i>
 							<span class="side-menu__label">Sinh viên</span>
 						</a>

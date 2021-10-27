@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Lecturer;
+namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Resources\LecturerManageResource;
 use App\Http\Resources\LectureInfoResource;
