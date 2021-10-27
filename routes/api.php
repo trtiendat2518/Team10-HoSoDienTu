@@ -32,6 +32,7 @@ Route::prefix('admin')->group(function(){
         //Sinh vien
         Route::get('sinh-vien/search/{query}/{currentEntries}','Admin\Users\StudentManageController@search')->name('sinh-vien.search');
         Route::patch('sing-vien/change/{student}', 'Admin\Users\StudentManageController@change')->name('sinh-vien.change');
+        Route::post('sinh-vien/destroyall/', 'Admin\Users\StudentManageController@destroyall')->name('sinh-vien.destroyall/{student}');
         Route::resource('sinh-vien', 'Admin\Users\StudentManageController');
     });
 });
