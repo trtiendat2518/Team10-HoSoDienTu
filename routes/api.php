@@ -30,6 +30,7 @@ Route::prefix('admin')->group(function(){
 
     Route::prefix('user-sv')->group(function(){
         //Sinh vien
+        Route::get('sinh-vien/detail/{student}','Admin\Users\StudentManageController@detail')->name('sinh-vien.detail');
         Route::get('sinh-vien/search/{query}/{currentEntries}','Admin\Users\StudentManageController@search')->name('sinh-vien.search');
         Route::patch('sing-vien/change/{student}', 'Admin\Users\StudentManageController@change')->name('sinh-vien.change');
         Route::post('sinh-vien/destroyall/', 'Admin\Users\StudentManageController@destroyall')->name('sinh-vien.destroyall/{student}');
