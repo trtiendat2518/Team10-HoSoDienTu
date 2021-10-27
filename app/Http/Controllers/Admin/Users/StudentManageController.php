@@ -80,9 +80,11 @@ class StudentManageController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, $student)
     {
-        //
+        $stu = Student::find($student);
+        $stu->student_role = $request->student_role;
+        $stu->save();
     }
 
     /**

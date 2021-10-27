@@ -18,6 +18,7 @@ class CreateStudentTable extends Migration
             $table->string('student_code',50);
             $table->string('student_fullname',50);
             $table->string('student_email',100);
+            $table->integer('student_role')->default(0);
             $table->integer('student_status')->default(0);
         });
     }
