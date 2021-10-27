@@ -124,6 +124,105 @@
 			</div>
 		</div>
 		<!-- Modal end-->
+
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="DetailModalTitle">Chi tiết tài khoản</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" v-for="info in details" :key="info.student_info_id">
+						<center>
+							<img src="('../public/lecturer/images/vlu.ico')" class="avatar-xxl rounded-circle" alt="profile">
+							{{ info.student_avatar }}
+						</center>
+						<table class="table row table-borderless w-100 m-0 border">
+							<tbody class="col-lg-6 p-0">
+								<tr>
+									<td class="h3-strong"><h3><strong>Thông tin chi tiết</strong></h3></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Họ và tên: <strong> {{ form.student_fullname }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Dân tộc: <strong> {{ info.student_ethnic }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Tôn giáo: <strong> {{ info.student_religion }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td >Giới tính: 
+										<strong v-if="info.student_gender==0"> Nam</strong>
+										<strong v-else> Nữ</strong>
+									</td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Ngày sinh: <strong> {{ info.student_birthday }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Nơi sinh: <strong> {{ info.student_birth_place }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Quốc gia: <strong> {{ info.student_country }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>CMND/CCCD: <strong> {{ info.student_identify_card }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Địa chỉ: <strong> {{ info.student_address }}</strong></td>
+								</tr>
+							</tbody>
+							<tbody class="col-lg-6 p-0">
+								<tr>
+									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Khóa học: <strong> {{ info.student_course }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Khoa: <strong> {{ info.student_faculty }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Chuyên ngành: <strong> {{ info.student_specialized }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Chức vụ: 
+										<strong v-if="form.student_role==1"> Đã ra trường</strong>
+										<strong v-else> Còn đang học</strong>
+									</td>
+								</tr>
+								
+								<br>
+								<tr>
+									<td class="h3-strong"><h3>
+										<strong>Thông tin liên lạc</strong></h3>
+									</td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Số điện thoại: <strong> {{ info.student_phone }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Điện thoại bàn: <strong> {{ info.student_deskphone }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Email trường: <strong> {{ form.student_email }}</strong></td>
+								</tr>
+								<tr class="td-borderbottom">
+									<td>Email cá nhân: <strong> {{ info.student_other_email }}</strong></td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -291,18 +390,18 @@
 					}
 				}
 			},
-			// detail(student, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(student);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// }
+			detail(student, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					this.form.fill(student);
+					$('#DetailModal').modal('show');
+				})
+				.catch(err => console.log(err));
+			}
 		}
 	};
 </script>

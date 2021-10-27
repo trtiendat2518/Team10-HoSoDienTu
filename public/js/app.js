@@ -2837,6 +2837,105 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3023,19 +3122,24 @@ __webpack_require__.r(__webpack_exports__);
           this.selected.push(this.students[i].student_id);
         }
       }
-    } // detail(student, page_url) {
-    // 	let vm = this;
-    // 	page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.details = res.data;
-    // 		this.form.fill(student);
-    // 		$('#DetailModal').modal('show');
-    // 	})
-    // 	.catch(err => console.log(err));
-    // }
+    },
+    detail: function detail(student, page_url) {
+      var _this7 = this;
 
+      var vm = this;
+      page_url = "../../api/admin/user-sv/sinh-vien/detail/".concat(student.student_id);
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this7.details = res.data;
+
+        _this7.form.fill(student);
+
+        $('#DetailModal').modal('show');
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    }
   }
 });
 
@@ -41419,6 +41523,236 @@ var render = function() {
             ]
           )
         ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade bd-example-modal-lg",
+          attrs: {
+            id: "DetailModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "DetailModalTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog modal-lg" }, [
+            _c(
+              "div",
+              { staticClass: "modal-content" },
+              [
+                _vm._m(4),
+                _vm._v(" "),
+                _vm._l(_vm.details, function(info) {
+                  return _c(
+                    "div",
+                    { key: info.student_info_id, staticClass: "modal-body" },
+                    [
+                      _c("center", [
+                        _c("img", {
+                          staticClass: "avatar-xxl rounded-circle",
+                          attrs: {
+                            src: "('../public/lecturer/images/vlu.ico')",
+                            alt: "profile"
+                          }
+                        }),
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(info.student_avatar) +
+                            "\n\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "table",
+                        {
+                          staticClass:
+                            "table row table-borderless w-100 m-0 border"
+                        },
+                        [
+                          _c("tbody", { staticClass: "col-lg-6 p-0" }, [
+                            _vm._m(5, true),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Họ và tên: "),
+                                _c("strong", [
+                                  _vm._v(
+                                    " " + _vm._s(_vm.form.student_fullname)
+                                  )
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Dân tộc: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_ethnic))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Tôn giáo: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_religion))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Giới tính: \n\t\t\t\t\t\t\t\t\t"),
+                                info.student_gender == 0
+                                  ? _c("strong", [_vm._v(" Nam")])
+                                  : _c("strong", [_vm._v(" Nữ")])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Ngày sinh: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_birthday))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Nơi sinh: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_birth_place))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Quốc gia: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_country))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("CMND/CCCD: "),
+                                _c("strong", [
+                                  _vm._v(
+                                    " " + _vm._s(info.student_identify_card)
+                                  )
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Địa chỉ: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_address))
+                                ])
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tbody", { staticClass: "col-lg-6 p-0" }, [
+                            _vm._m(6, true),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Khóa học: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_course))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Khoa: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_faculty))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Chuyên ngành: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_specialized))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Chức vụ: \n\t\t\t\t\t\t\t\t\t"),
+                                _vm.form.student_role == 1
+                                  ? _c("strong", [_vm._v(" Đã ra trường")])
+                                  : _c("strong", [_vm._v(" Còn đang học")])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _vm._m(7, true),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Số điện thoại: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_phone))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Điện thoại bàn: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_deskphone))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Email trường: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(_vm.form.student_email))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderbottom" }, [
+                              _c("td", [
+                                _vm._v("Email cá nhân: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_other_email))
+                                ])
+                              ])
+                            ])
+                          ])
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                }),
+                _vm._v(" "),
+                _vm._m(8)
+              ],
+              2
+            )
+          ])
+        ]
       )
     ],
     1
@@ -41488,6 +41822,76 @@ var staticRenderFns = [
         "button",
         { staticClass: "btn btn-primary", attrs: { type: "submit" } },
         [_vm._v("Cập nhật")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "DetailModalTitle" } },
+        [_vm._v("Chi tiết tài khoản")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "h3-strong" }, [
+        _c("h3", [_c("strong", [_vm._v("Thông tin chi tiết")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "h3-strong", attrs: { colspan: "2" } }, [
+        _c("h3", [_c("strong", [_vm._v("Thông tin Khoa")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "h3-strong" }, [
+        _c("h3", [_c("strong", [_vm._v("Thông tin liên lạc")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Đóng")]
       )
     ])
   }

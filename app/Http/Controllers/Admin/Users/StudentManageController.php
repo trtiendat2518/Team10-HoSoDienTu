@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentResource;
+use App\Http\Resources\StudentInfoResource;
 use App\Models\Student;
+use App\Models\StudentInfo;
 use Illuminate\Http\Request;
 use Session;
 
@@ -130,5 +132,10 @@ class StudentManageController extends Controller
             $stu->student_status=0;
             $stu->save();
         }
+    }
+
+    public function detail($student)
+    {
+        return StudentInfoResource::collection(StudentInfo::where('student_code',$student)->paginate(1));
     }
 }
