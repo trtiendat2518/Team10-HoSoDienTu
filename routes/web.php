@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Middleware\CheckLogin;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,10 +17,21 @@ Route::get('/', function () {
     return view('student.pages.home');
 });
 
-Route::get('/admin/dashboard', 'Lecturer\AuthController@index')->middleware('checkloged');
-
 Route::prefix('admin')->group(function(){
-    Route::get('/login', 'Lecturer\AuthController@get_login')->middleware('checkss');
-    Route::post('/loged-in', 'Lecturer\AuthController@post_login');
-    Route::get('/logout', 'Lecturer\AuthController@get_logout');
+    Route::resource('dashboard', 'Admin\DashboardController')->only('index')->middleware('checkloged');
+
+    Route::get('/login', 'Admin\AuthController@get_login')->middleware('checkss');
+    Route::post('/loged-in', 'Admin\AuthController@post_login');
+    Route::get('/logout', 'Admin\AuthController@get_logout');
+
+    Route::get('/microsoft','Admin\AuthController@login_ms')->name('connectMs');
+    Route::get('/microsoft-callback','Admin\AuthController@callback_ms');
+
+    Route::middleware([CheckLogin::class])->group(function () {
+        Route::prefix('quan-ly-tai-khoan')->group(function(){
+            //Giang vien
+            Route::get('/giang-vien','Admin\ViewController@lecturer_manage')->name('lecturer.index');
+        });
+    });
 });
+

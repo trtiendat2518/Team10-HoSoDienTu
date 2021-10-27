@@ -16,8 +16,8 @@ class CheckSession
      */
     public function handle(Request $request, Closure $next)
     {
-        if(session()->has('admin_id')){
-            if ((url('admin/login')==$request->url()) || (url('admin/forgetpassword')==$request->url())) {
+        if( (session()->has('admin_id')) || (session()->has('lecturer_id')) ) {
+            if ( (url('admin/login')==$request->url()) || (url('admin/microsoft')==$request->url()) ) {
                 return back();
             }
         }

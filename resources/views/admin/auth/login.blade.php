@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('public/student/img/vlu.ico')}}">
-    <title>Xtreme admin Template - The Ultimate Multipurpose admin template</title>
+    <title>Đăng nhập</title>
     <!-- Custom CSS -->
     <link href="{{ asset('public/lecturer/css/style.min.css')}}" rel="stylesheet">
     <!---Font icons css-->
@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="form-group text-center">
                                     <div class="col-xs-12 p-b-20">
-                                        <button class="btn btn-block btn-lg btn-googleplus" type="submit">Đăng nhập Offcie 365</button>
+                                        <a href="{{ route('connectMs') }}" class="btn btn-block btn-lg btn-googleplus">Đăng nhập Offcie 365</a>
                                     </div>
                                 </div>
                             </form>

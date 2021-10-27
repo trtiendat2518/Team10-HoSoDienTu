@@ -3,11 +3,11 @@
 	<div class="container-fluid">
 		<div class="d-flex">
 			<a class="header-brand" href="index.html">
-				<img src="{{asset('public/lecturer/images/brand/vlu.png')}}"" class="header-brand-img main-logo" alt="Hogo logo">
-				<img src="{{asset('public/lecturer/images/vlu.ico')}}"" class="header-brand-img icon-logo" alt="Hogo logo">
+				<img src="{{asset('public/lecturer/images/brand/vlu.png')}}" class="header-brand-img main-logo" alt="VLU">
+				<img src="{{asset('public/lecturer/images/vlu.ico')}}" class="header-brand-img icon-logo" alt="VLU">
 			</a><!-- logo-->
-			<a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-toggle="sidebar" href="#"></a>
-			<div class="d-flex order-lg-2 ml-auto header-rightmenu">
+			<p class="title-head">Student E-Profile</p>
+			<div class="d-flex order-lg-2 ml-auto header-rightmenu" style="color: #fff;">
 				<div class="dropdown">
 					<a  class="nav-link icon full-screen-link" id="fullscreen-button">
 						<i class="fe fe-maximize-2"></i>
@@ -65,10 +65,17 @@
 					<a class="nav-link leading-none siderbar-link"  data-toggle="sidebar-right" data-target=".sidebar-right">
 						<span class="mr-3 d-none d-lg-block ">
 							<span class="text-gray-white">
-								<span class="ml-2">
-									@php
-            							echo Session::get('admin_fullname')
-            						@endphp
+								<span class="ml-2" style="color: #000;">
+									<strong>
+										@php
+										if(Session::get('admin_id')){
+	            							echo Session::get('admin_fullname');
+										}
+										else if(Session::get('lecturer_id')){
+											echo Session::get('lecturer_fullname');
+										}
+	            						@endphp
+									</strong>
 								</span>
 							</span>
 						</span>
@@ -76,7 +83,7 @@
 					</a>
 				</div><!-- profile -->
 				<div class="dropdown">
-					<a href="{{ url('admin/logout') }}" class="nav-link icon siderbar-link" data-toggle="sidebar-right" data-target=".sidebar-right">
+					<a href="{{ url('admin/logout') }}" class="nav-link icon siderbar-link" data-toggle="sidebar-right" data-target=".sidebar-right" style="color: #fff;">
 						<i class="fa fa-sign-out"></i>
 					</a>
 				</div><!-- Right-siebar-->

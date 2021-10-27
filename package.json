@@ -10,7 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21",
+        "axios": "^0.21.4",
         "bootstrap": "^4.6.0",
         "jquery": "^3.6",
         "laravel-mix": "^6.0.6",
@@ -25,6 +25,10 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "cross-env": "^7.0.3"
+        "alga-js": "^0.0.9",
+        "cross-env": "^7.0.3",
+        "vform": "^2.1.1",
+        "vue-router": "^3.5.2",
+        "vue-snotify": "^3.2.1"
     }
 }
