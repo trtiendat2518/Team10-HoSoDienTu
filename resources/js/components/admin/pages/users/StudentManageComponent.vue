@@ -5,10 +5,28 @@
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
 					<div class="card-header">
-						<h3 class="card-title">Danh sách sinh viên</h3>
+						<div class="col-md-11">
+							<h3 class="card-title">Danh sách sinh viên</h3>
+						</div>
+						<div class="col-md-1">
+							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+						</div>
 					</div>
 
 					<div class="row">
+						<div class="col-md-1">
+							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
+						</div>
+						<div class="col-md-6">
+							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
+						</div>
+						<div class="col-md-3">
+							<select class="form-control mt-2" v-model="value_role">
+								<option value="" disabled selected>Lọc thông tin</option>
+								<option value="0">Sinh viên còn đang học</option>
+								<option value="1">Sinh viên đã ra trường</option>
+							</select>
+						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -18,12 +36,6 @@
 									</select>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-8">
-							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div>
-						<div class="col-md-2">
-							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"> Xóa nhiều</button>
 						</div>
 					</div>
 					
@@ -250,7 +262,8 @@
 				}),
 				selected: [],
 				selectAll: false,
-				details:[]
+				details:[],
+				value_role:'',
 			}
 		},
 		watch: {
@@ -266,6 +279,13 @@
 					this.fetchStudents();
 				}else{
 					this.search();
+				}
+			},
+			value_role(value){
+				if(value === ''){
+					this.fetchStudents();
+				}else{
+					this.filter();
 				}
 			},
 		},
@@ -401,7 +421,23 @@
 					$('#DetailModal').modal('show');
 				})
 				.catch(err => console.log(err));
-			}
+			},
+			filter(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-sv/sinh-vien/filter/'+this.value_role+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.students = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
+			reload(){
+                this.fetchStudents();
+                this.query='';
+                this.value_role='';
+            },
 		}
 	};
 </script>

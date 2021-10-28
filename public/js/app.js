@@ -2488,6 +2488,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2510,7 +2523,8 @@ __webpack_require__.r(__webpack_exports__);
       }),
       selected: [],
       selectAll: false,
-      details: []
+      details: [],
+      value_role: ''
     };
   },
   watch: {
@@ -2526,6 +2540,13 @@ __webpack_require__.r(__webpack_exports__);
         this.fetchLecturers();
       } else {
         this.search();
+      }
+    },
+    value_role: function value_role(value) {
+      if (value === '') {
+        this.fetchLecturers();
+      } else {
+        this.filter();
       }
     }
   },
@@ -2690,6 +2711,25 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
+    },
+    filter: function filter(page_url) {
+      var _this8 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/user-gv/giang-vien/filter/' + this.value_role + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this8.lecturers = res.data;
+        _this8.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    reload: function reload() {
+      this.fetchLecturers();
+      this.query = '';
+      this.value_role = '';
     }
   }
 });
@@ -2708,6 +2748,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue_snotify_styles_material_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-snotify/styles/material.css */ "./node_modules/vue-snotify/styles/material.css");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2959,7 +3011,8 @@ __webpack_require__.r(__webpack_exports__);
       }),
       selected: [],
       selectAll: false,
-      details: []
+      details: [],
+      value_role: ''
     };
   },
   watch: {
@@ -2975,6 +3028,13 @@ __webpack_require__.r(__webpack_exports__);
         this.fetchStudents();
       } else {
         this.search();
+      }
+    },
+    value_role: function value_role(value) {
+      if (value === '') {
+        this.fetchStudents();
+      } else {
+        this.filter();
       }
     }
   },
@@ -3139,6 +3199,25 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
+    },
+    filter: function filter(page_url) {
+      var _this8 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/user-sv/sinh-vien/filter/' + this.value_role + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this8.students = res.data;
+        _this8.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    reload: function reload() {
+      this.fetchStudents();
+      this.query = '';
+      this.value_role = '';
     }
   }
 });
@@ -40046,9 +40125,114 @@ var render = function() {
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12 col-lg-12" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-1" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-lg btn-primary fa fa-refresh",
+                    on: {
+                      click: function($event) {
+                        return _vm.reload()
+                      }
+                    }
+                  },
+                  [_vm._v(" Tải lại")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-1" }, [
+                _c("button", {
+                  staticClass:
+                    "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                  attrs: { disabled: !_vm.selected.length },
+                  on: {
+                    click: function($event) {
+                      return _vm.destroyall()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control mt-2",
+                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
+                  domProps: { value: _vm.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-3" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.value_role,
+                        expression: "value_role"
+                      }
+                    ],
+                    staticClass: "form-control mt-2",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.value_role = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { value: "", disabled: "", selected: "" } },
+                      [_vm._v("Lọc thông tin")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "0" } }, [
+                      _vm._v("Giảng viên mới")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "1" } }, [
+                      _vm._v("Ban chủ nhiệm khoa")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "2" } }, [
+                      _vm._v("Chủ nhiệm sinh viên")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
                 _c(
                   "div",
@@ -40098,47 +40282,6 @@ var render = function() {
                       )
                     ])
                   ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-8" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.query,
-                      expression: "query"
-                    }
-                  ],
-                  staticClass: "form-control mt-2",
-                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
-                  domProps: { value: _vm.query },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.query = $event.target.value
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-2" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
-                    attrs: { disabled: !_vm.selected.length },
-                    on: {
-                      click: function($event) {
-                        return _vm.destroyall()
-                      }
-                    }
-                  },
-                  [_vm._v(" Xóa nhiều")]
                 )
               ])
             ]),
@@ -40822,7 +40965,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    return _c("div", { staticClass: "col-md-11" }, [
       _c("h3", { staticClass: "card-title" }, [_vm._v("Danh sách giảng viên")])
     ])
   },
@@ -40985,9 +41128,110 @@ var render = function() {
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12 col-lg-12" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-1" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-lg btn-primary fa fa-refresh",
+                    on: {
+                      click: function($event) {
+                        return _vm.reload()
+                      }
+                    }
+                  },
+                  [_vm._v(" Tải lại")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-1" }, [
+                _c("button", {
+                  staticClass:
+                    "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                  attrs: { disabled: !_vm.selected.length },
+                  on: {
+                    click: function($event) {
+                      return _vm.destroyall()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control mt-2",
+                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
+                  domProps: { value: _vm.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-3" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.value_role,
+                        expression: "value_role"
+                      }
+                    ],
+                    staticClass: "form-control mt-2",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.value_role = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { value: "", disabled: "", selected: "" } },
+                      [_vm._v("Lọc thông tin")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "0" } }, [
+                      _vm._v("Sinh viên còn đang học")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "1" } }, [
+                      _vm._v("Sinh viên đã ra trường")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
                 _c(
                   "div",
@@ -41037,47 +41281,6 @@ var render = function() {
                       )
                     ])
                   ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-8" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.query,
-                      expression: "query"
-                    }
-                  ],
-                  staticClass: "form-control mt-2",
-                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
-                  domProps: { value: _vm.query },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.query = $event.target.value
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-2" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
-                    attrs: { disabled: !_vm.selected.length },
-                    on: {
-                      click: function($event) {
-                        return _vm.destroyall()
-                      }
-                    }
-                  },
-                  [_vm._v(" Xóa nhiều")]
                 )
               ])
             ]),
@@ -41763,7 +41966,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    return _c("div", { staticClass: "col-md-11" }, [
       _c("h3", { staticClass: "card-title" }, [_vm._v("Danh sách sinh viên")])
     ])
   },
