@@ -44,6 +44,21 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'adminRole' => [
+            'checkloged' => \App\Http\Middleware\CheckLogin::class,
+            'admin' => \App\Http\Middleware\CheckAdmin::class,
+        ],
+
+        'facultyRole' => [
+            'checkloged' => \App\Http\Middleware\CheckLogin::class,
+            'deanfaculty' => \App\Http\Middleware\CheckFacultyOfDean::class,
+        ],
+
+        'formteacherRole' => [
+            'checkloged' => \App\Http\Middleware\CheckLogin::class,
+            'formteacher' => \App\Http\Middleware\CheckFormTeacher::class,
+        ],
     ];
 
     /**
@@ -65,5 +80,9 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'checkloged' => \App\Http\Middleware\CheckLogin::class,
         'checkss' => \App\Http\Middleware\CheckSession::class,
+        'deanfaculty' => \App\Http\Middleware\CheckFacultyOfDean::class,
+        'formteacher' => \App\Http\Middleware\CheckFormTeacher::class,
+        'lecturer' => \App\Http\Middleware\CheckLecturer::class,
+        'admin' => \App\Http\Middleware\CheckAdmin::class,
     ];
 }

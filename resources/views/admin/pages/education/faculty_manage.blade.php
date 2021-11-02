@@ -9,7 +9,7 @@
 			</ol>
 		</div>
 		<!-- End page-header -->
-		<lecturer-manage-component></lecturer-manage-component>
+		<faculty-component></faculty-component>
 	</div>
 </div>
 @endsection

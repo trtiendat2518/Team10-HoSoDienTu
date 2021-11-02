@@ -32,6 +32,11 @@ class LecturerManageController extends Controller
         return LecturerManageResource::collection(Lecturer::where('lecturer_fullname','LIKE','%'.$query.'%')->orwhere('lecturer_email','LIKE','%'.$query.'%')->orderby('lecturer_id','DESC')->paginate($currentEntries));
     }
 
+    public function filter($value, $currentEntries)
+    {
+        return LecturerManageResource::collection(Lecturer::where('lecturer_role','LIKE','%'.$value.'%')->paginate($currentEntries));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
