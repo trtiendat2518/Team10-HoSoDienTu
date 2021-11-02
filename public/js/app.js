@@ -2488,6 +2488,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2510,7 +2527,8 @@ __webpack_require__.r(__webpack_exports__);
       }),
       selected: [],
       selectAll: false,
-      details: []
+      details: [],
+      value_role: ''
     };
   },
   watch: {
@@ -2526,6 +2544,13 @@ __webpack_require__.r(__webpack_exports__);
         this.fetchLecturers();
       } else {
         this.search();
+      }
+    },
+    value_role: function value_role(value) {
+      if (value === '') {
+        this.fetchLecturers();
+      } else {
+        this.filter();
       }
     }
   },
@@ -2690,6 +2715,25 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
+    },
+    filter: function filter(page_url) {
+      var _this8 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/user-gv/giang-vien/filter/' + this.value_role + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this8.lecturers = res.data;
+        _this8.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    reload: function reload() {
+      this.fetchLecturers();
+      this.query = '';
+      this.value_role = '';
     }
   }
 });
@@ -2708,6 +2752,121 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue_snotify_styles_material_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-snotify/styles/material.css */ "./node_modules/vue-snotify/styles/material.css");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2860,7 +3019,8 @@ __webpack_require__.r(__webpack_exports__);
       }),
       selected: [],
       selectAll: false,
-      details: []
+      details: [],
+      value_role: ''
     };
   },
   watch: {
@@ -2876,6 +3036,13 @@ __webpack_require__.r(__webpack_exports__);
         this.fetchStudents();
       } else {
         this.search();
+      }
+    },
+    value_role: function value_role(value) {
+      if (value === '') {
+        this.fetchStudents();
+      } else {
+        this.filter();
       }
     }
   },
@@ -3023,19 +3190,43 @@ __webpack_require__.r(__webpack_exports__);
           this.selected.push(this.students[i].student_id);
         }
       }
-    } // detail(student, page_url) {
-    // 	let vm = this;
-    // 	page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.details = res.data;
-    // 		this.form.fill(student);
-    // 		$('#DetailModal').modal('show');
-    // 	})
-    // 	.catch(err => console.log(err));
-    // }
+    },
+    detail: function detail(student, page_url) {
+      var _this7 = this;
 
+      var vm = this;
+      page_url = "../../api/admin/user-sv/sinh-vien/detail/".concat(student.student_id);
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this7.details = res.data;
+
+        _this7.form.fill(student);
+
+        $('#DetailModal').modal('show');
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    filter: function filter(page_url) {
+      var _this8 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/user-sv/sinh-vien/filter/' + this.value_role + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this8.students = res.data;
+        _this8.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    reload: function reload() {
+      this.fetchStudents();
+      this.query = '';
+      this.value_role = '';
+    }
   }
 });
 
@@ -7689,7 +7880,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-2c603217] {\n\ttext-align: center;\n}\n.not-allowed[data-v-2c603217] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-2c603217] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-2c603217] {\n\tcolor: coral;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-2c603217] {\n\ttext-align: center;\n}\n.not-allowed[data-v-2c603217] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-2c603217] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-2c603217] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-2c603217] {\n\tbackground-color: #1753fc;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-2c603217] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-2c603217] {\n\tbackground-color: #00C851;\n\tcolor: white;\n}\n.td-borderight[data-v-2c603217] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-2c603217] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-2c603217] {\n\tbackground-color: #00C851;\n\tborder-color: #00C851;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7713,7 +7904,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-97666f4c] {\n\ttext-align: center;\n}\n.not-allowed[data-v-97666f4c] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-97666f4c] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-97666f4c] {\n\tcolor: coral;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-97666f4c] {\n\ttext-align: center;\n}\n.not-allowed[data-v-97666f4c] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-97666f4c] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-97666f4c] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-97666f4c] {\n\tbackground-color: #1753fc;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-97666f4c] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-97666f4c] {\n\tbackground-color: #00C851;\n\tcolor: white;\n}\n.td-borderight[data-v-97666f4c] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-97666f4c] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-97666f4c] {\n\tbackground-color: #00C851;\n\tborder-color: #00C851;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -39942,9 +40133,114 @@ var render = function() {
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12 col-lg-12" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-1" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-lg btn-primary fa fa-refresh",
+                    on: {
+                      click: function($event) {
+                        return _vm.reload()
+                      }
+                    }
+                  },
+                  [_vm._v(" Tải lại")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-1" }, [
+                _c("button", {
+                  staticClass:
+                    "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                  attrs: { disabled: !_vm.selected.length },
+                  on: {
+                    click: function($event) {
+                      return _vm.destroyall()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control mt-2",
+                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
+                  domProps: { value: _vm.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-3" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.value_role,
+                        expression: "value_role"
+                      }
+                    ],
+                    staticClass: "form-control mt-2",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.value_role = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { value: "", disabled: "", selected: "" } },
+                      [_vm._v("Lọc thông tin")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "0" } }, [
+                      _vm._v("Giảng viên mới")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "1" } }, [
+                      _vm._v("Ban chủ nhiệm khoa")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "2" } }, [
+                      _vm._v("Chủ nhiệm sinh viên")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
                 _c(
                   "div",
@@ -39994,47 +40290,6 @@ var render = function() {
                       )
                     ])
                   ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-8" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.query,
-                      expression: "query"
-                    }
-                  ],
-                  staticClass: "form-control mt-2",
-                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
-                  domProps: { value: _vm.query },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.query = $event.target.value
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-2" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
-                    attrs: { disabled: !_vm.selected.length },
-                    on: {
-                      click: function($event) {
-                        return _vm.destroyall()
-                      }
-                    }
-                  },
-                  [_vm._v(" Xóa nhiều")]
                 )
               ])
             ]),
@@ -40511,7 +40766,18 @@ var render = function() {
                 _vm._l(_vm.details, function(info) {
                   return _c(
                     "div",
-                    { key: info.lecturer_info_id, staticClass: "modal-body" },
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.details.length,
+                          expression: "details.length"
+                        }
+                      ],
+                      key: info.lecturer_info_id,
+                      staticClass: "modal-body"
+                    },
                     [
                       _c("center", [
                         _c("img", {
@@ -40538,7 +40804,7 @@ var render = function() {
                           _c("tbody", { staticClass: "col-lg-6 p-0" }, [
                             _vm._m(5, true),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Họ và tên: "),
                                 _c("strong", [
@@ -40549,7 +40815,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Dân tộc: "),
                                 _c("strong", [
@@ -40558,7 +40824,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Tôn giáo: "),
                                 _c("strong", [
@@ -40567,7 +40833,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Giới tính: \n\t\t\t\t\t\t\t\t\t"),
                                 info.lecturer_gender == 0
@@ -40576,7 +40842,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Ngày sinh: "),
                                 _c("strong", [
@@ -40585,7 +40851,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Nơi sinh: "),
                                 _c("strong", [
@@ -40596,7 +40862,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Quốc gia: "),
                                 _c("strong", [
@@ -40605,7 +40871,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("CMND/CCCD: "),
                                 _c("strong", [
@@ -40616,7 +40882,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Địa chỉ: "),
                                 _c("strong", [
@@ -40629,7 +40895,7 @@ var render = function() {
                           _c("tbody", { staticClass: "col-lg-6 p-0" }, [
                             _vm._m(6, true),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Khoa: "),
                                 _c("strong", [
@@ -40657,7 +40923,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm._m(7, true),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Số điện thoại: "),
                                 _c("strong", [
@@ -40666,7 +40932,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Điện thoại bàn: "),
                                 _c("strong", [
@@ -40675,7 +40941,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Email trường: "),
                                 _c("strong", [
@@ -40684,7 +40950,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Email cá nhân: "),
                                 _c("strong", [
@@ -40702,6 +40968,28 @@ var render = function() {
                   )
                 }),
                 _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.details.length,
+                        expression: "!details.length"
+                      }
+                    ],
+                    staticClass: "modal-body"
+                  },
+                  [
+                    _c("div", { staticClass: "alert alert-danger" }, [
+                      _vm._v(
+                        "\n\t\t\t\t\t\tGiảng viên này chưa cập nhật thông tin!\n\t\t\t\t\t"
+                      )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
                 _vm._m(8)
               ],
               2
@@ -40718,7 +41006,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    return _c("div", { staticClass: "col-md-11" }, [
       _c("h3", { staticClass: "card-title" }, [_vm._v("Danh sách giảng viên")])
     ])
   },
@@ -40738,26 +41026,30 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "LecturerModalTitle" } },
-        [_vm._v("Cập nhật tài khoản")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-update" },
+      [
+        _c(
+          "h5",
+          { staticClass: "modal-title", attrs: { id: "LecturerModalTitle" } },
+          [_vm._v("Cập nhật tài khoản")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -40775,7 +41067,10 @@ var staticRenderFns = [
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        {
+          staticClass: "btn btn-primary background-update",
+          attrs: { type: "submit" }
+        },
         [_vm._v("Cập nhật")]
       )
     ])
@@ -40784,34 +41079,41 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "DetailModalTitle" } },
-        [_vm._v("Chi tiết tài khoản")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-info" },
+      [
+        _c(
+          "h5",
+          {
+            staticClass: "modal-title styling-font-modal-header",
+            attrs: { id: "DetailModalTitle" }
+          },
+          [_vm._v("Chi tiết tài khoản")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("td", { staticClass: "h3-strong" }, [
-        _c("h3", [_c("strong", [_vm._v("Thông tin chi tiết")])])
+      _c("td", { staticClass: "h3-strong td-borderight" }, [
+        _c("h3", [_c("strong", [_vm._v(" Thông tin chi tiết Giảng viên")])])
       ])
     ])
   },
@@ -40881,9 +41183,110 @@ var render = function() {
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12 col-lg-12" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-1" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-lg btn-primary fa fa-refresh",
+                    on: {
+                      click: function($event) {
+                        return _vm.reload()
+                      }
+                    }
+                  },
+                  [_vm._v(" Tải lại")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-1" }, [
+                _c("button", {
+                  staticClass:
+                    "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                  attrs: { disabled: !_vm.selected.length },
+                  on: {
+                    click: function($event) {
+                      return _vm.destroyall()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control mt-2",
+                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
+                  domProps: { value: _vm.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-3" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.value_role,
+                        expression: "value_role"
+                      }
+                    ],
+                    staticClass: "form-control mt-2",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.value_role = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { value: "", disabled: "", selected: "" } },
+                      [_vm._v("Lọc thông tin")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "0" } }, [
+                      _vm._v("Sinh viên còn đang học")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "1" } }, [
+                      _vm._v("Sinh viên đã ra trường")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
                 _c(
                   "div",
@@ -40933,47 +41336,6 @@ var render = function() {
                       )
                     ])
                   ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-8" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.query,
-                      expression: "query"
-                    }
-                  ],
-                  staticClass: "form-control mt-2",
-                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
-                  domProps: { value: _vm.query },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.query = $event.target.value
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-2" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
-                    attrs: { disabled: !_vm.selected.length },
-                    on: {
-                      click: function($event) {
-                        return _vm.destroyall()
-                      }
-                    }
-                  },
-                  [_vm._v(" Xóa nhiều")]
                 )
               ])
             ]),
@@ -41419,6 +41781,269 @@ var render = function() {
             ]
           )
         ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade bd-example-modal-lg",
+          attrs: {
+            id: "DetailModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "DetailModalTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog modal-lg" }, [
+            _c(
+              "div",
+              { staticClass: "modal-content" },
+              [
+                _vm._m(4),
+                _vm._v(" "),
+                _vm._l(_vm.details, function(info) {
+                  return _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.details.length,
+                          expression: "details.length"
+                        }
+                      ],
+                      key: info.student_info_id,
+                      staticClass: "modal-body"
+                    },
+                    [
+                      _c("center", [
+                        _c("img", {
+                          staticClass: "avatar-xxl rounded-circle",
+                          attrs: {
+                            src: "('../public/lecturer/images/vlu.ico')",
+                            alt: "profile"
+                          }
+                        }),
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(info.student_avatar) +
+                            "\n\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "table",
+                        {
+                          staticClass:
+                            "table row table-borderless w-100 m-0 border"
+                        },
+                        [
+                          _c("tbody", { staticClass: "col-lg-6 p-0" }, [
+                            _vm._m(5, true),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderight" }, [
+                              _c("td", [
+                                _vm._v("Họ và tên: "),
+                                _c("strong", [
+                                  _vm._v(
+                                    " " + _vm._s(_vm.form.student_fullname)
+                                  )
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderight" }, [
+                              _c("td", [
+                                _vm._v("Dân tộc: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_ethnic))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderight" }, [
+                              _c("td", [
+                                _vm._v("Tôn giáo: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_religion))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderight" }, [
+                              _c("td", [
+                                _vm._v("Giới tính: \n\t\t\t\t\t\t\t\t\t"),
+                                info.student_gender == 0
+                                  ? _c("strong", [_vm._v(" Nam")])
+                                  : _c("strong", [_vm._v(" Nữ")])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderight" }, [
+                              _c("td", [
+                                _vm._v("Ngày sinh: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_birthday))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderight" }, [
+                              _c("td", [
+                                _vm._v("Nơi sinh: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_birth_place))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderight" }, [
+                              _c("td", [
+                                _vm._v("Quốc gia: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_country))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderight" }, [
+                              _c("td", [
+                                _vm._v("CMND/CCCD: "),
+                                _c("strong", [
+                                  _vm._v(
+                                    " " + _vm._s(info.student_identify_card)
+                                  )
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", { staticClass: "td-borderight" }, [
+                              _c("td", [
+                                _vm._v("Địa chỉ: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_address))
+                                ])
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tbody", { staticClass: "col-lg-6 p-0" }, [
+                            _vm._m(6, true),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", [
+                                _vm._v("Khóa học: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_course))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", [
+                                _vm._v("Khoa: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_faculty))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", [
+                                _vm._v("Chuyên ngành: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_specialized))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", [
+                                _vm._v("Chức vụ: \n\t\t\t\t\t\t\t\t\t"),
+                                _vm.form.student_role == 1
+                                  ? _c("strong", [_vm._v(" Đã ra trường")])
+                                  : _c("strong", [_vm._v(" Còn đang học")])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _vm._m(7, true),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", [
+                                _vm._v("Số điện thoại: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_phone))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", [
+                                _vm._v("Điện thoại bàn: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_deskphone))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", [
+                                _vm._v("Email trường: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(_vm.form.student_email))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", [
+                                _vm._v("Email cá nhân: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(info.student_other_email))
+                                ])
+                              ])
+                            ])
+                          ])
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.details.length,
+                        expression: "!details.length"
+                      }
+                    ],
+                    staticClass: "modal-body"
+                  },
+                  [
+                    _c("div", { staticClass: "alert alert-danger" }, [
+                      _vm._v(
+                        "\n\t\t\t\t\t\tGiảng viên này chưa cập nhật thông tin!\n\t\t\t\t\t"
+                      )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(8)
+              ],
+              2
+            )
+          ])
+        ]
       )
     ],
     1
@@ -41429,7 +42054,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
+    return _c("div", { staticClass: "col-md-11" }, [
       _c("h3", { staticClass: "card-title" }, [_vm._v("Danh sách sinh viên")])
     ])
   },
@@ -41449,26 +42074,33 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "StudentModalTitle" } },
-        [_vm._v("Cập nhật tài khoản")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-update" },
+      [
+        _c(
+          "h5",
+          {
+            staticClass: "modal-title styling-font-modal-header",
+            attrs: { id: "StudentModalTitle" }
+          },
+          [_vm._v("Cập nhật tài khoản")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -41486,8 +42118,88 @@ var staticRenderFns = [
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        {
+          staticClass: "btn btn-primary background-update",
+          attrs: { type: "submit" }
+        },
         [_vm._v("Cập nhật")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-info" },
+      [
+        _c(
+          "h5",
+          {
+            staticClass: "modal-title styling-font-modal-header",
+            attrs: { id: "DetailModalTitle" }
+          },
+          [_vm._v("Chi tiết tài khoản")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "h3-strong td-borderight" }, [
+        _c("h3", [_c("strong", [_vm._v("Thông tin chi tiết Sinh viên")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "h3-strong", attrs: { colspan: "2" } }, [
+        _c("h3", [_c("strong", [_vm._v("Thông tin Khoa")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "h3-strong" }, [
+        _c("h3", [_c("strong", [_vm._v("Thông tin liên lạc")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Đóng")]
       )
     ])
   }

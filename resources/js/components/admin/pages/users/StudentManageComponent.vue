@@ -5,10 +5,28 @@
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
 					<div class="card-header">
-						<h3 class="card-title">Danh sách sinh viên</h3>
+						<div class="col-md-11">
+							<h3 class="card-title">Danh sách sinh viên</h3>
+						</div>
+						<div class="col-md-1">
+							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+						</div>
 					</div>
 
 					<div class="row">
+						<div class="col-md-1">
+							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
+						</div>
+						<div class="col-md-6">
+							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
+						</div>
+						<div class="col-md-3">
+							<select class="form-control mt-2" v-model="value_role">
+								<option value="" disabled selected>Lọc thông tin</option>
+								<option value="0">Sinh viên còn đang học</option>
+								<option value="1">Sinh viên đã ra trường</option>
+							</select>
+						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -18,12 +36,6 @@
 									</select>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-8">
-							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div>
-						<div class="col-md-2">
-							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"> Xóa nhiều</button>
 						</div>
 					</div>
 					
@@ -95,8 +107,8 @@
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
 					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="StudentModalTitle">Cập nhật tài khoản</h5>
+						<div class="modal-header styling-modal-header-update">
+							<h5 class="modal-title styling-font-modal-header" id="StudentModalTitle">Cập nhật tài khoản</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -117,13 +129,116 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button type="submit" class="btn btn-primary">Cập nhật</button>
+							<button type="submit" class="btn btn-primary background-update">Cập nhật</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
 		<!-- Modal end-->
+
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header styling-modal-header-info">
+						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết tài khoản</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" v-show="details.length" v-for="info in details" :key="info.student_info_id">
+						<center>
+							<img src="('../public/lecturer/images/vlu.ico')" class="avatar-xxl rounded-circle" alt="profile">
+							{{ info.student_avatar }}
+						</center>
+						<table class="table row table-borderless w-100 m-0 border">
+							<tbody class="col-lg-6 p-0">
+								<tr>
+									<td class="h3-strong td-borderight"><h3><strong>Thông tin chi tiết Sinh viên</strong></h3></td>
+								</tr>
+								<tr class="td-borderight">
+									<td>Họ và tên: <strong> {{ form.student_fullname }}</strong></td>
+								</tr>
+								<tr class="td-borderight">
+									<td>Dân tộc: <strong> {{ info.student_ethnic }}</strong></td>
+								</tr>
+								<tr class="td-borderight">
+									<td>Tôn giáo: <strong> {{ info.student_religion }}</strong></td>
+								</tr>
+								<tr class="td-borderight">
+									<td >Giới tính: 
+										<strong v-if="info.student_gender==0"> Nam</strong>
+										<strong v-else> Nữ</strong>
+									</td>
+								</tr>
+								<tr class="td-borderight">
+									<td>Ngày sinh: <strong> {{ info.student_birthday }}</strong></td>
+								</tr>
+								<tr class="td-borderight">
+									<td>Nơi sinh: <strong> {{ info.student_birth_place }}</strong></td>
+								</tr>
+								<tr class="td-borderight">
+									<td>Quốc gia: <strong> {{ info.student_country }}</strong></td>
+								</tr>
+								<tr class="td-borderight">
+									<td>CMND/CCCD: <strong> {{ info.student_identify_card }}</strong></td>
+								</tr>
+								<tr class="td-borderight">
+									<td>Địa chỉ: <strong> {{ info.student_address }}</strong></td>
+								</tr>
+							</tbody>
+							<tbody class="col-lg-6 p-0">
+								<tr>
+									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
+								</tr>
+								<tr>
+									<td>Khóa học: <strong> {{ info.student_course }}</strong></td>
+								</tr>
+								<tr>
+									<td>Khoa: <strong> {{ info.student_faculty }}</strong></td>
+								</tr>
+								<tr>
+									<td>Chuyên ngành: <strong> {{ info.student_specialized }}</strong></td>
+								</tr>
+								<tr>
+									<td>Chức vụ: 
+										<strong v-if="form.student_role==1"> Đã ra trường</strong>
+										<strong v-else> Còn đang học</strong>
+									</td>
+								</tr>
+								
+								<br>
+								<tr>
+									<td class="h3-strong"><h3>
+										<strong>Thông tin liên lạc</strong></h3>
+									</td>
+								</tr>
+								<tr>
+									<td>Số điện thoại: <strong> {{ info.student_phone }}</strong></td>
+								</tr>
+								<tr>
+									<td>Điện thoại bàn: <strong> {{ info.student_deskphone }}</strong></td>
+								</tr>
+								<tr>
+									<td>Email trường: <strong> {{ form.student_email }}</strong></td>
+								</tr>
+								<tr>
+									<td>Email cá nhân: <strong> {{ info.student_other_email }}</strong></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-body" v-show="!details.length">
+						<div class="alert alert-danger">
+							Giảng viên này chưa cập nhật thông tin!
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -151,7 +266,8 @@
 				}),
 				selected: [],
 				selectAll: false,
-				details:[]
+				details:[],
+				value_role:'',
 			}
 		},
 		watch: {
@@ -167,6 +283,13 @@
 					this.fetchStudents();
 				}else{
 					this.search();
+				}
+			},
+			value_role(value){
+				if(value === ''){
+					this.fetchStudents();
+				}else{
+					this.filter();
 				}
 			},
 		},
@@ -291,18 +414,34 @@
 					}
 				}
 			},
-			// detail(student, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(student);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// }
+			detail(student, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					this.form.fill(student);
+					$('#DetailModal').modal('show');
+				})
+				.catch(err => console.log(err));
+			},
+			filter(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-sv/sinh-vien/filter/'+this.value_role+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.students = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
+			reload(){
+				this.fetchStudents();
+				this.query='';
+				this.value_role='';
+			},
 		}
 	};
 </script>
@@ -331,6 +470,28 @@
 		cursor: pointer;
 	}
 	.h3-strong {
-		color: coral;
+		color: #1753fc;
+	}
+	.styling-modal-header-info {
+		background-color: #1753fc;
+		color: white;
+	}
+	.styling-font-modal-header {
+		font-size: 20px;
+		font-weight: bold;
+	}
+	.styling-modal-header-update {
+		background-color: #00C851;
+		color: white;
+	}
+	.td-borderight {
+		border-right: 2px solid black;
+	}
+	.td-borderbottom {
+		border-bottom: 2px solid black;
+	}
+	.background-update {
+		background-color: #00C851;
+		border-color: #00C851;
 	}
 </style>

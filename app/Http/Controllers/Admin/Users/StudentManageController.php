@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentResource;
+use App\Http\Resources\StudentInfoResource;
 use App\Models\Student;
+use App\Models\StudentInfo;
 use Illuminate\Http\Request;
 use Session;
 
@@ -28,6 +30,11 @@ class StudentManageController extends Controller
     public function search($query, $currentEntries)
     {
         return StudentResource::collection(Student::where('student_fullname','LIKE','%'.$query.'%')->orwhere('student_email','LIKE','%'.$query.'%')->orderby('student_id','DESC')->paginate($currentEntries));
+    }
+
+    public function filter($value, $currentEntries)
+    {
+        return StudentResource::collection(Student::where('student_role','LIKE','%'.$value.'%')->paginate($currentEntries));
     }
 
     /**
@@ -130,5 +137,10 @@ class StudentManageController extends Controller
             $stu->student_status=0;
             $stu->save();
         }
+    }
+
+    public function detail($student)
+    {
+        return StudentInfoResource::collection(StudentInfo::where('student_code',$student)->paginate(1));
     }
 }

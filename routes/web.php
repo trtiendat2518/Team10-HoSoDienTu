@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\CheckLogin;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,9 +26,8 @@ Route::prefix('admin')->group(function(){
     Route::get('/microsoft','Admin\AuthController@login_ms')->name('connectMs');
     Route::get('/microsoft-callback','Admin\AuthController@callback_ms');
 
-    Route::middleware([CheckLogin::class])->group(function () {
+    Route::group(['middleware' => ['adminRole']], function () {
         Route::prefix('quan-ly-tai-khoan')->group(function(){
-            //Quan ly tai khoan
             Route::get('/giang-vien','Admin\ViewController@lecturer_manage')->name('lecturer.index');
             Route::get('/sinh-vien','Admin\ViewController@student_manage')->name('student.index');
         });
