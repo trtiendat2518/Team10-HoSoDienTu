@@ -20,6 +20,16 @@ class FacultyController extends Controller
     }
 
     /**
+     * Search the resource in the list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search($query, $currentEntries)
+    {
+        return FacultyResource::collection(Faculty::where('faculty_code','LIKE','%'.$query.'%')->orwhere('faculty_name','LIKE','%'.$query.'%')->orderby('faculty_id','DESC')->paginate($currentEntries));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

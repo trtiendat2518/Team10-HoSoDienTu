@@ -38,7 +38,7 @@ class ViewController extends Controller
     public function faculty_manage(Request $request)
     {
         //---SEO
-        $meta_title = "Quản lý Khoa";
+        $meta_title = "Quản lý chung";
         $meta_desc = "Quản lý khoa";
         $url_canonical = $request->url();
         //------
