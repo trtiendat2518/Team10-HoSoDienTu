@@ -40,6 +40,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('edu-faculty')->group(function(){
+        Route::get('khoa/search/{query}/{currentEntries}','Admin\Education\FacultyController@search');
         Route::resource('khoa', 'Admin\Education\FacultyController');
     });
 });

@@ -2343,14 +2343,14 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.fetchFaculties();
       }
-    } // query(keyword){
-    // 	if(keyword === ''){
-    // 		this.fetchFaculties();
-    // 	}else{
-    // 		this.search();
-    // 	}
-    // },
-    // value_role(value){
+    },
+    query: function query(keyword) {
+      if (keyword === '') {
+        this.fetchFaculties();
+      } else {
+        this.search();
+      }
+    } // value_role(value){
     // 	if(value === ''){
     // 		this.fetchFaculties();
     // 	}else{
@@ -2380,17 +2380,20 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(err);
       });
     },
-    // search(page_url) {
-    // 	let vm = this;
-    // 	page_url = '../../api/admin/user-gv/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.lecturers = res.data;
-    // 		this.pagination = res.meta;
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
+    search: function search(page_url) {
+      var _this2 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/edu-faculty/khoa/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this2.faculties = res.data;
+        _this2.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     // show(lecturer) {
     // 	this.editMode = true;
     // 	this.form.reset();
@@ -40375,6 +40378,30 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-9" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control mt-2",
+                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
+                  domProps: { value: _vm.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
                 _c(
                   "div",
