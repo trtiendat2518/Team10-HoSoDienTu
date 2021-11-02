@@ -107,8 +107,8 @@
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
 					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="StudentModalTitle">Cập nhật tài khoản</h5>
+						<div class="modal-header styling-modal-header-update">
+							<h5 class="modal-title styling-font-modal-header" id="StudentModalTitle">Cập nhật tài khoản</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -129,7 +129,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button type="submit" class="btn btn-primary">Cập nhật</button>
+							<button type="submit" class="btn btn-primary background-update">Cập nhật</button>
 						</div>
 					</div>
 				</form>
@@ -140,13 +140,13 @@
 		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="DetailModalTitle">Chi tiết tài khoản</h5>
+					<div class="modal-header styling-modal-header-info">
+						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết tài khoản</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body" v-for="info in details" :key="info.student_info_id">
+					<div class="modal-body" v-show="details.length" v-for="info in details" :key="info.student_info_id">
 						<center>
 							<img src="('../public/lecturer/images/vlu.ico')" class="avatar-xxl rounded-circle" alt="profile">
 							{{ info.student_avatar }}
@@ -154,36 +154,36 @@
 						<table class="table row table-borderless w-100 m-0 border">
 							<tbody class="col-lg-6 p-0">
 								<tr>
-									<td class="h3-strong"><h3><strong>Thông tin chi tiết</strong></h3></td>
+									<td class="h3-strong td-borderight"><h3><strong>Thông tin chi tiết Sinh viên</strong></h3></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr class="td-borderight">
 									<td>Họ và tên: <strong> {{ form.student_fullname }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr class="td-borderight">
 									<td>Dân tộc: <strong> {{ info.student_ethnic }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr class="td-borderight">
 									<td>Tôn giáo: <strong> {{ info.student_religion }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr class="td-borderight">
 									<td >Giới tính: 
 										<strong v-if="info.student_gender==0"> Nam</strong>
 										<strong v-else> Nữ</strong>
 									</td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr class="td-borderight">
 									<td>Ngày sinh: <strong> {{ info.student_birthday }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr class="td-borderight">
 									<td>Nơi sinh: <strong> {{ info.student_birth_place }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr class="td-borderight">
 									<td>Quốc gia: <strong> {{ info.student_country }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr class="td-borderight">
 									<td>CMND/CCCD: <strong> {{ info.student_identify_card }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr class="td-borderight">
 									<td>Địa chỉ: <strong> {{ info.student_address }}</strong></td>
 								</tr>
 							</tbody>
@@ -191,16 +191,16 @@
 								<tr>
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr>
 									<td>Khóa học: <strong> {{ info.student_course }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr>
 									<td>Khoa: <strong> {{ info.student_faculty }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr>
 									<td>Chuyên ngành: <strong> {{ info.student_specialized }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr>
 									<td>Chức vụ: 
 										<strong v-if="form.student_role==1"> Đã ra trường</strong>
 										<strong v-else> Còn đang học</strong>
@@ -213,21 +213,25 @@
 										<strong>Thông tin liên lạc</strong></h3>
 									</td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr>
 									<td>Số điện thoại: <strong> {{ info.student_phone }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr>
 									<td>Điện thoại bàn: <strong> {{ info.student_deskphone }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr>
 									<td>Email trường: <strong> {{ form.student_email }}</strong></td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr>
 									<td>Email cá nhân: <strong> {{ info.student_other_email }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
-
+					</div>
+					<div class="modal-body" v-show="!details.length">
+						<div class="alert alert-danger">
+							Giảng viên này chưa cập nhật thông tin!
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -434,10 +438,10 @@
 				.catch(err => console.log(err));
 			},
 			reload(){
-                this.fetchStudents();
-                this.query='';
-                this.value_role='';
-            },
+				this.fetchStudents();
+				this.query='';
+				this.value_role='';
+			},
 		}
 	};
 </script>
@@ -466,6 +470,28 @@
 		cursor: pointer;
 	}
 	.h3-strong {
-		color: coral;
+		color: #1753fc;
+	}
+	.styling-modal-header-info {
+		background-color: #1753fc;
+		color: white;
+	}
+	.styling-font-modal-header {
+		font-size: 20px;
+		font-weight: bold;
+	}
+	.styling-modal-header-update {
+		background-color: #00C851;
+		color: white;
+	}
+	.td-borderight {
+		border-right: 2px solid black;
+	}
+	.td-borderbottom {
+		border-bottom: 2px solid black;
+	}
+	.background-update {
+		background-color: #00C851;
+		border-color: #00C851;
 	}
 </style>

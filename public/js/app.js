@@ -2501,6 +2501,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2748,6 +2752,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue_snotify_styles_material_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-snotify/styles/material.css */ "./node_modules/vue-snotify/styles/material.css");
+//
+//
+//
+//
 //
 //
 //
@@ -7872,7 +7880,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-2c603217] {\n\ttext-align: center;\n}\n.not-allowed[data-v-2c603217] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-2c603217] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-2c603217] {\n\tcolor: coral;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-2c603217] {\n\ttext-align: center;\n}\n.not-allowed[data-v-2c603217] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-2c603217] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-2c603217] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-2c603217] {\n\tbackground-color: #1753fc;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-2c603217] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-2c603217] {\n\tbackground-color: #00C851;\n\tcolor: white;\n}\n.td-borderight[data-v-2c603217] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-2c603217] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-2c603217] {\n\tbackground-color: #00C851;\n\tborder-color: #00C851;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7896,7 +7904,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-97666f4c] {\n\ttext-align: center;\n}\n.not-allowed[data-v-97666f4c] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-97666f4c] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-97666f4c] {\n\tcolor: coral;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-97666f4c] {\n\ttext-align: center;\n}\n.not-allowed[data-v-97666f4c] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-97666f4c] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-97666f4c] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-97666f4c] {\n\tbackground-color: #1753fc;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-97666f4c] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-97666f4c] {\n\tbackground-color: #00C851;\n\tcolor: white;\n}\n.td-borderight[data-v-97666f4c] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-97666f4c] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-97666f4c] {\n\tbackground-color: #00C851;\n\tborder-color: #00C851;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -40758,7 +40766,18 @@ var render = function() {
                 _vm._l(_vm.details, function(info) {
                   return _c(
                     "div",
-                    { key: info.lecturer_info_id, staticClass: "modal-body" },
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.details.length,
+                          expression: "details.length"
+                        }
+                      ],
+                      key: info.lecturer_info_id,
+                      staticClass: "modal-body"
+                    },
                     [
                       _c("center", [
                         _c("img", {
@@ -40785,7 +40804,7 @@ var render = function() {
                           _c("tbody", { staticClass: "col-lg-6 p-0" }, [
                             _vm._m(5, true),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Họ và tên: "),
                                 _c("strong", [
@@ -40796,7 +40815,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Dân tộc: "),
                                 _c("strong", [
@@ -40805,7 +40824,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Tôn giáo: "),
                                 _c("strong", [
@@ -40814,7 +40833,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Giới tính: \n\t\t\t\t\t\t\t\t\t"),
                                 info.lecturer_gender == 0
@@ -40823,7 +40842,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Ngày sinh: "),
                                 _c("strong", [
@@ -40832,7 +40851,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Nơi sinh: "),
                                 _c("strong", [
@@ -40843,7 +40862,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Quốc gia: "),
                                 _c("strong", [
@@ -40852,7 +40871,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("CMND/CCCD: "),
                                 _c("strong", [
@@ -40863,7 +40882,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Địa chỉ: "),
                                 _c("strong", [
@@ -40876,7 +40895,7 @@ var render = function() {
                           _c("tbody", { staticClass: "col-lg-6 p-0" }, [
                             _vm._m(6, true),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Khoa: "),
                                 _c("strong", [
@@ -40904,7 +40923,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm._m(7, true),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Số điện thoại: "),
                                 _c("strong", [
@@ -40913,7 +40932,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Điện thoại bàn: "),
                                 _c("strong", [
@@ -40922,7 +40941,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Email trường: "),
                                 _c("strong", [
@@ -40931,7 +40950,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Email cá nhân: "),
                                 _c("strong", [
@@ -40948,6 +40967,28 @@ var render = function() {
                     1
                   )
                 }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.details.length,
+                        expression: "!details.length"
+                      }
+                    ],
+                    staticClass: "modal-body"
+                  },
+                  [
+                    _c("div", { staticClass: "alert alert-danger" }, [
+                      _vm._v(
+                        "\n\t\t\t\t\t\tGiảng viên này chưa cập nhật thông tin!\n\t\t\t\t\t"
+                      )
+                    ])
+                  ]
+                ),
                 _vm._v(" "),
                 _vm._m(8)
               ],
@@ -40985,26 +41026,30 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "LecturerModalTitle" } },
-        [_vm._v("Cập nhật tài khoản")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-update" },
+      [
+        _c(
+          "h5",
+          { staticClass: "modal-title", attrs: { id: "LecturerModalTitle" } },
+          [_vm._v("Cập nhật tài khoản")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -41022,7 +41067,10 @@ var staticRenderFns = [
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        {
+          staticClass: "btn btn-primary background-update",
+          attrs: { type: "submit" }
+        },
         [_vm._v("Cập nhật")]
       )
     ])
@@ -41031,34 +41079,41 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "DetailModalTitle" } },
-        [_vm._v("Chi tiết tài khoản")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-info" },
+      [
+        _c(
+          "h5",
+          {
+            staticClass: "modal-title styling-font-modal-header",
+            attrs: { id: "DetailModalTitle" }
+          },
+          [_vm._v("Chi tiết tài khoản")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("td", { staticClass: "h3-strong" }, [
-        _c("h3", [_c("strong", [_vm._v("Thông tin chi tiết")])])
+      _c("td", { staticClass: "h3-strong td-borderight" }, [
+        _c("h3", [_c("strong", [_vm._v(" Thông tin chi tiết Giảng viên")])])
       ])
     ])
   },
@@ -41751,7 +41806,18 @@ var render = function() {
                 _vm._l(_vm.details, function(info) {
                   return _c(
                     "div",
-                    { key: info.student_info_id, staticClass: "modal-body" },
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.details.length,
+                          expression: "details.length"
+                        }
+                      ],
+                      key: info.student_info_id,
+                      staticClass: "modal-body"
+                    },
                     [
                       _c("center", [
                         _c("img", {
@@ -41778,7 +41844,7 @@ var render = function() {
                           _c("tbody", { staticClass: "col-lg-6 p-0" }, [
                             _vm._m(5, true),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Họ và tên: "),
                                 _c("strong", [
@@ -41789,7 +41855,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Dân tộc: "),
                                 _c("strong", [
@@ -41798,7 +41864,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Tôn giáo: "),
                                 _c("strong", [
@@ -41807,7 +41873,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Giới tính: \n\t\t\t\t\t\t\t\t\t"),
                                 info.student_gender == 0
@@ -41816,7 +41882,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Ngày sinh: "),
                                 _c("strong", [
@@ -41825,7 +41891,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Nơi sinh: "),
                                 _c("strong", [
@@ -41834,7 +41900,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Quốc gia: "),
                                 _c("strong", [
@@ -41843,7 +41909,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("CMND/CCCD: "),
                                 _c("strong", [
@@ -41854,7 +41920,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", { staticClass: "td-borderight" }, [
                               _c("td", [
                                 _vm._v("Địa chỉ: "),
                                 _c("strong", [
@@ -41867,7 +41933,7 @@ var render = function() {
                           _c("tbody", { staticClass: "col-lg-6 p-0" }, [
                             _vm._m(6, true),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Khóa học: "),
                                 _c("strong", [
@@ -41876,7 +41942,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Khoa: "),
                                 _c("strong", [
@@ -41885,7 +41951,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Chuyên ngành: "),
                                 _c("strong", [
@@ -41894,7 +41960,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Chức vụ: \n\t\t\t\t\t\t\t\t\t"),
                                 _vm.form.student_role == 1
@@ -41907,7 +41973,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm._m(7, true),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Số điện thoại: "),
                                 _c("strong", [
@@ -41916,7 +41982,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Điện thoại bàn: "),
                                 _c("strong", [
@@ -41925,7 +41991,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Email trường: "),
                                 _c("strong", [
@@ -41934,7 +42000,7 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tr", { staticClass: "td-borderbottom" }, [
+                            _c("tr", [
                               _c("td", [
                                 _vm._v("Email cá nhân: "),
                                 _c("strong", [
@@ -41949,6 +42015,28 @@ var render = function() {
                     1
                   )
                 }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.details.length,
+                        expression: "!details.length"
+                      }
+                    ],
+                    staticClass: "modal-body"
+                  },
+                  [
+                    _c("div", { staticClass: "alert alert-danger" }, [
+                      _vm._v(
+                        "\n\t\t\t\t\t\tGiảng viên này chưa cập nhật thông tin!\n\t\t\t\t\t"
+                      )
+                    ])
+                  ]
+                ),
                 _vm._v(" "),
                 _vm._m(8)
               ],
@@ -41986,26 +42074,33 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "StudentModalTitle" } },
-        [_vm._v("Cập nhật tài khoản")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-update" },
+      [
+        _c(
+          "h5",
+          {
+            staticClass: "modal-title styling-font-modal-header",
+            attrs: { id: "StudentModalTitle" }
+          },
+          [_vm._v("Cập nhật tài khoản")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -42023,7 +42118,10 @@ var staticRenderFns = [
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        {
+          staticClass: "btn btn-primary background-update",
+          attrs: { type: "submit" }
+        },
         [_vm._v("Cập nhật")]
       )
     ])
@@ -42032,34 +42130,41 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "DetailModalTitle" } },
-        [_vm._v("Chi tiết tài khoản")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-info" },
+      [
+        _c(
+          "h5",
+          {
+            staticClass: "modal-title styling-font-modal-header",
+            attrs: { id: "DetailModalTitle" }
+          },
+          [_vm._v("Chi tiết tài khoản")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("td", { staticClass: "h3-strong" }, [
-        _c("h3", [_c("strong", [_vm._v("Thông tin chi tiết")])])
+      _c("td", { staticClass: "h3-strong td-borderight" }, [
+        _c("h3", [_c("strong", [_vm._v("Thông tin chi tiết Sinh viên")])])
       ])
     ])
   },
