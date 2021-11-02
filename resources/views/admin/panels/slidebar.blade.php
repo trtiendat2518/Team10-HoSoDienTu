@@ -74,7 +74,7 @@
 
 					<li class="mt-5 mb-2"><span class="side-menu__label"><strong>&mdash; Quản lý chung &mdash;</strong></span></li>
 					<li class="slide">
-						<a class="side-menu__item" href="#">
+						<a class="side-menu__item" href="{{ route('faculty.index') }}">
 							<i class="side-menu__icon fa fa-th-large"></i>
 							<span class="side-menu__label">Khoa</span>
 						</a>

@@ -46,11 +46,11 @@
 									<th class="w-5">
 										<input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll">
 									</th>
-									<th class="text-white w-30">Mã số sinh viên</th>
-									<th class="text-white w-30">Họ tên</th>
-									<th class="text-white w-30">Địa chỉ Email</th>
-									<th class="text-white w-30">Học tập</th>
-									<th class="text-white w-30">Trạng thái</th>
+									<th class="text-white w-15">Mã số sinh viên</th>
+									<th class="text-white w-25">Họ tên</th>
+									<th class="text-white w-25">Địa chỉ Email</th>
+									<th class="text-white w-15">Học tập</th>
+									<th class="text-white w-5">Trạng thái</th>
 									<th class="w-5"></th>
 									<th class="w-5"></th>
 								</tr>
@@ -60,8 +60,12 @@
 									<td>
 										<center><input type="checkbox" :value="student.student_id" v-model="selected"></center>
 									</td>
-									<td>{{ student.student_code }}</td>
-									<td @click="detail(student)"><a href="javascript:void(0)">{{ student.student_fullname }}</a></td>
+									<td @click="detail(student)">
+										<a href="javascript:void(0)">
+											{{ student.student_code }}
+										</a>
+									</td>
+									<td>{{ student.student_fullname }}</td>
 									<td>{{ student.student_email }}</td>
 									<td>
 										<div v-if="student.student_role==1">

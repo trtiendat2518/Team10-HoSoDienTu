@@ -38,4 +38,8 @@ Route::prefix('admin')->group(function(){
         Route::post('sinh-vien/destroyall/', 'Admin\Users\StudentManageController@destroyall')->name('sinh-vien.destroyall/{student}');
         Route::resource('sinh-vien', 'Admin\Users\StudentManageController');
     });
+
+    Route::prefix('edu-faculty')->group(function(){
+        Route::resource('khoa', 'Admin\Education\FacultyController');
+    });
 });
