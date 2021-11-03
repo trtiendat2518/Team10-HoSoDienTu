@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -87,39 +88,44 @@
 		</div>
 
 		<!-- Modal -->
-		<!-- <div class="modal fade" id="LecturerModal" tabindex="-1" role="dialog" aria-labelledby="LecturerModalTitle" aria-hidden="true">
+		<div class="modal fade" id="FacultyModal" tabindex="-1" role="dialog" aria-labelledby="FacultyModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
-				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
+				<form @submit.prevent="editMode?update():store()" @keydown="form.onKeydown($event)">
+					<span class="alert-danger" :form="form"></span>
 					<div class="modal-content">
 						<div class="modal-header styling-modal-header-update">
-							<h5 class="modal-title" id="LecturerModalTitle">Cập nhật tài khoản</h5>
+							<h5 class="modal-title" id="FacultyModalTitle">{{ editMode ? "Cập nhật" : "Thêm mới" }} Khoa</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Họ và tên</label>
-							<input v-model="form.lecturer_fullname" type="text" name="lecturer_fullname"class="form-control not-allowed mb-3" disabled>
+							<label>Mã khoa</label>
+							<input v-model="form.faculty_code" type="text" name="faculty_code"class="form-control" placeholder="Nhập mã Khoa" :disabled="editMode" :class="{'is-invalid': form.errors.has('faculty_code')}">
+							<div class="text-danger" v-if="form.errors.has('faculty_code')" v-html="form.errors.get('faculty_code')"></div>
 
-							<label>Địa chỉ Email</label>
-							<input v-model="form.lecturer_email" type="text" name="lecturer_email" class="form-control not-allowed" disabled>
+							<label class="mt-3">Tên Khoa</label>
+							<input v-model="form.faculty_name" type="text" name="faculty_name" class="form-control" placeholder="Nhập tên Khoa" :class="{'is-invalid': form.errors.has('faculty_name')}">
+							<div class="text-danger" v-if="form.errors.has('faculty_name')" v-html="form.errors.get('faculty_name')"></div>
 
 							
-							<label class="mt-3">Vai trò</label>
-							<select v-model="form.lecturer_role" name="lecturer_role" class="form-control select-option">
-								<option value="0">Giảng viên mới</option>
-								<option value="1">Ban chủ nhiệm khoa</option>
-								<option value="2">Chủ nhiệm sinh viên</option>
+							<label class="mt-3">Trạng thái</label>
+							<select v-model="form.faculty_status" name="faculty_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('faculty_status')}">
+								<option value="" selected disabled>Chọn trạng thái:</option>
+								<option disabled>---------------</option>
+								<option value="0">Hiển thị</option>
+								<option value="1">Không hiển thị</option>
 							</select>
+							<div class="text-danger mb-3" v-if="form.errors.has('faculty_status')" v-html="form.errors.get('faculty_status')"></div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button type="submit" class="btn btn-primary background-update">Cập nhật</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary background-update">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
 						</div>
 					</div>
 				</form>
 			</div>
-		</div> -->
+		</div>
 		<!-- Modal end-->
 
 		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
@@ -297,6 +303,26 @@
 				.then(res => {
 					this.faculties = res.data;
 					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
+			create(){
+				this.editMode = false;
+				this.form.reset();
+				this.form.clear();
+				$('#FacultyModal').modal('show');
+			},
+			store(){
+				this.form.busy = true;
+				this.form.post('../../api/admin/edu-faculty/khoa')
+				.then(res => {
+					this.fetchFaculties();
+					$('#FacultyModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Thêm mới thành công!');
+					}else{
+						this.$snotify.error('Không thể thêm Khoa', 'Lỗi');
+					}
 				})
 				.catch(err => console.log(err));
 			},
