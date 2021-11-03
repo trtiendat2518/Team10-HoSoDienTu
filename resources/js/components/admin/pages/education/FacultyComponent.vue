@@ -56,19 +56,18 @@
 									<td><a href="javascript:void(0)">{{ faculty.faculty_code }}</a></td>
 									<td>{{ faculty.faculty_name }}</td>
 									<td class="td-styling">
-										<!-- <div v-if="faculty.faculty_status==0">
+										<div v-if="faculty.faculty_status==0">
 											<button class="fa fa-eye btn-eye" @click="change(faculty.faculty_id)"></button>
 										</div>
 										<div v-else>
-											<button class="fa fa-eye-slash btn-eye-slash" @click="change(lecturer.lecturer_id)"></button>
-										</div> -->
-										Trang thai
+											<button class="fa fa-eye-slash btn-eye-slash" @click="change(faculty.faculty_id)"></button>
+										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(lecturer)"></button>
+										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(faculty)"></button>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(lecturer.lecturer_id)"></button>
+										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(faculty.faculty_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!faculties.length">
@@ -108,15 +107,16 @@
 							<input v-model="form.faculty_name" type="text" name="faculty_name" class="form-control" placeholder="Nhập tên Khoa" :class="{'is-invalid': form.errors.has('faculty_name')}">
 							<div class="text-danger" v-if="form.errors.has('faculty_name')" v-html="form.errors.get('faculty_name')"></div>
 
-							
-							<label class="mt-3">Trạng thái</label>
-							<select v-model="form.faculty_status" name="faculty_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('faculty_status')}">
-								<option value="" selected disabled>Chọn trạng thái:</option>
-								<option disabled>---------------</option>
-								<option value="0">Hiển thị</option>
-								<option value="1">Không hiển thị</option>
-							</select>
-							<div class="text-danger mb-3" v-if="form.errors.has('faculty_status')" v-html="form.errors.get('faculty_status')"></div>
+							<div v-if="!editMode">
+								<label class="mt-3">Trạng thái</label>
+								<select v-model="form.faculty_status" name="faculty_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('faculty_status')}">
+									<option value="" selected disabled>Chọn trạng thái:</option>
+									<option disabled>---------------</option>
+									<option value="0">Hiển thị</option>
+									<option value="1">Không hiển thị</option>
+								</select>
+								<div class="text-danger mb-3" v-if="form.errors.has('faculty_status')" v-html="form.errors.get('faculty_status')"></div>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -326,26 +326,26 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// show(lecturer) {
-			// 	this.editMode = true;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	this.form.fill(lecturer);
-			// 	$('#LecturerModal').modal('show');
-			// },
-			// update() {
-			// 	this.form.put('../../api/admin/user-gv/giang-vien/'+this.form.lecturer_id)
-			// 	.then(res => {
-			// 		this.fetchFaculties();
-			// 		$('#LecturerModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Vai trò của tài khoản đã thay đổi');
-			// 		}else{
-			// 			this.$snotify.error('Không thể chỉnh sửa');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			show(faculty) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				this.form.fill(faculty);
+				$('#FacultyModal').modal('show');
+			},
+			update() {
+				this.form.put('../../api/admin/edu-faculty/khoa/'+this.form.faculty_id)
+				.then(res => {
+					this.fetchFaculties();
+					$('#FacultyModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Cập nhật Khoa thành công!');
+					}else{
+						this.$snotify.error('Không thể chỉnh sửa');
+					}
+				})
+				.catch(err => console.log(err));
+			},
 			// change(lecturer_id) {
 			// 	axios.patch(`../../api/admin/user-gv/giang-vien/change/${lecturer_id}`)
 			// 	.then(res => {
