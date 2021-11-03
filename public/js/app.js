@@ -2311,6 +2311,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2390,6 +2396,30 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this2.faculties = res.data;
         _this2.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    create: function create() {
+      this.editMode = false;
+      this.form.reset();
+      this.form.clear();
+      $('#FacultyModal').modal('show');
+    },
+    store: function store() {
+      var _this3 = this;
+
+      this.form.busy = true;
+      this.form.post('../../api/admin/edu-faculty/khoa').then(function (res) {
+        _this3.fetchFaculties();
+
+        $('#FacultyModal').modal('hide');
+
+        if (_this3.form.successful) {
+          _this3.$snotify.success('Thêm mới thành công!');
+        } else {
+          _this3.$snotify.error('Không thể thêm Khoa', 'Lỗi');
+        }
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -40355,6 +40385,19 @@ var render = function() {
     [
       _c("vue-snotify"),
       _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-info btn-lg mb-3",
+          on: {
+            click: function($event) {
+              return _vm.create()
+            }
+          }
+        },
+        [_c("li", { staticClass: "fa fa-plus" }), _vm._v(" Tạo mới")]
+      ),
+      _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12 col-lg-12" }, [
           _c("div", { staticClass: "card" }, [
@@ -40686,7 +40729,266 @@ var render = function() {
             )
           ])
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "FacultyModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "FacultyModalTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.editMode ? _vm.update() : _vm.store()
+                    },
+                    keydown: function($event) {
+                      return _vm.form.onKeydown($event)
+                    }
+                  }
+                },
+                [
+                  _c("span", {
+                    staticClass: "alert-danger",
+                    attrs: { form: _vm.form }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-content" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "modal-header styling-modal-header-update"
+                      },
+                      [
+                        _c(
+                          "h5",
+                          {
+                            staticClass: "modal-title",
+                            attrs: { id: "FacultyModalTitle" }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(_vm.editMode ? "Cập nhật" : "Thêm mới") +
+                                " Khoa"
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(2)
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c("label", [_vm._v("Mã khoa")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.faculty_code,
+                            expression: "form.faculty_code"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("faculty_code")
+                        },
+                        attrs: {
+                          type: "text",
+                          name: "faculty_code",
+                          placeholder: "Nhập mã Khoa",
+                          disabled: _vm.editMode
+                        },
+                        domProps: { value: _vm.form.faculty_code },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "faculty_code",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.errors.has("faculty_code")
+                        ? _c("div", {
+                            staticClass: "text-danger",
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.form.errors.get("faculty_code")
+                              )
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("label", { staticClass: "mt-3" }, [
+                        _vm._v("Tên Khoa")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.faculty_name,
+                            expression: "form.faculty_name"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("faculty_name")
+                        },
+                        attrs: {
+                          type: "text",
+                          name: "faculty_name",
+                          placeholder: "Nhập tên Khoa"
+                        },
+                        domProps: { value: _vm.form.faculty_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "faculty_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.errors.has("faculty_name")
+                        ? _c("div", {
+                            staticClass: "text-danger",
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.form.errors.get("faculty_name")
+                              )
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("label", { staticClass: "mt-3" }, [
+                        _vm._v("Trạng thái")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.faculty_status,
+                              expression: "form.faculty_status"
+                            }
+                          ],
+                          staticClass: "form-control select-option",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("faculty_status")
+                          },
+                          attrs: { name: "faculty_status" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "faculty_status",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            {
+                              attrs: { value: "", selected: "", disabled: "" }
+                            },
+                            [_vm._v("Chọn trạng thái:")]
+                          ),
+                          _vm._v(" "),
+                          _c("option", { attrs: { disabled: "" } }, [
+                            _vm._v("---------------")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "0" } }, [
+                            _vm._v("Hiển thị")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "1" } }, [
+                            _vm._v("Không hiển thị")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.form.errors.has("faculty_status")
+                        ? _c("div", {
+                            staticClass: "text-danger mb-3",
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.form.errors.get("faculty_status")
+                              )
+                            }
+                          })
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button", "data-dismiss": "modal" }
+                        },
+                        [_vm._v("Đóng")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary background-update",
+                          attrs: { disabled: _vm.form.busy, type: "submit" }
+                        },
+                        [_vm._v(_vm._s(_vm.editMode ? "Cập nhật" : "Thêm mới"))]
+                      )
+                    ])
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
+      )
     ],
     1
   )
@@ -40711,6 +41013,23 @@ var staticRenderFns = [
         )
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true
