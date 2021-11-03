@@ -260,6 +260,7 @@ sup {
 	top: -.5em;
 }
 a {
+	font-weight: bold;
 	color: #1753fc;
 	text-decoration: none;
 	background-color: transparent;
@@ -21063,7 +21064,7 @@ Dimmer
 																																			color: #2e384d;
 																																		}
 																																		.tabs-menu ul li .active{
-																																			background: #e66c2c;
+																																			background: #1753fc;
 																																			color:  #fff;
 																																		}
 																																		.sidebar  .tabs-menu ul li .active{
