@@ -2424,26 +2424,30 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(err);
       });
     },
-    // show(lecturer) {
-    // 	this.editMode = true;
-    // 	this.form.reset();
-    // 	this.form.clear();
-    // 	this.form.fill(lecturer);
-    // 	$('#LecturerModal').modal('show');
-    // },
-    // update() {
-    // 	this.form.put('../../api/admin/user-gv/giang-vien/'+this.form.lecturer_id)
-    // 	.then(res => {
-    // 		this.fetchFaculties();
-    // 		$('#LecturerModal').modal('hide');
-    // 		if(this.form.successful){
-    // 			this.$snotify.success('Vai trò của tài khoản đã thay đổi');
-    // 		}else{
-    // 			this.$snotify.error('Không thể chỉnh sửa');
-    // 		}
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
+    show: function show(faculty) {
+      this.editMode = true;
+      this.form.reset();
+      this.form.clear();
+      this.form.fill(faculty);
+      $('#FacultyModal').modal('show');
+    },
+    update: function update() {
+      var _this4 = this;
+
+      this.form.put('../../api/admin/edu-faculty/khoa/' + this.form.faculty_id).then(function (res) {
+        _this4.fetchFaculties();
+
+        $('#FacultyModal').modal('hide');
+
+        if (_this4.form.successful) {
+          _this4.$snotify.success('Cập nhật Khoa thành công!');
+        } else {
+          _this4.$snotify.error('Không thể chỉnh sửa');
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     // change(lecturer_id) {
     // 	axios.patch(`../../api/admin/user-gv/giang-vien/change/${lecturer_id}`)
     // 	.then(res => {
@@ -40656,9 +40660,32 @@ var render = function() {
                               _c("td", [_vm._v(_vm._s(faculty.faculty_name))]),
                               _vm._v(" "),
                               _c("td", { staticClass: "td-styling" }, [
-                                _vm._v(
-                                  "\n\t\t\t\t\t\t\t\t\tTrang thai\n\t\t\t\t\t\t\t\t"
-                                )
+                                faculty.faculty_status == 0
+                                  ? _c("div", [
+                                      _c("button", {
+                                        staticClass: "fa fa-eye btn-eye",
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.change(
+                                              faculty.faculty_id
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  : _c("div", [
+                                      _c("button", {
+                                        staticClass:
+                                          "fa fa-eye-slash btn-eye-slash",
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.change(
+                                              faculty.faculty_id
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ])
                               ]),
                               _vm._v(" "),
                               _c(
@@ -40670,7 +40697,7 @@ var render = function() {
                                       "active btn btn-outline-success btn-lg fa fa-pencil-square-o",
                                     on: {
                                       click: function($event) {
-                                        return _vm.show(_vm.lecturer)
+                                        return _vm.show(faculty)
                                       }
                                     }
                                   })
@@ -40683,9 +40710,7 @@ var render = function() {
                                     "active btn btn-danger btn-lg fa fa-trash",
                                   on: {
                                     click: function($event) {
-                                      return _vm.destroy(
-                                        _vm.lecturer.lecturer_id
-                                      )
+                                      return _vm.destroy(faculty.faculty_id)
                                     }
                                   }
                                 })
@@ -40888,78 +40913,89 @@ var render = function() {
                           })
                         : _vm._e(),
                       _vm._v(" "),
-                      _c("label", { staticClass: "mt-3" }, [
-                        _vm._v("Trạng thái")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.faculty_status,
-                              expression: "form.faculty_status"
-                            }
-                          ],
-                          staticClass: "form-control select-option",
-                          class: {
-                            "is-invalid": _vm.form.errors.has("faculty_status")
-                          },
-                          attrs: { name: "faculty_status" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
+                      !_vm.editMode
+                        ? _c("div", [
+                            _c("label", { staticClass: "mt-3" }, [
+                              _vm._v("Trạng thái")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.faculty_status,
+                                    expression: "form.faculty_status"
+                                  }
+                                ],
+                                staticClass: "form-control select-option",
+                                class: {
+                                  "is-invalid": _vm.form.errors.has(
+                                    "faculty_status"
+                                  )
+                                },
+                                attrs: { name: "faculty_status" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.form,
+                                      "faculty_status",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      value: "",
+                                      selected: "",
+                                      disabled: ""
+                                    }
+                                  },
+                                  [_vm._v("Chọn trạng thái:")]
+                                ),
+                                _vm._v(" "),
+                                _c("option", { attrs: { disabled: "" } }, [
+                                  _vm._v("---------------")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "0" } }, [
+                                  _vm._v("Hiển thị")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "1" } }, [
+                                  _vm._v("Không hiển thị")
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.form.errors.has("faculty_status")
+                              ? _c("div", {
+                                  staticClass: "text-danger mb-3",
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.form.errors.get("faculty_status")
+                                    )
+                                  }
                                 })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.form,
-                                "faculty_status",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _c(
-                            "option",
-                            {
-                              attrs: { value: "", selected: "", disabled: "" }
-                            },
-                            [_vm._v("Chọn trạng thái:")]
-                          ),
-                          _vm._v(" "),
-                          _c("option", { attrs: { disabled: "" } }, [
-                            _vm._v("---------------")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "0" } }, [
-                            _vm._v("Hiển thị")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "1" } }, [
-                            _vm._v("Không hiển thị")
+                              : _vm._e()
                           ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _vm.form.errors.has("faculty_status")
-                        ? _c("div", {
-                            staticClass: "text-danger mb-3",
-                            domProps: {
-                              innerHTML: _vm._s(
-                                _vm.form.errors.get("faculty_status")
-                              )
-                            }
-                          })
                         : _vm._e()
                     ]),
                     _vm._v(" "),

@@ -105,9 +105,21 @@ class FacultyController extends Controller
      * @param  \App\Models\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Faculty $faculty)
+    public function update(Request $request, $faculty)
     {
-        //
+        $fac = Faculty::find($faculty);
+
+        $data = $request->validate([
+            'faculty_name' => ['required', 'max:50', 'min:7', 'notspecial_spaces'],
+        ],[
+            'faculty_name.required' => 'Tên Khoa không dược để trống!',
+            'faculty_name.max' => 'Tên Khoa không nhập quá 50 ký tự chữ!',
+            'faculty_name.min' => 'Tên Khoa phải có 7 ký tự chữ trở lên!',
+            'faculty_name.notspecial_spaces' => 'Tên Khoa không được chứa ký tự đặc biệt!',
+        ]);
+
+        $fac->faculty_name = $data['faculty_name'];
+        $fac->save();
     }
 
     /**
