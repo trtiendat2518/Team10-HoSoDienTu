@@ -128,8 +128,24 @@ class FacultyController extends Controller
      * @param  \App\Models\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Faculty $faculty)
+    public function destroy($faculty)
     {
-        //
+        $fac = Faculty::find($faculty);
+        $fac->delete();
+    }
+
+    /**
+     * Remove all the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyall(Request $request, $faculty = null)
+    {
+        if ($request->faculty) {
+            foreach ($request->faculty as $id) {
+                Faculty::where('faculty_id', $id)->delete();
+            }
+        }
     }
 }
