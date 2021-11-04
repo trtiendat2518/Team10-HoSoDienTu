@@ -35,6 +35,9 @@ Vue.component('update-info-component', require('./components/admin/pages/info/Up
 Vue.component('lecturer-manage-component', require('./components/admin/pages/users/LecturerManageComponent.vue').default);
 Vue.component('student-manage-component', require('./components/admin/pages/users/StudentManageComponent.vue').default);
 
+//Education
+Vue.component('faculty-component', require('./components/admin/pages/education/FacultyComponent.vue').default);
+
 const app = new Vue({
     el: '#app',
 });

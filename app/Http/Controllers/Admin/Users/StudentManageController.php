@@ -32,6 +32,11 @@ class StudentManageController extends Controller
         return StudentResource::collection(Student::where('student_fullname','LIKE','%'.$query.'%')->orwhere('student_email','LIKE','%'.$query.'%')->orderby('student_id','DESC')->paginate($currentEntries));
     }
 
+    public function filter($value, $currentEntries)
+    {
+        return StudentResource::collection(Student::where('student_role','LIKE','%'.$value.'%')->paginate($currentEntries));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
