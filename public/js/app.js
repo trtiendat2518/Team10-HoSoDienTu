@@ -2338,8 +2338,7 @@ __webpack_require__.r(__webpack_exports__);
       }),
       selected: [],
       selectAll: false,
-      details: [],
-      value_role: ''
+      details: []
     };
   },
   watch: {
@@ -2356,14 +2355,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.search();
       }
-    } // value_role(value){
-    // 	if(value === ''){
-    // 		this.fetchFaculties();
-    // 	}else{
-    // 		this.filter();
-    // 	}
-    // },
-
+    }
   },
   mounted: function mounted() {
     this.fetchFaculties();
@@ -2456,62 +2448,72 @@ __webpack_require__.r(__webpack_exports__);
     // 	})
     // 	.catch(err => console.log(err));
     // },
-    // destroy(lecturer_id) {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.delete(`../../api/admin/user-gv/giang-vien/${lecturer_id}`)
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchFaculties();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
-    // destroyall() {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.post('../../api/admin/user-gv/giang-vien/destroyall', { lecturer: this.selected })
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchFaculties();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
+    destroy: function destroy(faculty_id) {
+      var _this5 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this5.$snotify.remove(toast.id);
+
+            axios["delete"]("../../api/admin/edu-faculty/khoa/".concat(faculty_id)).then(function (res) {
+              _this5.$snotify.success('Đã xóa!');
+
+              _this5.fetchFaculties();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this5.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    destroyall: function destroyall() {
+      var _this6 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+
+            axios.post('../../api/admin/edu-faculty/khoa/destroyall', {
+              faculty: _this6.selected
+            }).then(function (res) {
+              _this6.$snotify.success('Đã xóa!');
+
+              _this6.fetchFaculties();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
     select: function select() {
       this.selected = [];
 
@@ -2533,21 +2535,9 @@ __webpack_require__.r(__webpack_exports__);
     // 	})
     // 	.catch(err => console.log(err));
     // },
-    // filter(page_url) {
-    // 	let vm = this;
-    // 	page_url = '../../api/admin/user-gv/giang-vien/filter/'+this.value_role+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.lecturers = res.data;
-    // 		this.pagination = res.meta;
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
     reload: function reload() {
       this.fetchFaculties();
       this.query = '';
-      this.value_role = '';
     }
   }
 });
@@ -40425,6 +40415,19 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-1" }, [
+                _c("button", {
+                  staticClass:
+                    "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                  attrs: { disabled: !_vm.selected.length },
+                  on: {
+                    click: function($event) {
+                      return _vm.destroyall()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-9" }, [
                 _c("input", {
                   directives: [
@@ -40830,9 +40833,10 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        class: {
-                          "is-invalid": _vm.form.errors.has("faculty_code")
-                        },
+                        class: [
+                          { "is-invalid": _vm.form.errors.has("faculty_code") },
+                          { "not-allowed": _vm.editMode }
+                        ],
                         attrs: {
                           type: "text",
                           name: "faculty_code",

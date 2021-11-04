@@ -15,9 +15,9 @@
 					</div>
 
 					<div class="row">
-						<!-- <div class="col-md-1">
+						<div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div> -->
+						</div>
 						<div class="col-md-9">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
@@ -100,7 +100,7 @@
 						</div>
 						<div class="modal-body">
 							<label>Mã khoa</label>
-							<input v-model="form.faculty_code" type="text" name="faculty_code"class="form-control" placeholder="Nhập mã Khoa" :disabled="editMode" :class="{'is-invalid': form.errors.has('faculty_code')}">
+							<input v-model="form.faculty_code" type="text" name="faculty_code"class="form-control" placeholder="Nhập mã Khoa" :disabled="editMode" :class="[{'is-invalid': form.errors.has('faculty_code')}, {'not-allowed': editMode}]">
 							<div class="text-danger" v-if="form.errors.has('faculty_code')" v-html="form.errors.get('faculty_code')"></div>
 
 							<label class="mt-3">Tên Khoa</label>
@@ -251,7 +251,6 @@
 				selected: [],
 				selectAll: false,
 				details:[],
-				value_role:'',
 			};
 		},
 		watch: {
@@ -269,13 +268,6 @@
 					this.search();
 				}
 			},
-			// value_role(value){
-			// 	if(value === ''){
-			// 		this.fetchFaculties();
-			// 	}else{
-			// 		this.filter();
-			// 	}
-			// },
 		},
 		mounted() {
 			this.fetchFaculties();
@@ -354,62 +346,62 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// destroy(lecturer_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/user-gv/giang-vien/${lecturer_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchFaculties();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/user-gv/giang-vien/destroyall', { lecturer: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchFaculties();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
+			destroy(faculty_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/edu-faculty/khoa/${faculty_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchFaculties();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/edu-faculty/khoa/destroyall', { faculty: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchFaculties();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
 			select() {
 				this.selected = [];
 				if(!this.selectAll){
@@ -430,21 +422,9 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// filter(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/user-gv/giang-vien/filter/'+this.value_role+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.lecturers = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 			reload(){
 				this.fetchFaculties();
 				this.query='';
-				this.value_role='';
 			},
 		}
 	};
