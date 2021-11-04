@@ -31,6 +31,9 @@ Route::prefix('admin')->group(function(){
             Route::get('/giang-vien','Admin\ViewController@lecturer_manage')->name('lecturer.index');
             Route::get('/sinh-vien','Admin\ViewController@student_manage')->name('student.index');
         });
+        Route::prefix('quan-ly-chung')->group(function(){
+            Route::get('/khoa','Admin\ViewController@faculty_manage')->name('faculty.index');
+        });
     });
 });
 

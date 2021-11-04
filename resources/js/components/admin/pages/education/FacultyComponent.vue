@@ -1,12 +1,13 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
 					<div class="card-header">
 						<div class="col-md-11">
-							<h3 class="card-title">Danh sách sinh viên</h3>
+							<h3 class="card-title">Danh sách Khoa</h3>
 						</div>
 						<div class="col-md-1">
 							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
@@ -17,15 +18,8 @@
 						<div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-9">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div>
-						<div class="col-md-3">
-							<select class="form-control mt-2" v-model="value_role">
-								<option value="" disabled selected>Lọc thông tin</option>
-								<option value="0">Sinh viên còn đang học</option>
-								<option value="1">Sinh viên đã ra trường</option>
-							</select>
 						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
@@ -46,51 +40,37 @@
 									<th class="w-5">
 										<input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll">
 									</th>
-									<th class="text-white w-15">Mã số sinh viên</th>
-									<th class="text-white w-25">Họ tên</th>
-									<th class="text-white w-25">Địa chỉ Email</th>
-									<th class="text-white w-15">Học tập</th>
-									<th class="text-white w-5">Trạng thái</th>
+									<th class="text-white w-15">Mã khoa</th>
+									<th class="text-white w-60">Tên khoa</th>
+									<th class="text-white w-10">Trạng thái</th>
 									<th class="w-5"></th>
 									<th class="w-5"></th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-show="students.length" v-for="student in students" :key="student.student_id">
+								<tr v-show="faculties.length" v-for="faculty in faculties" :key="faculty.faculty_id">
 									<td>
-										<center><input type="checkbox" :value="student.student_id" v-model="selected"></center>
+										<center><input type="checkbox" :value="faculty.faculty_id" v-model="selected"></center>
 									</td>
-									<td @click="detail(student)">
-										<a href="javascript:void(0)">
-											{{ student.student_code }}
-										</a>
-									</td>
-									<td>{{ student.student_fullname }}</td>
-									<td>{{ student.student_email }}</td>
-									<td>
-										<div v-if="student.student_role==1">
-											Đã ra trường
-										</div>
-										<div v-else>
-											Còn đang học
-										</div>
-									</td>
+									<!-- @click="detail(lecturer)" -->
+									<td><a href="javascript:void(0)">{{ faculty.faculty_code }}</a></td>
+									<td>{{ faculty.faculty_name }}</td>
 									<td class="td-styling">
-										<div v-if="student.student_status==0">
-											<button class="fa fa-eye btn-eye" @click="change(student.student_id)"></button>
+										<div v-if="faculty.faculty_status==0">
+											<button class="fa fa-eye btn-eye" @click="change(faculty.faculty_id)"></button>
 										</div>
 										<div v-else>
-											<button class="fa fa-eye-slash btn-eye-slash" @click="change(student.student_id)"></button>
+											<button class="fa fa-eye-slash btn-eye-slash" @click="change(faculty.faculty_id)"></button>
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(student)"></button>
+										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(faculty)"></button>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(student.student_id)"></button>
+										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(faculty.faculty_id)"></button>
 									</td>
 								</tr>
-								<tr v-show="!students.length">
+								<tr v-show="!faculties.length">
 									<td colspan="8">
 										<div class="alert alert-danger">
 											Không tìm thấy kết quả phù hợp!
@@ -99,7 +79,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchStudents() : search() "></pagination>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchFaculties() : search() "></pagination>
 					</div>
 					<!-- table-responsive -->
 				</div>
@@ -107,33 +87,40 @@
 		</div>
 
 		<!-- Modal -->
-		<div class="modal fade" id="StudentModal" tabindex="-1" role="dialog" aria-labelledby="StudentModalTitle" aria-hidden="true">
+		<div class="modal fade" id="FacultyModal" tabindex="-1" role="dialog" aria-labelledby="FacultyModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
-				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
+				<form @submit.prevent="editMode?update():store()" @keydown="form.onKeydown($event)">
+					<span class="alert-danger" :form="form"></span>
 					<div class="modal-content">
 						<div class="modal-header styling-modal-header-update">
-							<h5 class="modal-title styling-font-modal-header" id="StudentModalTitle">Cập nhật tài khoản</h5>
+							<h5 class="modal-title" id="FacultyModalTitle">{{ editMode ? "Cập nhật" : "Thêm mới" }} Khoa</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Họ và tên</label>
-							<input v-model="form.student_fullname" type="text" name="student_fullname"class="form-control not-allowed mb-3" disabled>
+							<label>Mã khoa</label>
+							<input v-model="form.faculty_code" type="text" name="faculty_code"class="form-control" placeholder="Nhập mã Khoa" :disabled="editMode" :class="[{'is-invalid': form.errors.has('faculty_code')}, {'not-allowed': editMode}]">
+							<div class="text-danger" v-if="form.errors.has('faculty_code')" v-html="form.errors.get('faculty_code')"></div>
 
-							<label>Địa chỉ Email</label>
-							<input v-model="form.student_email" type="text" name="student_email" class="form-control not-allowed" disabled>
+							<label class="mt-3">Tên Khoa</label>
+							<input v-model="form.faculty_name" type="text" name="faculty_name" class="form-control" placeholder="Nhập tên Khoa" :class="{'is-invalid': form.errors.has('faculty_name')}">
+							<div class="text-danger" v-if="form.errors.has('faculty_name')" v-html="form.errors.get('faculty_name')"></div>
 
-							
-							<label class="mt-3">Vai trò</label>
-							<select v-model="form.student_role" name="student_role" class="form-control select-option">
-								<option value="0">Còn đang học</option>
-								<option value="1">Đã ra trường</option>
-							</select>
+							<div v-if="!editMode">
+								<label class="mt-3">Trạng thái</label>
+								<select v-model="form.faculty_status" name="faculty_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('faculty_status')}">
+									<option value="" selected disabled>Chọn trạng thái:</option>
+									<option disabled>---------------</option>
+									<option value="0">Hiển thị</option>
+									<option value="1">Không hiển thị</option>
+								</select>
+								<div class="text-danger mb-3" v-if="form.errors.has('faculty_status')" v-html="form.errors.get('faculty_status')"></div>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button type="submit" class="btn btn-primary background-update">Cập nhật</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary background-update">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
 						</div>
 					</div>
 				</form>
@@ -141,7 +128,7 @@
 		</div>
 		<!-- Modal end-->
 
-		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header styling-modal-header-info">
@@ -150,45 +137,45 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body" v-show="details.length" v-for="info in details" :key="info.student_info_id">
+					<div class="modal-body" v-show="details.length" v-for="info in details" :key="info.lecturer_info_id">
 						<center>
 							<img src="('../public/lecturer/images/vlu.ico')" class="avatar-xxl rounded-circle" alt="profile">
-							{{ info.student_avatar }}
+							{{ info.lecturer_avatar }}
 						</center>
 						<table class="table row table-borderless w-100 m-0 border">
 							<tbody class="col-lg-6 p-0">
 								<tr>
-									<td class="h3-strong td-borderight"><h3><strong>Thông tin chi tiết Sinh viên</strong></h3></td>
+									<td class="h3-strong td-borderight"><h3><strong> Thông tin chi tiết Giảng viên</strong></h3></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Họ và tên: <strong> {{ form.student_fullname }}</strong></td>
+									<td>Họ và tên: <strong> {{ form.lecturer_fullname }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Dân tộc: <strong> {{ info.student_ethnic }}</strong></td>
+									<td>Dân tộc: <strong> {{ info.lecturer_ethnic }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Tôn giáo: <strong> {{ info.student_religion }}</strong></td>
+									<td>Tôn giáo: <strong> {{ info.lecturer_religion }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
 									<td >Giới tính: 
-										<strong v-if="info.student_gender==0"> Nam</strong>
+										<strong v-if="info.lecturer_gender==0"> Nam</strong>
 										<strong v-else> Nữ</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Ngày sinh: <strong> {{ info.student_birthday }}</strong></td>
+									<td>Ngày sinh: <strong> {{ info.lecturer_birthday }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Nơi sinh: <strong> {{ info.student_birth_place }}</strong></td>
+									<td>Nơi sinh: <strong> {{ info.lecturer_birth_place }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Quốc gia: <strong> {{ info.student_country }}</strong></td>
+									<td>Quốc gia: <strong> {{ info.lecturer_country }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>CMND/CCCD: <strong> {{ info.student_identify_card }}</strong></td>
+									<td>CMND/CCCD: <strong> {{ info.lecturer_identify_card }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Địa chỉ: <strong> {{ info.student_address }}</strong></td>
+									<td>Địa chỉ: <strong> {{ info.lecturer_address }}</strong></td>
 								</tr>
 							</tbody>
 							<tbody class="col-lg-6 p-0">
@@ -196,18 +183,13 @@
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Khóa học: <strong> {{ info.student_course }}</strong></td>
+									<td>Khoa: <strong> {{ info.lecturer_faculty }}</strong></td>
 								</tr>
-								<tr>
-									<td>Khoa: <strong> {{ info.student_faculty }}</strong></td>
-								</tr>
-								<tr>
-									<td>Chuyên ngành: <strong> {{ info.student_specialized }}</strong></td>
-								</tr>
-								<tr>
+								<tr class="td-borderbottom">
 									<td>Chức vụ: 
-										<strong v-if="form.student_role==1"> Đã ra trường</strong>
-										<strong v-else> Còn đang học</strong>
+										<strong v-if="form.lecturer_role==2"> Chủ nhiệm sinh viên</strong>
+										<strong v-else-if="form.lecturer_role==1"> Ban chủ nhiệm khoa</strong>
+										<strong v-else> Giảng viên mới</strong>
 									</td>
 								</tr>
 								
@@ -218,16 +200,16 @@
 									</td>
 								</tr>
 								<tr>
-									<td>Số điện thoại: <strong> {{ info.student_phone }}</strong></td>
+									<td>Số điện thoại: <strong> {{ info.lecturer_phone }}</strong></td>
 								</tr>
 								<tr>
-									<td>Điện thoại bàn: <strong> {{ info.student_deskphone }}</strong></td>
+									<td>Điện thoại bàn: <strong> {{ info.lecturer_deskphone }}</strong></td>
 								</tr>
 								<tr>
-									<td>Email trường: <strong> {{ form.student_email }}</strong></td>
+									<td>Email trường: <strong> {{ form.lecturer_email }}</strong></td>
 								</tr>
 								<tr>
-									<td>Email cá nhân: <strong> {{ info.student_other_email }}</strong></td>
+									<td>Email cá nhân: <strong> {{ info.lecturer_other_email }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -242,7 +224,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -251,8 +233,8 @@
 	export default {
 		data() {
 			return {
-				students:[],
-				student_id:'',
+				faculties:[],
+				faculty_id:'',
 				pagination:{
 					current_page: 1,
 				},
@@ -261,100 +243,110 @@
 				query: '',
 				editMode: false,
 				form: new Form({
-					student_id:'',
-					student_code:'',
-					student_fullname:'',
-					student_email:'',
-					student_role:'',
-					student_status: ''
+					faculty_id:'',
+					faculty_code:'',
+					faculty_name:'',
+					faculty_status: '',
 				}),
 				selected: [],
 				selectAll: false,
 				details:[],
-				value_role:'',
-			}
+			};
 		},
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
-					this.fetchStudents();
+					this.fetchFaculties();
 				}else{
-					this.fetchStudents();
+					this.fetchFaculties();
 				}
 			},
 			query(keyword){
 				if(keyword === ''){
-					this.fetchStudents();
+					this.fetchFaculties();
 				}else{
 					this.search();
 				}
 			},
-			value_role(value){
-				if(value === ''){
-					this.fetchStudents();
-				}else{
-					this.filter();
-				}
-			},
 		},
 		mounted() {
-			this.fetchStudents();
+			this.fetchFaculties();
 		},
 		methods: {
 			empty() {
-				return (this.students.length < 1);
+				return (this.faculties.length < 1);
 			},
-			fetchStudents(page_url) {
+			fetchFaculties(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-sv/sinh-vien/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/edu-faculty/khoa/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
-					this.students = res.data;
+					this.faculties = res.data;
 					this.pagination = res.meta;
 				})
 				.catch(err => console.log(err));
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-sv/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/edu-faculty/khoa/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
-					this.students = res.data;
+					this.faculties = res.data;
 					this.pagination = res.meta;
 				})
 				.catch(err => console.log(err));
 			},
-			show(student) {
+			create(){
+				this.editMode = false;
+				this.form.reset();
+				this.form.clear();
+				$('#FacultyModal').modal('show');
+			},
+			store(){
+				this.form.busy = true;
+				this.form.post('../../api/admin/edu-faculty/khoa')
+				.then(res => {
+					this.fetchFaculties();
+					$('#FacultyModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Thêm mới thành công!');
+					}else{
+						this.$snotify.error('Không thể thêm Khoa', 'Lỗi');
+					}
+				})
+				.catch(err => console.log(err));
+			},
+			show(faculty) {
 				this.editMode = true;
 				this.form.reset();
 				this.form.clear();
-				this.form.fill(student);
-				$('#StudentModal').modal('show');
+				this.form.fill(faculty);
+				$('#FacultyModal').modal('show');
 			},
 			update() {
-				this.form.put('../../api/admin/user-sv/sinh-vien/'+this.form.student_id)
+				this.form.put('../../api/admin/edu-faculty/khoa/'+this.form.faculty_id)
 				.then(res => {
-					this.fetchStudents();
-					$('#StudentModal').modal('hide');
+					this.fetchFaculties();
+					$('#FacultyModal').modal('hide');
 					if(this.form.successful){
-						this.$snotify.success('Vai trò của tài khoản đã thay đổi');
+						this.$snotify.success('Cập nhật Khoa thành công!');
 					}else{
 						this.$snotify.error('Không thể chỉnh sửa');
 					}
 				})
 				.catch(err => console.log(err));
 			},
-			change(student_id) {
-				axios.patch(`../../api/admin/user-sv/sing-vien/change/${student_id}`)
-				.then(res => {
-					this.fetchStudents();
-					this.$snotify.warning('Đã thay đổi trạng thái');
-				})
-				.catch(err => console.log(err));
-			},
-			destroy(student_id) {
+			// change(lecturer_id) {
+			// 	axios.patch(`../../api/admin/user-gv/giang-vien/change/${lecturer_id}`)
+			// 	.then(res => {
+			// 		this.fetchFaculties();
+			// 		this.$snotify.warning('Đã thay đổi trạng thái');
+			// 	})
+			// 	.catch(err => console.log(err));
+			// },
+			destroy(faculty_id) {
 				this.$snotify.clear();
 				this.$snotify.confirm('Xác nhận xóa', {
 					timeout: 5000,
@@ -365,10 +357,10 @@
 						text: 'Xóa', 
 						action: toast =>{
 							this.$snotify.remove(toast.id);
-							axios.delete(`../../api/admin/user-sv/sinh-vien/${student_id}`)
+							axios.delete(`../../api/admin/edu-faculty/khoa/${faculty_id}`)
 							.then(res => {
 								this.$snotify.success('Đã xóa!');
-								this.fetchStudents();
+								this.fetchFaculties();
 							})
 							.catch(err => console.log(err));
 						}, 
@@ -393,10 +385,10 @@
 						text: 'Xóa', 
 						action: toast =>{
 							this.$snotify.remove(toast.id);
-							axios.post('../../api/admin/user-sv/sinh-vien/destroyall', { student: this.selected })
+							axios.post('../../api/admin/edu-faculty/khoa/destroyall', { faculty: this.selected })
 							.then(res => {
 								this.$snotify.success('Đã xóa!');
-								this.fetchStudents();
+								this.fetchFaculties();
 							})
 							.catch(err => console.log(err));
 						}, 
@@ -413,38 +405,26 @@
 			select() {
 				this.selected = [];
 				if(!this.selectAll){
-					for(let i in this.students){
-						this.selected.push(this.students[i].student_id);
+					for(let i in this.faculties){
+						this.selected.push(this.faculties[i].faculty_id);
 					}
 				}
 			},
-			detail(student, page_url) {
-				let vm = this;
-				page_url = `../../api/admin/user-sv/sinh-vien/detail/${student.student_id}`;
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.details = res.data;
-					this.form.fill(student);
-					$('#DetailModal').modal('show');
-				})
-				.catch(err => console.log(err));
-			},
-			filter(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/user-sv/sinh-vien/filter/'+this.value_role+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.students = res.data;
-					this.pagination = res.meta;
-				})
-				.catch(err => console.log(err));
-			},
+			// detail(lecturer, page_url) {
+			// 	let vm = this;
+			// 	page_url = `../../api/admin/user-gv/giang-vien/detail/${lecturer.lecturer_id}`;
+			// 	fetch(page_url)
+			// 	.then(res => res.json())
+			// 	.then(res => {
+			// 		this.details = res.data;
+			// 		this.form.fill(lecturer);
+			// 		$('#DetailModal').modal('show');
+			// 	})
+			// 	.catch(err => console.log(err));
+			// },
 			reload(){
-				this.fetchStudents();
+				this.fetchFaculties();
 				this.query='';
-				this.value_role='';
 			},
 		}
 	};
