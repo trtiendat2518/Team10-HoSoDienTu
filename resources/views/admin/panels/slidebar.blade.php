@@ -80,7 +80,7 @@
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item" href="#">
+						<a class="side-menu__item" href="{{ route('major.index') }}">
 							<i class="side-menu__icon fa fa-th-list"></i>
 							<span class="side-menu__label">Chuyên ngành</span>
 						</a>

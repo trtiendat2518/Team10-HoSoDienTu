@@ -48,4 +48,8 @@ Route::prefix('admin')->group(function(){
         Route::get('khoa/export', 'Admin\Education\FacultyController@export');
         Route::resource('khoa', 'Admin\Education\FacultyController');
     });
+
+    Route::prefix('edu-major')->group(function(){
+        Route::resource('chuyen-nganh', 'Admin\Education\MajorController');
+    });
 });
