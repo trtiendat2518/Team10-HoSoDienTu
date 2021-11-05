@@ -70,6 +70,7 @@ class LecturerManageController extends Controller
     {
         $lec = Lecturer::find($lecturer);
         $lec->lecturer_role = $request->lecturer_role;
+        $lec->lecturer_level = $request->lecturer_level;
         $lec->save();
     }
 

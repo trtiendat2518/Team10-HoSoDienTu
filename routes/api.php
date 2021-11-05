@@ -42,6 +42,10 @@ Route::prefix('admin')->group(function(){
     Route::prefix('edu-faculty')->group(function(){
         Route::get('khoa/search/{query}/{currentEntries}','Admin\Education\FacultyController@search');
         Route::post('khoa/destroyall/', 'Admin\Education\FacultyController@destroyall');
+        Route::patch('khoa/change/{faculty}', 'Admin\Education\FacultyController@change');
+        Route::get('khoa/detail/{faculty}','Admin\Education\FacultyController@detail');
+        Route::post('khoa/import', 'Admin\Education\FacultyController@import');
+        Route::get('khoa/export', 'Admin\Education\FacultyController@export');
         Route::resource('khoa', 'Admin\Education\FacultyController');
     });
 });
