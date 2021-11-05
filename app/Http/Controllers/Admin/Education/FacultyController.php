@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
 use App\Http\Resources\FacultyResource;
+use Excel;
+use App\Exports\FacultyExport;
+use App\Imports\FacultyImport;
 use Validator;
 use Session;
 
@@ -147,5 +150,41 @@ class FacultyController extends Controller
                 Faculty::where('faculty_id', $id)->delete();
             }
         }
+    }
+
+    public function change(Request $request, $faculty)
+    {
+        $fac = Faculty::find($faculty);
+        if($fac->faculty_status==0){
+            $fac->faculty_status=1;
+            $fac->save();
+        }else{
+            $fac->faculty_status=0;
+            $fac->save();
+        }
+    }
+
+    public function detail($faculty)
+    {
+        return FacultyResource::collection(Faculty::where('faculty_id',$faculty)->paginate(1));
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new FacultyExport , 'list_of_faculty.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'fileImport' => 'required|file|mimes:xls,xlsx'
+        ],[
+            'fileImport.required' => 'Vui lòng không để trống!',
+            'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
+            'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
+        ]);
+        $path = $request->file('fileImport')->getRealPath();
+        $data = Excel::import(new FacultyImport, $path);
+        return response()->json(200);
     }
 }
