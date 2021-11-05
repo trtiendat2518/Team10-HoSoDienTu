@@ -90,4 +90,9 @@ class MajorController extends Controller
     {
         //
     }
+
+    public function search($query, $currentEntries)
+    {
+        return MajorResource::collection(Major::where('major_code','LIKE','%'.$query.'%')->orwhere('major_name','LIKE','%'.$query.'%')->orderby('major_id','DESC')->paginate($currentEntries));
+    }
 }
