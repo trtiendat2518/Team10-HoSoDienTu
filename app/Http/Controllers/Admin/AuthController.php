@@ -74,7 +74,6 @@ class AuthController extends Controller
 
         if($authUser->lecturer_status==0){
             if($authUser){
-                //$account = Customer::where('customer_id',$authUser->user)->first();
                 $request->session()->put('lecturer_fullname',$authUser->lecturer_fullname);
                 $request->session()->put('lecturer_email',$authUser->lecturer_email);
                 $request->session()->put('lecturer_id',$authUser->lecturer_code);
@@ -97,9 +96,18 @@ class AuthController extends Controller
         if($authUser){
             return $authUser;
         }else{
+            $first_name = $users->givenName;
+            $splitFirstName = explode(' - ', $first_name);
+
+            $last_name = $users->surname;
+            $splitLastName = explode(' - ', $last_name);
+            
+            $first = $splitFirstName[1];
+            $last = !empty($splitLastName[1]) ? $splitLastName[0] : $splitLastName[1];
+
             $social_gg = new Lecturer([
                 'lecturer_email' => $users->email,
-                'lecturer_fullname' => $users->givenName . ' ' . $users->surname,
+                'lecturer_fullname' => $first . ' ' . $last,
                 'lecturer_code' => $users->id 
             ]);
             $social_gg->save();

@@ -10,8 +10,7 @@
 		<meta name="keywords" content=""/>
 
 		<!-- Favicon -->
-		<link rel="icon" href="{{asset('public/lecturer/images/vlu.ico')}}" type="image/x-icon"/>
-		<link rel="shortcut icon" type="image/x-icon" href="{{asset('public/lecturer/images/vlu.ico')}}" />
+		<link rel="icon" type="image/ico" sizes="16x16" href="{{asset('public/student/img/vlu.ico')}}">
 		<!-- Title -->
 		<title>{{$meta_title}}</title>
 
