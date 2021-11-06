@@ -480,7 +480,7 @@
 		color: #1753fc;
 	}
 	.styling-modal-header-info {
-		background-color: #1753fc;
+		background-color: darkblue;
 		color: white;
 	}
 	.styling-font-modal-header {
@@ -488,7 +488,7 @@
 		font-weight: bold;
 	}
 	.styling-modal-header-update {
-		background-color: #00C851;
+		background-color: darkblue;
 		color: white;
 	}
 	.td-borderight {
@@ -498,8 +498,8 @@
 		border-bottom: 2px solid black;
 	}
 	.background-update {
-		background-color: #00C851;
-		border-color: #00C851;
+		background-color: darkblue;
+		border-color: darkblue;
 	}
 	.btn-import {
 		background-color: green;

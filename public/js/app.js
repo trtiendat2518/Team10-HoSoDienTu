@@ -2936,26 +2936,30 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(err);
       });
     },
-    // show(faculty) {
-    // 	this.editMode = true;
-    // 	this.form.reset();
-    // 	this.form.clear();
-    // 	this.form.fill(faculty);
-    // 	$('#FacultyModal').modal('show');
-    // },
-    // update() {
-    // 	this.form.put('../../api/admin/edu-faculty/khoa/'+this.form.faculty_id)
-    // 	.then(res => {
-    // 		this.fetchMajors();
-    // 		$('#FacultyModal').modal('hide');
-    // 		if(this.form.successful){
-    // 			this.$snotify.success('Cập nhật Khoa thành công!');
-    // 		}else{
-    // 			this.$snotify.error('Không thể chỉnh sửa');
-    // 		}
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
+    show: function show(major) {
+      this.editMode = true;
+      this.form.reset();
+      this.form.clear();
+      this.form.fill(major);
+      $('#MajorModal').modal('show');
+    },
+    update: function update() {
+      var _this5 = this;
+
+      this.form.put('../../api/admin/edu-major/chuyen-nganh/' + this.form.major_id).then(function (res) {
+        _this5.fetchMajors();
+
+        $('#MajorModal').modal('hide');
+
+        if (_this5.form.successful) {
+          _this5.$snotify.success('Cập nhật Chuyên Ngành thành công!');
+        } else {
+          _this5.$snotify.error('Không thể chỉnh sửa');
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     // change(faculty_id) {
     // 	axios.patch(`../../api/admin/edu-faculty/khoa/change/${faculty_id}`)
     // 	.then(res => {
@@ -8941,7 +8945,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-142061d4] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-142061d4] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-142061d4] {\n\ttext-align: center;\n}\n.not-allowed[data-v-142061d4] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-142061d4] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-142061d4] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-142061d4] {\n\tbackground-color: #1753fc;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-142061d4] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-142061d4] {\n\tbackground-color: #00C851;\n\tcolor: white;\n}\n.td-borderight[data-v-142061d4] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-142061d4] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-142061d4] {\n\tbackground-color: #00C851;\n\tborder-color: #00C851;\n}\n.btn-import[data-v-142061d4] {\n\tbackground-color: green;\n\tcolor: white;\n}\n.btn-import[data-v-142061d4]:hover {\n\tbackground-color: forestgreen;\n\tcolor: white;\n}\n.btn-export[data-v-142061d4] {\n\tbackground-color: darkgreen;\n\tcolor: white;\n}\n.btn-export[data-v-142061d4]:hover {\n\tbackground-color: seagreen;\n\tcolor: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-142061d4] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-142061d4] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-142061d4] {\n\ttext-align: center;\n}\n.not-allowed[data-v-142061d4] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-142061d4] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-142061d4] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-142061d4] {\n\tbackground-color: darkblue;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-142061d4] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-142061d4] {\n\tbackground-color: darkblue;\n\tcolor: white;\n}\n.td-borderight[data-v-142061d4] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-142061d4] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-142061d4] {\n\tbackground-color: darkblue;\n\tborder-color: darkblue;\n}\n.btn-import[data-v-142061d4] {\n\tbackground-color: green;\n\tcolor: white;\n}\n.btn-import[data-v-142061d4]:hover {\n\tbackground-color: forestgreen;\n\tcolor: white;\n}\n.btn-export[data-v-142061d4] {\n\tbackground-color: darkgreen;\n\tcolor: white;\n}\n.btn-export[data-v-142061d4]:hover {\n\tbackground-color: seagreen;\n\tcolor: white;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -8989,7 +8993,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-2c603217] {\n\ttext-align: center;\n}\n.not-allowed[data-v-2c603217] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-2c603217] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-2c603217] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-2c603217] {\n\tbackground-color: #1753fc;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-2c603217] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-2c603217] {\n\tbackground-color: #00C851;\n\tcolor: white;\n}\n.td-borderight[data-v-2c603217] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-2c603217] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-2c603217] {\n\tbackground-color: #00C851;\n\tborder-color: #00C851;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-2c603217] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-2c603217] {\n\ttext-align: center;\n}\n.not-allowed[data-v-2c603217] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-2c603217] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-2c603217] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-2c603217] {\n\tbackground-color: darkblue;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-2c603217] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-2c603217] {\n\tbackground-color: darkblue;\n\tcolor: white;\n}\n.td-borderight[data-v-2c603217] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-2c603217] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-2c603217] {\n\tbackground-color: darkblue;\n\tborder-color: darkblue;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9013,7 +9017,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-97666f4c] {\n\ttext-align: center;\n}\n.not-allowed[data-v-97666f4c] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-97666f4c] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-97666f4c] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-97666f4c] {\n\tbackground-color: #1753fc;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-97666f4c] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-97666f4c] {\n\tbackground-color: #00C851;\n\tcolor: white;\n}\n.td-borderight[data-v-97666f4c] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-97666f4c] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-97666f4c] {\n\tbackground-color: #00C851;\n\tborder-color: #00C851;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-97666f4c] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-97666f4c] {\n\ttext-align: center;\n}\n.not-allowed[data-v-97666f4c] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-97666f4c] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-97666f4c] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-97666f4c] {\n\tbackground-color: darkblue;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-97666f4c] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-97666f4c] {\n\tbackground-color: darkblue;\n\tcolor: white;\n}\n.td-borderight[data-v-97666f4c] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-97666f4c] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-97666f4c] {\n\tbackground-color: darkblue;\n\tborder-color: darkblue;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

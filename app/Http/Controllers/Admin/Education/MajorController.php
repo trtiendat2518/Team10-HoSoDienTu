@@ -103,9 +103,26 @@ class MajorController extends Controller
      * @param  \App\Models\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Major $major)
+    public function update(Request $request, $major)
     {
-        //
+        $mj = Major::find($major);
+
+        $data = $request->validate([
+            'major_name' => ['required', 'max:50', 'min:5', 'notspecial_spaces'],
+            'major_faculty' => ['required'],
+        ],[
+            'major_name.required' => 'Tên Chuyên Ngành không dược để trống!',
+            'major_name.max' => 'Tên Chuyên Ngành không nhập quá 50 ký tự chữ!',
+            'major_name.min' => 'Tên Chuyên Ngành phải có 5 ký tự chữ trở lên!',
+            'major_name.unique' => 'Tên Chuyên Ngành đã tồn tại!',
+            'major_name.notspecial_spaces' => 'Tên Chuyên Ngành không được chứa ký tự đặc biệt!',
+
+            'major_faculty.required' => 'Vui lòng chọn Khoa cho Chuyên Ngành!',
+        ]);
+
+        $mj->major_name = $data['major_name'];
+        $mj->major_faculty = $data['major_faculty'];
+        $mj->save();
     }
 
     /**

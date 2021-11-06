@@ -328,26 +328,26 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// show(faculty) {
-			// 	this.editMode = true;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	this.form.fill(faculty);
-			// 	$('#FacultyModal').modal('show');
-			// },
-			// update() {
-			// 	this.form.put('../../api/admin/edu-faculty/khoa/'+this.form.faculty_id)
-			// 	.then(res => {
-			// 		this.fetchMajors();
-			// 		$('#FacultyModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Cập nhật Khoa thành công!');
-			// 		}else{
-			// 			this.$snotify.error('Không thể chỉnh sửa');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			show(major) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				this.form.fill(major);
+				$('#MajorModal').modal('show');
+			},
+			update() {
+				this.form.put('../../api/admin/edu-major/chuyen-nganh/'+this.form.major_id)
+				.then(res => {
+					this.fetchMajors();
+					$('#MajorModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Cập nhật Chuyên Ngành thành công!');
+					}else{
+						this.$snotify.error('Không thể chỉnh sửa');
+					}
+				})
+				.catch(err => console.log(err));
+			},
 			// change(faculty_id) {
 			// 	axios.patch(`../../api/admin/edu-faculty/khoa/change/${faculty_id}`)
 			// 	.then(res => {
