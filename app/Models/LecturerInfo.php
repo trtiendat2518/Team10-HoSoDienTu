@@ -9,7 +9,6 @@ class LecturerInfo extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'lecturer_faculty', 
         'lecturer_code', 
         'lecturer_avatar', 
         'lecturer_birthday', 

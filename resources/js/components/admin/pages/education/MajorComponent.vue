@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-9">
 				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 			</div>
@@ -9,23 +9,23 @@
 				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
 				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
 			</div>
-		</div>
+		</div> -->
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
 					<div class="card-header">
 						<div class="col-md-11">
-							<h3 class="card-title">Danh sách Khoa</h3>
+							<h3 class="card-title">Danh sách Chuyên Ngành</h3>
 						</div>
-						<div class="col-md-1">
+						<!-- <div class="col-md-1">
 							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
-						</div>
+						</div> -->
 					</div>
 
 					<div class="row">
-						<div class="col-md-1">
+						<!-- <div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div>
+						</div> -->
 						<div class="col-md-9">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
@@ -48,36 +48,38 @@
 									<th class="w-5">
 										<input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll">
 									</th>
-									<th class="text-white w-15">Mã khoa</th>
-									<th class="text-white w-60">Tên khoa</th>
+									<th class="text-white w-15">Mã chuyên ngành</th>
+									<th class="text-white w-30">Tên chuyên ngành</th>
+									<th class="text-white w-30">Thuộc khoa</th>
 									<th class="text-white w-10">Trạng thái</th>
 									<th class="w-5"></th>
 									<th class="w-5"></th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-show="faculties.length" v-for="faculty in faculties" :key="faculty.faculty_id">
+								<tr v-show="majors.length" v-for="major in majors" :key="major.major_id">
 									<td>
-										<center><input type="checkbox" :value="faculty.faculty_id" v-model="selected"></center>
+										<center><input type="checkbox" :value="major.major_id" v-model="selected"></center>
 									</td>
-									<td @click="detail(faculty)"><a href="javascript:void(0)">{{ faculty.faculty_code }}</a></td>
-									<td>{{ faculty.faculty_name }}</td>
+									<td @click="detail(major)"><a href="javascript:void(0)">{{ major.major_code }}</a></td>
+									<td>{{ major.major_name }}</td>
+									<td>{{ major.major_faculty }}</td>
 									<td class="td-styling">
-										<div v-if="faculty.faculty_status==0">
-											<button class="fa fa-eye btn-eye" @click="change(faculty.faculty_id)"></button>
+										<div v-if="major.major_status==0">
+											<button class="fa fa-eye btn-eye" @click="change(major.major_id)"></button>
 										</div>
 										<div v-else>
-											<button class="fa fa-eye-slash btn-eye-slash" @click="change(faculty.faculty_id)"></button>
+											<button class="fa fa-eye-slash btn-eye-slash" @click="change(major.major_id)"></button>
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(faculty)"></button>
+										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(major)"></button>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(faculty.faculty_id)"></button>
+										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(major.major_id)"></button>
 									</td>
 								</tr>
-								<tr v-show="!faculties.length">
+								<tr v-show="!majors.length">
 									<td colspan="8">
 										<div class="alert alert-danger">
 											Không tìm thấy kết quả phù hợp!
@@ -86,7 +88,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchFaculties() : search() "></pagination>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchMajors() : search() "></pagination>
 					</div>
 					<!-- table-responsive -->
 				</div>
@@ -94,7 +96,7 @@
 		</div>
 
 		<!-- Modal -->
-		<div class="modal fade" id="FacultyModal" tabindex="-1" role="dialog" aria-labelledby="FacultyModalTitle" aria-hidden="true">
+		<!-- <div class="modal fade" id="FacultyModal" tabindex="-1" role="dialog" aria-labelledby="FacultyModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="editMode?update():store()" @keydown="form.onKeydown($event)">
 					<span class="alert-danger" :form="form"></span>
@@ -132,10 +134,10 @@
 					</div>
 				</form>
 			</div>
-		</div>
+		</div> -->
 		<!-- Modal end-->
 
-		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header styling-modal-header-info">
@@ -178,10 +180,10 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<!-- Modal -->
-		<div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
+		<!-- <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="importFile()" @keydown="form.onKeydown($event)">
 					<div class="modal-content">
@@ -202,7 +204,7 @@
 					</div>
 				</form>
 			</div>
-		</div>
+		</div> -->
 		<!-- Modal end-->
 	</div>
 </template>
@@ -212,8 +214,8 @@
 	export default {
 		data() {
 			return {
-				faculties:[],
-				faculty_id:'',
+				majors:[],
+				major_id:'',
 				pagination:{
 					current_page: 1,
 				},
@@ -222,10 +224,11 @@
 				query: '',
 				editMode: false,
 				form: new Form({
-					faculty_id:'',
-					faculty_code:'',
-					faculty_name:'',
-					faculty_status: '',
+					major_id:'',
+					major_code:'',
+					major_name:'',
+					major_faculty:'',
+					major_status: '',
 				}),
 				selected: [],
 				selectAll: false,
@@ -237,212 +240,212 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
-					this.fetchFaculties();
+					this.fetchMajors();
 				}else{
-					this.fetchFaculties();
+					this.fetchMajors();
 				}
 			},
 			query(keyword){
 				if(keyword === ''){
-					this.fetchFaculties();
+					this.fetchMajors();
 				}else{
 					this.search();
 				}
 			},
 		},
 		mounted() {
-			this.fetchFaculties();
+			this.fetchMajors();
 		},
 		methods: {
 			empty() {
-				return (this.faculties.length < 1);
+				return (this.majors.length < 1);
 			},
-			fetchFaculties(page_url) {
+			fetchMajors(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-faculty/khoa/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
-					this.faculties = res.data;
+					this.majors = res.data;
 					this.pagination = res.meta;
 				})
 				.catch(err => console.log(err));
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-faculty/khoa/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
-					this.faculties = res.data;
+					this.majors = res.data;
 					this.pagination = res.meta;
 				})
 				.catch(err => console.log(err));
 			},
-			create(){
-				this.editMode = false;
-				this.form.reset();
-				this.form.clear();
-				$('#FacultyModal').modal('show');
-			},
-			store(){
-				this.form.busy = true;
-				this.form.post('../../api/admin/edu-faculty/khoa')
-				.then(res => {
-					this.fetchFaculties();
-					$('#FacultyModal').modal('hide');
-					if(this.form.successful){
-						this.$snotify.success('Thêm mới thành công!');
-					}else{
-						this.$snotify.error('Không thể thêm Khoa', 'Lỗi');
-					}
-				})
-				.catch(err => console.log(err));
-			},
-			show(faculty) {
-				this.editMode = true;
-				this.form.reset();
-				this.form.clear();
-				this.form.fill(faculty);
-				$('#FacultyModal').modal('show');
-			},
-			update() {
-				this.form.put('../../api/admin/edu-faculty/khoa/'+this.form.faculty_id)
-				.then(res => {
-					this.fetchFaculties();
-					$('#FacultyModal').modal('hide');
-					if(this.form.successful){
-						this.$snotify.success('Cập nhật Khoa thành công!');
-					}else{
-						this.$snotify.error('Không thể chỉnh sửa');
-					}
-				})
-				.catch(err => console.log(err));
-			},
-			change(faculty_id) {
-				axios.patch(`../../api/admin/edu-faculty/khoa/change/${faculty_id}`)
-				.then(res => {
-					this.fetchFaculties();
-					this.$snotify.warning('Đã thay đổi trạng thái');
-				})
-				.catch(err => console.log(err));
-			},
-			destroy(faculty_id) {
-				this.$snotify.clear();
-				this.$snotify.confirm('Xác nhận xóa', {
-					timeout: 5000,
-					showProgressBar: true,
-					closeOnClick: false,
-					pauseOnHover: true,
-					buttons: [{
-						text: 'Xóa', 
-						action: toast =>{
-							this.$snotify.remove(toast.id);
-							axios.delete(`../../api/admin/edu-faculty/khoa/${faculty_id}`)
-							.then(res => {
-								this.$snotify.success('Đã xóa!');
-								this.fetchFaculties();
-							})
-							.catch(err => console.log(err));
-						}, 
-						bold: false
-					},{
-						text: 'Đóng', 
-						action: toast => { 
-							this.$snotify.remove(toast.id); 
-						}, 
-						bold: true
-					}]
-				});
-			},
-			destroyall() {
-				this.$snotify.clear();
-				this.$snotify.confirm('Xác nhận xóa', {
-					timeout: 5000,
-					showProgressBar: true,
-					closeOnClick: false,
-					pauseOnHover: true,
-					buttons: [{
-						text: 'Xóa', 
-						action: toast =>{
-							this.$snotify.remove(toast.id);
-							axios.post('../../api/admin/edu-faculty/khoa/destroyall', { faculty: this.selected })
-							.then(res => {
-								this.$snotify.success('Đã xóa!');
-								this.fetchFaculties();
-							})
-							.catch(err => console.log(err));
-						}, 
-						bold: false
-					},{
-						text: 'Đóng', 
-						action: toast => { 
-							this.$snotify.remove(toast.id); 
-						}, 
-						bold: true
-					}]
-				});
-			},
+			// create(){
+			// 	this.editMode = false;
+			// 	this.form.reset();
+			// 	this.form.clear();
+			// 	$('#FacultyModal').modal('show');
+			// },
+			// store(){
+			// 	this.form.busy = true;
+			// 	this.form.post('../../api/admin/edu-faculty/khoa')
+			// 	.then(res => {
+			// 		this.fetchMajors();
+			// 		$('#FacultyModal').modal('hide');
+			// 		if(this.form.successful){
+			// 			this.$snotify.success('Thêm mới thành công!');
+			// 		}else{
+			// 			this.$snotify.error('Không thể thêm Khoa', 'Lỗi');
+			// 		}
+			// 	})
+			// 	.catch(err => console.log(err));
+			// },
+			// show(faculty) {
+			// 	this.editMode = true;
+			// 	this.form.reset();
+			// 	this.form.clear();
+			// 	this.form.fill(faculty);
+			// 	$('#FacultyModal').modal('show');
+			// },
+			// update() {
+			// 	this.form.put('../../api/admin/edu-faculty/khoa/'+this.form.faculty_id)
+			// 	.then(res => {
+			// 		this.fetchMajors();
+			// 		$('#FacultyModal').modal('hide');
+			// 		if(this.form.successful){
+			// 			this.$snotify.success('Cập nhật Khoa thành công!');
+			// 		}else{
+			// 			this.$snotify.error('Không thể chỉnh sửa');
+			// 		}
+			// 	})
+			// 	.catch(err => console.log(err));
+			// },
+			// change(faculty_id) {
+			// 	axios.patch(`../../api/admin/edu-faculty/khoa/change/${faculty_id}`)
+			// 	.then(res => {
+			// 		this.fetchMajors();
+			// 		this.$snotify.warning('Đã thay đổi trạng thái');
+			// 	})
+			// 	.catch(err => console.log(err));
+			// },
+			// destroy(faculty_id) {
+			// 	this.$snotify.clear();
+			// 	this.$snotify.confirm('Xác nhận xóa', {
+			// 		timeout: 5000,
+			// 		showProgressBar: true,
+			// 		closeOnClick: false,
+			// 		pauseOnHover: true,
+			// 		buttons: [{
+			// 			text: 'Xóa', 
+			// 			action: toast =>{
+			// 				this.$snotify.remove(toast.id);
+			// 				axios.delete(`../../api/admin/edu-faculty/khoa/${faculty_id}`)
+			// 				.then(res => {
+			// 					this.$snotify.success('Đã xóa!');
+			// 					this.fetchMajors();
+			// 				})
+			// 				.catch(err => console.log(err));
+			// 			}, 
+			// 			bold: false
+			// 		},{
+			// 			text: 'Đóng', 
+			// 			action: toast => { 
+			// 				this.$snotify.remove(toast.id); 
+			// 			}, 
+			// 			bold: true
+			// 		}]
+			// 	});
+			// },
+			// destroyall() {
+			// 	this.$snotify.clear();
+			// 	this.$snotify.confirm('Xác nhận xóa', {
+			// 		timeout: 5000,
+			// 		showProgressBar: true,
+			// 		closeOnClick: false,
+			// 		pauseOnHover: true,
+			// 		buttons: [{
+			// 			text: 'Xóa', 
+			// 			action: toast =>{
+			// 				this.$snotify.remove(toast.id);
+			// 				axios.post('../../api/admin/edu-faculty/khoa/destroyall', { faculty: this.selected })
+			// 				.then(res => {
+			// 					this.$snotify.success('Đã xóa!');
+			// 					this.fetchMajors();
+			// 				})
+			// 				.catch(err => console.log(err));
+			// 			}, 
+			// 			bold: false
+			// 		},{
+			// 			text: 'Đóng', 
+			// 			action: toast => { 
+			// 				this.$snotify.remove(toast.id); 
+			// 			}, 
+			// 			bold: true
+			// 		}]
+			// 	});
+			// },
 			select() {
 				this.selected = [];
 				if(!this.selectAll){
-					for(let i in this.faculties){
-						this.selected.push(this.faculties[i].faculty_id);
+					for(let i in this.majors){
+						this.selected.push(this.majors[i].major_id);
 					}
 				}
 			},
-			detail(faculty, page_url) {
-				let vm = this;
-				page_url = `../../api/admin/edu-faculty/khoa/detail/${faculty.faculty_id}`;
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.details = res.data;
-					this.form.fill(faculty);
-					$('#DetailModal').modal('show');
-				})
-				.catch(err => console.log(err));
-			},
-			reload(){
-				this.fetchFaculties();
-				this.query='';
-			},
-			exportFile() {
-				window.location.href ="../../api/admin/edu-faculty/khoa/export";
-			},
-			openImport() {
-				this.$refs.fileupload.value='';
-				$('#ImportModal').modal('show');
-			},
-			onFileChange(e) {
-				this.fileImport = e.target.files[0];
-			},
-			reloadFile() {
-				this.$refs.fileupload.value='';
-				this.fileImport='';
-			},
-			importFile() {
-				let formData = new FormData();
-				formData.append('fileImport', this.fileImport);
-				axios.post('../../api/admin/edu-faculty/khoa/import', formData, {
-					headers: { 'content-type': 'multipart/form-data' }
-				})
-				.then(res => {
-					if(res.status === 200) {
-						$('#ImportModal').modal('hide');
-						this.fetchFaculties();
-						this.$snotify.success('Import thành công');
-					}
-				})
-				.catch(err => {
-					const  stringError = err.response.data.errors[0][0];
-					const  stringSplit = stringError.split(".");
-					this.error = stringSplit[1];
+			// detail(faculty, page_url) {
+			// 	let vm = this;
+			// 	page_url = `../../api/admin/edu-faculty/khoa/detail/${faculty.faculty_id}`;
+			// 	fetch(page_url)
+			// 	.then(res => res.json())
+			// 	.then(res => {
+			// 		this.details = res.data;
+			// 		this.form.fill(faculty);
+			// 		$('#DetailModal').modal('show');
+			// 	})
+			// 	.catch(err => console.log(err));
+			// },
+			// reload(){
+			// 	this.fetchMajors();
+			// 	this.query='';
+			// },
+			// exportFile() {
+			// 	window.location.href ="../../api/admin/edu-faculty/khoa/export";
+			// },
+			// openImport() {
+			// 	this.$refs.fileupload.value='';
+			// 	$('#ImportModal').modal('show');
+			// },
+			// onFileChange(e) {
+			// 	this.fileImport = e.target.files[0];
+			// },
+			// reloadFile() {
+			// 	this.$refs.fileupload.value='';
+			// 	this.fileImport='';
+			// },
+			// importFile() {
+			// 	let formData = new FormData();
+			// 	formData.append('fileImport', this.fileImport);
+			// 	axios.post('../../api/admin/edu-faculty/khoa/import', formData, {
+			// 		headers: { 'content-type': 'multipart/form-data' }
+			// 	})
+			// 	.then(res => {
+			// 		if(res.status === 200) {
+			// 			$('#ImportModal').modal('hide');
+			// 			this.fetchMajors();
+			// 			this.$snotify.success('Import thành công');
+			// 		}
+			// 	})
+			// 	.catch(err => {
+			// 		const  stringError = err.response.data.errors[0][0];
+			// 		const  stringSplit = stringError.split(".");
+			// 		this.error = stringSplit[1];
 					
-					this.fetchFaculties();
-					this.$snotify.error(this.error);
-				});
-			}
+			// 		this.fetchMajors();
+			// 		this.$snotify.error(this.error);
+			// 	});
+			// }
 		}
 	};
 </script>
