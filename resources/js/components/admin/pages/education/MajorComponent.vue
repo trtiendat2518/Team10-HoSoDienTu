@@ -1,15 +1,15 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
-		<!-- <div class="row">
+		<div class="row">
 			<div class="col-md-9">
 				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 			</div>
-			<div class="col-md-3">
+			<!-- <div class="col-md-3">
 				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
 				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
-			</div>
-		</div> -->
+			</div> -->
+		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -17,9 +17,9 @@
 						<div class="col-md-11">
 							<h3 class="card-title">Danh sách Chuyên Ngành</h3>
 						</div>
-						<!-- <div class="col-md-1">
+						<div class="col-md-1">
 							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
-						</div> -->
+						</div>
 					</div>
 
 					<div class="row">
@@ -63,7 +63,13 @@
 									</td>
 									<td @click="detail(major)"><a href="javascript:void(0)">{{ major.major_code }}</a></td>
 									<td>{{ major.major_name }}</td>
-									<td>{{ major.major_faculty }}</td>
+									<td>
+										<!-- {{ major.major_faculty }} -->
+										<div v-for="a in faculties">
+											<div v-if="major.major_faculty==a.faculty_code">{{ a.faculty_name }}</div>
+											<div v-else style="display: none;"></div>
+										</div>
+									</td>
 									<td class="td-styling">
 										<div v-if="major.major_status==0">
 											<button class="fa fa-eye btn-eye" @click="change(major.major_id)"></button>
@@ -96,35 +102,43 @@
 		</div>
 
 		<!-- Modal -->
-		<!-- <div class="modal fade" id="FacultyModal" tabindex="-1" role="dialog" aria-labelledby="FacultyModalTitle" aria-hidden="true">
+		<div class="modal fade" id="MajorModal" tabindex="-1" role="dialog" aria-labelledby="MajorModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="editMode?update():store()" @keydown="form.onKeydown($event)">
 					<span class="alert-danger" :form="form"></span>
 					<div class="modal-content">
 						<div class="modal-header styling-modal-header-update">
-							<h5 class="modal-title" id="FacultyModalTitle">{{ editMode ? "Cập nhật" : "Thêm mới" }} Khoa</h5>
+							<h5 class="modal-title" id="MajorModalTitle">{{ editMode ? "Cập nhật" : "Thêm mới" }} Chuyên Ngành</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Mã khoa</label>
-							<input v-model="form.faculty_code" type="text" name="faculty_code"class="form-control" placeholder="Nhập mã Khoa" :disabled="editMode" :class="[{'is-invalid': form.errors.has('faculty_code')}, {'not-allowed': editMode}]">
-							<div class="text-danger" v-if="form.errors.has('faculty_code')" v-html="form.errors.get('faculty_code')"></div>
+							<label>Mã Chuyên Ngành</label>
+							<input v-model="form.major_code" type="text" name="major_code"class="form-control" placeholder="Nhập mã Chuyên Ngành" :disabled="editMode" :class="[{'is-invalid': form.errors.has('major_code')}, {'not-allowed': editMode}]">
+							<div class="text-danger" v-if="form.errors.has('major_code')" v-html="form.errors.get('major_code')"></div>
 
-							<label class="mt-3">Tên Khoa</label>
-							<input v-model="form.faculty_name" type="text" name="faculty_name" class="form-control" placeholder="Nhập tên Khoa" :class="{'is-invalid': form.errors.has('faculty_name')}">
-							<div class="text-danger" v-if="form.errors.has('faculty_name')" v-html="form.errors.get('faculty_name')"></div>
+							<label class="mt-3">Tên Chuyên Ngành</label>
+							<input v-model="form.major_name" type="text" name="major_name" class="form-control" placeholder="Nhập tên Chuyên Ngành" :class="{'is-invalid': form.errors.has('major_name')}">
+							<div class="text-danger" v-if="form.errors.has('major_name')" v-html="form.errors.get('major_name')"></div>
+
+							<label class="mt-3">Thuộc Khoa</label>
+							<select v-model="form.major_faculty" name="major_faculty" class="form-control select-option" :class="{'is-invalid': form.errors.has('major_faculty')}">
+								<option value="" selected disabled>Chọn Khoa</option>
+								<option disabled>---------------</option>
+								<option v-for="faculty in faculties" :value="faculty.faculty_code">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
+							</select>
+							<div class="text-danger mb-3" v-if="form.errors.has('major_faculty')" v-html="form.errors.get('major_faculty')"></div>
 
 							<div v-if="!editMode">
 								<label class="mt-3">Trạng thái</label>
-								<select v-model="form.faculty_status" name="faculty_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('faculty_status')}">
+								<select v-model="form.major_status" name="major_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('major_status')}">
 									<option value="" selected disabled>Chọn trạng thái:</option>
 									<option disabled>---------------</option>
 									<option value="0">Hiển thị</option>
 									<option value="1">Không hiển thị</option>
 								</select>
-								<div class="text-danger mb-3" v-if="form.errors.has('faculty_status')" v-html="form.errors.get('faculty_status')"></div>
+								<div class="text-danger mb-3" v-if="form.errors.has('major_status')" v-html="form.errors.get('major_status')"></div>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -134,7 +148,7 @@
 					</div>
 				</form>
 			</div>
-		</div> -->
+		</div>
 		<!-- Modal end-->
 
 		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
@@ -215,6 +229,7 @@
 		data() {
 			return {
 				majors:[],
+				faculties:[],
 				major_id:'',
 				pagination:{
 					current_page: 1,
@@ -254,11 +269,22 @@
 			},
 		},
 		mounted() {
+			this.fetchFaculties();
 			this.fetchMajors();
 		},
 		methods: {
 			empty() {
 				return (this.majors.length < 1);
+			},
+			fetchFaculties(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/faculty';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.faculties = res.data;
+				})
+				.catch(err => console.log(err));
 			},
 			fetchMajors(page_url) {
 				let vm = this;
@@ -282,26 +308,26 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// create(){
-			// 	this.editMode = false;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	$('#FacultyModal').modal('show');
-			// },
-			// store(){
-			// 	this.form.busy = true;
-			// 	this.form.post('../../api/admin/edu-faculty/khoa')
-			// 	.then(res => {
-			// 		this.fetchMajors();
-			// 		$('#FacultyModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Thêm mới thành công!');
-			// 		}else{
-			// 			this.$snotify.error('Không thể thêm Khoa', 'Lỗi');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			create(){
+				this.editMode = false;
+				this.form.reset();
+				this.form.clear();
+				$('#MajorModal').modal('show');
+			},
+			store(){
+				this.form.busy = true;
+				this.form.post('../../api/admin/edu-major/chuyen-nganh')
+				.then(res => {
+					this.fetchMajors();
+					$('#MajorModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Thêm mới thành công!');
+					}else{
+						this.$snotify.error('Không thể thêm Chuyên Ngành', 'Lỗi');
+					}
+				})
+				.catch(err => console.log(err));
+			},
 			// show(faculty) {
 			// 	this.editMode = true;
 			// 	this.form.reset();
@@ -406,10 +432,12 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// reload(){
-			// 	this.fetchMajors();
-			// 	this.query='';
-			// },
+			reload(){
+				this.fetchMajors();
+				this.query='';
+				this.$refs.fileupload.value='';
+				this.fileImport='';
+			},
 			// exportFile() {
 			// 	window.location.href ="../../api/admin/edu-faculty/khoa/export";
 			// },
@@ -441,7 +469,7 @@
 			// 		const  stringError = err.response.data.errors[0][0];
 			// 		const  stringSplit = stringError.split(".");
 			// 		this.error = stringSplit[1];
-					
+
 			// 		this.fetchMajors();
 			// 		this.$snotify.error(this.error);
 			// 	});
