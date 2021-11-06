@@ -534,7 +534,7 @@
 .app-sidebar .side-menu__item.active{
 	color: #e66c2c;
     font-weight: 400;
-	background:#f0f3f7;
+	background:#cbd2dceb;
 }
 .slide-menu li.active>a {
 	font-weight: 400;
@@ -555,7 +555,7 @@
    color:#fff !important;
 }
 .app-sidebar .side-menu__item.active .side-menu__icon{
-	color:#1753fc !important;
+	color:#000 !important;
 }
 .app-sidebar .side-menu__item.active:hover .side-menu__icon{
 	color:#fff !important;
@@ -929,19 +929,19 @@
 }
 .app-sidebar .toggle-menu .side-menu__item.active{
 	border-left: 4px solid #1753fc;
-	color:#1753fc !important;
+	color:#000 !important;
 }
 .app-sidebar .toggle-menu .side-menu__item:hover{
-	background: #f0f3f7;
-    color: #e66c2c;
-	border-left: 4px solid #e66c2c;
+	background: #cbd2dceb;
+    color: #000;
+	border-left: 4px solid #1753fc;
 }
 .app-sidebar .toggle-menu .side-menu__item.active:hover{
-	background:#fff;
-	color:#e66c2c !important;
+	background:#cbd2dceb;
+	color:#000 !important;
 }
 .app-sidebar .toggle-menu .side-menu__item.active:hover  .side-menu__icon{
-	color:#e66c2c !important;
+	color:#000 !important;
 }
 .toggle-menu.side-menu{
 	padding:0;
