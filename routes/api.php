@@ -50,6 +50,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('edu-major')->group(function(){
+        Route::get('chuyen-nganh/faculty/','Admin\Education\MajorController@faculty');
         Route::get('chuyen-nganh/search/{query}/{currentEntries}','Admin\Education\MajorController@search');
         Route::resource('chuyen-nganh', 'Admin\Education\MajorController');
     });

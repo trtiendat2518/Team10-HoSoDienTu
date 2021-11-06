@@ -406,6 +406,8 @@
 			reload(){
 				this.fetchFaculties();
 				this.query='';
+				this.$refs.fileupload.value='';
+				this.fileImport='';
 			},
 			exportFile() {
 				window.location.href ="../../api/admin/edu-faculty/khoa/export";
@@ -435,9 +437,13 @@
 					}
 				})
 				.catch(err => {
-					const  stringError = err.response.data.errors[0][0];
-					const  stringSplit = stringError.split(".");
-					this.error = stringSplit[1];
+					if(err.response.data.errors?.fileImport?.length > 0){
+						this.error = err.response.data.errors.fileImport[0];
+					}else if(err.response.data.errors[0].length > 0){
+						const  stringError = err.response.data.errors[0][0];
+						const  stringSplit = stringError.split(".");
+						this.error = stringSplit[1];
+					}
 					
 					this.fetchFaculties();
 					this.$snotify.error(this.error);
