@@ -155,4 +155,16 @@ class MajorController extends Controller
             }
         }
     }
+
+    public function change(Request $request, $major)
+    {
+        $mj = Major::find($major);
+        if($mj->major_status==0){
+            $mj->major_status=1;
+            $mj->save();
+        }else{
+            $mj->major_status=0;
+            $mj->save();
+        }
+    }
 }

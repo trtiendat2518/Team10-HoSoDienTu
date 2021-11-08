@@ -348,14 +348,14 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// change(faculty_id) {
-			// 	axios.patch(`../../api/admin/edu-faculty/khoa/change/${faculty_id}`)
-			// 	.then(res => {
-			// 		this.fetchMajors();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			change(major_id) {
+				axios.patch(`../../api/admin/edu-major/chuyen-nganh/change/${major_id}`)
+				.then(res => {
+					this.fetchMajors();
+					this.$snotify.warning('Đã thay đổi trạng thái');
+				})
+				.catch(err => console.log(err));
+			},
 			destroy(major_id) {
 				this.$snotify.clear();
 				this.$snotify.confirm('Xác nhận xóa', {
