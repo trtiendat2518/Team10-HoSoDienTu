@@ -2755,6 +2755,366 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      majors: [],
+      faculties: [],
+      major_id: '',
+      pagination: {
+        current_page: 1
+      },
+      currentEntries: 5,
+      showEntries: [5, 10, 25, 50],
+      query: '',
+      editMode: false,
+      form: new Form({
+        major_id: '',
+        major_code: '',
+        major_name: '',
+        major_faculty: '',
+        major_status: ''
+      }),
+      selected: [],
+      selectAll: false,
+      details: [],
+      fileImport: '',
+      error: {}
+    };
+  },
+  watch: {
+    currentEntries: function currentEntries(number) {
+      if (number === 5) {
+        this.fetchMajors();
+      } else {
+        this.fetchMajors();
+      }
+    },
+    query: function query(keyword) {
+      if (keyword === '') {
+        this.fetchMajors();
+      } else {
+        this.search();
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.fetchFaculties();
+    this.fetchMajors();
+  },
+  methods: {
+    empty: function empty() {
+      return this.majors.length < 1;
+    },
+    fetchFaculties: function fetchFaculties(page_url) {
+      var _this = this;
+
+      var vm = this;
+      page_url = '../../api/admin/edu-major/chuyen-nganh/faculty';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this.faculties = res.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    fetchMajors: function fetchMajors(page_url) {
+      var _this2 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/edu-major/chuyen-nganh/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this2.majors = res.data;
+        _this2.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    search: function search(page_url) {
+      var _this3 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/edu-major/chuyen-nganh/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this3.majors = res.data;
+        _this3.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    create: function create() {
+      this.editMode = false;
+      this.form.reset();
+      this.form.clear();
+      $('#MajorModal').modal('show');
+    },
+    store: function store() {
+      var _this4 = this;
+
+      this.form.busy = true;
+      this.form.post('../../api/admin/edu-major/chuyen-nganh').then(function (res) {
+        _this4.fetchMajors();
+
+        $('#MajorModal').modal('hide');
+
+        if (_this4.form.successful) {
+          _this4.$snotify.success('Thêm mới thành công!');
+        } else {
+          _this4.$snotify.error('Không thể thêm Chuyên Ngành', 'Lỗi');
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    show: function show(major) {
+      this.editMode = true;
+      this.form.reset();
+      this.form.clear();
+      this.form.fill(major);
+      $('#MajorModal').modal('show');
+    },
+    update: function update() {
+      var _this5 = this;
+
+      this.form.put('../../api/admin/edu-major/chuyen-nganh/' + this.form.major_id).then(function (res) {
+        _this5.fetchMajors();
+
+        $('#MajorModal').modal('hide');
+
+        if (_this5.form.successful) {
+          _this5.$snotify.success('Cập nhật Chuyên Ngành thành công!');
+        } else {
+          _this5.$snotify.error('Không thể chỉnh sửa');
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    // change(faculty_id) {
+    // 	axios.patch(`../../api/admin/edu-faculty/khoa/change/${faculty_id}`)
+    // 	.then(res => {
+    // 		this.fetchMajors();
+    // 		this.$snotify.warning('Đã thay đổi trạng thái');
+    // 	})
+    // 	.catch(err => console.log(err));
+    // },
+    destroy: function destroy(major_id) {
+      var _this6 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+
+            axios["delete"]("../../api/admin/edu-major/chuyen-nganh/".concat(major_id)).then(function (res) {
+              _this6.$snotify.success('Đã xóa!');
+
+              _this6.fetchMajors();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    destroyall: function destroyall() {
+      var _this7 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this7.$snotify.remove(toast.id);
+
+            axios.post('../../api/admin/edu-major/chuyen-nganh/destroyall', {
+              major: _this7.selected
+            }).then(function (res) {
+              _this7.$snotify.success('Đã xóa!');
+
+              _this7.fetchMajors();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this7.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    select: function select() {
+      this.selected = [];
+
+      if (!this.selectAll) {
+        for (var i in this.majors) {
+          this.selected.push(this.majors[i].major_id);
+        }
+      }
+    },
+    // detail(faculty, page_url) {
+    // 	let vm = this;
+    // 	page_url = `../../api/admin/edu-faculty/khoa/detail/${faculty.faculty_id}`;
+    // 	fetch(page_url)
+    // 	.then(res => res.json())
+    // 	.then(res => {
+    // 		this.details = res.data;
+    // 		this.form.fill(faculty);
+    // 		$('#DetailModal').modal('show');
+    // 	})
+    // 	.catch(err => console.log(err));
+    // },
+    reload: function reload() {
+      this.fetchMajors();
+      this.query = '';
+      this.$refs.fileupload.value = '';
+      this.fileImport = '';
+    } // exportFile() {
+    // 	window.location.href ="../../api/admin/edu-faculty/khoa/export";
+    // },
+    // openImport() {
+    // 	this.$refs.fileupload.value='';
+    // 	$('#ImportModal').modal('show');
+    // },
+    // onFileChange(e) {
+    // 	this.fileImport = e.target.files[0];
+    // },
+    // reloadFile() {
+    // 	this.$refs.fileupload.value='';
+    // 	this.fileImport='';
+    // },
+    // importFile() {
+    // 	let formData = new FormData();
+    // 	formData.append('fileImport', this.fileImport);
+    // 	axios.post('../../api/admin/edu-faculty/khoa/import', formData, {
+    // 		headers: { 'content-type': 'multipart/form-data' }
+    // 	})
+    // 	.then(res => {
+    // 		if(res.status === 200) {
+    // 			$('#ImportModal').modal('hide');
+    // 			this.fetchMajors();
+    // 			this.$snotify.success('Import thành công');
+    // 		}
+    // 	})
+    // 	.catch(err => {
+    // 		const  stringError = err.response.data.errors[0][0];
+    // 		const  stringSplit = stringError.split(".");
+    // 		this.error = stringSplit[1];
+    // 		this.fetchMajors();
+    // 		this.$snotify.error(this.error);
+    // 	});
+    // }
+
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/pages/info/UpdateInfoComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/pages/info/UpdateInfoComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+>>>>>>> phamminhtruong
 //
 //
 //
@@ -3199,6 +3559,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/pages/users/LecturerManageComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/pages/users/LecturerManageComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_snotify_styles_material_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-snotify/styles/material.css */ "./node_modules/vue-snotify/styles/material.css");
 //
 //
 //
@@ -3481,6 +3857,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -3545,6 +3922,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+=======
+>>>>>>> phamminhtruong
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -42177,6 +42556,22 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+<<<<<<< HEAD
+=======
+              _c("div", { staticClass: "col-md-1" }, [
+                _c("button", {
+                  staticClass:
+                    "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                  attrs: { disabled: !_vm.selected.length },
+                  on: {
+                    click: function($event) {
+                      return _vm.destroyall()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+>>>>>>> phamminhtruong
               _c("div", { staticClass: "col-md-9" }, [
                 _c("input", {
                   directives: [

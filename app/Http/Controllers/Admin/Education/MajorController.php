@@ -131,9 +131,10 @@ class MajorController extends Controller
      * @param  \App\Models\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Major $major)
+    public function destroy($major)
     {
-        //
+        $mj = Major::find($major);
+        $mj->delete();
     }
 
     public function search($query, $currentEntries)
@@ -144,5 +145,14 @@ class MajorController extends Controller
     public function faculty()
     {
         return FacultyResource::collection(Faculty::where('faculty_status',0)->orderby('faculty_name','DESC')->get());
+    }
+
+    public function destroyall(Request $request, $major = null)
+    {
+        if ($request->major) {
+            foreach ($request->major as $id) {
+                Major::where('major_id', $id)->delete();
+            }
+        }
     }
 }
