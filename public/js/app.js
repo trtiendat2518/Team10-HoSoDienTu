@@ -2844,7 +2844,8 @@ __webpack_require__.r(__webpack_exports__);
       selectAll: false,
       details: [],
       fileImport: '',
-      error: {}
+      error: {},
+      value_faculty: ''
     };
   },
   watch: {
@@ -2860,6 +2861,13 @@ __webpack_require__.r(__webpack_exports__);
         this.fetchMajors();
       } else {
         this.search();
+      }
+    },
+    value_faculty: function value_faculty(faculty) {
+      if (faculty === '') {
+        this.fetchMajors();
+      } else {
+        this.filter();
       }
     }
   },
@@ -3046,59 +3054,91 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
-    // detail(faculty, page_url) {
-    // 	let vm = this;
-    // 	page_url = `../../api/admin/edu-faculty/khoa/detail/${faculty.faculty_id}`;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.details = res.data;
-    // 		this.form.fill(faculty);
-    // 		$('#DetailModal').modal('show');
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
+    detail: function detail(major, page_url) {
+      var _this9 = this;
+
+      var vm = this;
+      page_url = "../../api/admin/edu-major/chuyen-nganh/detail/".concat(major.major_id);
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this9.details = res.data;
+
+        _this9.form.fill(major);
+
+        $('#DetailModal').modal('show');
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     reload: function reload() {
       this.fetchMajors();
       this.query = '';
+      this.value_faculty = '';
       this.$refs.fileupload.value = '';
       this.fileImport = '';
-    } // exportFile() {
-    // 	window.location.href ="../../api/admin/edu-faculty/khoa/export";
-    // },
-    // openImport() {
-    // 	this.$refs.fileupload.value='';
-    // 	$('#ImportModal').modal('show');
-    // },
-    // onFileChange(e) {
-    // 	this.fileImport = e.target.files[0];
-    // },
-    // reloadFile() {
-    // 	this.$refs.fileupload.value='';
-    // 	this.fileImport='';
-    // },
-    // importFile() {
-    // 	let formData = new FormData();
-    // 	formData.append('fileImport', this.fileImport);
-    // 	axios.post('../../api/admin/edu-faculty/khoa/import', formData, {
-    // 		headers: { 'content-type': 'multipart/form-data' }
-    // 	})
-    // 	.then(res => {
-    // 		if(res.status === 200) {
-    // 			$('#ImportModal').modal('hide');
-    // 			this.fetchMajors();
-    // 			this.$snotify.success('Import thành công');
-    // 		}
-    // 	})
-    // 	.catch(err => {
-    // 		const  stringError = err.response.data.errors[0][0];
-    // 		const  stringSplit = stringError.split(".");
-    // 		this.error = stringSplit[1];
-    // 		this.fetchMajors();
-    // 		this.$snotify.error(this.error);
-    // 	});
-    // }
+    },
+    filter: function filter(page_url) {
+      var _this10 = this;
 
+      var vm = this;
+      page_url = '../../api/admin/edu-major/chuyen-nganh/filter/' + this.value_faculty + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this10.majors = res.data;
+        _this10.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    exportFile: function exportFile() {
+      window.location.href = "../../api/admin/edu-major/chuyen-nganh/export";
+    },
+    openImport: function openImport() {
+      this.$refs.fileupload.value = '';
+      $('#ImportModal').modal('show');
+    },
+    onFileChange: function onFileChange(e) {
+      this.fileImport = e.target.files[0];
+    },
+    reloadFile: function reloadFile() {
+      this.$refs.fileupload.value = '';
+      this.fileImport = '';
+    },
+    importFile: function importFile() {
+      var _this11 = this;
+
+      var formData = new FormData();
+      formData.append('fileImport', this.fileImport);
+      axios.post('../../api/admin/edu-major/chuyen-nganh/import', formData, {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      }).then(function (res) {
+        if (res.status === 200) {
+          $('#ImportModal').modal('hide');
+
+          _this11.fetchMajors();
+
+          _this11.$snotify.success('Import thành công');
+        }
+      })["catch"](function (err) {
+        var _err$response$data$er, _err$response$data$er2;
+
+        if (((_err$response$data$er = err.response.data.errors) === null || _err$response$data$er === void 0 ? void 0 : (_err$response$data$er2 = _err$response$data$er.fileImport) === null || _err$response$data$er2 === void 0 ? void 0 : _err$response$data$er2.length) > 0) {
+          _this11.error = err.response.data.errors.fileImport[0];
+        } else if (err.response.data.errors[0].length > 0) {
+          var stringError = err.response.data.errors[0][0];
+          var stringSplit = stringError.split(".");
+          _this11.error = stringSplit[1];
+        }
+
+        _this11.fetchMajors();
+
+        _this11.$snotify.error(_this11.error);
+      });
+    }
   }
 });
 
@@ -42164,6 +42204,35 @@ var render = function() {
             },
             [_c("li", { staticClass: "fa fa-plus" }), _vm._v(" Tạo mới")]
           )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-import btn-lg mb-3",
+              on: {
+                click: function($event) {
+                  return _vm.openImport()
+                }
+              }
+            },
+            [_c("li", { staticClass: "fa fa-upload" }), _vm._v(" Import")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-export btn-lg mb-3",
+              attrs: { name: "export_csv" },
+              on: {
+                click: function($event) {
+                  return _vm.exportFile()
+                }
+              }
+            },
+            [_c("li", { staticClass: "fa fa-download" }), _vm._v(" Export")]
+          )
         ])
       ]),
       _vm._v(" "),
@@ -42203,7 +42272,7 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-9" }, [
+              _c("div", { staticClass: "col-md-6" }, [
                 _c("input", {
                   directives: [
                     {
@@ -42225,6 +42294,58 @@ var render = function() {
                     }
                   }
                 })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-3" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.value_faculty,
+                        expression: "value_faculty"
+                      }
+                    ],
+                    staticClass: "form-control mt-2",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.value_faculty = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { value: "", disabled: "", selected: "" } },
+                      [_vm._v("Lọc theo khoa")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { disabled: "" } }, [
+                      _vm._v("----------------------------------------")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.faculties, function(faculty) {
+                      return _c(
+                        "option",
+                        { domProps: { value: faculty.faculty_code } },
+                        [_vm._v(_vm._s(faculty.faculty_name))]
+                      )
+                    })
+                  ],
+                  2
+                )
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
@@ -42453,11 +42574,11 @@ var render = function() {
                               _vm._v(" "),
                               _c(
                                 "td",
-                                _vm._l(_vm.faculties, function(a) {
+                                _vm._l(_vm.faculties, function(faculty) {
                                   return _c("div", [
-                                    major.major_faculty == a.faculty_code
+                                    major.major_faculty == faculty.faculty_code
                                       ? _c("div", [
-                                          _vm._v(_vm._s(a.faculty_name))
+                                          _vm._v(_vm._s(faculty.faculty_name))
                                         ])
                                       : _c("div", {
                                           staticStyle: { display: "none" }
@@ -42910,6 +43031,161 @@ var render = function() {
             ]
           )
         ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade bd-example-modal-lg",
+          attrs: {
+            id: "DetailModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "DetailModalTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog modal-lg" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass: "table row table-borderless w-100 m-0 border"
+                  },
+                  [
+                    _c("tbody", { staticClass: "col-lg-12 p-0" }, [
+                      _vm._m(4),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v("Mã Chuyên Ngành: "),
+                          _c("strong", [
+                            _vm._v(" " + _vm._s(_vm.form.major_code))
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v("Tên Chuyên Ngành: "),
+                          _c("strong", [
+                            _vm._v(" " + _vm._s(_vm.form.major_name))
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _vm._v("Thuộc Khoa: \n\t\t\t\t\t\t\t\t\t"),
+                            _vm._l(_vm.faculties, function(faculty) {
+                              return _c("strong", { key: faculty.faculty_id }, [
+                                _vm.form.major_faculty == faculty.faculty_code
+                                  ? _c("strong", [
+                                      _vm._v(" " + _vm._s(faculty.faculty_name))
+                                    ])
+                                  : _vm._e()
+                              ])
+                            })
+                          ],
+                          2
+                        )
+                      ])
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(5)
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "ImportModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "ImportModalTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.importFile()
+                    },
+                    keydown: function($event) {
+                      return _vm.form.onKeydown($event)
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-content" }, [
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c("label", [_vm._v("Tệp Excel")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        ref: "fileupload",
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "file",
+                          id: "fileImport",
+                          name: "fileImport"
+                        },
+                        on: { change: _vm.onFileChange }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.reloadFile()
+                            }
+                          }
+                        },
+                        [_vm._v("Tải lại")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { disabled: _vm.form.busy, type: "submit" }
+                        },
+                        [_vm._v("Import")]
+                      )
+                    ])
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
       )
     ],
     1
@@ -42953,6 +43229,92 @@ var staticRenderFns = [
         }
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-info" },
+      [
+        _c(
+          "h5",
+          {
+            staticClass: "modal-title styling-font-modal-header",
+            attrs: { id: "DetailModalTitle" }
+          },
+          [_vm._v("Chi tiết Chuyên Ngành")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "h3-strong" }, [
+        _c("h3", [_c("strong", [_vm._v(" Thông tin chi tiết")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Đóng")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-update" },
+      [
+        _c(
+          "h5",
+          { staticClass: "modal-title", attrs: { id: "ImportModalTitle" } },
+          [_vm._v("Import Chuyên Ngành")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
     )
   }
 ]
@@ -44189,18 +44551,19 @@ var render = function() {
                                 [
                                   _vm._v("Khoa: \n\t\t\t\t\t\t\t\t\t"),
                                   _vm._l(_vm.faculties, function(faculty) {
-                                    return _c("div", [
+                                    return _c("strong", [
                                       _vm.form.lecturer_faculty ==
                                       faculty.faculty_id
-                                        ? _c("div", [
-                                            _c("strong", [
-                                              _vm._v(
-                                                " " +
-                                                  _vm._s(faculty.faculty_name)
-                                              )
-                                            ])
+                                        ? _c("strong", [
+                                            _vm._v(
+                                              "\n\t\t\t\t\t\t\t\t\t\t\t" +
+                                                _vm._s(faculty.faculty_name) +
+                                                "\n\t\t\t\t\t\t\t\t\t\t"
+                                            )
                                           ])
-                                        : _c("div", { attrs: { hidden: "" } })
+                                        : _c("strong", {
+                                            attrs: { hidden: "" }
+                                          })
                                     ])
                                   })
                                 ],

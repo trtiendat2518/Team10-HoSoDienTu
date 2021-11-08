@@ -205,12 +205,12 @@
 								</tr>
 								<tr>
 									<td>Khoa: 
-										<div v-for="faculty in faculties">
-											<div v-if="form.lecturer_faculty == faculty.faculty_id">
-												<strong> {{ faculty.faculty_name }}</strong>
-											</div>
-											<div v-else hidden></div>
-										</div>
+										<strong v-for="faculty in faculties">
+											<strong v-if="form.lecturer_faculty == faculty.faculty_id">
+												{{ faculty.faculty_name }}
+											</strong>
+											<strong v-else hidden></strong>
+										</strong>
 									</td>
 								</tr>
 								<tr>
