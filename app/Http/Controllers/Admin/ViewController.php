@@ -38,7 +38,7 @@ class ViewController extends Controller
     public function faculty_manage(Request $request)
     {
         //---SEO
-        $meta_title = "Quản lý Khoa";
+        $meta_title = "Quản lý chung";
         $meta_desc = "Quản lý khoa";
         $url_canonical = $request->url();
         //------
@@ -46,5 +46,18 @@ class ViewController extends Controller
         $check_role = Lecturer::where('lecturer_code', Session::get('lecturer_id'))->limit(1)->get();
 
         return view('admin.pages.education.faculty_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
+    }
+
+    public function major_manage(Request $request)
+    {
+        //---SEO
+        $meta_title = "Quản lý chung";
+        $meta_desc = "Quản lý chuyên ngành";
+        $url_canonical = $request->url();
+        //------
+        
+        $check_role = Lecturer::where('lecturer_code', Session::get('lecturer_id'))->limit(1)->get();
+
+        return view('admin.pages.education.major_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
     }
 }

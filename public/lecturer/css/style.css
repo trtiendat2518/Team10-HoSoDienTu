@@ -182,7 +182,7 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 	border-color: #e3242b;
 }
 .blue-background{
-	background-color: #1753fc;
+	background-color: darkblue;
 }
 body {
 	margin: 0;
@@ -7927,8 +7927,12 @@ ul li ul:hover {
 .page-item.active .page-link {
 	z-index: 1;
 	color: #fff;
-	background-color: #1753fc;
-	border:1px solid #1753fc;
+	background-color: darkblue;
+	border:1px solid darkblue;
+}
+.page-item.active .page-link:hover {
+	z-index: 1;
+	color: white;
 }
 .page-item.disabled .page-link {
 	color: #ced4da;

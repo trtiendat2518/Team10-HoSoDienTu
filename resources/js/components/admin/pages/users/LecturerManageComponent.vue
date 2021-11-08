@@ -23,7 +23,7 @@
 						<div class="col-md-3">
 							<select class="form-control mt-2" v-model="value_role">
 								<option value="" disabled selected>Lọc thông tin</option>
-								<option value="0">Giảng viên mới</option>
+								<option value="0">Giảng viên</option>
 								<option value="1">Ban chủ nhiệm khoa</option>
 								<option value="2">Chủ nhiệm sinh viên</option>
 							</select>
@@ -70,7 +70,7 @@
 											Ban chủ nhiệm khoa
 										</div>
 										<div v-else>
-											Giảng viên mới
+											Giảng viên
 										</div>
 									</td>
 									<td class="td-styling">
@@ -125,10 +125,19 @@
 							
 							<label class="mt-3">Vai trò</label>
 							<select v-model="form.lecturer_role" name="lecturer_role" class="form-control select-option">
-								<option value="0">Giảng viên mới</option>
+								<option value="0">Giảng viên</option>
 								<option value="1">Ban chủ nhiệm khoa</option>
 								<option value="2">Chủ nhiệm sinh viên</option>
 							</select>
+
+							<div v-show="form.lecturer_role==1">
+								<label class="mt-3">Cấp bậc</label>
+								<select v-model="form.lecturer_level" name="lecturer_level" class="form-control select-option">
+									<option value="0">Không có</option>
+									<option value="1">Trưởng khoa</option>
+									<option value="2">Phó khoa</option>
+								</select>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -151,7 +160,7 @@
 					</div>
 					<div class="modal-body" v-show="details.length" v-for="info in details" :key="info.lecturer_info_id">
 						<center>
-							<img src="('../public/lecturer/images/vlu.ico')" class="avatar-xxl rounded-circle" alt="profile">
+							<img src="('public/lecturer/images/vlu.ico')" class="avatar-xxl rounded-circle" alt="profile">
 							{{ info.lecturer_avatar }}
 						</center>
 						<table class="table row table-borderless w-100 m-0 border">
@@ -195,13 +204,28 @@
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Khoa: <strong> {{ info.lecturer_faculty }}</strong></td>
+									<td>Khoa: 
+										<div v-for="faculty in faculties">
+											<div v-if="form.lecturer_faculty == faculty.faculty_id">
+												<strong> {{ faculty.faculty_name }}</strong>
+											</div>
+											<div v-else hidden></div>
+										</div>
+									</td>
 								</tr>
-								<tr class="td-borderbottom">
+								<tr>
 									<td>Chức vụ: 
 										<strong v-if="form.lecturer_role==2"> Chủ nhiệm sinh viên</strong>
 										<strong v-else-if="form.lecturer_role==1"> Ban chủ nhiệm khoa</strong>
-										<strong v-else> Giảng viên mới</strong>
+										<strong v-else> Giảng viên</strong>
+									</td>
+								</tr>
+
+								<tr class="td-borderbottom">
+									<td>Cấp bậc: 
+										<strong v-if="form.lecturer_level==2"> Phó Khoa</strong>
+										<strong v-else-if="form.lecturer_level==1"> Trưởng khoa</strong>
+										<strong v-else> Không có</strong>
 									</td>
 								</tr>
 								
@@ -259,12 +283,15 @@
 					lecturer_fullname:'',
 					lecturer_email:'',
 					lecturer_status: '',
-					lecturer_role: ''
+					lecturer_faculty: '',
+					lecturer_role: '',
+					lecturer_level: ''
 				}),
 				selected: [],
 				selectAll: false,
 				details:[],
 				value_role:'',
+				faculties: [],
 			};
 		},
 		watch: {
@@ -292,6 +319,7 @@
 		},
 		mounted() {
 			this.fetchLecturers();
+			this.fetchFaculties();
 		},
 		methods: {
 			empty() {
@@ -439,6 +467,17 @@
 				this.query='';
 				this.value_role='';
 			},
+			fetchFaculties(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-faculty/khoa/1000?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.faculties = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 		}
 	};
 </script>
@@ -470,7 +509,7 @@
 		color: #1753fc;
 	}
 	.styling-modal-header-info {
-		background-color: #1753fc;
+		background-color: darkblue;
 		color: white;
 	}
 	.styling-font-modal-header {
@@ -478,7 +517,7 @@
 		font-weight: bold;
 	}
 	.styling-modal-header-update {
-		background-color: #00C851;
+		background-color: darkblue;
 		color: white;
 	}
 	.td-borderight {
@@ -488,7 +527,7 @@
 		border-bottom: 2px solid black;
 	}
 	.background-update {
-		background-color: #00C851;
-		border-color: #00C851;
+		background-color: darkblue;
+		border-color: darkblue;
 	}
 </style>
