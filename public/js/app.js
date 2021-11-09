@@ -2289,6 +2289,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      students: [],
       courses: [],
       course_id: '',
       pagination: {
@@ -2327,37 +2328,60 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
+  computed: {
+    countStudent: function countStudent() {
+      var _this = this;
+
+      return this.students.filter(function (student) {
+        return student.student_course == _this.form.course_id;
+      });
+    }
+  },
   mounted: function mounted() {
     this.fetchCourses();
+    this.fetchStudents();
   },
   methods: {
     empty: function empty() {
       return this.courses.length < 1;
     },
+    fetchStudents: function fetchStudents(page_url) {
+      var _this2 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/user-sv/sinh-vien/studentinfo';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this2.students = res.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     fetchCourses: function fetchCourses(page_url) {
-      var _this = this;
+      var _this3 = this;
 
       var vm = this;
       page_url = '../../api/admin/edu-course/khoa-hoc/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.courses = res.data;
-        _this.pagination = res.meta;
+        _this3.courses = res.data;
+        _this3.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     search: function search(page_url) {
-      var _this2 = this;
+      var _this4 = this;
 
       var vm = this;
       page_url = '../../api/admin/edu-course/khoa-hoc/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this2.courses = res.data;
-        _this2.pagination = res.meta;
+        _this4.courses = res.data;
+        _this4.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -2369,18 +2393,18 @@ __webpack_require__.r(__webpack_exports__);
       $('#CourseModal').modal('show');
     },
     store: function store() {
-      var _this3 = this;
+      var _this5 = this;
 
       this.form.busy = true;
       this.form.post('../../api/admin/edu-course/khoa-hoc').then(function (res) {
-        _this3.fetchCourses();
+        _this5.fetchCourses();
 
         $('#CourseModal').modal('hide');
 
-        if (_this3.form.successful) {
-          _this3.$snotify.success('Thêm mới thành công!');
+        if (_this5.form.successful) {
+          _this5.$snotify.success('Thêm mới thành công!');
         } else {
-          _this3.$snotify.error('Không thể thêm khóa học', 'Lỗi');
+          _this5.$snotify.error('Không thể thêm khóa học', 'Lỗi');
         }
       })["catch"](function (err) {
         return console.log(err);
@@ -2394,35 +2418,35 @@ __webpack_require__.r(__webpack_exports__);
       $('#CourseModal').modal('show');
     },
     update: function update() {
-      var _this4 = this;
+      var _this6 = this;
 
       this.form.put('../../api/admin/edu-course/khoa-hoc/' + this.form.course_id).then(function (res) {
-        _this4.fetchCourses();
+        _this6.fetchCourses();
 
         $('#CourseModal').modal('hide');
 
-        if (_this4.form.successful) {
-          _this4.$snotify.success('Cập nhật Khóa Học thành công!');
+        if (_this6.form.successful) {
+          _this6.$snotify.success('Cập nhật Khóa Học thành công!');
         } else {
-          _this4.$snotify.error('Không thể chỉnh sửa');
+          _this6.$snotify.error('Không thể chỉnh sửa');
         }
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     change: function change(course_id) {
-      var _this5 = this;
+      var _this7 = this;
 
       axios.patch("../../api/admin/edu-course/khoa-hoc/change/".concat(course_id)).then(function (res) {
-        _this5.fetchCourses();
+        _this7.fetchCourses();
 
-        _this5.$snotify.warning('Đã thay đổi trạng thái');
+        _this7.$snotify.warning('Đã thay đổi trạng thái');
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     destroy: function destroy(course_id) {
-      var _this6 = this;
+      var _this8 = this;
 
       this.$snotify.clear();
       this.$snotify.confirm('Xác nhận xóa', {
@@ -2433,12 +2457,12 @@ __webpack_require__.r(__webpack_exports__);
         buttons: [{
           text: 'Xóa',
           action: function action(toast) {
-            _this6.$snotify.remove(toast.id);
+            _this8.$snotify.remove(toast.id);
 
             axios["delete"]("../../api/admin/edu-course/khoa-hoc/".concat(course_id)).then(function (res) {
-              _this6.$snotify.success('Đã xóa!');
+              _this8.$snotify.success('Đã xóa!');
 
-              _this6.fetchCourses();
+              _this8.fetchCourses();
             })["catch"](function (err) {
               return console.log(err);
             });
@@ -2447,14 +2471,14 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           text: 'Đóng',
           action: function action(toast) {
-            _this6.$snotify.remove(toast.id);
+            _this8.$snotify.remove(toast.id);
           },
           bold: true
         }]
       });
     },
     destroyall: function destroyall() {
-      var _this7 = this;
+      var _this9 = this;
 
       this.$snotify.clear();
       this.$snotify.confirm('Xác nhận xóa', {
@@ -2465,14 +2489,14 @@ __webpack_require__.r(__webpack_exports__);
         buttons: [{
           text: 'Xóa',
           action: function action(toast) {
-            _this7.$snotify.remove(toast.id);
+            _this9.$snotify.remove(toast.id);
 
             axios.post('../../api/admin/edu-course/khoa-hoc/destroyall', {
-              course: _this7.selected
+              course: _this9.selected
             }).then(function (res) {
-              _this7.$snotify.success('Đã xóa!');
+              _this9.$snotify.success('Đã xóa!');
 
-              _this7.fetchCourses();
+              _this9.fetchCourses();
             })["catch"](function (err) {
               return console.log(err);
             });
@@ -2481,7 +2505,7 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           text: 'Đóng',
           action: function action(toast) {
-            _this7.$snotify.remove(toast.id);
+            _this9.$snotify.remove(toast.id);
           },
           bold: true
         }]
@@ -2497,16 +2521,16 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     detail: function detail(course, page_url) {
-      var _this8 = this;
+      var _this10 = this;
 
       var vm = this;
       page_url = "../../api/admin/edu-course/khoa-hoc/detail/".concat(course.course_id);
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this8.details = res.data;
+        _this10.details = res.data;
 
-        _this8.form.fill(course);
+        _this10.form.fill(course);
 
         $('#DetailModal').modal('show');
       })["catch"](function (err) {
@@ -2534,7 +2558,7 @@ __webpack_require__.r(__webpack_exports__);
       this.fileImport = '';
     },
     importFile: function importFile() {
-      var _this9 = this;
+      var _this11 = this;
 
       var formData = new FormData();
       formData.append('fileImport', this.fileImport);
@@ -2546,24 +2570,24 @@ __webpack_require__.r(__webpack_exports__);
         if (res.status === 200) {
           $('#ImportModal').modal('hide');
 
-          _this9.fetchCourses();
+          _this11.fetchCourses();
 
-          _this9.$snotify.success('Import thành công');
+          _this11.$snotify.success('Import thành công');
         }
       })["catch"](function (err) {
         var _err$response$data$er, _err$response$data$er2;
 
         if (((_err$response$data$er = err.response.data.errors) === null || _err$response$data$er === void 0 ? void 0 : (_err$response$data$er2 = _err$response$data$er.fileImport) === null || _err$response$data$er2 === void 0 ? void 0 : _err$response$data$er2.length) > 0) {
-          _this9.error = err.response.data.errors.fileImport[0];
+          _this11.error = err.response.data.errors.fileImport[0];
         } else if (err.response.data.errors[0].length > 0) {
           var stringError = err.response.data.errors[0][0];
           var stringSplit = stringError.split(".");
-          _this9.error = stringSplit[1];
+          _this11.error = stringSplit[1];
         }
 
-        _this9.fetchCourses();
+        _this11.fetchCourses();
 
-        _this9.$snotify.error(_this9.error);
+        _this11.$snotify.error(_this11.error);
       });
     }
   }
@@ -2792,11 +2816,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       faculties: [],
+      majors: [],
+      lecturers: [],
+      head_lecturer: '',
+      vice_lecturer: '',
       faculty_id: '',
       pagination: {
         current_page: 1
@@ -2834,37 +2866,74 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
+  computed: {
+    countMajor: function countMajor() {
+      var _this = this;
+
+      return this.majors.filter(function (major) {
+        return major.major_faculty == _this.form.faculty_code;
+      });
+    }
+  },
   mounted: function mounted() {
+    this.fetchMajors();
     this.fetchFaculties();
+    this.fetchLecturers();
   },
   methods: {
     empty: function empty() {
       return this.faculties.length < 1;
     },
     fetchFaculties: function fetchFaculties(page_url) {
-      var _this = this;
+      var _this2 = this;
 
       var vm = this;
       page_url = '../../api/admin/edu-faculty/khoa/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.faculties = res.data;
-        _this.pagination = res.meta;
+        _this2.faculties = res.data;
+        _this2.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    fetchMajors: function fetchMajors(page_url) {
+      var _this3 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/edu-major/chuyen-nganh/major';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this3.majors = res.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    fetchLecturers: function fetchLecturers(page_url) {
+      var _this4 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/user-gv/giang-vien/lecturer';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this4.lecturers = res.data;
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     search: function search(page_url) {
-      var _this2 = this;
+      var _this5 = this;
 
       var vm = this;
       page_url = '../../api/admin/edu-faculty/khoa/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this2.faculties = res.data;
-        _this2.pagination = res.meta;
+        _this5.faculties = res.data;
+        _this5.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -2876,18 +2945,18 @@ __webpack_require__.r(__webpack_exports__);
       $('#FacultyModal').modal('show');
     },
     store: function store() {
-      var _this3 = this;
+      var _this6 = this;
 
       this.form.busy = true;
       this.form.post('../../api/admin/edu-faculty/khoa').then(function (res) {
-        _this3.fetchFaculties();
+        _this6.fetchFaculties();
 
         $('#FacultyModal').modal('hide');
 
-        if (_this3.form.successful) {
-          _this3.$snotify.success('Thêm mới thành công!');
+        if (_this6.form.successful) {
+          _this6.$snotify.success('Thêm mới thành công!');
         } else {
-          _this3.$snotify.error('Không thể thêm Khoa', 'Lỗi');
+          _this6.$snotify.error('Không thể thêm Khoa', 'Lỗi');
         }
       })["catch"](function (err) {
         return console.log(err);
@@ -2901,35 +2970,35 @@ __webpack_require__.r(__webpack_exports__);
       $('#FacultyModal').modal('show');
     },
     update: function update() {
-      var _this4 = this;
+      var _this7 = this;
 
       this.form.put('../../api/admin/edu-faculty/khoa/' + this.form.faculty_id).then(function (res) {
-        _this4.fetchFaculties();
+        _this7.fetchFaculties();
 
         $('#FacultyModal').modal('hide');
 
-        if (_this4.form.successful) {
-          _this4.$snotify.success('Cập nhật Khoa thành công!');
+        if (_this7.form.successful) {
+          _this7.$snotify.success('Cập nhật Khoa thành công!');
         } else {
-          _this4.$snotify.error('Không thể chỉnh sửa');
+          _this7.$snotify.error('Không thể chỉnh sửa');
         }
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     change: function change(faculty_id) {
-      var _this5 = this;
+      var _this8 = this;
 
       axios.patch("../../api/admin/edu-faculty/khoa/change/".concat(faculty_id)).then(function (res) {
-        _this5.fetchFaculties();
+        _this8.fetchFaculties();
 
-        _this5.$snotify.warning('Đã thay đổi trạng thái');
+        _this8.$snotify.warning('Đã thay đổi trạng thái');
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     destroy: function destroy(faculty_id) {
-      var _this6 = this;
+      var _this9 = this;
 
       this.$snotify.clear();
       this.$snotify.confirm('Xác nhận xóa', {
@@ -2940,12 +3009,12 @@ __webpack_require__.r(__webpack_exports__);
         buttons: [{
           text: 'Xóa',
           action: function action(toast) {
-            _this6.$snotify.remove(toast.id);
+            _this9.$snotify.remove(toast.id);
 
             axios["delete"]("../../api/admin/edu-faculty/khoa/".concat(faculty_id)).then(function (res) {
-              _this6.$snotify.success('Đã xóa!');
+              _this9.$snotify.success('Đã xóa!');
 
-              _this6.fetchFaculties();
+              _this9.fetchFaculties();
             })["catch"](function (err) {
               return console.log(err);
             });
@@ -2954,14 +3023,14 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           text: 'Đóng',
           action: function action(toast) {
-            _this6.$snotify.remove(toast.id);
+            _this9.$snotify.remove(toast.id);
           },
           bold: true
         }]
       });
     },
     destroyall: function destroyall() {
-      var _this7 = this;
+      var _this10 = this;
 
       this.$snotify.clear();
       this.$snotify.confirm('Xác nhận xóa', {
@@ -2972,14 +3041,14 @@ __webpack_require__.r(__webpack_exports__);
         buttons: [{
           text: 'Xóa',
           action: function action(toast) {
-            _this7.$snotify.remove(toast.id);
+            _this10.$snotify.remove(toast.id);
 
             axios.post('../../api/admin/edu-faculty/khoa/destroyall', {
-              faculty: _this7.selected
+              faculty: _this10.selected
             }).then(function (res) {
-              _this7.$snotify.success('Đã xóa!');
+              _this10.$snotify.success('Đã xóa!');
 
-              _this7.fetchFaculties();
+              _this10.fetchFaculties();
             })["catch"](function (err) {
               return console.log(err);
             });
@@ -2988,7 +3057,7 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           text: 'Đóng',
           action: function action(toast) {
-            _this7.$snotify.remove(toast.id);
+            _this10.$snotify.remove(toast.id);
           },
           bold: true
         }]
@@ -3004,20 +3073,31 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     detail: function detail(faculty, page_url) {
-      var _this8 = this;
+      var _this11 = this;
 
       var vm = this;
       page_url = "../../api/admin/edu-faculty/khoa/detail/".concat(faculty.faculty_id);
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this8.details = res.data;
+        _this11.details = res.data;
 
-        _this8.form.fill(faculty);
+        _this11.form.fill(faculty);
 
+        var head = _this11.lecturers.filter(function (lec) {
+          return lec.lecturer_faculty === faculty.faculty_id && lec.lecturer_level === 1;
+        });
+
+        _this11.head_lecturer = head[0].lecturer_fullname;
+
+        var vice = _this11.lecturers.filter(function (lec) {
+          return lec.lecturer_faculty === faculty.faculty_id && lec.lecturer_level === 2;
+        });
+
+        _this11.vice_lecturer = vice[0].lecturer_fullname;
         $('#DetailModal').modal('show');
       })["catch"](function (err) {
-        return console.log(err);
+        return _this11.$snotify.error('Khoa này chưa có thông tin chi tiết');
       });
     },
     reload: function reload() {
@@ -3041,7 +3121,7 @@ __webpack_require__.r(__webpack_exports__);
       this.fileImport = '';
     },
     importFile: function importFile() {
-      var _this9 = this;
+      var _this12 = this;
 
       var formData = new FormData();
       formData.append('fileImport', this.fileImport);
@@ -3053,24 +3133,24 @@ __webpack_require__.r(__webpack_exports__);
         if (res.status === 200) {
           $('#ImportModal').modal('hide');
 
-          _this9.fetchFaculties();
+          _this12.fetchFaculties();
 
-          _this9.$snotify.success('Import thành công');
+          _this12.$snotify.success('Import thành công');
         }
       })["catch"](function (err) {
         var _err$response$data$er, _err$response$data$er2;
 
         if (((_err$response$data$er = err.response.data.errors) === null || _err$response$data$er === void 0 ? void 0 : (_err$response$data$er2 = _err$response$data$er.fileImport) === null || _err$response$data$er2 === void 0 ? void 0 : _err$response$data$er2.length) > 0) {
-          _this9.error = err.response.data.errors.fileImport[0];
+          _this12.error = err.response.data.errors.fileImport[0];
         } else if (err.response.data.errors[0].length > 0) {
           var stringError = err.response.data.errors[0][0];
           var stringSplit = stringError.split(".");
-          _this9.error = stringSplit[1];
+          _this12.error = stringSplit[1];
         }
 
-        _this9.fetchFaculties();
+        _this12.fetchFaculties();
 
-        _this9.$snotify.error(_this9.error);
+        _this12.$snotify.error(_this12.error);
       });
     }
   }
@@ -3305,16 +3385,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3322,6 +3392,7 @@ __webpack_require__.r(__webpack_exports__);
       majors: [],
       faculties: [],
       major_id: '',
+      major_faculty: '',
       pagination: {
         current_page: 1
       },
@@ -3380,7 +3451,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var vm = this;
-      page_url = '../../api/admin/edu-major/chuyen-nganh/faculty';
+      page_url = '../../api/admin/edu-faculty/khoa/faculty';
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -3563,6 +3634,11 @@ __webpack_require__.r(__webpack_exports__);
 
         _this9.form.fill(major);
 
+        var faculty = _this9.faculties.find(function (fac) {
+          return fac.faculty_code === major.major_faculty;
+        });
+
+        _this9.major_faculty = faculty.faculty_name;
         $('#DetailModal').modal('show');
       })["catch"](function (err) {
         return console.log(err);
@@ -3635,6 +3711,12 @@ __webpack_require__.r(__webpack_exports__);
 
         _this11.$snotify.error(_this11.error);
       });
+    },
+    filterFaculty: function filterFaculty(major) {
+      var faculty = this.faculties.find(function (fac) {
+        return fac.faculty_code === major.major_faculty;
+      });
+      return faculty.faculty_name;
     }
   }
 });
@@ -4088,19 +4170,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       lecturers: [],
       lecturer_id: '',
+      lecturer_faculty: '',
       pagination: {
         current_page: 1
       },
@@ -4306,9 +4382,14 @@ __webpack_require__.r(__webpack_exports__);
 
         _this7.form.fill(lecturer);
 
+        var faculty = _this7.faculties.find(function (fac) {
+          return fac.faculty_id === lecturer.lecturer_faculty;
+        });
+
+        _this7.lecturer_faculty = faculty.faculty_name;
         $('#DetailModal').modal('show');
       })["catch"](function (err) {
-        return console.log(err);
+        return _this7.$snotify.error('Giảng viên chưa cập nhật thông tin');
       });
     },
     filter: function filter(page_url) {
@@ -4609,10 +4690,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      courses: [],
+      faculties: [],
+      majors: [],
       students: [],
       student_id: '',
       pagination: {
@@ -4662,35 +4752,77 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.fetchStudents();
+    this.fetchCourses();
+    this.fetchFaculties();
+    this.fetchMajors();
   },
   methods: {
     empty: function empty() {
       return this.students.length < 1;
     },
-    fetchStudents: function fetchStudents(page_url) {
+    fetchCourses: function fetchCourses(page_url) {
       var _this = this;
+
+      var vm = this;
+      page_url = '../../api/admin/edu-course/khoa-hoc/course';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this.courses = res.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    fetchFaculties: function fetchFaculties(page_url) {
+      var _this2 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/edu-faculty/khoa/faculty';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this2.faculties = res.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    fetchMajors: function fetchMajors(page_url) {
+      var _this3 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/edu-major/chuyen-nganh/major';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this3.majors = res.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    fetchStudents: function fetchStudents(page_url) {
+      var _this4 = this;
 
       var vm = this;
       page_url = '../../api/admin/user-sv/sinh-vien/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.students = res.data;
-        _this.pagination = res.meta;
+        _this4.students = res.data;
+        _this4.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     search: function search(page_url) {
-      var _this2 = this;
+      var _this5 = this;
 
       var vm = this;
       page_url = '../../api/admin/user-sv/sinh-vien/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this2.students = res.data;
-        _this2.pagination = res.meta;
+        _this5.students = res.data;
+        _this5.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -4703,35 +4835,35 @@ __webpack_require__.r(__webpack_exports__);
       $('#StudentModal').modal('show');
     },
     update: function update() {
-      var _this3 = this;
+      var _this6 = this;
 
       this.form.put('../../api/admin/user-sv/sinh-vien/' + this.form.student_id).then(function (res) {
-        _this3.fetchStudents();
+        _this6.fetchStudents();
 
         $('#StudentModal').modal('hide');
 
-        if (_this3.form.successful) {
-          _this3.$snotify.success('Vai trò của tài khoản đã thay đổi');
+        if (_this6.form.successful) {
+          _this6.$snotify.success('Vai trò của tài khoản đã thay đổi');
         } else {
-          _this3.$snotify.error('Không thể chỉnh sửa');
+          _this6.$snotify.error('Không thể chỉnh sửa');
         }
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     change: function change(student_id) {
-      var _this4 = this;
+      var _this7 = this;
 
       axios.patch("../../api/admin/user-sv/sing-vien/change/".concat(student_id)).then(function (res) {
-        _this4.fetchStudents();
+        _this7.fetchStudents();
 
-        _this4.$snotify.warning('Đã thay đổi trạng thái');
+        _this7.$snotify.warning('Đã thay đổi trạng thái');
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     destroy: function destroy(student_id) {
-      var _this5 = this;
+      var _this8 = this;
 
       this.$snotify.clear();
       this.$snotify.confirm('Xác nhận xóa', {
@@ -4742,12 +4874,12 @@ __webpack_require__.r(__webpack_exports__);
         buttons: [{
           text: 'Xóa',
           action: function action(toast) {
-            _this5.$snotify.remove(toast.id);
+            _this8.$snotify.remove(toast.id);
 
             axios["delete"]("../../api/admin/user-sv/sinh-vien/".concat(student_id)).then(function (res) {
-              _this5.$snotify.success('Đã xóa!');
+              _this8.$snotify.success('Đã xóa!');
 
-              _this5.fetchStudents();
+              _this8.fetchStudents();
             })["catch"](function (err) {
               return console.log(err);
             });
@@ -4756,14 +4888,14 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           text: 'Đóng',
           action: function action(toast) {
-            _this5.$snotify.remove(toast.id);
+            _this8.$snotify.remove(toast.id);
           },
           bold: true
         }]
       });
     },
     destroyall: function destroyall() {
-      var _this6 = this;
+      var _this9 = this;
 
       this.$snotify.clear();
       this.$snotify.confirm('Xác nhận xóa', {
@@ -4774,14 +4906,14 @@ __webpack_require__.r(__webpack_exports__);
         buttons: [{
           text: 'Xóa',
           action: function action(toast) {
-            _this6.$snotify.remove(toast.id);
+            _this9.$snotify.remove(toast.id);
 
             axios.post('../../api/admin/user-sv/sinh-vien/destroyall', {
-              student: _this6.selected
+              student: _this9.selected
             }).then(function (res) {
-              _this6.$snotify.success('Đã xóa!');
+              _this9.$snotify.success('Đã xóa!');
 
-              _this6.fetchStudents();
+              _this9.fetchStudents();
             })["catch"](function (err) {
               return console.log(err);
             });
@@ -4790,7 +4922,7 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           text: 'Đóng',
           action: function action(toast) {
-            _this6.$snotify.remove(toast.id);
+            _this9.$snotify.remove(toast.id);
           },
           bold: true
         }]
@@ -4806,16 +4938,16 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     detail: function detail(student, page_url) {
-      var _this7 = this;
+      var _this10 = this;
 
       var vm = this;
       page_url = "../../api/admin/user-sv/sinh-vien/detail/".concat(student.student_id);
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this7.details = res.data;
+        _this10.details = res.data;
 
-        _this7.form.fill(student);
+        _this10.form.fill(student);
 
         $('#DetailModal').modal('show');
       })["catch"](function (err) {
@@ -4823,15 +4955,15 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     filter: function filter(page_url) {
-      var _this8 = this;
+      var _this11 = this;
 
       var vm = this;
       page_url = '../../api/admin/user-sv/sinh-vien/filter/' + this.value_role + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this8.students = res.data;
-        _this8.pagination = res.meta;
+        _this11.students = res.data;
+        _this11.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -4840,6 +4972,24 @@ __webpack_require__.r(__webpack_exports__);
       this.fetchStudents();
       this.query = '';
       this.value_role = '';
+    },
+    studentCourse: function studentCourse(info) {
+      var course = this.courses.find(function (crs) {
+        return crs.course_id === info.student_course;
+      });
+      return course.course_code;
+    },
+    studentFaculty: function studentFaculty(info) {
+      var faculty = this.faculties.find(function (fac) {
+        return fac.faculty_id === info.student_faculty;
+      });
+      return faculty.faculty_name;
+    },
+    studentMajor: function studentMajor(info) {
+      var major = this.majors.find(function (mjr) {
+        return mjr.major_id === info.student_major;
+      });
+      return major.major_name;
     }
   }
 });
@@ -42539,13 +42689,20 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm._m(5)
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v("Tổng số sinh viên: "),
+                          _c("strong", [
+                            _vm._v(" " + _vm._s(_vm.countStudent.length))
+                          ])
+                        ])
+                      ])
                     ])
                   ]
                 )
               ]),
               _vm._v(" "),
-              _vm._m(6)
+              _vm._m(5)
             ])
           ])
         ]
@@ -42583,7 +42740,7 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-content" }, [
-                    _vm._m(7),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c("div", { staticClass: "modal-body" }, [
                       _c("label", [_vm._v("Tệp Excel")]),
@@ -42713,14 +42870,6 @@ var staticRenderFns = [
       _c("td", { staticClass: "h3-strong" }, [
         _c("h3", [_c("strong", [_vm._v(" Thông tin chi tiết")])])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [_vm._v("Tổng số sinh viên: "), _c("strong", [_vm._v(" 0")])])
     ])
   },
   function() {
@@ -43534,27 +43683,30 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm._m(5)
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v("Tổng số Chuyên Ngành: "),
+                          _c("strong", [
+                            _vm._v(" " + _vm._s(_vm.countMajor.length))
+                          ])
+                        ])
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("tbody", { staticClass: "col-lg-6 p-0" }, [
-                      _vm._m(6),
+                      _vm._m(5),
                       _vm._v(" "),
                       _c("tr", [
                         _c("td", [
-                          _vm._v("Trưởng Khoa: "),
-                          _c("strong", [
-                            _vm._v(" " + _vm._s(_vm.form.faculty_code))
-                          ])
+                          _vm._v("Trưởng Khoa: \n\t\t\t\t\t\t\t\t\t"),
+                          _c("strong", [_vm._v(_vm._s(_vm.head_lecturer))])
                         ])
                       ]),
                       _vm._v(" "),
                       _c("tr", [
                         _c("td", [
-                          _vm._v("Phó Khoa: "),
-                          _c("strong", [
-                            _vm._v(" " + _vm._s(_vm.form.faculty_name))
-                          ])
+                          _vm._v("Phó Khoa: \n\t\t\t\t\t\t\t\t\t"),
+                          _c("strong", [_vm._v(_vm._s(_vm.vice_lecturer))])
                         ])
                       ])
                     ])
@@ -43562,7 +43714,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(7)
+              _vm._m(6)
             ])
           ])
         ]
@@ -43600,7 +43752,7 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-content" }, [
-                    _vm._m(8),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("div", { staticClass: "modal-body" }, [
                       _c("label", [_vm._v("Tệp Excel")]),
@@ -43730,14 +43882,6 @@ var staticRenderFns = [
       _c("td", { staticClass: "h3-strong" }, [
         _c("h3", [_c("strong", [_vm._v(" Thông tin chi tiết")])])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [_vm._v("Tổng số Chuyên Ngành: "), _c("strong", [_vm._v(" 0")])])
     ])
   },
   function() {
@@ -44204,21 +44348,9 @@ var render = function() {
                               _vm._v(" "),
                               _c("td", [_vm._v(_vm._s(major.major_name))]),
                               _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(_vm.faculties, function(faculty) {
-                                  return _c("div", [
-                                    major.major_faculty == faculty.faculty_code
-                                      ? _c("div", [
-                                          _vm._v(_vm._s(faculty.faculty_name))
-                                        ])
-                                      : _c("div", {
-                                          staticStyle: { display: "none" }
-                                        })
-                                  ])
-                                }),
-                                0
-                              ),
+                              _c("td", [
+                                _vm._v(_vm._s(_vm.filterFaculty(major)))
+                              ]),
                               _vm._v(" "),
                               _c("td", { staticClass: "td-styling" }, [
                                 major.major_status == 0
@@ -44711,22 +44843,10 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("tr", [
-                        _c(
-                          "td",
-                          [
-                            _vm._v("Thuộc Khoa: \n\t\t\t\t\t\t\t\t\t"),
-                            _vm._l(_vm.faculties, function(faculty) {
-                              return _c("strong", { key: faculty.faculty_id }, [
-                                _vm.form.major_faculty == faculty.faculty_code
-                                  ? _c("strong", [
-                                      _vm._v(" " + _vm._s(faculty.faculty_name))
-                                    ])
-                                  : _vm._e()
-                              ])
-                            })
-                          ],
-                          2
-                        )
+                        _c("td", [
+                          _vm._v("Thuộc Khoa: "),
+                          _c("strong", [_vm._v(_vm._s(_vm.major_faculty))])
+                        ])
                       ])
                     ])
                   ]
@@ -46178,29 +46298,12 @@ var render = function() {
                             _vm._m(6, true),
                             _vm._v(" "),
                             _c("tr", [
-                              _c(
-                                "td",
-                                [
-                                  _vm._v("Khoa: \n\t\t\t\t\t\t\t\t\t"),
-                                  _vm._l(_vm.faculties, function(faculty) {
-                                    return _c("strong", [
-                                      _vm.form.lecturer_faculty ==
-                                      faculty.faculty_id
-                                        ? _c("strong", [
-                                            _vm._v(
-                                              "\n\t\t\t\t\t\t\t\t\t\t\t" +
-                                                _vm._s(faculty.faculty_name) +
-                                                "\n\t\t\t\t\t\t\t\t\t\t"
-                                            )
-                                          ])
-                                        : _c("strong", {
-                                            attrs: { hidden: "" }
-                                          })
-                                    ])
-                                  })
-                                ],
-                                2
-                              )
+                              _c("td", [
+                                _vm._v("Khoa: "),
+                                _c("strong", [
+                                  _vm._v(" " + _vm._s(_vm.lecturer_faculty))
+                                ])
+                              ])
                             ]),
                             _vm._v(" "),
                             _c("tr", [
@@ -47253,27 +47356,27 @@ var render = function() {
                             _vm._v(" "),
                             _c("tr", [
                               _c("td", [
-                                _vm._v("Khóa học: "),
+                                _vm._v("Khóa học: \n\t\t\t\t\t\t\t\t\t"),
                                 _c("strong", [
-                                  _vm._v(" " + _vm._s(info.student_course))
+                                  _vm._v(_vm._s(_vm.studentCourse(info)))
                                 ])
                               ])
                             ]),
                             _vm._v(" "),
                             _c("tr", [
                               _c("td", [
-                                _vm._v("Khoa: "),
+                                _vm._v("Khoa: \n\t\t\t\t\t\t\t\t\t"),
                                 _c("strong", [
-                                  _vm._v(" " + _vm._s(info.student_faculty))
+                                  _vm._v(_vm._s(_vm.studentFaculty(info)))
                                 ])
                               ])
                             ]),
                             _vm._v(" "),
                             _c("tr", [
                               _c("td", [
-                                _vm._v("Chuyên ngành: "),
+                                _vm._v("Chuyên ngành: \n\t\t\t\t\t\t\t\t\t"),
                                 _c("strong", [
-                                  _vm._v(" " + _vm._s(info.student_specialized))
+                                  _vm._v(_vm._s(_vm.studentMajor(info)))
                                 ])
                               ])
                             ]),

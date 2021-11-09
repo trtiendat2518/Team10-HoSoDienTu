@@ -177,4 +177,9 @@ class CourseController extends Controller
         $data = Excel::import(new CourseImport, $path);
         return response()->json(200);
     }
+
+    public function course()
+    {
+        return CourseResource::collection(Course::where('course_status',0)->orderby('course_code','DESC')->get());
+    }
 }

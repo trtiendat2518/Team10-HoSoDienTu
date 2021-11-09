@@ -157,7 +157,7 @@
 									<td>Tên khóa học: <strong> {{ form.course_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tổng số sinh viên: <strong> 0</strong></td>
+									<td>Tổng số sinh viên: <strong> {{ countStudent.length }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -201,6 +201,7 @@
 	export default {
 		data() {
 			return {
+				students:[],
 				courses:[],
 				course_id:'',
 				pagination:{
@@ -239,12 +240,28 @@
 				}
 			},
 		},
+		computed: {
+			countStudent() {
+				return this.students.filter(student => student.student_course==this.form.course_id);
+			}
+		},
 		mounted() {
 			this.fetchCourses();
+			this.fetchStudents();
 		},
 		methods: {
 			empty() {
 				return (this.courses.length < 1);
+			},
+			fetchStudents(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-sv/sinh-vien/studentinfo';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.students = res.data;
+				})
+				.catch(err => console.log(err));
 			},
 			fetchCourses(page_url) {
 				let vm = this;
