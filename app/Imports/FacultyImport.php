@@ -23,8 +23,10 @@ class FacultyImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
+            'ma_khoa' => 'required|',
             'ma_khoa' => 'notspecial_spaces',
             'ma_khoa' => 'unique:tbl_faculty,faculty_code', 
+            'ten_khoa' => 'required|',
             'ten_khoa' => 'unique:tbl_faculty,faculty_name',
         ];
     }
@@ -32,8 +34,10 @@ class FacultyImport implements ToModel, WithHeadingRow, WithValidation
     public function customValidationMessages()
     {
         return [
+            'ma_khoa.required' => 'Mã Khoa hàng :row không được để trống',
             'ma_khoa.notspecial_spaces' => 'Mã khoa không được ký tự đặc biệt',
             'ma_khoa.unique' => 'Mã khoa tại hàng :row đã tồn tại',
+            'ten_khoa.required' => 'Tên khoa tại hàng :row không được để trống',
             'ten_khoa.unique' => 'Tên khoa tại hàng :row đã tồn tại',
         ];
     }

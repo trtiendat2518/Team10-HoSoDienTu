@@ -286,6 +286,7 @@
 				if(keyword === ''){
 					this.fetchStudents();
 				}else{
+					this.value_role='';
 					this.search();
 				}
 			},

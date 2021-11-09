@@ -5,10 +5,10 @@
 			<div class="col-md-9">
 				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 			</div>
-			<!-- <div class="col-md-3">
+			<div class="col-md-3">
 				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
 				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
-			</div> -->
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
@@ -26,8 +26,15 @@
 						<div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
-						<div class="col-md-9">
+						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
+						</div>
+						<div class="col-md-3">
+							<select class="form-control mt-2" v-model="value_faculty">
+								<option value="" disabled selected>Lọc theo khoa</option>
+								<option disabled>----------------------------------------</option>
+								<option v-for="faculty in faculties" :value="faculty.faculty_code">{{ faculty.faculty_name }}</option>
+							</select>
 						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
@@ -65,8 +72,8 @@
 									<td>{{ major.major_name }}</td>
 									<td>
 										<!-- {{ major.major_faculty }} -->
-										<div v-for="a in faculties">
-											<div v-if="major.major_faculty==a.faculty_code">{{ a.faculty_name }}</div>
+										<div v-for="faculty in faculties">
+											<div v-if="major.major_faculty==faculty.faculty_code">{{ faculty.faculty_name }}</div>
 											<div v-else style="display: none;"></div>
 										</div>
 									</td>
@@ -151,40 +158,33 @@
 		</div>
 		<!-- Modal end-->
 
-		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header styling-modal-header-info">
-						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết Khoa</h5>
+						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết Chuyên Ngành</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<table class="table row table-borderless w-100 m-0 border">
-							<tbody class="col-lg-6 p-0">
+							<tbody class="col-lg-12 p-0">
 								<tr>
 									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Mã Khoa: <strong> {{ form.faculty_code }}</strong></td>
+									<td>Mã Chuyên Ngành: <strong> {{ form.major_code }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Khoa: <strong> {{ form.faculty_name }}</strong></td>
+									<td>Tên Chuyên Ngành: <strong> {{ form.major_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tổng số Chuyên Ngành: <strong> 0</strong></td>
-								</tr>
-							</tbody>
-							<tbody class="col-lg-6 p-0">
-								<tr>
-									<td class="h3-strong"><h3><strong> Ban chủ nhiệm Khoa</strong></h3></td>
-								</tr>
-								<tr>
-									<td>Trưởng Khoa: <strong> {{ form.faculty_code }}</strong></td>
-								</tr>
-								<tr>
-									<td>Phó Khoa: <strong> {{ form.faculty_name }}</strong></td>
+									<td>Thuộc Khoa: 
+										<strong v-for="faculty in faculties" :key="faculty.faculty_id">
+											<strong v-if="form.major_faculty==faculty.faculty_code"> {{ faculty.faculty_name }}</strong>
+										</strong>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -194,15 +194,15 @@
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
 
 		<!-- Modal -->
-		<!-- <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
+		<div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="importFile()" @keydown="form.onKeydown($event)">
 					<div class="modal-content">
 						<div class="modal-header styling-modal-header-update">
-							<h5 class="modal-title" id="ImportModalTitle">Import Khoa</h5>
+							<h5 class="modal-title" id="ImportModalTitle">Import Chuyên Ngành</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -218,7 +218,7 @@
 					</div>
 				</form>
 			</div>
-		</div> -->
+		</div>
 		<!-- Modal end-->
 	</div>
 </template>
@@ -250,6 +250,7 @@
 				details:[],
 				fileImport: '',
 				error: {},
+				value_faculty:'',
 			};
 		},
 		watch: {
@@ -264,7 +265,15 @@
 				if(keyword === ''){
 					this.fetchMajors();
 				}else{
+					this.value_faculty='';
 					this.search();
+				}
+			},
+			value_faculty(faculty){
+				if(faculty === ''){
+					this.fetchMajors();
+				}else{
+					this.filter();
 				}
 			},
 		},
@@ -348,14 +357,14 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// change(faculty_id) {
-			// 	axios.patch(`../../api/admin/edu-faculty/khoa/change/${faculty_id}`)
-			// 	.then(res => {
-			// 		this.fetchMajors();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			change(major_id) {
+				axios.patch(`../../api/admin/edu-major/chuyen-nganh/change/${major_id}`)
+				.then(res => {
+					this.fetchMajors();
+					this.$snotify.warning('Đã thay đổi trạng thái');
+				})
+				.catch(err => console.log(err));
+			},
 			destroy(major_id) {
 				this.$snotify.clear();
 				this.$snotify.confirm('Xác nhận xóa', {
@@ -420,59 +429,76 @@
 					}
 				}
 			},
-			// detail(faculty, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/edu-faculty/khoa/detail/${faculty.faculty_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(faculty);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			detail(major, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/edu-major/chuyen-nganh/detail/${major.major_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					this.form.fill(major);
+					$('#DetailModal').modal('show');
+				})
+				.catch(err => console.log(err));
+			},
 			reload(){
 				this.fetchMajors();
 				this.query='';
+				this.value_faculty='';
 				this.$refs.fileupload.value='';
 				this.fileImport='';
 			},
-			// exportFile() {
-			// 	window.location.href ="../../api/admin/edu-faculty/khoa/export";
-			// },
-			// openImport() {
-			// 	this.$refs.fileupload.value='';
-			// 	$('#ImportModal').modal('show');
-			// },
-			// onFileChange(e) {
-			// 	this.fileImport = e.target.files[0];
-			// },
-			// reloadFile() {
-			// 	this.$refs.fileupload.value='';
-			// 	this.fileImport='';
-			// },
-			// importFile() {
-			// 	let formData = new FormData();
-			// 	formData.append('fileImport', this.fileImport);
-			// 	axios.post('../../api/admin/edu-faculty/khoa/import', formData, {
-			// 		headers: { 'content-type': 'multipart/form-data' }
-			// 	})
-			// 	.then(res => {
-			// 		if(res.status === 200) {
-			// 			$('#ImportModal').modal('hide');
-			// 			this.fetchMajors();
-			// 			this.$snotify.success('Import thành công');
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		const  stringError = err.response.data.errors[0][0];
-			// 		const  stringSplit = stringError.split(".");
-			// 		this.error = stringSplit[1];
-			// 		this.fetchMajors();
-			// 		this.$snotify.error(this.error);
-			// 	});
-			// }
+			filter(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/filter/'+this.value_faculty+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.majors = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
+			exportFile() {
+				window.location.href ="../../api/admin/edu-major/chuyen-nganh/export";
+			},
+			openImport() {
+				this.$refs.fileupload.value='';
+				$('#ImportModal').modal('show');
+			},
+			onFileChange(e) {
+				this.fileImport = e.target.files[0];
+			},
+			reloadFile() {
+				this.$refs.fileupload.value='';
+				this.fileImport='';
+			},
+			importFile() {
+				let formData = new FormData();
+				formData.append('fileImport', this.fileImport);
+				axios.post('../../api/admin/edu-major/chuyen-nganh/import', formData, {
+					headers: { 'content-type': 'multipart/form-data' }
+				})
+				.then(res => {
+					if(res.status === 200) {
+						$('#ImportModal').modal('hide');
+						this.fetchMajors();
+						this.$snotify.success('Import thành công');
+					}
+				})
+				.catch(err => {
+					if(err.response.data.errors?.fileImport?.length > 0){
+						this.error = err.response.data.errors.fileImport[0];
+					}else if(err.response.data.errors[0].length > 0){
+						const  stringError = err.response.data.errors[0][0];
+						const  stringSplit = stringError.split(".");
+						this.error = stringSplit[1];
+					}
+					
+					this.fetchMajors();
+					this.$snotify.error(this.error);
+				});
+			}
 		}
 	};
 </script>
@@ -512,7 +538,7 @@
 		font-weight: bold;
 	}
 	.styling-modal-header-update {
-		background-color: #00C851;
+		background-color: darkblue;
 		color: white;
 	}
 	.td-borderight {
@@ -522,8 +548,8 @@
 		border-bottom: 2px solid black;
 	}
 	.background-update {
-		background-color: #00C851;
-		border-color: #00C851;
+		background-color: darkblue;
+		border-color: darkblue;
 	}
 	.btn-import {
 		background-color: green;
