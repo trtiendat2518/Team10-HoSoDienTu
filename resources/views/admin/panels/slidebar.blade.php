@@ -50,7 +50,7 @@
 			<div class="tab-pane active " id="index1">
 				<ul class="side-menu toggle-menu">
 
-					<li class="mb-2"><span class="side-menu__label"><strong>&mdash; Trang chủ &mdash;</strong></span></li>
+					<li class="mb-2 ml-4"><span class="side-menu__label"><strong style="color: darkblue;">TRANG CHỦ</strong></span></li>
 					<li class="slide">
 						<a class="side-menu__item" href="{{ route('dashboard.index') }}">
 							<i class="side-menu__icon typcn typcn-device-desktop"></i>
@@ -58,7 +58,7 @@
 						</a>
 					</li>
 
-					<li class="mt-5 mb-2"><span class="side-menu__label"><strong>&mdash; Quản lý tài khoản &mdash;</strong></span></li>
+					<li class="mt-5 mb-2 ml-4"><span class="side-menu__label"><strong style="color: darkblue;">QUẢN LÝ TÀI KHOẢN</strong></span></li>
 					<li class="slide">
 						<a class="side-menu__item" href="{{ route('lecturer.index') }}">
 							<i class="side-menu__icon fa fa-users"></i>
@@ -72,7 +72,7 @@
 						</a>
 					</li>
 
-					<li class="mt-5 mb-2"><span class="side-menu__label"><strong>&mdash; Quản lý chung &mdash;</strong></span></li>
+					<li class="mt-5 mb-2 ml-4"><span class="side-menu__label"><strong style="color: darkblue;">QUẢN LÝ CHUNG</strong></span></li>
 					<li class="slide">
 						<a class="side-menu__item" href="{{ route('faculty.index') }}">
 							<i class="side-menu__icon fa fa-th-large"></i>
@@ -86,7 +86,7 @@
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item" href="#">
+						<a class="side-menu__item" href="{{ route('course.index') }}">
 							<i class="side-menu__icon fa fa-book"></i>
 							<span class="side-menu__label">Khóa học</span>
 						</a>
