@@ -131,9 +131,10 @@ class MajorController extends Controller
      * @param  \App\Models\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Major $major)
+    public function destroy($major)
     {
-        //
+        $mj = Major::find($major);
+        $mj->delete();
     }
 
     public function search($query, $currentEntries)
@@ -144,5 +145,55 @@ class MajorController extends Controller
     public function faculty()
     {
         return FacultyResource::collection(Faculty::where('faculty_status',0)->orderby('faculty_name','DESC')->get());
+    }
+
+    public function destroyall(Request $request, $major = null)
+    {
+        if ($request->major) {
+            foreach ($request->major as $id) {
+                Major::where('major_id', $id)->delete();
+            }
+        }
+    }
+
+    public function change(Request $request, $major)
+    {
+        $mj = Major::find($major);
+        if($mj->major_status==0){
+            $mj->major_status=1;
+            $mj->save();
+        }else{
+            $mj->major_status=0;
+            $mj->save();
+        }
+    }
+
+    public function filter($faculty, $currentEntries)
+    {
+        return MajorResource::collection(Major::where('major_faculty','LIKE','%'.$faculty.'%')->orderby('major_name','DESC')->paginate($currentEntries));
+    }
+
+    public function detail($major)
+    {
+        return MajorResource::collection(Major::where('major_id', $major)->get());
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new MajorExport , 'list_of_major.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'fileImport' => 'required|file|mimes:xls,xlsx'
+        ],[
+            'fileImport.required' => 'Vui lòng không để trống!',
+            'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
+            'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
+        ]);
+        $path = $request->file('fileImport')->getRealPath();
+        $data = Excel::import(new MajorImport, $path);
+        return response()->json(200);
     }
 }
