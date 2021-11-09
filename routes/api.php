@@ -62,6 +62,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('edu-course')->group(function(){
+        Route::post('khoa-hoc/destroyall/', 'Admin\Education\CourseController@destroyall');
         Route::get('khoa-hoc/search/{query}/{currentEntries}','Admin\Education\CourseController@search');
         Route::resource('khoa-hoc', 'Admin\Education\CourseController');
     });

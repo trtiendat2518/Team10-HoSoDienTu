@@ -104,13 +104,23 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Course $course)
+    public function destroy($course)
     {
-        //
+        $crs = Course::find($course);
+        $crs->delete();
     }
 
     public function search($query, $currentEntries)
     {
         return CourseResource::collection(Course::where('course_code','LIKE','%'.$query.'%')->orwhere('course_name','LIKE','%'.$query.'%')->orderby('course_id','DESC')->paginate($currentEntries));
+    }
+
+    public function destroyall(Request $request, $course = null)
+    {
+        if ($request->course) {
+            foreach ($request->course as $id) {
+                Course::where('course_id', $id)->delete();
+            }
+        }
     }
 }
