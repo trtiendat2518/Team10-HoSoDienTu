@@ -84,4 +84,9 @@ class CourseController extends Controller
     {
         //
     }
+
+    public function search($query, $currentEntries)
+    {
+        return CourseResource::collection(Course::where('course_code','LIKE','%'.$query.'%')->orwhere('course_name','LIKE','%'.$query.'%')->orderby('course_id','DESC')->paginate($currentEntries));
+    }
 }

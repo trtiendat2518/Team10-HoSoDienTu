@@ -2329,14 +2329,14 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.fetchCourses();
       }
-    } // query(keyword){
-    // 	if(keyword === ''){
-    // 		this.fetchCourses();
-    // 	}else{
-    // 		this.search();
-    // 	}
-    // },
-
+    },
+    query: function query(keyword) {
+      if (keyword === '') {
+        this.fetchCourses();
+      } else {
+        this.search();
+      }
+    }
   },
   mounted: function mounted() {
     this.fetchCourses();
@@ -2358,18 +2358,21 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
-    } // search(page_url) {
-    // 	let vm = this;
-    // 	page_url = '../../api/admin/edu-course/khoa-hoc/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.courses = res.data;
-    // 		this.pagination = res.meta;
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
-    // create(){
+    },
+    search: function search(page_url) {
+      var _this2 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/edu-course/khoa-hoc/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this2.courses = res.data;
+        _this2.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    } // create(){
     // 	this.editMode = false;
     // 	this.form.reset();
     // 	this.form.clear();
@@ -41783,6 +41786,30 @@ var render = function() {
             _vm._m(0),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-9" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control mt-2",
+                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
+                  domProps: { value: _vm.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
                 _c(
                   "div",
