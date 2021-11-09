@@ -24,8 +24,10 @@ class MajorImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
+            'ma_chuyen_nganh' => 'required',
             'ma_chuyen_nganh' => 'notspecial_spaces',
             'ma_chuyen_nganh' => 'unique:tbl_major,major_code', 
+            'ten_chuyen_nganh' => 'required',
             'ten_chuyen_nganh' => 'unique:tbl_major,major_name',
             'ma_khoa' =>'required',
         ];
@@ -34,8 +36,10 @@ class MajorImport implements ToModel, WithHeadingRow, WithValidation
     public function customValidationMessages()
     {
         return [
+            'ma_chuyen_nganh.required' => 'Mã chuyên ngành không được để trống',
             'ma_chuyen_nganh.notspecial_spaces' => 'Mã chuyên ngành không được ký tự đặc biệt',
             'ma_chuyen_nganh.unique' => 'Mã chuyên ngành tại hàng :row đã tồn tại',
+            'ten_chuyen_nganh.required' => 'Tên chuyên ngành không được để trống',
             'ten_chuyen_nganh.unique' => 'Tên chuyên ngành tại hàng :row đã tồn tại',
             'ma_khoa.required' => 'Không được để trống Mã Khoa tại hàng :row'
         ];

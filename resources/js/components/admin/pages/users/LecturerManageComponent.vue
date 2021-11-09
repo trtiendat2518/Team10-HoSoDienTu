@@ -306,6 +306,7 @@
 				if(keyword === ''){
 					this.fetchLecturers();
 				}else{
+					this.value_role='';
 					this.search();
 				}
 			},

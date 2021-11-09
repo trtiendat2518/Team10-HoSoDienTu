@@ -60,4 +60,12 @@ Route::prefix('admin')->group(function(){
         Route::get('chuyen-nganh/export', 'Admin\Education\MajorController@export');
         Route::resource('chuyen-nganh', 'Admin\Education\MajorController');
     });
+
+    Route::prefix('edu-course')->group(function(){
+        Route::get('khoa-hoc/detail/{course}','Admin\Education\CourseController@detail');
+        Route::patch('khoa-hoc/change/{course}', 'Admin\Education\CourseController@change');
+        Route::post('khoa-hoc/destroyall/', 'Admin\Education\CourseController@destroyall');
+        Route::get('khoa-hoc/search/{query}/{currentEntries}','Admin\Education\CourseController@search');
+        Route::resource('khoa-hoc', 'Admin\Education\CourseController');
+    });
 });
