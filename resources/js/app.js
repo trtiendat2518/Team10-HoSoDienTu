@@ -38,6 +38,7 @@ Vue.component('student-manage-component', require('./components/admin/pages/user
 //Education
 Vue.component('faculty-component', require('./components/admin/pages/education/FacultyComponent.vue').default);
 Vue.component('major-component', require('./components/admin/pages/education/MajorComponent.vue').default);
+Vue.component('course-component', require('./components/admin/pages/education/CourseComponent.vue').default);
 
 const app = new Vue({
     el: '#app',

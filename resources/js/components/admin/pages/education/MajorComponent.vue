@@ -265,6 +265,7 @@
 				if(keyword === ''){
 					this.fetchMajors();
 				}else{
+					this.value_faculty='';
 					this.search();
 				}
 			},
