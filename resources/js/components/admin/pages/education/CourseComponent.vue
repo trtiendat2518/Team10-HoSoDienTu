@@ -25,10 +25,10 @@
 					<div class="row">
 						<!-- <div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div>
+						</div> -->
 						<div class="col-md-9">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div> -->
+						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -242,13 +242,13 @@
 					this.fetchCourses();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchCourses();
-			// 	}else{
-			// 		this.search();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchCourses();
+				}else{
+					this.search();
+				}
+			},
 		},
 		mounted() {
 			this.fetchCourses();
@@ -268,17 +268,17 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/edu-course/khoa-hoc/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.courses = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			search(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-course/khoa-hoc/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.courses = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			// create(){
 			// 	this.editMode = false;
 			// 	this.form.reset();
