@@ -123,4 +123,21 @@ class CourseController extends Controller
             }
         }
     }
+
+    public function change(Request $request, $course)
+    {
+        $crs = Course::find($course);
+        if($crs->course_status==0){
+            $crs->course_status=1;
+            $crs->save();
+        }else{
+            $crs->course_status=0;
+            $crs->save();
+        }
+    }
+
+    public function detail($course)
+    {
+        return CourseResource::collection(Course::where('course_id', $course)->get());
+    }
 }
