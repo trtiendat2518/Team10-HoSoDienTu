@@ -103,9 +103,26 @@ class MajorController extends Controller
      * @param  \App\Models\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Major $major)
+    public function update(Request $request, $major)
     {
-        //
+        $mj = Major::find($major);
+
+        $data = $request->validate([
+            'major_name' => ['required', 'max:50', 'min:5', 'notspecial_spaces'],
+            'major_faculty' => ['required'],
+        ],[
+            'major_name.required' => 'Tên Chuyên Ngành không dược để trống!',
+            'major_name.max' => 'Tên Chuyên Ngành không nhập quá 50 ký tự chữ!',
+            'major_name.min' => 'Tên Chuyên Ngành phải có 5 ký tự chữ trở lên!',
+            'major_name.unique' => 'Tên Chuyên Ngành đã tồn tại!',
+            'major_name.notspecial_spaces' => 'Tên Chuyên Ngành không được chứa ký tự đặc biệt!',
+
+            'major_faculty.required' => 'Vui lòng chọn Khoa cho Chuyên Ngành!',
+        ]);
+
+        $mj->major_name = $data['major_name'];
+        $mj->major_faculty = $data['major_faculty'];
+        $mj->save();
     }
 
     /**
@@ -114,9 +131,10 @@ class MajorController extends Controller
      * @param  \App\Models\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Major $major)
+    public function destroy($major)
     {
-        //
+        $mj = Major::find($major);
+        $mj->delete();
     }
 
     public function search($query, $currentEntries)
@@ -127,5 +145,55 @@ class MajorController extends Controller
     public function faculty()
     {
         return FacultyResource::collection(Faculty::where('faculty_status',0)->orderby('faculty_name','DESC')->get());
+    }
+
+    public function destroyall(Request $request, $major = null)
+    {
+        if ($request->major) {
+            foreach ($request->major as $id) {
+                Major::where('major_id', $id)->delete();
+            }
+        }
+    }
+
+    public function change(Request $request, $major)
+    {
+        $mj = Major::find($major);
+        if($mj->major_status==0){
+            $mj->major_status=1;
+            $mj->save();
+        }else{
+            $mj->major_status=0;
+            $mj->save();
+        }
+    }
+
+    public function filter($faculty, $currentEntries)
+    {
+        return MajorResource::collection(Major::where('major_faculty','LIKE','%'.$faculty.'%')->orderby('major_name','DESC')->paginate($currentEntries));
+    }
+
+    public function detail($major)
+    {
+        return MajorResource::collection(Major::where('major_id', $major)->get());
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new MajorExport , 'list_of_major.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'fileImport' => 'required|file|mimes:xls,xlsx'
+        ],[
+            'fileImport.required' => 'Vui lòng không để trống!',
+            'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
+            'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
+        ]);
+        $path = $request->file('fileImport')->getRealPath();
+        $data = Excel::import(new MajorImport, $path);
+        return response()->json(200);
     }
 }

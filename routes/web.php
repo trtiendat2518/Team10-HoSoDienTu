@@ -34,6 +34,7 @@ Route::prefix('admin')->group(function(){
         Route::prefix('quan-ly-chung')->group(function(){
             Route::get('/khoa','Admin\ViewController@faculty_manage')->name('faculty.index');
             Route::get('/chuyen-nganh','Admin\ViewController@major_manage')->name('major.index');
+            Route::get('/khoa-hoc','Admin\ViewController@course_manage')->name('course.index');
         });
     });
 });

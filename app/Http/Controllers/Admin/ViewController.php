@@ -60,4 +60,17 @@ class ViewController extends Controller
 
         return view('admin.pages.education.major_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
     }
+
+    public function course_manage(Request $request)
+    {
+        //---SEO
+        $meta_title = "Quản lý chung";
+        $meta_desc = "Quản lý khóa học";
+        $url_canonical = $request->url();
+        //------
+        
+        $check_role = Lecturer::where('lecturer_code', Session::get('lecturer_id'))->limit(1)->get();
+
+        return view('admin.pages.education.course_manage')->with(compact('meta_title', 'meta_desc', 'url_canonical', 'check_role'));
+    }
 }
