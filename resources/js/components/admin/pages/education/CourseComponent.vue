@@ -135,40 +135,29 @@
 		</div>
 		<!-- Modal end-->
 
-		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header styling-modal-header-info">
-						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết Khoa</h5>
+						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết khóa học</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<table class="table row table-borderless w-100 m-0 border">
-							<tbody class="col-lg-6 p-0">
+							<tbody class="col-lg-12 p-0">
 								<tr>
 									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Mã Khoa: <strong> {{ form.faculty_code }}</strong></td>
+									<td>Mã khóa học: <strong> {{ form.course_code }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Khoa: <strong> {{ form.course_name }}</strong></td>
+									<td>Tên khóa học: <strong> {{ form.course_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tổng số Chuyên Ngành: <strong> 0</strong></td>
-								</tr>
-							</tbody>
-							<tbody class="col-lg-6 p-0">
-								<tr>
-									<td class="h3-strong"><h3><strong> Ban chủ nhiệm Khoa</strong></h3></td>
-								</tr>
-								<tr>
-									<td>Trưởng Khoa: <strong> {{ form.faculty_code }}</strong></td>
-								</tr>
-								<tr>
-									<td>Phó Khoa: <strong> {{ form.course_name }}</strong></td>
+									<td>Tổng số sinh viên: <strong> 0</strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -178,7 +167,7 @@
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
 
 		<!-- Modal -->
 		<!-- <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
@@ -319,14 +308,14 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// change(course_id) {
-			// 	axios.patch(`../../api/admin/edu-course/khoa-hoc/change/${course_id}`)
-			// 	.then(res => {
-			// 		this.fetchCourses();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			change(course_id) {
+				axios.patch(`../../api/admin/edu-course/khoa-hoc/change/${course_id}`)
+				.then(res => {
+					this.fetchCourses();
+					this.$snotify.warning('Đã thay đổi trạng thái');
+				})
+				.catch(err => console.log(err));
+			},
 			destroy(course_id) {
 				this.$snotify.clear();
 				this.$snotify.confirm('Xác nhận xóa', {
@@ -391,18 +380,18 @@
 					}
 				}
 			},
-			// detail(faculty, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/edu-course/khoa-hoc/detail/${faculty.course_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(faculty);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			detail(course, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/edu-course/khoa-hoc/detail/${course.course_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					this.form.fill(course);
+					$('#DetailModal').modal('show');
+				})
+				.catch(err => console.log(err));
+			},
 			reload(){
 				this.fetchCourses();
 				this.query='';

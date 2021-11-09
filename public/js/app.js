@@ -2285,17 +2285,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2417,47 +2406,18 @@ __webpack_require__.r(__webpack_exports__);
     // 	})
     // 	.catch(err => console.log(err));
     // },
-    // change(course_id) {
-    // 	axios.patch(`../../api/admin/edu-course/khoa-hoc/change/${course_id}`)
-    // 	.then(res => {
-    // 		this.fetchCourses();
-    // 		this.$snotify.warning('Đã thay đổi trạng thái');
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
-    destroy: function destroy(course_id) {
+    change: function change(course_id) {
       var _this4 = this;
 
-      this.$snotify.clear();
-      this.$snotify.confirm('Xác nhận xóa', {
-        timeout: 5000,
-        showProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        buttons: [{
-          text: 'Xóa',
-          action: function action(toast) {
-            _this4.$snotify.remove(toast.id);
+      axios.patch("../../api/admin/edu-course/khoa-hoc/change/".concat(course_id)).then(function (res) {
+        _this4.fetchCourses();
 
-            axios["delete"]("../../api/admin/edu-course/khoa-hoc/".concat(course_id)).then(function (res) {
-              _this4.$snotify.success('Đã xóa!');
-
-              _this4.fetchCourses();
-            })["catch"](function (err) {
-              return console.log(err);
-            });
-          },
-          bold: false
-        }, {
-          text: 'Đóng',
-          action: function action(toast) {
-            _this4.$snotify.remove(toast.id);
-          },
-          bold: true
-        }]
+        _this4.$snotify.warning('Đã thay đổi trạng thái');
+      })["catch"](function (err) {
+        return console.log(err);
       });
     },
-    destroyall: function destroyall() {
+    destroy: function destroy(course_id) {
       var _this5 = this;
 
       this.$snotify.clear();
@@ -2471,9 +2431,7 @@ __webpack_require__.r(__webpack_exports__);
           action: function action(toast) {
             _this5.$snotify.remove(toast.id);
 
-            axios.post('../../api/admin/edu-course/khoa-hoc/destroyall', {
-              course: _this5.selected
-            }).then(function (res) {
+            axios["delete"]("../../api/admin/edu-course/khoa-hoc/".concat(course_id)).then(function (res) {
               _this5.$snotify.success('Đã xóa!');
 
               _this5.fetchCourses();
@@ -2491,6 +2449,40 @@ __webpack_require__.r(__webpack_exports__);
         }]
       });
     },
+    destroyall: function destroyall() {
+      var _this6 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+
+            axios.post('../../api/admin/edu-course/khoa-hoc/destroyall', {
+              course: _this6.selected
+            }).then(function (res) {
+              _this6.$snotify.success('Đã xóa!');
+
+              _this6.fetchCourses();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
     select: function select() {
       this.selected = [];
 
@@ -2500,18 +2492,23 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
-    // detail(faculty, page_url) {
-    // 	let vm = this;
-    // 	page_url = `../../api/admin/edu-course/khoa-hoc/detail/${faculty.course_id}`;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.details = res.data;
-    // 		this.form.fill(faculty);
-    // 		$('#DetailModal').modal('show');
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
+    detail: function detail(course, page_url) {
+      var _this7 = this;
+
+      var vm = this;
+      page_url = "../../api/admin/edu-course/khoa-hoc/detail/".concat(course.course_id);
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this7.details = res.data;
+
+        _this7.form.fill(course);
+
+        $('#DetailModal').modal('show');
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     reload: function reload() {
       this.fetchCourses();
       this.query = '';
@@ -42454,6 +42451,63 @@ var render = function() {
             ]
           )
         ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade bd-example-modal-lg",
+          attrs: {
+            id: "DetailModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "DetailModalTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog modal-lg" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass: "table row table-borderless w-100 m-0 border"
+                  },
+                  [
+                    _c("tbody", { staticClass: "col-lg-12 p-0" }, [
+                      _vm._m(4),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v("Mã khóa học: "),
+                          _c("strong", [
+                            _vm._v(" " + _vm._s(_vm.form.course_code))
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v("Tên khóa học: "),
+                          _c("strong", [
+                            _vm._v(" " + _vm._s(_vm.form.course_name))
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(5)
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(6)
+            ])
+          ])
+        ]
       )
     ],
     1
@@ -42496,6 +42550,71 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "modal-header styling-modal-header-info" },
+      [
+        _c(
+          "h5",
+          {
+            staticClass: "modal-title styling-font-modal-header",
+            attrs: { id: "DetailModalTitle" }
+          },
+          [_vm._v("Chi tiết khóa học")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-label": "Close"
+            }
+          },
+          [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "h3-strong" }, [
+        _c("h3", [_c("strong", [_vm._v(" Thông tin chi tiết")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [_vm._v("Tổng số sinh viên: "), _c("strong", [_vm._v(" 0")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Đóng")]
+      )
+    ])
   }
 ]
 render._withStripped = true
