@@ -54,6 +54,10 @@ Route::prefix('admin')->group(function(){
         Route::get('chuyen-nganh/faculty/','Admin\Education\MajorController@faculty');
         Route::get('chuyen-nganh/search/{query}/{currentEntries}','Admin\Education\MajorController@search');
         Route::post('chuyen-nganh/destroyall/', 'Admin\Education\MajorController@destroyall');
+        Route::get('chuyen-nganh/filter/{faculty}/{currentEntries}', 'Admin\Education\MajorController@filter');
+        Route::get('chuyen-nganh/detail/{major}','Admin\Education\MajorController@detail');
+        Route::post('chuyen-nganh/import', 'Admin\Education\MajorController@import');
+        Route::get('chuyen-nganh/export', 'Admin\Education\MajorController@export');
         Route::resource('chuyen-nganh', 'Admin\Education\MajorController');
     });
 });

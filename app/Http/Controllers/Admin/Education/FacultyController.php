@@ -166,7 +166,7 @@ class FacultyController extends Controller
 
     public function detail($faculty)
     {
-        return FacultyResource::collection(Faculty::where('faculty_id',$faculty)->paginate(1));
+        return FacultyResource::collection(Faculty::where('faculty_id',$faculty)->get());
     }
 
     public function export(Request $request)
