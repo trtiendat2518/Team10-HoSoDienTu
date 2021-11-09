@@ -2372,38 +2372,43 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
-    } // create(){
-    // 	this.editMode = false;
-    // 	this.form.reset();
-    // 	this.form.clear();
-    // 	$('#FacultyModal').modal('show');
-    // },
-    // store(){
-    // 	this.form.busy = true;
-    // 	this.form.post('../../api/admin/edu-course/khoa-hoc')
-    // 	.then(res => {
-    // 		this.fetchCourses();
-    // 		$('#FacultyModal').modal('hide');
-    // 		if(this.form.successful){
-    // 			this.$snotify.success('Thêm mới thành công!');
-    // 		}else{
-    // 			this.$snotify.error('Không thể thêm Khoa', 'Lỗi');
-    // 		}
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
+    },
+    create: function create() {
+      this.editMode = false;
+      this.form.reset();
+      this.form.clear();
+      $('#CourseModal').modal('show');
+    },
+    store: function store() {
+      var _this3 = this;
+
+      this.form.busy = true;
+      this.form.post('../../api/admin/edu-course/khoa-hoc').then(function (res) {
+        _this3.fetchCourses();
+
+        $('#CourseModal').modal('hide');
+
+        if (_this3.form.successful) {
+          _this3.$snotify.success('Thêm mới thành công!');
+        } else {
+          _this3.$snotify.error('Không thể thêm khóa học', 'Lỗi');
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     // show(faculty) {
     // 	this.editMode = true;
     // 	this.form.reset();
     // 	this.form.clear();
     // 	this.form.fill(faculty);
-    // 	$('#FacultyModal').modal('show');
+    // 	$('#CourseModal').modal('show');
     // },
     // update() {
     // 	this.form.put('../../api/admin/edu-course/khoa-hoc/'+this.form.course_id)
     // 	.then(res => {
     // 		this.fetchCourses();
-    // 		$('#FacultyModal').modal('hide');
+    // 		$('#CourseModal').modal('hide');
     // 		if(this.form.successful){
     // 			this.$snotify.success('Cập nhật Khoa thành công!');
     // 		}else{
@@ -2496,13 +2501,12 @@ __webpack_require__.r(__webpack_exports__);
     // 	})
     // 	.catch(err => console.log(err));
     // },
-    // reload(){
-    // 	this.fetchCourses();
-    // 	this.query='';
-    // 	this.$refs.fileupload.value='';
-    // 	this.fileImport='';
-    // },
-    // exportFile() {
+    reload: function reload() {
+      this.fetchCourses();
+      this.query = '';
+      this.$refs.fileupload.value = '';
+      this.fileImport = '';
+    } // exportFile() {
     // 	window.location.href ="../../api/admin/edu-course/khoa-hoc/export";
     // },
     // openImport() {
@@ -41781,9 +41785,43 @@ var render = function() {
       _c("vue-snotify"),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-9" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-info btn-lg mb-3",
+              on: {
+                click: function($event) {
+                  return _vm.create()
+                }
+              }
+            },
+            [_c("li", { staticClass: "fa fa-plus" }), _vm._v(" Tạo mới")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12 col-lg-12" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-1" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-lg btn-primary fa fa-refresh",
+                    on: {
+                      click: function($event) {
+                        return _vm.reload()
+                      }
+                    }
+                  },
+                  [_vm._v(" Tải lại")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-md-9" }, [
@@ -42121,7 +42159,278 @@ var render = function() {
             )
           ])
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "CourseModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "CourseModalTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.editMode ? _vm.update() : _vm.store()
+                    },
+                    keydown: function($event) {
+                      return _vm.form.onKeydown($event)
+                    }
+                  }
+                },
+                [
+                  _c("span", {
+                    staticClass: "alert-danger",
+                    attrs: { form: _vm.form }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-content" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "modal-header styling-modal-header-update"
+                      },
+                      [
+                        _c(
+                          "h5",
+                          {
+                            staticClass: "modal-title",
+                            attrs: { id: "CourseModalTitle" }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(_vm.editMode ? "Cập nhật" : "Thêm mới") +
+                                " Khóa học"
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(2)
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c("label", [_vm._v("Mã khóa học")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.course_code,
+                            expression: "form.course_code"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: [
+                          { "is-invalid": _vm.form.errors.has("course_code") },
+                          { "not-allowed": _vm.editMode }
+                        ],
+                        attrs: {
+                          type: "text",
+                          name: "course_code",
+                          placeholder: "Nhập mã khóa học",
+                          disabled: _vm.editMode
+                        },
+                        domProps: { value: _vm.form.course_code },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "course_code",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.errors.has("course_code")
+                        ? _c("div", {
+                            staticClass: "text-danger",
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.form.errors.get("course_code")
+                              )
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("label", { staticClass: "mt-3" }, [
+                        _vm._v("Tên khóa học")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.course_name,
+                            expression: "form.course_name"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("course_name")
+                        },
+                        attrs: {
+                          type: "text",
+                          name: "course_name",
+                          placeholder: "Nhập tên khóa học"
+                        },
+                        domProps: { value: _vm.form.course_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "course_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.form.errors.has("course_name")
+                        ? _c("div", {
+                            staticClass: "text-danger",
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.form.errors.get("course_name")
+                              )
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.editMode
+                        ? _c("div", [
+                            _c("label", { staticClass: "mt-3" }, [
+                              _vm._v("Trạng thái")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.course_status,
+                                    expression: "form.course_status"
+                                  }
+                                ],
+                                staticClass: "form-control select-option",
+                                class: {
+                                  "is-invalid": _vm.form.errors.has(
+                                    "course_status"
+                                  )
+                                },
+                                attrs: { name: "course_status" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.form,
+                                      "course_status",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      value: "",
+                                      selected: "",
+                                      disabled: ""
+                                    }
+                                  },
+                                  [_vm._v("Chọn trạng thái")]
+                                ),
+                                _vm._v(" "),
+                                _c("option", { attrs: { disabled: "" } }, [
+                                  _vm._v("---------------")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "0" } }, [
+                                  _vm._v("Hiển thị")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "1" } }, [
+                                  _vm._v("Không hiển thị")
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.form.errors.has("course_status")
+                              ? _c("div", {
+                                  staticClass: "text-danger mb-3",
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.form.errors.get("course_status")
+                                    )
+                                  }
+                                })
+                              : _vm._e()
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button", "data-dismiss": "modal" }
+                        },
+                        [_vm._v("Đóng")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary background-update",
+                          attrs: { disabled: _vm.form.busy, type: "submit" }
+                        },
+                        [_vm._v(_vm._s(_vm.editMode ? "Cập nhật" : "Thêm mới"))]
+                      )
+                    ])
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
+      )
     ],
     1
   )
@@ -42131,10 +42440,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("div", { staticClass: "col-md-11" }, [
-        _c("h3", { staticClass: "card-title" }, [_vm._v("Danh sách Khóa Học")])
-      ])
+    return _c("div", { staticClass: "col-md-11" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Danh sách Khóa Học")])
     ])
   },
   function() {
@@ -42148,6 +42455,23 @@ var staticRenderFns = [
         )
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true

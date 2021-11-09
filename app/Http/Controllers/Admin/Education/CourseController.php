@@ -37,7 +37,31 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'course_code' => ['required', 'max:3', 'min:2', 'unique:tbl_course', 'notspecial_spaces'],
+            'course_name' => ['required', 'max:50', 'min:5', 'unique:tbl_course', 'notspecial_spaces'],
+            'course_status' => ['required'],
+        ],[
+            'course_code.required' => 'Mã Khóa Học không dược để trống!',
+            'course_code.max' => 'Mã Khóa Học không nhập quá 3 ký tự chữ!',
+            'course_code.min' => 'Mã Khóa Học phải có 2 ký tự chữ trở lên!',
+            'course_code.unique' => 'Mã Khóa Học đã tồn tại!',
+            'course_code.notspecial_spaces' => 'Mã Khóa Học không được chứa ký tự đặc biệt!',
+
+            'course_name.required' => 'Tên Khóa Học không dược để trống!',
+            'course_name.max' => 'Tên Khóa Học không nhập quá 50 ký tự chữ!',
+            'course_name.min' => 'Tên Khóa Học phải có 5 ký tự chữ trở lên!',
+            'course_name.unique' => 'Tên Khóa Học đã tồn tại!',
+            'course_name.notspecial_spaces' => 'Tên Khóa Học không được chứa ký tự đặc biệt!',
+
+            'course_status.required' => 'Vui lòng chọn trạng thái cho Khóa học này!'
+        ]);
+
+        $course = new Course();
+        $course->course_code = $data['course_code'];
+        $course->course_name = $data['course_name'];
+        $course->course_status = $data['course_status'];
+        $course->save();
     }
 
     /**
