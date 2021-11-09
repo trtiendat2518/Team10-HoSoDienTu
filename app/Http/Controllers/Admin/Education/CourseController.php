@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Resources\CourseResource;
+use Excel;
+use App\Exports\CourseExport;
+use App\Imports\CourseImport;
+use Validator;
+use Session;
 
 class CourseController extends Controller
 {
@@ -93,9 +98,22 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, $course)
     {
-        //
+        $crs = Course::find($course);
+
+        $data = $request->validate([
+            'course_name' => ['required', 'max:50', 'min:5', 'notspecial_spaces'],
+        ],[
+            'course_name.required' => 'Tên Khóa Học không dược để trống!',
+            'course_name.max' => 'Tên Khóa Học không nhập quá 50 ký tự chữ!',
+            'course_name.min' => 'Tên Khóa Học phải có 5 ký tự chữ trở lên!',
+            'course_name.unique' => 'Tên Khóa Học đã tồn tại!',
+            'course_name.notspecial_spaces' => 'Tên Khóa Học không được chứa ký tự đặc biệt!',
+        ]);
+
+        $crs->course_name = $data['course_name'];
+        $crs->save();
     }
 
     /**
@@ -139,5 +157,24 @@ class CourseController extends Controller
     public function detail($course)
     {
         return CourseResource::collection(Course::where('course_id', $course)->get());
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new CourseExport , 'list_of_course.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'fileImport' => 'required|file|mimes:xls,xlsx'
+        ],[
+            'fileImport.required' => 'Vui lòng không để trống!',
+            'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
+            'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
+        ]);
+        $path = $request->file('fileImport')->getRealPath();
+        $data = Excel::import(new CourseImport, $path);
+        return response()->json(200);
     }
 }

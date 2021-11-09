@@ -62,6 +62,8 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('edu-course')->group(function(){
+        Route::post('khoa-hoc/import', 'Admin\Education\CourseController@import');
+        Route::get('khoa-hoc/export', 'Admin\Education\CourseController@export');
         Route::get('khoa-hoc/detail/{course}','Admin\Education\CourseController@detail');
         Route::patch('khoa-hoc/change/{course}', 'Admin\Education\CourseController@change');
         Route::post('khoa-hoc/destroyall/', 'Admin\Education\CourseController@destroyall');
