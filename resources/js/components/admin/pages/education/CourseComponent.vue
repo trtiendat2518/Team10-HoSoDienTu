@@ -1,15 +1,15 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
-		<!-- <div class="row">
+		<div class="row">
 			<div class="col-md-9">
 				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 			</div>
-			<div class="col-md-3">
+			<!-- <div class="col-md-3">
 				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
 				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
-			</div>
-		</div> -->
+			</div> -->
+		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -17,9 +17,9 @@
 						<div class="col-md-11">
 							<h3 class="card-title">Danh sách Khóa Học</h3>
 						</div>
-						<!-- <div class="col-md-1">
+						<div class="col-md-1">
 							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
-						</div> -->
+						</div>
 					</div>
 
 					<div class="row">
@@ -94,35 +94,35 @@
 		</div>
 
 		<!-- Modal -->
-		<!-- <div class="modal fade" id="FacultyModal" tabindex="-1" role="dialog" aria-labelledby="FacultyModalTitle" aria-hidden="true">
+		<div class="modal fade" id="CourseModal" tabindex="-1" role="dialog" aria-labelledby="CourseModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="editMode?update():store()" @keydown="form.onKeydown($event)">
 					<span class="alert-danger" :form="form"></span>
 					<div class="modal-content">
 						<div class="modal-header styling-modal-header-update">
-							<h5 class="modal-title" id="FacultyModalTitle">{{ editMode ? "Cập nhật" : "Thêm mới" }} Khoa</h5>
+							<h5 class="modal-title" id="CourseModalTitle">{{ editMode ? "Cập nhật" : "Thêm mới" }} Khoa</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
 							<label>Mã khoa</label>
-							<input v-model="form.faculty_code" type="text" name="faculty_code"class="form-control" placeholder="Nhập mã Khoa" :disabled="editMode" :class="[{'is-invalid': form.errors.has('faculty_code')}, {'not-allowed': editMode}]">
-							<div class="text-danger" v-if="form.errors.has('faculty_code')" v-html="form.errors.get('faculty_code')"></div>
+							<input v-model="form.course_code" type="text" name="course_code"class="form-control" placeholder="Nhập mã khóa học" :disabled="editMode" :class="[{'is-invalid': form.errors.has('course_code')}, {'not-allowed': editMode}]">
+							<div class="text-danger" v-if="form.errors.has('course_code')" v-html="form.errors.get('course_code')"></div>
 
 							<label class="mt-3">Tên Khoa</label>
-							<input v-model="form.faculty_name" type="text" name="faculty_name" class="form-control" placeholder="Nhập tên Khoa" :class="{'is-invalid': form.errors.has('faculty_name')}">
-							<div class="text-danger" v-if="form.errors.has('faculty_name')" v-html="form.errors.get('faculty_name')"></div>
+							<input v-model="form.course_name" type="text" name="course_name" class="form-control" placeholder="Nhập tên khóa học" :class="{'is-invalid': form.errors.has('course_name')}">
+							<div class="text-danger" v-if="form.errors.has('course_name')" v-html="form.errors.get('course_name')"></div>
 
 							<div v-if="!editMode">
 								<label class="mt-3">Trạng thái</label>
-								<select v-model="form.faculty_status" name="faculty_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('faculty_status')}">
-									<option value="" selected disabled>Chọn trạng thái:</option>
+								<select v-model="form.course_status" name="course_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('course_status')}">
+									<option value="" selected disabled>Chọn trạng thái</option>
 									<option disabled>---------------</option>
 									<option value="0">Hiển thị</option>
 									<option value="1">Không hiển thị</option>
 								</select>
-								<div class="text-danger mb-3" v-if="form.errors.has('faculty_status')" v-html="form.errors.get('faculty_status')"></div>
+								<div class="text-danger mb-3" v-if="form.errors.has('course_status')" v-html="form.errors.get('course_status')"></div>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -132,7 +132,7 @@
 					</div>
 				</form>
 			</div>
-		</div> -->
+		</div>
 		<!-- Modal end-->
 
 		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
@@ -154,7 +154,7 @@
 									<td>Mã Khoa: <strong> {{ form.faculty_code }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Khoa: <strong> {{ form.faculty_name }}</strong></td>
+									<td>Tên Khoa: <strong> {{ form.course_name }}</strong></td>
 								</tr>
 								<tr>
 									<td>Tổng số Chuyên Ngành: <strong> 0</strong></td>
@@ -168,7 +168,7 @@
 									<td>Trưởng Khoa: <strong> {{ form.faculty_code }}</strong></td>
 								</tr>
 								<tr>
-									<td>Phó Khoa: <strong> {{ form.faculty_name }}</strong></td>
+									<td>Phó Khoa: <strong> {{ form.course_name }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -279,38 +279,38 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// create(){
-			// 	this.editMode = false;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	$('#FacultyModal').modal('show');
-			// },
-			// store(){
-			// 	this.form.busy = true;
-			// 	this.form.post('../../api/admin/edu-course/khoa-hoc')
-			// 	.then(res => {
-			// 		this.fetchCourses();
-			// 		$('#FacultyModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Thêm mới thành công!');
-			// 		}else{
-			// 			this.$snotify.error('Không thể thêm Khoa', 'Lỗi');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			create(){
+				this.editMode = false;
+				this.form.reset();
+				this.form.clear();
+				$('#CourseModal').modal('show');
+			},
+			store(){
+				this.form.busy = true;
+				this.form.post('../../api/admin/edu-course/khoa-hoc')
+				.then(res => {
+					this.fetchCourses();
+					$('#CourseModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Thêm mới thành công!');
+					}else{
+						this.$snotify.error('Không thể thêm khóa học', 'Lỗi');
+					}
+				})
+				.catch(err => console.log(err));
+			},
 			// show(faculty) {
 			// 	this.editMode = true;
 			// 	this.form.reset();
 			// 	this.form.clear();
 			// 	this.form.fill(faculty);
-			// 	$('#FacultyModal').modal('show');
+			// 	$('#CourseModal').modal('show');
 			// },
 			// update() {
 			// 	this.form.put('../../api/admin/edu-course/khoa-hoc/'+this.form.course_id)
 			// 	.then(res => {
 			// 		this.fetchCourses();
-			// 		$('#FacultyModal').modal('hide');
+			// 		$('#CourseModal').modal('hide');
 			// 		if(this.form.successful){
 			// 			this.$snotify.success('Cập nhật Khoa thành công!');
 			// 		}else{
@@ -403,12 +403,12 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// reload(){
-			// 	this.fetchCourses();
-			// 	this.query='';
-			// 	this.$refs.fileupload.value='';
-			// 	this.fileImport='';
-			// },
+			reload(){
+				this.fetchCourses();
+				this.query='';
+				this.$refs.fileupload.value='';
+				this.fileImport='';
+			},
 			// exportFile() {
 			// 	window.location.href ="../../api/admin/edu-course/khoa-hoc/export";
 			// },
