@@ -60,4 +60,8 @@ Route::prefix('admin')->group(function(){
         Route::get('chuyen-nganh/export', 'Admin\Education\MajorController@export');
         Route::resource('chuyen-nganh', 'Admin\Education\MajorController');
     });
+
+    Route::prefix('edu-course')->group(function(){
+        Route::resource('khoa-hoc', 'Admin\Education\CourseController');
+    });
 });

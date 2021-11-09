@@ -86,7 +86,7 @@
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item" href="#">
+						<a class="side-menu__item" href="{{ route('course.index') }}">
 							<i class="side-menu__icon fa fa-book"></i>
 							<span class="side-menu__label">Khóa học</span>
 						</a>
