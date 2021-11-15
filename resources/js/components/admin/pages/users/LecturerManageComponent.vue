@@ -204,14 +204,7 @@
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Khoa: 
-										<strong v-for="faculty in faculties">
-											<strong v-if="form.lecturer_faculty == faculty.faculty_id">
-												{{ faculty.faculty_name }}
-											</strong>
-											<strong v-else hidden></strong>
-										</strong>
-									</td>
+									<td>Khoa: <strong> {{ lecturer_faculty }}</strong></td>
 								</tr>
 								<tr>
 									<td>Chức vụ: 
@@ -271,6 +264,7 @@
 			return {
 				lecturers:[],
 				lecturer_id:'',
+				lecturer_faculty:'',
 				pagination:{
 					current_page: 1,
 				},
@@ -448,9 +442,11 @@
 				.then(res => {
 					this.details = res.data;
 					this.form.fill(lecturer);
+					const faculty = this.faculties.find((fac) => fac.faculty_id === lecturer.lecturer_faculty );
+					this.lecturer_faculty = faculty.faculty_name;
 					$('#DetailModal').modal('show');
 				})
-				.catch(err => console.log(err));
+				.catch(err => this.$snotify.error('Giảng viên chưa cập nhật thông tin'));
 			},
 			filter(page_url) {
 				let vm = this;

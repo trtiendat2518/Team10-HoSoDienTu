@@ -5,10 +5,10 @@
 			<div class="col-md-9">
 				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 			</div>
-			<!-- <div class="col-md-3">
+			<div class="col-md-3">
 				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
 				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
-			</div> -->
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
@@ -157,7 +157,7 @@
 									<td>Tên khóa học: <strong> {{ form.course_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tổng số sinh viên: <strong> 0</strong></td>
+									<td>Tổng số sinh viên: <strong> {{ countStudent.length }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -170,12 +170,12 @@
 		</div>
 
 		<!-- Modal -->
-		<!-- <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
+		<div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="importFile()" @keydown="form.onKeydown($event)">
 					<div class="modal-content">
 						<div class="modal-header styling-modal-header-update">
-							<h5 class="modal-title" id="ImportModalTitle">Import Khoa</h5>
+							<h5 class="modal-title" id="ImportModalTitle">Import Khóa học</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -191,7 +191,7 @@
 					</div>
 				</form>
 			</div>
-		</div> -->
+		</div>
 		<!-- Modal end-->
 	</div>
 </template>
@@ -201,6 +201,7 @@
 	export default {
 		data() {
 			return {
+				students:[],
 				courses:[],
 				course_id:'',
 				pagination:{
@@ -239,12 +240,28 @@
 				}
 			},
 		},
+		computed: {
+			countStudent() {
+				return this.students.filter(student => student.student_course==this.form.course_id);
+			}
+		},
 		mounted() {
 			this.fetchCourses();
+			this.fetchStudents();
 		},
 		methods: {
 			empty() {
 				return (this.courses.length < 1);
+			},
+			fetchStudents(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-sv/sinh-vien/studentinfo';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.students = res.data;
+				})
+				.catch(err => console.log(err));
 			},
 			fetchCourses(page_url) {
 				let vm = this;
@@ -288,26 +305,26 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// show(faculty) {
-			// 	this.editMode = true;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	this.form.fill(faculty);
-			// 	$('#CourseModal').modal('show');
-			// },
-			// update() {
-			// 	this.form.put('../../api/admin/edu-course/khoa-hoc/'+this.form.course_id)
-			// 	.then(res => {
-			// 		this.fetchCourses();
-			// 		$('#CourseModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Cập nhật Khoa thành công!');
-			// 		}else{
-			// 			this.$snotify.error('Không thể chỉnh sửa');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			show(course) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				this.form.fill(course);
+				$('#CourseModal').modal('show');
+			},
+			update() {
+				this.form.put('../../api/admin/edu-course/khoa-hoc/'+this.form.course_id)
+				.then(res => {
+					this.fetchCourses();
+					$('#CourseModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Cập nhật Khóa Học thành công!');
+					}else{
+						this.$snotify.error('Không thể chỉnh sửa');
+					}
+				})
+				.catch(err => console.log(err));
+			},
 			change(course_id) {
 				axios.patch(`../../api/admin/edu-course/khoa-hoc/change/${course_id}`)
 				.then(res => {
@@ -398,46 +415,46 @@
 				this.$refs.fileupload.value='';
 				this.fileImport='';
 			},
-			// exportFile() {
-			// 	window.location.href ="../../api/admin/edu-course/khoa-hoc/export";
-			// },
-			// openImport() {
-			// 	this.$refs.fileupload.value='';
-			// 	$('#ImportModal').modal('show');
-			// },
-			// onFileChange(e) {
-			// 	this.fileImport = e.target.files[0];
-			// },
-			// reloadFile() {
-			// 	this.$refs.fileupload.value='';
-			// 	this.fileImport='';
-			// },
-			// importFile() {
-			// 	let formData = new FormData();
-			// 	formData.append('fileImport', this.fileImport);
-			// 	axios.post('../../api/admin/edu-course/khoa-hoc/import', formData, {
-			// 		headers: { 'content-type': 'multipart/form-data' }
-			// 	})
-			// 	.then(res => {
-			// 		if(res.status === 200) {
-			// 			$('#ImportModal').modal('hide');
-			// 			this.fetchCourses();
-			// 			this.$snotify.success('Import thành công');
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		if(err.response.data.errors?.fileImport?.length > 0){
-			// 			this.error = err.response.data.errors.fileImport[0];
-			// 		}else if(err.response.data.errors[0].length > 0){
-			// 			const  stringError = err.response.data.errors[0][0];
-			// 			const  stringSplit = stringError.split(".");
-			// 			this.error = stringSplit[1];
-			// 		}
+			exportFile() {
+				window.location.href ="../../api/admin/edu-course/khoa-hoc/export";
+			},
+			openImport() {
+				this.$refs.fileupload.value='';
+				$('#ImportModal').modal('show');
+			},
+			onFileChange(e) {
+				this.fileImport = e.target.files[0];
+			},
+			reloadFile() {
+				this.$refs.fileupload.value='';
+				this.fileImport='';
+			},
+			importFile() {
+				let formData = new FormData();
+				formData.append('fileImport', this.fileImport);
+				axios.post('../../api/admin/edu-course/khoa-hoc/import', formData, {
+					headers: { 'content-type': 'multipart/form-data' }
+				})
+				.then(res => {
+					if(res.status === 200) {
+						$('#ImportModal').modal('hide');
+						this.fetchCourses();
+						this.$snotify.success('Import thành công');
+					}
+				})
+				.catch(err => {
+					if(err.response.data.errors?.fileImport?.length > 0){
+						this.error = err.response.data.errors.fileImport[0];
+					}else if(err.response.data.errors[0].length > 0){
+						const  stringError = err.response.data.errors[0][0];
+						const  stringSplit = stringError.split(".");
+						this.error = stringSplit[1];
+					}
 					
-			// 		this.fetchCourses();
-			// 		this.$snotify.error(this.error);
-			// 	});
-			// }
+					this.fetchCourses();
+					this.$snotify.error(this.error);
+				});
+			}
 		}
 	};
 </script>

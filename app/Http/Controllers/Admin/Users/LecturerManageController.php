@@ -123,4 +123,9 @@ class LecturerManageController extends Controller
     {
         return LectureInfoResource::collection(LecturerInfo::where('lecturer_code',$lecturer)->paginate(1));
     }
+
+    public function lecturer()
+    {
+        return LecturerManageResource::collection(Lecturer::where('lecturer_status',0)->orderby('lecturer_id','DESC')->get());
+    }
 }

@@ -70,13 +70,7 @@
 									</td>
 									<td @click="detail(major)"><a href="javascript:void(0)">{{ major.major_code }}</a></td>
 									<td>{{ major.major_name }}</td>
-									<td>
-										<!-- {{ major.major_faculty }} -->
-										<div v-for="faculty in faculties">
-											<div v-if="major.major_faculty==faculty.faculty_code">{{ faculty.faculty_name }}</div>
-											<div v-else style="display: none;"></div>
-										</div>
-									</td>
+									<td>{{ filterFaculty(major) }}</td>
 									<td class="td-styling">
 										<div v-if="major.major_status==0">
 											<button class="fa fa-eye btn-eye" @click="change(major.major_id)"></button>
@@ -180,11 +174,7 @@
 									<td>Tên Chuyên Ngành: <strong> {{ form.major_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Thuộc Khoa: 
-										<strong v-for="faculty in faculties" :key="faculty.faculty_id">
-											<strong v-if="form.major_faculty==faculty.faculty_code"> {{ faculty.faculty_name }}</strong>
-										</strong>
-									</td>
+									<td>Thuộc Khoa: <strong>{{ major_faculty }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -231,6 +221,7 @@
 				majors:[],
 				faculties:[],
 				major_id:'',
+				major_faculty:'',
 				pagination:{
 					current_page: 1,
 				},
@@ -287,7 +278,7 @@
 			},
 			fetchFaculties(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-major/chuyen-nganh/faculty';
+				page_url = '../../api/admin/edu-faculty/khoa/faculty';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -437,6 +428,8 @@
 				.then(res => {
 					this.details = res.data;
 					this.form.fill(major);
+					const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
+					this.major_faculty = faculty.faculty_name;
 					$('#DetailModal').modal('show');
 				})
 				.catch(err => console.log(err));
@@ -498,7 +491,11 @@
 					this.fetchMajors();
 					this.$snotify.error(this.error);
 				});
-			}
+			},
+			filterFaculty(major) {
+				const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
+				return faculty.faculty_name;
+			},
 		}
 	};
 </script>

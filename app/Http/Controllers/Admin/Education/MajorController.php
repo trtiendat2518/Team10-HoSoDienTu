@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Admin\Education;
 
 use App\Http\Controllers\Controller;
 use App\Models\Major;
-use App\Models\Faculty;
 use Illuminate\Http\Request;
 use App\Http\Resources\MajorResource;
-use App\Http\Resources\FacultyResource;
 use Excel;
 use App\Exports\MajorExport;
 use App\Imports\MajorImport;
@@ -142,9 +140,9 @@ class MajorController extends Controller
         return MajorResource::collection(Major::where('major_code','LIKE','%'.$query.'%')->orwhere('major_name','LIKE','%'.$query.'%')->orderby('major_id','DESC')->paginate($currentEntries));
     }
 
-    public function faculty()
+    public function major()
     {
-        return FacultyResource::collection(Faculty::where('faculty_status',0)->orderby('faculty_name','DESC')->get());
+        return MajorResource::collection(Major::where('major_status',0)->orderby('major_name','DESC')->get());
     }
 
     public function destroyall(Request $request, $major = null)
