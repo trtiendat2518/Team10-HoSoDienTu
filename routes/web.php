@@ -35,6 +35,7 @@ Route::prefix('admin')->group(function(){
             Route::get('/khoa','Admin\ViewController@faculty_manage')->name('faculty.index');
             Route::get('/chuyen-nganh','Admin\ViewController@major_manage')->name('major.index');
             Route::get('/khoa-hoc','Admin\ViewController@course_manage')->name('course.index');
+            Route::get('/bai-viet','Admin\ViewController@post_manage')->name('post.index');
         });
     });
 });

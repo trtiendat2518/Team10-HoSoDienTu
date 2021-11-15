@@ -176,7 +176,7 @@
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Ngày sinh: <strong> {{ info.student_birthday }}</strong></td>
+									<td>Ngày sinh: <strong> {{ info.student_birthday | formatDate}}</strong></td>
 								</tr>
 								<tr class="td-borderight">
 									<td>Nơi sinh: <strong> {{ info.student_birth_place }}</strong></td>

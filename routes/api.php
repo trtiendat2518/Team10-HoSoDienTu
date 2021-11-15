@@ -74,4 +74,8 @@ Route::prefix('admin')->group(function(){
         Route::get('khoa-hoc/search/{query}/{currentEntries}','Admin\Education\CourseController@search');
         Route::resource('khoa-hoc', 'Admin\Education\CourseController');
     });
+
+    Route::prefix('post-news')->group(function(){
+        Route::resource('bai-viet', 'Admin\Posts\PostController');
+    });
 });

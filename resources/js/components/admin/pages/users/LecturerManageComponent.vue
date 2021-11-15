@@ -184,7 +184,7 @@
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Ngày sinh: <strong> {{ info.lecturer_birthday }}</strong></td>
+									<td>Ngày sinh: <strong> {{ info.lecturer_birthday | formatDate }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
 									<td>Nơi sinh: <strong> {{ info.lecturer_birth_place }}</strong></td>
