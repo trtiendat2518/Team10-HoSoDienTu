@@ -6,40 +6,19 @@
 
 require('./bootstrap');
 
-import Snotify, { SnotifyPosition } from 'vue-snotify'
 import Form from 'vform'
+import notify from './notify.js'
+import formatDatetime from './format-datetime.js'
+import compo from './component.js'
+import router from './routes.js'
 
 window.Form = Form
 window.Vue = require('vue').default;
 
-
-const SnotifyOptions = {
-    toast: {
-        position: SnotifyPosition.rightTop
-    }
-};
-Vue.use(Snotify, SnotifyOptions)
-
 Vue.config.productionTip = false
-
-//Dashboard
-Vue.component('dashboard-component', require('./components/admin/pages/DashboardComponent.vue').default);
-
-//Pagination
-Vue.component('pagination', require('./components/pagination/PaginationComponent.vue').default);
-
-//Information
-Vue.component('update-info-component', require('./components/admin/pages/info/UpdateInfoComponent.vue').default);
-
-//Users
-Vue.component('lecturer-manage-component', require('./components/admin/pages/users/LecturerManageComponent.vue').default);
-Vue.component('student-manage-component', require('./components/admin/pages/users/StudentManageComponent.vue').default);
-
-//Education
-Vue.component('faculty-component', require('./components/admin/pages/education/FacultyComponent.vue').default);
-Vue.component('major-component', require('./components/admin/pages/education/MajorComponent.vue').default);
-Vue.component('course-component', require('./components/admin/pages/education/CourseComponent.vue').default);
+Vue.prototype.$userId = document.querySelector("meta[name='user-fullname']").getAttribute('content');
 
 const app = new Vue({
     el: '#app',
+    router
 });

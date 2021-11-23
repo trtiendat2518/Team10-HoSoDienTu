@@ -104,7 +104,7 @@
 						</a>
 					</li>
 					<li class="slide">
-						<a class="side-menu__item" href="#">
+						<a class="side-menu__item" href="{{ route('post.index') }}">
 							<i class="side-menu__icon fa fa-newspaper-o"></i>
 							<span class="side-menu__label">Bài viết - Tin tức</span>
 						</a>

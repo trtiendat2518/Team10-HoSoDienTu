@@ -157,7 +157,7 @@
 									<td>Tên Khoa: <strong> {{ form.faculty_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tổng số Chuyên Ngành: <strong> 0</strong></td>
+									<td>Tổng số Chuyên Ngành: <strong > {{ countMajor.length }}</strong></td>
 								</tr>
 							</tbody>
 							<tbody class="col-lg-6 p-0">
@@ -165,10 +165,14 @@
 									<td class="h3-strong"><h3><strong> Ban chủ nhiệm Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Trưởng Khoa: <strong> {{ form.faculty_code }}</strong></td>
+									<td>Trưởng Khoa: 
+										<strong>{{ head_lecturer }}</strong>
+									</td>
 								</tr>
 								<tr>
-									<td>Phó Khoa: <strong> {{ form.faculty_name }}</strong></td>
+									<td>Phó Khoa: 
+										<strong>{{ vice_lecturer }}</strong>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -213,6 +217,10 @@
 		data() {
 			return {
 				faculties:[],
+				majors:[],
+				lecturers:[],
+				head_lecturer:'',
+				vice_lecturer:'',
 				faculty_id:'',
 				pagination:{
 					current_page: 1,
@@ -250,8 +258,15 @@
 				}
 			},
 		},
+		computed: {
+			countMajor() {
+				return this.majors.filter(major => major.major_faculty==this.form.faculty_code);
+			}
+		},
 		mounted() {
+			this.fetchMajors();
 			this.fetchFaculties();
+			this.fetchLecturers();
 		},
 		methods: {
 			empty() {
@@ -265,6 +280,26 @@
 				.then(res => {
 					this.faculties = res.data;
 					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
+			fetchMajors(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/major';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.majors = res.data;
+				})
+				.catch(err => console.log(err));
+			},
+			fetchLecturers(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-gv/giang-vien/lecturer';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.lecturers = res.data;
 				})
 				.catch(err => console.log(err));
 			},
@@ -399,9 +434,19 @@
 				.then(res => {
 					this.details = res.data;
 					this.form.fill(faculty);
+					let head = this.lecturers.filter(function(lec){
+						return lec.lecturer_faculty===faculty.faculty_id && lec.lecturer_level===1
+					})
+					this.head_lecturer = head[0].lecturer_fullname;
+
+					let vice = this.lecturers.filter(function(lec){
+						return lec.lecturer_faculty===faculty.faculty_id && lec.lecturer_level===2
+					})
+					this.vice_lecturer = vice[0].lecturer_fullname;
+
 					$('#DetailModal').modal('show');
 				})
-				.catch(err => console.log(err));
+				.catch(err => this.$snotify.error('Khoa này chưa có thông tin chi tiết'));
 			},
 			reload(){
 				this.fetchFaculties();

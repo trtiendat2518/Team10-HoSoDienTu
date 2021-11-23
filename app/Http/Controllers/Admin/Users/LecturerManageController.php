@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Http\Resources\AdminResource;
 use App\Http\Resources\LecturerManageResource;
 use App\Http\Resources\LectureInfoResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin;
 use App\Models\Lecturer;
 use App\Models\LecturerInfo;
 use Session;
@@ -122,5 +124,15 @@ class LecturerManageController extends Controller
     public function detail($lecturer)
     {
         return LectureInfoResource::collection(LecturerInfo::where('lecturer_code',$lecturer)->paginate(1));
+    }
+
+    public function lecturer()
+    {
+        return LecturerManageResource::collection(Lecturer::where('lecturer_status',0)->orderby('lecturer_id','DESC')->get());
+    }
+
+    public function admin()
+    {
+        return AdminResource::collection(Admin::orderby('admin_fullname','ASC')->get());
     }
 }

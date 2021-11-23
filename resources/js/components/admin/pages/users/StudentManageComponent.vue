@@ -176,7 +176,7 @@
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Ngày sinh: <strong> {{ info.student_birthday }}</strong></td>
+									<td>Ngày sinh: <strong> {{ info.student_birthday | formatDate}}</strong></td>
 								</tr>
 								<tr class="td-borderight">
 									<td>Nơi sinh: <strong> {{ info.student_birth_place }}</strong></td>
@@ -196,13 +196,19 @@
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Khóa học: <strong> {{ info.student_course }}</strong></td>
+									<td>Khóa học: 
+										<strong>{{ studentCourse(info) }}</strong>
+									</td>
 								</tr>
 								<tr>
-									<td>Khoa: <strong> {{ info.student_faculty }}</strong></td>
+									<td>Khoa: 
+										<strong>{{ studentFaculty(info) }}</strong>
+									</td>
 								</tr>
 								<tr>
-									<td>Chuyên ngành: <strong> {{ info.student_specialized }}</strong></td>
+									<td>Chuyên ngành: 
+										<strong>{{ studentMajor(info) }}</strong>
+									</td>
 								</tr>
 								<tr>
 									<td>Chức vụ: 
@@ -251,6 +257,9 @@
 	export default {
 		data() {
 			return {
+				courses:[],
+				faculties:[],
+				majors:[],
 				students:[],
 				student_id:'',
 				pagination:{
@@ -300,10 +309,43 @@
 		},
 		mounted() {
 			this.fetchStudents();
+			this.fetchCourses();
+			this.fetchFaculties();
+			this.fetchMajors();
 		},
 		methods: {
 			empty() {
 				return (this.students.length < 1);
+			},
+			fetchCourses(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-course/khoa-hoc/course';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.courses = res.data;
+				})
+				.catch(err => console.log(err));
+			},
+			fetchFaculties(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-faculty/khoa/faculty';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.faculties = res.data;
+				})
+				.catch(err => console.log(err));
+			},
+			fetchMajors(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/major';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.majors = res.data;
+				})
+				.catch(err => console.log(err));
 			},
 			fetchStudents(page_url) {
 				let vm = this;
@@ -446,6 +488,18 @@
 				this.fetchStudents();
 				this.query='';
 				this.value_role='';
+			},
+			studentCourse(info) {
+				const course = this.courses.find((crs) => crs.course_id === info.student_course);
+				return course.course_code;
+			},
+			studentFaculty(info) {
+				const faculty = this.faculties.find((fac) => fac.faculty_id === info.student_faculty);
+				return faculty.faculty_name;
+			},
+			studentMajor(info) {
+				const major = this.majors.find((mjr) => mjr.major_id === info.student_major);
+				return major.major_name;
 			},
 		}
 	};
