@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('admin')->group(function(){
     Route::prefix('user-gv')->group(function(){
         //Giang Vien
+        Route::get('giang-vien/admin/','Admin\Users\LecturerManageController@admin');
         Route::get('giang-vien/lecturer/','Admin\Users\LecturerManageController@lecturer');
         Route::get('giang-vien/detail/{lecturer}','Admin\Users\LecturerManageController@detail');   
         Route::get('giang-vien/search/{query}/{currentEntries}','Admin\Users\LecturerManageController@search');
@@ -76,6 +77,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('post-news')->group(function(){
+        Route::get('bai-viet/filter/{admin}/{currentEntries}', 'Admin\Posts\PostController@filter');
         Route::get('bai-viet/search/{query}/{currentEntries}','Admin\Posts\PostController@search');
         Route::patch('bai-viet/change/{post}', 'Admin\Posts\PostController@change');
         Route::resource('bai-viet', 'Admin\Posts\PostController');

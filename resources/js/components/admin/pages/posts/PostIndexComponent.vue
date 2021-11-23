@@ -21,13 +21,13 @@
 						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
-						<!-- <div class="col-md-3">
-							<select class="form-control mt-2" v-model="value_faculty">
-								<option value="" disabled selected>Lọc theo khoa</option>
+						<div class="col-md-3">
+							<select class="form-control mt-2" v-model="value_author">
+								<option value="" disabled selected>Lọc theo tác giả</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_code">{{ faculty.faculty_name }}</option>
+								<option v-for="admin in admins" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
 							</select>
-						</div> -->
+						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -144,6 +144,7 @@
 		data() {
 			return {
 				details:[],
+				admins:[],
 				posts:[],
 				post_id:'',
 				pagination:{
@@ -184,32 +185,33 @@
 					this.search();
 				}
 			},
-			// value_faculty(faculty){
-			// 	if(faculty === ''){
-			// 		this.fetchPosts();
-			// 	}else{
-			// 		this.filter();
-			// 	}
-			// },
+			value_author(admin){
+				if(admin === ''){
+					this.fetchPosts();
+				}else{
+					this.query='';
+					this.filter();
+				}
+			},
 		},
 		mounted() {
-			// this.fetchFaculties();
+			this.fetchAdmins();
 			this.fetchPosts();
 		},
 		methods: {
 			empty() {
 				return (this.posts.length < 1);
 			},
-			// fetchFaculties(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/edu-faculty/khoa/faculty';
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.faculties = res.data;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			fetchAdmins(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-gv/giang-vien/admin';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.admins = res.data;
+				})
+				.catch(err => console.log(err));
+			},
 			fetchPosts(page_url) {
 				let vm = this;
 				page_url = '../../api/admin/post-news/bai-viet/'+this.currentEntries+'?page='+this.pagination.current_page;
@@ -344,17 +346,17 @@
 				this.query='';
 				this.value_author='';
 			},
-			// filter(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/edu-major/chuyen-nganh/filter/'+this.value_faculty+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.posts = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			filter(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/post-news/bai-viet/filter/'+this.value_author+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.posts = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			// filterFaculty(major) {
 			// 	const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
 			// 	return faculty.faculty_name;
