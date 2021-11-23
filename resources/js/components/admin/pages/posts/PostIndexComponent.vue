@@ -77,7 +77,7 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(post)"></button>
+										<router-link class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'postupdate', params: {idPost: post.post_id} }"></router-link>
 									</td>
 									<td>
 										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(post.post_id)"></button>
@@ -236,26 +236,6 @@
 			create(){
 				this.$router.push( {name: 'postcreate'} );
 			},
-			// show(major) {
-			// 	this.editMode = true;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	this.form.fill(major);
-			// 	$('#MajorModal').modal('show');
-			// },
-			// update() {
-			// 	this.form.put('../../api/admin/edu-major/chuyen-nganh/'+this.form.post_id)
-			// 	.then(res => {
-			// 		this.fetchPosts();
-			// 		$('#MajorModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Cập nhật Chuyên Ngành thành công!');
-			// 		}else{
-			// 			this.$snotify.error('Không thể chỉnh sửa');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 			change(post_id) {
 				axios.patch(`../../api/admin/post-news/bai-viet/change/${post_id}`)
 				.then(res => {
