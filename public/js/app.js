@@ -4304,7 +4304,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }),
       selected: [],
       selectAll: false
-    }, _defineProperty(_ref, "details", []), _defineProperty(_ref, "error", {}), _defineProperty(_ref, "value_faculty", ''), _ref;
+    }, _defineProperty(_ref, "details", []), _defineProperty(_ref, "error", {}), _defineProperty(_ref, "value_author", ''), _ref;
   },
   watch: {
     currentEntries: function currentEntries(number) {
@@ -4313,15 +4313,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else {
         this.fetchPosts();
       }
-    } // query(keyword){
-    // 	if(keyword === ''){
-    // 		this.fetchPosts();
-    // 	}else{
-    // 		this.value_faculty='';
-    // 		this.search();
-    // 	}
-    // },
-    // value_faculty(faculty){
+    },
+    query: function query(keyword) {
+      if (keyword === '') {
+        this.fetchPosts();
+      } else {
+        this.value_author = '';
+        this.search();
+      }
+    } // value_faculty(faculty){
     // 	if(faculty === ''){
     // 		this.fetchPosts();
     // 	}else{
@@ -4362,17 +4362,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return console.log(err);
       });
     },
-    // search(page_url) {
-    // 	let vm = this;
-    // 	page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.posts = res.data;
-    // 		this.pagination = res.meta;
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
+    search: function search(page_url) {
+      var _this2 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/post-news/bai-viet/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this2.posts = res.data;
+        _this2.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     create: function create() {
       this.$router.push({
         name: 'postcreate'
@@ -4399,12 +4402,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     // 	.catch(err => console.log(err));
     // },
     change: function change(post_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.patch("../../api/admin/post-news/bai-viet/change/".concat(post_id)).then(function (res) {
-        _this2.fetchPosts();
+        _this3.fetchPosts();
 
-        _this2.$snotify.warning('Đã thay đổi trạng thái');
+        _this3.$snotify.warning('Đã thay đổi trạng thái');
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -4488,7 +4491,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     reload: function reload() {
       this.fetchPosts();
       this.query = '';
-      this.value_faculty = '';
+      this.value_author = '';
     } // filter(page_url) {
     // 	let vm = this;
     // 	page_url = '../../api/admin/edu-major/chuyen-nganh/filter/'+this.value_faculty+'/'+this.currentEntries+'?page='+this.pagination.current_page;
@@ -81955,6 +81958,30 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control mt-2",
+                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
+                  domProps: { value: _vm.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
                 _c(
                   "div",
@@ -82279,7 +82306,7 @@ var render = function() {
                       attrs: { pagination: _vm.pagination, offset: 5 },
                       on: {
                         paginate: function($event) {
-                          return _vm.fetchPosts()
+                          _vm.query === "" ? _vm.fetchPosts() : _vm.search()
                         }
                       }
                     })
