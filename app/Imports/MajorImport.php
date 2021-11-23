@@ -24,11 +24,8 @@ class MajorImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'ma_chuyen_nganh' => 'required',
-            'ma_chuyen_nganh' => 'notspecial_spaces',
-            'ma_chuyen_nganh' => 'unique:tbl_major,major_code', 
-            'ten_chuyen_nganh' => 'required',
-            'ten_chuyen_nganh' => 'unique:tbl_major,major_name',
+            'ma_chuyen_nganh' => 'required|notspecial_spaces|unique:tbl_major,major_code', 
+            'ten_chuyen_nganh' => 'required|unique:tbl_major,major_name',
             'ma_khoa' =>'required',
         ];
     }

@@ -143,4 +143,9 @@ class StudentManageController extends Controller
     {
         return StudentInfoResource::collection(StudentInfo::where('student_code',$student)->paginate(1));
     }
+
+    public function studentinfo()
+    {
+        return StudentInfoResource::collection(StudentInfo::orderby('student_info_id','DESC')->get());
+    }
 }

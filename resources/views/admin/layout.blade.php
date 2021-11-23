@@ -8,6 +8,7 @@
 		<link rel="canonical" href="{{$url_canonical}}">
 		<meta content="CAP - Team 10" name="author">
 		<meta name="keywords" content=""/>
+		<meta name="user-fullname" content="{{ Session::get('admin_fullname') }}">
 
 		<!-- Favicon -->
 		<link rel="icon" type="image/ico" sizes="16x16" href="{{asset('public/student/img/vlu.ico')}}">
