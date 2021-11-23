@@ -127,4 +127,9 @@ class PostController extends Controller
     {
         return PostNewsResource::collection(Post::where('post_title','LIKE','%'.$query.'%')->orderby('post_id','DESC')->paginate($currentEntries));
     }
+
+    public function filter($admin, $currentEntries)
+    {
+        return PostNewsResource::collection(Post::where('post_author','LIKE','%'.$admin.'%')->orderby('post_author','ASC')->paginate($currentEntries));
+    }
 }

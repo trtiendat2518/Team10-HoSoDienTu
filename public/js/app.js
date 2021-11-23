@@ -4285,6 +4285,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     return _ref = {
       details: [],
+      admins: [],
       posts: [],
       post_id: '',
       pagination: {
@@ -4321,57 +4322,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.value_author = '';
         this.search();
       }
-    } // value_faculty(faculty){
-    // 	if(faculty === ''){
-    // 		this.fetchPosts();
-    // 	}else{
-    // 		this.filter();
-    // 	}
-    // },
-
+    },
+    value_author: function value_author(admin) {
+      if (admin === '') {
+        this.fetchPosts();
+      } else {
+        this.query = '';
+        this.filter();
+      }
+    }
   },
   mounted: function mounted() {
-    // this.fetchFaculties();
+    this.fetchAdmins();
     this.fetchPosts();
   },
   methods: {
     empty: function empty() {
       return this.posts.length < 1;
     },
-    // fetchFaculties(page_url) {
-    // 	let vm = this;
-    // 	page_url = '../../api/admin/edu-faculty/khoa/faculty';
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.faculties = res.data;
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
-    fetchPosts: function fetchPosts(page_url) {
+    fetchAdmins: function fetchAdmins(page_url) {
       var _this = this;
+
+      var vm = this;
+      page_url = '../../api/admin/user-gv/giang-vien/admin';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this.admins = res.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    fetchPosts: function fetchPosts(page_url) {
+      var _this2 = this;
 
       var vm = this;
       page_url = '../../api/admin/post-news/bai-viet/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.posts = res.data;
-        _this.pagination = res.meta;
+        _this2.posts = res.data;
+        _this2.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     search: function search(page_url) {
-      var _this2 = this;
+      var _this3 = this;
 
       var vm = this;
       page_url = '../../api/admin/post-news/bai-viet/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this2.posts = res.data;
-        _this2.pagination = res.meta;
+        _this3.posts = res.data;
+        _this3.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -4402,12 +4407,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     // 	.catch(err => console.log(err));
     // },
     change: function change(post_id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.patch("../../api/admin/post-news/bai-viet/change/".concat(post_id)).then(function (res) {
-        _this3.fetchPosts();
+        _this4.fetchPosts();
 
-        _this3.$snotify.warning('Đã thay đổi trạng thái');
+        _this4.$snotify.warning('Đã thay đổi trạng thái');
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -4492,18 +4497,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.fetchPosts();
       this.query = '';
       this.value_author = '';
-    } // filter(page_url) {
-    // 	let vm = this;
-    // 	page_url = '../../api/admin/edu-major/chuyen-nganh/filter/'+this.value_faculty+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.posts = res.data;
-    // 		this.pagination = res.meta;
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
-    // filterFaculty(major) {
+    },
+    filter: function filter(page_url) {
+      var _this5 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/post-news/bai-viet/filter/' + this.value_author + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this5.posts = res.data;
+        _this5.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    } // filterFaculty(major) {
     // 	const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
     // 	return faculty.faculty_name;
     // },
@@ -81980,6 +81988,58 @@ var render = function() {
                     }
                   }
                 })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-3" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.value_author,
+                        expression: "value_author"
+                      }
+                    ],
+                    staticClass: "form-control mt-2",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.value_author = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { value: "", disabled: "", selected: "" } },
+                      [_vm._v("Lọc theo tác giả")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { disabled: "" } }, [
+                      _vm._v("----------------------------------------")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.admins, function(admin) {
+                      return _c(
+                        "option",
+                        { domProps: { value: admin.admin_fullname } },
+                        [_vm._v(_vm._s(admin.admin_fullname))]
+                      )
+                    })
+                  ],
+                  2
+                )
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
