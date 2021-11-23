@@ -30,6 +30,7 @@
         "moment": "^2.29.1",
         "vform": "^2.1.1",
         "vue-router": "^3.5.2",
-        "vue-snotify": "^3.2.1"
+        "vue-snotify": "^3.2.1",
+        "vue2-editor": "^2.10.3"
     }
 }
