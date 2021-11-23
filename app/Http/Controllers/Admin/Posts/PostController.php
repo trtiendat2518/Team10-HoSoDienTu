@@ -106,9 +106,10 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($post)
     {
-        //
+        $pst = Post::find($post);
+        $pst->delete();
     }
 
     public function change(Request $request, $post)
@@ -131,5 +132,14 @@ class PostController extends Controller
     public function filter($admin, $currentEntries)
     {
         return PostNewsResource::collection(Post::where('post_author','LIKE','%'.$admin.'%')->orderby('post_author','ASC')->paginate($currentEntries));
+    }
+
+    public function destroyall(Request $request, $post = null)
+    {
+        if ($request->post) {
+            foreach ($request->post as $id) {
+                Post::where('post_id', $id)->delete();
+            }
+        }
     }
 }
