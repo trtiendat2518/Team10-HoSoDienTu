@@ -122,4 +122,9 @@ class PostController extends Controller
             $pst->save();
         }
     }
+
+    public function search($query, $currentEntries)
+    {
+        return PostNewsResource::collection(Post::where('post_title','LIKE','%'.$query.'%')->orderby('post_id','DESC')->paginate($currentEntries));
+    }
 }

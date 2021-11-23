@@ -18,9 +18,9 @@
 						<!-- <div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div> -->
-						<!-- <div class="col-md-6">
+						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div> -->
+						</div>
 						<!-- <div class="col-md-3">
 							<select class="form-control mt-2" v-model="value_faculty">
 								<option value="" disabled selected>Lọc theo khoa</option>
@@ -93,7 +93,7 @@
 							</tbody>
 						</table>
 						<!-- <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchPosts() : search() "></pagination> -->
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchPosts()"></pagination>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchPosts() : search() "></pagination>
 					</div>
 					<!-- table-responsive -->
 				</div>
@@ -165,7 +165,7 @@
 				selectAll: false,
 				details:[],
 				error: {},
-				value_faculty:'',
+				value_author:'',
 			};
 		},
 		watch: {
@@ -176,14 +176,14 @@
 					this.fetchPosts();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchPosts();
-			// 	}else{
-			// 		this.value_faculty='';
-			// 		this.search();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchPosts();
+				}else{
+					this.value_author='';
+					this.search();
+				}
+			},
 			// value_faculty(faculty){
 			// 	if(faculty === ''){
 			// 		this.fetchPosts();
@@ -221,17 +221,17 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.posts = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			search(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.posts = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			create(){
 				this.$router.push( {name: 'postcreate'} );
 			},
@@ -342,7 +342,7 @@
 			reload(){
 				this.fetchPosts();
 				this.query='';
-				this.value_faculty='';
+				this.value_author='';
 			},
 			// filter(page_url) {
 			// 	let vm = this;

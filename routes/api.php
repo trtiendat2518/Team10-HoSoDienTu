@@ -76,6 +76,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('post-news')->group(function(){
+        Route::get('bai-viet/search/{query}/{currentEntries}','Admin\Posts\PostController@search');
         Route::patch('bai-viet/change/{post}', 'Admin\Posts\PostController@change');
         Route::resource('bai-viet', 'Admin\Posts\PostController');
     });
