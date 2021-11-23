@@ -20,3 +20,5 @@ Vue.component('course-component', require('./components/admin/pages/education/Co
 
 //Posts
 Vue.component('post-component', require('./components/admin/pages/posts/PostComponent.vue').default);
+Vue.component('post-index-component', require('./components/admin/pages/posts/PostIndexComponent.vue').default);
+Vue.component('post-create-component', require('./components/admin/pages/posts/PostCreateComponent.vue').default);
