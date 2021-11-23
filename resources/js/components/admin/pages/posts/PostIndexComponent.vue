@@ -15,9 +15,9 @@
 					</div>
 
 					<div class="row">
-						<!-- <div class="col-md-1">
+						<div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div> -->
+						</div>
 						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
@@ -92,7 +92,6 @@
 								</tr>
 							</tbody>
 						</table>
-						<!-- <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchPosts() : search() "></pagination> -->
 						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchPosts() : search() "></pagination>
 					</div>
 					<!-- table-responsive -->
@@ -265,70 +264,70 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// destroy(post_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/edu-major/chuyen-nganh/${post_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchPosts();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/edu-major/chuyen-nganh/destroyall', { major: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchPosts();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.posts){
-			// 			this.selected.push(this.posts[i].post_id);
-			// 		}
-			// 	}
-			// },
+			destroy(post_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/post-news/bai-viet/${post_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchPosts();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/post-news/bai-viet/destroyall', { post: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchPosts();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			select() {
+				this.selected = [];
+				if(!this.selectAll){
+					for(let i in this.posts){
+						this.selected.push(this.posts[i].post_id);
+					}
+				}
+			},
 			// detail(post, page_url) {
 			// 	let vm = this;
 			// 	page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
@@ -357,10 +356,6 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// filterFaculty(major) {
-			// 	const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
-			// 	return faculty.faculty_name;
-			// },
 		}
 	};
 </script>

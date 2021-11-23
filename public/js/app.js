@@ -4277,7 +4277,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4417,70 +4416,81 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return console.log(err);
       });
     },
-    // destroy(post_id) {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.delete(`../../api/admin/edu-major/chuyen-nganh/${post_id}`)
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchPosts();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
-    // destroyall() {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.post('../../api/admin/edu-major/chuyen-nganh/destroyall', { major: this.selected })
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchPosts();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
-    // select() {
-    // 	this.selected = [];
-    // 	if(!this.selectAll){
-    // 		for(let i in this.posts){
-    // 			this.selected.push(this.posts[i].post_id);
-    // 		}
-    // 	}
-    // },
+    destroy: function destroy(post_id) {
+      var _this5 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this5.$snotify.remove(toast.id);
+
+            axios["delete"]("../../api/admin/post-news/bai-viet/".concat(post_id)).then(function (res) {
+              _this5.$snotify.success('Đã xóa!');
+
+              _this5.fetchPosts();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this5.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    destroyall: function destroyall() {
+      var _this6 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+
+            axios.post('../../api/admin/post-news/bai-viet/destroyall', {
+              post: _this6.selected
+            }).then(function (res) {
+              _this6.$snotify.success('Đã xóa!');
+
+              _this6.fetchPosts();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this6.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    select: function select() {
+      this.selected = [];
+
+      if (!this.selectAll) {
+        for (var i in this.posts) {
+          this.selected.push(this.posts[i].post_id);
+        }
+      }
+    },
     // detail(post, page_url) {
     // 	let vm = this;
     // 	page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
@@ -4499,23 +4509,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.value_author = '';
     },
     filter: function filter(page_url) {
-      var _this5 = this;
+      var _this7 = this;
 
       var vm = this;
       page_url = '../../api/admin/post-news/bai-viet/filter/' + this.value_author + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this5.posts = res.data;
-        _this5.pagination = res.meta;
+        _this7.posts = res.data;
+        _this7.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
-    } // filterFaculty(major) {
-    // 	const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
-    // 	return faculty.faculty_name;
-    // },
-
+    }
   }
 });
 
@@ -81966,6 +81972,19 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-1" }, [
+                _c("button", {
+                  staticClass:
+                    "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                  attrs: { disabled: !_vm.selected.length },
+                  on: {
+                    click: function($event) {
+                      return _vm.destroyall()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-6" }, [
                 _c("input", {
                   directives: [
