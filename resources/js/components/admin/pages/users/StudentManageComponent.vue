@@ -1,6 +1,14 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<div class="page-header">
+			<ol class="breadcrumb"><!-- breadcrumb -->
+				<li class="breadcrumb-item">
+					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Sinh viên</li>
+			</ol><!-- End breadcrumb -->
+		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -360,7 +368,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-sv/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/user-sv/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page=1';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {

@@ -1,6 +1,14 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<div class="page-header">
+			<ol class="breadcrumb"><!-- breadcrumb -->
+				<li class="breadcrumb-item">
+					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Danh sách bài viết</li>
+			</ol><!-- End breadcrumb -->
+		</div>
 		<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
@@ -77,7 +85,7 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(post)"></button>
+										<router-link class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'postupdate', params: {idPost: post.post_id} }"></router-link>
 									</td>
 									<td>
 										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(post.post_id)"></button>
@@ -119,7 +127,7 @@
 									<td>Mã Chuyên Ngành: <strong> {{ form.post_title }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Chuyên Ngành: <strong> {{ form.post_content }}</strong></td>
+									<td>Nội dung: <strong class="styling-strong" v-html="form.post_content"></strong></td>
 								</tr>
 								<tr>
 									<td>Thuộc Khoa: <strong>{{ form.post_status }}</strong></td>
@@ -142,7 +150,6 @@
 	export default {
 		data() {
 			return {
-				details:[],
 				admins:[],
 				posts:[],
 				post_id:'',
@@ -224,7 +231,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page=1';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -236,26 +243,6 @@
 			create(){
 				this.$router.push( {name: 'postcreate'} );
 			},
-			// show(major) {
-			// 	this.editMode = true;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	this.form.fill(major);
-			// 	$('#MajorModal').modal('show');
-			// },
-			// update() {
-			// 	this.form.put('../../api/admin/edu-major/chuyen-nganh/'+this.form.post_id)
-			// 	.then(res => {
-			// 		this.fetchPosts();
-			// 		$('#MajorModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Cập nhật Chuyên Ngành thành công!');
-			// 		}else{
-			// 			this.$snotify.error('Không thể chỉnh sửa');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 			change(post_id) {
 				axios.patch(`../../api/admin/post-news/bai-viet/change/${post_id}`)
 				.then(res => {
@@ -328,18 +315,18 @@
 					}
 				}
 			},
-			// detail(post, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(post);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			detail(post, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					this.form.fill(post);
+					$('#DetailModal').modal('show');
+				})
+				.catch(err => console.log(err));
+			},
 			reload(){
 				this.fetchPosts();
 				this.query='';
@@ -423,5 +410,9 @@
 	.btn-export:hover {
 		background-color: seagreen;
 		color: white;
+	}
+	.styling-strong {
+		word-wrap: break-word;
+		white-space: pre-line;
 	}
 </style>

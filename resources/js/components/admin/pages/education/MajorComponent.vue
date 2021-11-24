@@ -1,6 +1,14 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<div class="page-header">
+			<ol class="breadcrumb"><!-- breadcrumb -->
+				<li class="breadcrumb-item">
+					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Chuyên ngành</li>
+			</ol><!-- End breadcrumb -->
+		</div>
 		<div class="row">
 			<div class="col-md-9">
 				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
@@ -299,7 +307,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page=1';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
