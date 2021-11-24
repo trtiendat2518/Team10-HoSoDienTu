@@ -77,6 +77,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('post-news')->group(function(){
+        //Route::get('bai-viet/detail/{post}','Admin\Posts\PostController@detail');
         Route::get('bai-viet/post/{post_id}','Admin\Posts\PostController@post');
         Route::post('bai-viet/destroyall/', 'Admin\Posts\PostController@destroyall');
         Route::get('bai-viet/filter/{admin}/{currentEntries}', 'Admin\Posts\PostController@filter');

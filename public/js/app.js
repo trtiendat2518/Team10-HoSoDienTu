@@ -4471,33 +4471,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
     },
-    // detail(post, page_url) {
-    // 	let vm = this;
-    // 	page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.details = res.data;
-    // 		this.form.fill(post);
-    // 		$('#DetailModal').modal('show');
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
+    detail: function detail(post, page_url) {
+      var _this7 = this;
+
+      var vm = this;
+      page_url = "../../api/admin/post-news/bai-viet/detail/".concat(post.post_id);
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this7.details = res.data;
+
+        _this7.form.fill(post);
+
+        $('#DetailModal').modal('show');
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     reload: function reload() {
       this.fetchPosts();
       this.query = '';
       this.value_author = '';
     },
     filter: function filter(page_url) {
-      var _this7 = this;
+      var _this8 = this;
 
       var vm = this;
       page_url = '../../api/admin/post-news/bai-viet/filter/' + this.value_author + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this7.posts = res.data;
-        _this7.pagination = res.meta;
+        _this8.posts = res.data;
+        _this8.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -12689,7 +12694,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-366eed5d] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-366eed5d] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-366eed5d] {\n\ttext-align: center;\n}\n.not-allowed[data-v-366eed5d] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-366eed5d] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-366eed5d] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-366eed5d] {\n\tbackground-color: #1753fc;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-366eed5d] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-366eed5d] {\n\tbackground-color: darkblue;\n\tcolor: white;\n}\n.td-borderight[data-v-366eed5d] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-366eed5d] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-366eed5d] {\n\tbackground-color: darkblue;\n\tborder-color: darkblue;\n}\n.btn-import[data-v-366eed5d] {\n\tbackground-color: green;\n\tcolor: white;\n}\n.btn-import[data-v-366eed5d]:hover {\n\tbackground-color: forestgreen;\n\tcolor: white;\n}\n.btn-export[data-v-366eed5d] {\n\tbackground-color: darkgreen;\n\tcolor: white;\n}\n.btn-export[data-v-366eed5d]:hover {\n\tbackground-color: seagreen;\n\tcolor: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-eye[data-v-366eed5d] {\n\tfont-size: 18px;\n\tcursor: pointer;\n\tbackground: none;\n\tborder: none;\n}\n.btn-eye-slash[data-v-366eed5d] {\n\tfont-size: 18px;\n\tcursor: pointer; \n\tbackground: none;\n\tborder: none;\n\tcolor: #868e96de;\n}\n.td-styling[data-v-366eed5d] {\n\ttext-align: center;\n}\n.not-allowed[data-v-366eed5d] {\n\tcursor: not-allowed;\n}\n.select-option[data-v-366eed5d] {\n\tcursor: pointer;\n}\n.h3-strong[data-v-366eed5d] {\n\tcolor: #1753fc;\n}\n.styling-modal-header-info[data-v-366eed5d] {\n\tbackground-color: #1753fc;\n\tcolor: white;\n}\n.styling-font-modal-header[data-v-366eed5d] {\n\tfont-size: 20px;\n\tfont-weight: bold;\n}\n.styling-modal-header-update[data-v-366eed5d] {\n\tbackground-color: darkblue;\n\tcolor: white;\n}\n.td-borderight[data-v-366eed5d] {\n\tborder-right: 2px solid black;\n}\n.td-borderbottom[data-v-366eed5d] {\n\tborder-bottom: 2px solid black;\n}\n.background-update[data-v-366eed5d] {\n\tbackground-color: darkblue;\n\tborder-color: darkblue;\n}\n.btn-import[data-v-366eed5d] {\n\tbackground-color: green;\n\tcolor: white;\n}\n.btn-import[data-v-366eed5d]:hover {\n\tbackground-color: forestgreen;\n\tcolor: white;\n}\n.btn-export[data-v-366eed5d] {\n\tbackground-color: darkgreen;\n\tcolor: white;\n}\n.btn-export[data-v-366eed5d]:hover {\n\tbackground-color: seagreen;\n\tcolor: white;\n}\n.styling-strong[data-v-366eed5d] {\n\tword-wrap: break-word;\n\twhite-space: pre-line;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

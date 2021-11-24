@@ -119,7 +119,7 @@
 									<td>Mã Chuyên Ngành: <strong> {{ form.post_title }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Chuyên Ngành: <strong> {{ form.post_content }}</strong></td>
+									<td>Nội dung: <strong class="styling-strong" v-html="form.post_content"></strong></td>
 								</tr>
 								<tr>
 									<td>Thuộc Khoa: <strong>{{ form.post_status }}</strong></td>
@@ -308,18 +308,18 @@
 					}
 				}
 			},
-			// detail(post, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(post);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			detail(post, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					this.form.fill(post);
+					$('#DetailModal').modal('show');
+				})
+				.catch(err => console.log(err));
+			},
 			reload(){
 				this.fetchPosts();
 				this.query='';
@@ -403,5 +403,9 @@
 	.btn-export:hover {
 		background-color: seagreen;
 		color: white;
+	}
+	.styling-strong {
+		word-wrap: break-word;
+		white-space: pre-line;
 	}
 </style>
