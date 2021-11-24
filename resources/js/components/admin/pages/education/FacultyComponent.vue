@@ -253,8 +253,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchFaculties();
 				}else{
+					this.pagination=1;
 					this.fetchFaculties();
 				}
 			},

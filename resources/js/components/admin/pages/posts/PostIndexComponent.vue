@@ -178,8 +178,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchPosts();
 				}else{
+					this.pagination=1;
 					this.fetchPosts();
 				}
 			},

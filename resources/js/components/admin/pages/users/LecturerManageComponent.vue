@@ -299,8 +299,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchLecturers();
 				}else{
+					this.pagination=1;
 					this.fetchLecturers();
 				}
 			},

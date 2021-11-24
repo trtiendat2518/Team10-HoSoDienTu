@@ -81,8 +81,23 @@ class SubjectController extends Controller
      * @param  \App\Models\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subject $subject)
+    public function destroy($subject)
     {
-        //
+        $sj = Subject::find($subject);
+        $sj->delete();
+    }
+
+    public function search($query, $currentEntries)
+    {
+        return SubjectResource::collection(Subject::where('subject_code','LIKE','%'.$query.'%')->orwhere('subject_name','LIKE','%'.$query.'%')->orderby('subject_id','DESC')->paginate($currentEntries));
+    }
+
+    public function destroyall(Request $request, $subject = null)
+    {
+        if ($request->subject) {
+            foreach ($request->subject as $id) {
+                Subject::where('subject_id', $id)->delete();
+            }
+        }
     }
 }

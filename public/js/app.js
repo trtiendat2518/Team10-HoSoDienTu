@@ -2359,8 +2359,10 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     currentEntries: function currentEntries(number) {
       if (number === 5) {
+        this.pagination = 1;
         this.fetchCourses();
       } else {
+        this.pagination = 1;
         this.fetchCourses();
       }
     },
@@ -2905,8 +2907,10 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     currentEntries: function currentEntries(number) {
       if (number === 5) {
+        this.pagination = 1;
         this.fetchFaculties();
       } else {
+        this.pagination = 1;
         this.fetchFaculties();
       }
     },
@@ -3478,8 +3482,10 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     currentEntries: function currentEntries(number) {
       if (number === 5) {
+        this.pagination = 1;
         this.fetchMajors();
       } else {
+        this.pagination = 1;
         this.fetchMajors();
       }
     },
@@ -4384,8 +4390,10 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     currentEntries: function currentEntries(number) {
       if (number === 5) {
+        this.pagination = 1;
         this.fetchPosts();
       } else {
+        this.pagination = 1;
         this.fetchPosts();
       }
     },
@@ -4951,7 +4959,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4983,19 +4990,21 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     currentEntries: function currentEntries(number) {
       if (number === 5) {
+        this.pagination = 1;
         this.fetchSubjects();
       } else {
+        this.pagination = 1;
         this.fetchSubjects();
       }
-    } // query(keyword){
-    // 	if(keyword === ''){
-    // 		this.fetchSubjects();
-    // 	}else{
-    // 		this.value_author='';
-    // 		this.search();
-    // 	}
-    // },
-    // value_author(admin){
+    },
+    query: function query(keyword) {
+      if (keyword === '') {
+        this.fetchSubjects();
+      } else {
+        this.value_author = '';
+        this.search();
+      }
+    } // value_author(admin){
     // 	if(admin === ''){
     // 		this.fetchSubjects();
     // 	}else{
@@ -5025,17 +5034,21 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
-    } // search(page_url) {
-    // 	let vm = this;
-    // 	page_url = '../../api/admin/subject-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page=1';
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.subjects = res.data;
-    // 		this.pagination = res.meta;
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
+    },
+    search: function search(page_url) {
+      var _this2 = this;
+
+      var vm = this;
+      page_url = '../../api/admin/manage/mon-hoc/search/' + this.query + '/' + this.currentEntries + '?page=1';
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this2.subjects = res.data;
+        _this2.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     // create(){
     // 	this.$router.push( {name: 'subjectcreate'} );
     // },
@@ -5047,70 +5060,81 @@ __webpack_require__.r(__webpack_exports__);
     // 	})
     // 	.catch(err => console.log(err));
     // },
-    // destroy(subject_id) {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.delete(`../../api/admin/subject-news/bai-viet/${subject_id}`)
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchSubjects();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
-    // destroyall() {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.subject('../../api/admin/subject-news/bai-viet/destroyall', { subject: this.selected })
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchSubjects();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
-    // select() {
-    // 	this.selected = [];
-    // 	if(!this.selectAll){
-    // 		for(let i in this.subjects){
-    // 			this.selected.push(this.subjects[i].subject_id);
-    // 		}
-    // 	}
-    // },
+    destroy: function destroy(subject_id) {
+      var _this3 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this3.$snotify.remove(toast.id);
+
+            axios["delete"]("../../api/admin/manage/mon-hoc/".concat(subject_id)).then(function (res) {
+              _this3.$snotify.success('Đã xóa!');
+
+              _this3.fetchSubjects();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this3.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    destroyall: function destroyall() {
+      var _this4 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this4.$snotify.remove(toast.id);
+
+            axios.post('../../api/admin/manage/mon-hoc/destroyall', {
+              subject: _this4.selected
+            }).then(function (res) {
+              _this4.$snotify.success('Đã xóa!');
+
+              _this4.fetchSubjects();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this4.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    select: function select() {
+      this.selected = [];
+
+      if (!this.selectAll) {
+        for (var i in this.subjects) {
+          this.selected.push(this.subjects[i].subject_id);
+        }
+      }
+    },
     // detail(subject, page_url) {
     // 	let vm = this;
     // 	page_url = `../../api/admin/subject-news/bai-viet/detail/${subject.subject_id}`;
@@ -5123,12 +5147,10 @@ __webpack_require__.r(__webpack_exports__);
     // 	})
     // 	.catch(err => console.log(err));
     // },
-    // reload(){
-    // 	this.fetchSubjects();
-    // 	this.query='';
-    // 	this.value_faculty='';
-    // },
-    // filter(page_url) {
+    reload: function reload() {
+      this.fetchSubjects();
+      this.query = '';
+    } // filter(page_url) {
     // 	let vm = this;
     // 	page_url = '../../api/admin/subject-news/bai-viet/filter/'+this.value_author+'/'+this.currentEntries+'?page='+this.pagination.current_page;
     // 	fetch(page_url)
@@ -5457,8 +5479,10 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     currentEntries: function currentEntries(number) {
       if (number === 5) {
+        this.pagination = 1;
         this.fetchLecturers();
       } else {
+        this.pagination = 1;
         this.fetchLecturers();
       }
     },
@@ -5991,8 +6015,10 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     currentEntries: function currentEntries(number) {
       if (number === 5) {
+        this.pagination = 1;
         this.fetchStudents();
       } else {
+        this.pagination = 1;
         this.fetchStudents();
       }
     },
@@ -84759,6 +84785,43 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-1" }, [
+                _c("button", {
+                  staticClass:
+                    "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                  attrs: { disabled: !_vm.selected.length },
+                  on: {
+                    click: function($event) {
+                      return _vm.destroyall()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control mt-2",
+                  attrs: { type: "text", placeholder: "Tìm kiếm..." },
+                  domProps: { value: _vm.query },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-2" }, [
                 _c(
                   "div",
@@ -85091,7 +85154,7 @@ var render = function() {
                       attrs: { pagination: _vm.pagination, offset: 5 },
                       on: {
                         paginate: function($event) {
-                          return _vm.fetchSubjects()
+                          _vm.query === "" ? _vm.fetchSubjects() : _vm.search()
                         }
                       }
                     })
