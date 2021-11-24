@@ -1,6 +1,14 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<div class="page-header">
+			<ol class="breadcrumb"><!-- breadcrumb -->
+				<li class="breadcrumb-item">
+					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Khoa</li>
+			</ol><!-- End breadcrumb -->
+		</div>
 		<div class="row">
 			<div class="col-md-9">
 				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
@@ -157,7 +165,7 @@
 									<td>Tên Khoa: <strong> {{ form.faculty_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tổng số Chuyên Ngành: <strong> 0</strong></td>
+									<td>Tổng số Chuyên Ngành: <strong > {{ countMajor.length }}</strong></td>
 								</tr>
 							</tbody>
 							<tbody class="col-lg-6 p-0">
@@ -165,10 +173,14 @@
 									<td class="h3-strong"><h3><strong> Ban chủ nhiệm Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Trưởng Khoa: <strong> {{ form.faculty_code }}</strong></td>
+									<td>Trưởng Khoa: 
+										<strong>{{ head_lecturer }}</strong>
+									</td>
 								</tr>
 								<tr>
-									<td>Phó Khoa: <strong> {{ form.faculty_name }}</strong></td>
+									<td>Phó Khoa: 
+										<strong>{{ vice_lecturer }}</strong>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -213,6 +225,10 @@
 		data() {
 			return {
 				faculties:[],
+				majors:[],
+				lecturers:[],
+				head_lecturer:'',
+				vice_lecturer:'',
 				faculty_id:'',
 				pagination:{
 					current_page: 1,
@@ -237,8 +253,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchFaculties();
 				}else{
+					this.pagination=1;
 					this.fetchFaculties();
 				}
 			},
@@ -250,8 +268,15 @@
 				}
 			},
 		},
+		computed: {
+			countMajor() {
+				return this.majors.filter(major => major.major_faculty==this.form.faculty_code);
+			}
+		},
 		mounted() {
+			this.fetchMajors();
 			this.fetchFaculties();
+			this.fetchLecturers();
 		},
 		methods: {
 			empty() {
@@ -268,9 +293,29 @@
 				})
 				.catch(err => console.log(err));
 			},
+			fetchMajors(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/major';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.majors = res.data;
+				})
+				.catch(err => console.log(err));
+			},
+			fetchLecturers(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-gv/giang-vien/lecturer';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.lecturers = res.data;
+				})
+				.catch(err => console.log(err));
+			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-faculty/khoa/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/edu-faculty/khoa/search/'+this.query+'/'+this.currentEntries+'?page=1';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -399,9 +444,19 @@
 				.then(res => {
 					this.details = res.data;
 					this.form.fill(faculty);
+					let head = this.lecturers.filter(function(lec){
+						return lec.lecturer_faculty===faculty.faculty_id && lec.lecturer_level===1
+					})
+					this.head_lecturer = head[0].lecturer_fullname;
+
+					let vice = this.lecturers.filter(function(lec){
+						return lec.lecturer_faculty===faculty.faculty_id && lec.lecturer_level===2
+					})
+					this.vice_lecturer = vice[0].lecturer_fullname;
+
 					$('#DetailModal').modal('show');
 				})
-				.catch(err => console.log(err));
+				.catch(err => this.$snotify.error('Khoa này chưa có thông tin chi tiết'));
 			},
 			reload(){
 				this.fetchFaculties();

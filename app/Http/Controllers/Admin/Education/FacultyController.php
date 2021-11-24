@@ -187,4 +187,9 @@ class FacultyController extends Controller
         $data = Excel::import(new FacultyImport, $path);
         return response()->json(200);
     }
+
+    public function faculty()
+    {
+        return FacultyResource::collection(Faculty::where('faculty_status',0)->orderby('faculty_name','DESC')->get());
+    }
 }

@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->group(function(){
-    Route::resource('dashboard', 'Admin\DashboardController')->only('index')->middleware('checkloged');
+    Route::resource('', 'Admin\DashboardController')->only('index')->middleware('checkloged');
 
     Route::get('/login', 'Admin\AuthController@get_login')->middleware('checkss');
     Route::post('/loged-in', 'Admin\AuthController@post_login');
@@ -25,17 +25,5 @@ Route::prefix('admin')->group(function(){
 
     Route::get('/microsoft','Admin\AuthController@login_ms')->name('connectMs');
     Route::get('/microsoft-callback','Admin\AuthController@callback_ms');
-
-    Route::group(['middleware' => ['adminRole']], function () {
-        Route::prefix('quan-ly-tai-khoan')->group(function(){
-            Route::get('/giang-vien','Admin\ViewController@lecturer_manage')->name('lecturer.index');
-            Route::get('/sinh-vien','Admin\ViewController@student_manage')->name('student.index');
-        });
-        Route::prefix('quan-ly-chung')->group(function(){
-            Route::get('/khoa','Admin\ViewController@faculty_manage')->name('faculty.index');
-            Route::get('/chuyen-nganh','Admin\ViewController@major_manage')->name('major.index');
-            Route::get('/khoa-hoc','Admin\ViewController@course_manage')->name('course.index');
-        });
-    });
 });
 

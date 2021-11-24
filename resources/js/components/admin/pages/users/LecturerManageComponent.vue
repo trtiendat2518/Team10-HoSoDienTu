@@ -1,6 +1,14 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<div class="page-header">
+			<ol class="breadcrumb"><!-- breadcrumb -->
+				<li class="breadcrumb-item">
+					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Giảng viên</li>
+			</ol><!-- End breadcrumb -->
+		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -184,7 +192,7 @@
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Ngày sinh: <strong> {{ info.lecturer_birthday }}</strong></td>
+									<td>Ngày sinh: <strong> {{ info.lecturer_birthday | formatDate }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
 									<td>Nơi sinh: <strong> {{ info.lecturer_birth_place }}</strong></td>
@@ -204,14 +212,7 @@
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Khoa: 
-										<strong v-for="faculty in faculties">
-											<strong v-if="form.lecturer_faculty == faculty.faculty_id">
-												{{ faculty.faculty_name }}
-											</strong>
-											<strong v-else hidden></strong>
-										</strong>
-									</td>
+									<td>Khoa: <strong> {{ lecturer_faculty }}</strong></td>
 								</tr>
 								<tr>
 									<td>Chức vụ: 
@@ -271,6 +272,7 @@
 			return {
 				lecturers:[],
 				lecturer_id:'',
+				lecturer_faculty:'',
 				pagination:{
 					current_page: 1,
 				},
@@ -297,8 +299,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchLecturers();
 				}else{
+					this.pagination=1;
 					this.fetchLecturers();
 				}
 			},
@@ -339,7 +343,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-gv/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/user-gv/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page=1';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -448,9 +452,11 @@
 				.then(res => {
 					this.details = res.data;
 					this.form.fill(lecturer);
+					const faculty = this.faculties.find((fac) => fac.faculty_id === lecturer.lecturer_faculty );
+					this.lecturer_faculty = faculty.faculty_name;
 					$('#DetailModal').modal('show');
 				})
-				.catch(err => console.log(err));
+				.catch(err => this.$snotify.error('Giảng viên chưa cập nhật thông tin'));
 			},
 			filter(page_url) {
 				let vm = this;

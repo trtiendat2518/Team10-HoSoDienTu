@@ -1,14 +1,22 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<div class="page-header">
+			<ol class="breadcrumb"><!-- breadcrumb -->
+				<li class="breadcrumb-item">
+					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Khóa học</li>
+			</ol><!-- End breadcrumb -->
+		</div>
 		<div class="row">
 			<div class="col-md-9">
 				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 			</div>
-			<!-- <div class="col-md-3">
+			<div class="col-md-3">
 				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
 				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
-			</div> -->
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
@@ -135,40 +143,29 @@
 		</div>
 		<!-- Modal end-->
 
-		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header styling-modal-header-info">
-						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết Khoa</h5>
+						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết khóa học</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<table class="table row table-borderless w-100 m-0 border">
-							<tbody class="col-lg-6 p-0">
+							<tbody class="col-lg-12 p-0">
 								<tr>
 									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Mã Khoa: <strong> {{ form.faculty_code }}</strong></td>
+									<td>Mã khóa học: <strong> {{ form.course_code }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Khoa: <strong> {{ form.course_name }}</strong></td>
+									<td>Tên khóa học: <strong> {{ form.course_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tổng số Chuyên Ngành: <strong> 0</strong></td>
-								</tr>
-							</tbody>
-							<tbody class="col-lg-6 p-0">
-								<tr>
-									<td class="h3-strong"><h3><strong> Ban chủ nhiệm Khoa</strong></h3></td>
-								</tr>
-								<tr>
-									<td>Trưởng Khoa: <strong> {{ form.faculty_code }}</strong></td>
-								</tr>
-								<tr>
-									<td>Phó Khoa: <strong> {{ form.course_name }}</strong></td>
+									<td>Tổng số sinh viên: <strong> {{ countStudent.length }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -178,15 +175,15 @@
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
 
 		<!-- Modal -->
-		<!-- <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
+		<div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="importFile()" @keydown="form.onKeydown($event)">
 					<div class="modal-content">
 						<div class="modal-header styling-modal-header-update">
-							<h5 class="modal-title" id="ImportModalTitle">Import Khoa</h5>
+							<h5 class="modal-title" id="ImportModalTitle">Import Khóa học</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -202,7 +199,7 @@
 					</div>
 				</form>
 			</div>
-		</div> -->
+		</div>
 		<!-- Modal end-->
 	</div>
 </template>
@@ -212,6 +209,7 @@
 	export default {
 		data() {
 			return {
+				students:[],
 				courses:[],
 				course_id:'',
 				pagination:{
@@ -237,8 +235,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchCourses();
 				}else{
+					this.pagination=1;
 					this.fetchCourses();
 				}
 			},
@@ -250,12 +250,28 @@
 				}
 			},
 		},
+		computed: {
+			countStudent() {
+				return this.students.filter(student => student.student_course==this.form.course_id);
+			}
+		},
 		mounted() {
 			this.fetchCourses();
+			this.fetchStudents();
 		},
 		methods: {
 			empty() {
 				return (this.courses.length < 1);
+			},
+			fetchStudents(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-sv/sinh-vien/studentinfo';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.students = res.data;
+				})
+				.catch(err => console.log(err));
 			},
 			fetchCourses(page_url) {
 				let vm = this;
@@ -270,7 +286,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-course/khoa-hoc/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/edu-course/khoa-hoc/search/'+this.query+'/'+this.currentEntries+'?page=1';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -299,34 +315,34 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// show(faculty) {
-			// 	this.editMode = true;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	this.form.fill(faculty);
-			// 	$('#CourseModal').modal('show');
-			// },
-			// update() {
-			// 	this.form.put('../../api/admin/edu-course/khoa-hoc/'+this.form.course_id)
-			// 	.then(res => {
-			// 		this.fetchCourses();
-			// 		$('#CourseModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Cập nhật Khoa thành công!');
-			// 		}else{
-			// 			this.$snotify.error('Không thể chỉnh sửa');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// change(course_id) {
-			// 	axios.patch(`../../api/admin/edu-course/khoa-hoc/change/${course_id}`)
-			// 	.then(res => {
-			// 		this.fetchCourses();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			show(course) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				this.form.fill(course);
+				$('#CourseModal').modal('show');
+			},
+			update() {
+				this.form.put('../../api/admin/edu-course/khoa-hoc/'+this.form.course_id)
+				.then(res => {
+					this.fetchCourses();
+					$('#CourseModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Cập nhật Khóa Học thành công!');
+					}else{
+						this.$snotify.error('Không thể chỉnh sửa');
+					}
+				})
+				.catch(err => console.log(err));
+			},
+			change(course_id) {
+				axios.patch(`../../api/admin/edu-course/khoa-hoc/change/${course_id}`)
+				.then(res => {
+					this.fetchCourses();
+					this.$snotify.warning('Đã thay đổi trạng thái');
+				})
+				.catch(err => console.log(err));
+			},
 			destroy(course_id) {
 				this.$snotify.clear();
 				this.$snotify.confirm('Xác nhận xóa', {
@@ -391,64 +407,64 @@
 					}
 				}
 			},
-			// detail(faculty, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/edu-course/khoa-hoc/detail/${faculty.course_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(faculty);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			detail(course, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/edu-course/khoa-hoc/detail/${course.course_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					this.form.fill(course);
+					$('#DetailModal').modal('show');
+				})
+				.catch(err => console.log(err));
+			},
 			reload(){
 				this.fetchCourses();
 				this.query='';
 				this.$refs.fileupload.value='';
 				this.fileImport='';
 			},
-			// exportFile() {
-			// 	window.location.href ="../../api/admin/edu-course/khoa-hoc/export";
-			// },
-			// openImport() {
-			// 	this.$refs.fileupload.value='';
-			// 	$('#ImportModal').modal('show');
-			// },
-			// onFileChange(e) {
-			// 	this.fileImport = e.target.files[0];
-			// },
-			// reloadFile() {
-			// 	this.$refs.fileupload.value='';
-			// 	this.fileImport='';
-			// },
-			// importFile() {
-			// 	let formData = new FormData();
-			// 	formData.append('fileImport', this.fileImport);
-			// 	axios.post('../../api/admin/edu-course/khoa-hoc/import', formData, {
-			// 		headers: { 'content-type': 'multipart/form-data' }
-			// 	})
-			// 	.then(res => {
-			// 		if(res.status === 200) {
-			// 			$('#ImportModal').modal('hide');
-			// 			this.fetchCourses();
-			// 			this.$snotify.success('Import thành công');
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		if(err.response.data.errors?.fileImport?.length > 0){
-			// 			this.error = err.response.data.errors.fileImport[0];
-			// 		}else if(err.response.data.errors[0].length > 0){
-			// 			const  stringError = err.response.data.errors[0][0];
-			// 			const  stringSplit = stringError.split(".");
-			// 			this.error = stringSplit[1];
-			// 		}
+			exportFile() {
+				window.location.href ="../../api/admin/edu-course/khoa-hoc/export";
+			},
+			openImport() {
+				this.$refs.fileupload.value='';
+				$('#ImportModal').modal('show');
+			},
+			onFileChange(e) {
+				this.fileImport = e.target.files[0];
+			},
+			reloadFile() {
+				this.$refs.fileupload.value='';
+				this.fileImport='';
+			},
+			importFile() {
+				let formData = new FormData();
+				formData.append('fileImport', this.fileImport);
+				axios.post('../../api/admin/edu-course/khoa-hoc/import', formData, {
+					headers: { 'content-type': 'multipart/form-data' }
+				})
+				.then(res => {
+					if(res.status === 200) {
+						$('#ImportModal').modal('hide');
+						this.fetchCourses();
+						this.$snotify.success('Import thành công');
+					}
+				})
+				.catch(err => {
+					if(err.response.data.errors?.fileImport?.length > 0){
+						this.error = err.response.data.errors.fileImport[0];
+					}else if(err.response.data.errors[0].length > 0){
+						const  stringError = err.response.data.errors[0][0];
+						const  stringSplit = stringError.split(".");
+						this.error = stringSplit[1];
+					}
 					
-			// 		this.fetchCourses();
-			// 		this.$snotify.error(this.error);
-			// 	});
-			// }
+					this.fetchCourses();
+					this.$snotify.error(this.error);
+				});
+			}
 		}
 	};
 </script>

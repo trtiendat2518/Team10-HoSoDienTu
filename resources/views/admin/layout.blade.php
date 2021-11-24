@@ -8,6 +8,7 @@
 		<link rel="canonical" href="{{$url_canonical}}">
 		<meta content="CAP - Team 10" name="author">
 		<meta name="keywords" content=""/>
+		<meta name="user-fullname" content="{{ Session::get('admin_fullname') }}">
 
 		<!-- Favicon -->
 		<link rel="icon" type="image/ico" sizes="16x16" href="{{asset('public/student/img/vlu.ico')}}">
@@ -18,8 +19,6 @@
 		<link rel="stylesheet" href="{{asset('public/lecturer/plugins/bootstrap/css/bootstrap.min.css')}}">
 		<!-- Dashboard css -->
 		<link href="{{asset('public/lecturer/css/style.css')}}" rel="stylesheet" />
-		<!-- Custom scroll bar css-->
-		<link href="{{asset('public/lecturer/plugins/scroll-bar/jquery.mCustomScrollbar.css')}}" rel="stylesheet" />
 		<!-- Sidemenu css -->
 		<link href="{{asset('public/lecturer/plugins/toggle-sidebar/sidemenu.css')}}" rel="stylesheet" />
 		<!--Daterangepicker css-->
@@ -42,10 +41,10 @@
 			<img src="{{asset('public/lecturer/images/icons/loader.svg')}}" alt="loader">
 		</div>
 
-		<div class="page">
+		<div class="page" id="app">
 			<div class="page-main">
 				@include('admin.panels.header');
-
+				
 				@include('admin.panels.slidebar');
 				
 				@yield('admin-content');
