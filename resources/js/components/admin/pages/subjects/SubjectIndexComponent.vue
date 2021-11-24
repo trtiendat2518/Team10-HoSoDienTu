@@ -26,16 +26,9 @@
 						<div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-9">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
-						<!-- <div class="col-md-3">
-							<select class="form-control mt-2" v-model="value_author">
-								<option value="" disabled selected>Lọc theo tác giả</option>
-								<option disabled>----------------------------------------</option>
-								<option v-for="admin in admins" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
-							</select>
-						</div> -->
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -65,6 +58,7 @@
 							</thead>
 							<tbody>
 								<tr v-show="subjects.length" v-for="subject in subjects" :key="subject.subject_id">
+									<div v-if="subject.subject_faculty===subject_faculty"></div>
 									<td>
 										<center><input type="checkbox" :value="subject.subject_id" v-model="selected"></center>
 									</td>
@@ -105,6 +99,64 @@
 				</div>
 			</div><!-- col end -->
 		</div>
+
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header styling-modal-header-info">
+						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết môn học</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<table class="table row table-borderless w-100 m-0 border">
+							<tbody class="col-lg-6 p-0">
+								<tr>
+									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
+								</tr>
+								<tr>
+									<td>Mã Môn học: <strong> {{ form.subject_code }}</strong></td>
+								</tr>
+								<tr>
+									<td>Tên Môn học: <strong> {{ form.subject_name }}</strong></td>
+								</tr>
+								<tr>
+									<td>Số tín chỉ: <strong> {{ form.subject_credit }}</strong></td>
+								</tr>
+								<tr>
+									<td>Khoa: <strong> {{ subject_faculty }}</strong></td>
+								</tr>
+								<tr>
+									<td>Loại môn học: 
+										<strong v-if="form.subject_type==0"> Bắt buộc</strong>
+										<strong v-else> Tự chọn</strong>
+									</td>
+								</tr>
+							</tbody>
+							<tbody class="col-lg-6 p-0">
+								<tr>
+									<td class="h3-strong"><h3><strong> Số tiết (giờ)</strong></h3></td>
+								</tr>
+								<tr>
+									<td>Lý thuyết: 
+										<strong>{{ form.subject_theory_period }}</strong>
+									</td>
+								</tr>
+								<tr>
+									<td>Thực hành: 
+										<strong>{{ form.subject_practice_period }}</strong>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -113,8 +165,13 @@
 	export default {
 		data() {
 			return {
+				faculties:[],
+				lecturers:[],
+				lecturer_id: this.$userId,
+				lecturer_faculty:'',
 				subjects:[],
 				subject_id:'',
+				subject_faculty:'',
 				pagination:{
 					current_page: 1,
 				},
@@ -134,7 +191,6 @@
 				selected: [],
 				selectAll: false,
 				details:[],
-				value_faculty:'',
 			};
 		},
 		watch: {
@@ -155,25 +211,44 @@
 					this.search();
 				}
 			},
-			// value_author(admin){
-			// 	if(admin === ''){
-			// 		this.fetchSubjects();
-			// 	}else{
-			// 		this.query='';
-			// 		this.filter();
-			// 	}
-			// },
 		},
 		mounted() {
+			this.fetchFaculties();
 			this.fetchSubjects();
+			this.fetchLecturers();
 		},
 		methods: {
 			empty() {
 				return (this.subjects.length < 1);
 			},
+			fetchFaculties(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-faculty/khoa/faculty';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.faculties = res.data;
+				})
+				.catch(err => console.log(err));
+			},
+			fetchLecturers(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-gv/giang-vien/lecturer';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.lecturers = res.data;
+					this.lecturers.forEach((el) => {
+						if(el.lecturer_code===this.lecturer_id){
+							this.lecturer_faculty= el.lecturer_faculty;
+						}
+					});
+				})
+				.catch(err => console.log(err));
+			},
 			fetchSubjects(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/manage/mon-hoc/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/manage/mon-hoc/showdata/'+this.lecturer_id+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -196,14 +271,14 @@
 			// create(){
 			// 	this.$router.push( {name: 'subjectcreate'} );
 			// },
-			// change(subject_id) {
-			// 	axios.patch(`../../api/admin/subject-news/bai-viet/change/${subject_id}`)
-			// 	.then(res => {
-			// 		this.fetchSubjects();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			change(subject_id) {
+				axios.patch(`../../api/admin/manage/mon-hoc/change/${subject_id}`)
+				.then(res => {
+					this.fetchSubjects();
+					this.$snotify.warning('Đã thay đổi trạng thái');
+				})
+				.catch(err => console.log(err));
+			},
 			destroy(subject_id) {
 				this.$snotify.clear();
 				this.$snotify.confirm('Xác nhận xóa', {
@@ -268,33 +343,26 @@
 					}
 				}
 			},
-			// detail(subject, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/subject-news/bai-viet/detail/${subject.subject_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(subject);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			detail(subject, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/manage/mon-hoc/detail/${subject.subject_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					this.form.fill(subject);
+					let faculty = this.faculties.filter(function(fct){
+						return fct.faculty_id===subject.subject_faculty
+					})
+					this.subject_faculty = faculty[0].faculty_name;
+					$('#DetailModal').modal('show');
+				})
+				.catch(err => console.log(err));
+			},
 			reload(){
 				this.fetchSubjects();
 				this.query='';
 			},
-			// filter(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/subject-news/bai-viet/filter/'+this.value_author+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.subjects = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 		}
 	};
 </script>

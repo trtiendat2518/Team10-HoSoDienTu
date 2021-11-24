@@ -8,7 +8,15 @@
 		<link rel="canonical" href="{{$url_canonical}}">
 		<meta content="CAP - Team 10" name="author">
 		<meta name="keywords" content=""/>
+		@if (Session::get('admin_fullname'))
 		<meta name="user-fullname" content="{{ Session::get('admin_fullname') }}">
+		@elseif (Session::get('lecturer_id'))
+		@foreach ($check_role as $check)
+		@if ($check->lecturer_role==1 || $check->lecturer_role==2)
+		<meta name="user-fullname" content="{{ Session::get('lecturer_id') }}">
+		@endif
+		@endforeach
+		@endif
 
 		<!-- Favicon -->
 		<link rel="icon" type="image/ico" sizes="16x16" href="{{asset('public/student/img/vlu.ico')}}">
