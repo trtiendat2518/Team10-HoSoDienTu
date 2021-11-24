@@ -2,6 +2,15 @@
 	<div>
 		<!-- row -->
 		<vue-snotify></vue-snotify>
+		<div class="page-header">
+			<ol class="breadcrumb"><!-- breadcrumb -->
+				<li class="breadcrumb-item">
+					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Danh sách bài viết</li>
+				<li class="breadcrumb-item active" aria-current="page">Cập nhật</li>
+			</ol><!-- End breadcrumb -->
+		</div>
 		<button class="btn btn-primary mb-3" @click="back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại</button>
 		<div class="card">
 			<div class="card-header styling">
@@ -128,7 +137,7 @@
 				});
 			},
 			back() {
-				this.$router.push( '/' );
+				this.$router.push( '/bai-viet' );
 			},
 		},
 		beforeRouteLeave(to, from, next) {

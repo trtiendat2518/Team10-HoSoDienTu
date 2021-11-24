@@ -45,7 +45,7 @@ class AuthController extends Controller
             $request->session()->put('admin_id', $check->admin_id);
             $request->session()->put('admin_fullname', $check->admin_fullname);
             $request->session()->put('admin_email', $check->admin_email);
-            return redirect()->intended('admin/dashboard');
+            return redirect()->intended('admin');
             
         }else{
             return back()->with('fail', 'Tên đăng nhập hoặc mật khẩu không đúng');
@@ -83,7 +83,7 @@ class AuthController extends Controller
                 $request->session()->put('lecturer_id',$authUser->lecturer_code);
             }
             //dd($users);
-            return redirect()->intended('admin/dashboard');
+            return redirect()->intended('admin');
         }else{
             return redirect()->intended('admin/login')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
         }
