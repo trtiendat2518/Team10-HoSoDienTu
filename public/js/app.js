@@ -2376,7 +2376,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       var vm = this;
-      page_url = '../../api/admin/edu-course/khoa-hoc/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      page_url = '../../api/admin/edu-course/khoa-hoc/search/' + this.query + '/' + this.currentEntries + '?page=1';
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -2928,7 +2928,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this5 = this;
 
       var vm = this;
-      page_url = '../../api/admin/edu-faculty/khoa/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      page_url = '../../api/admin/edu-faculty/khoa/search/' + this.query + '/' + this.currentEntries + '?page=1';
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -3478,7 +3478,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       var vm = this;
-      page_url = '../../api/admin/edu-major/chuyen-nganh/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      page_url = '../../api/admin/edu-major/chuyen-nganh/search/' + this.query + '/' + this.currentEntries + '?page=1';
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -4370,7 +4370,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this3 = this;
 
       var vm = this;
-      page_url = '../../api/admin/post-news/bai-viet/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      page_url = '../../api/admin/post-news/bai-viet/search/' + this.query + '/' + this.currentEntries + '?page=1';
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -5073,7 +5073,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var vm = this;
-      page_url = '../../api/admin/user-gv/giang-vien/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      page_url = '../../api/admin/user-gv/giang-vien/search/' + this.query + '/' + this.currentEntries + '?page=1';
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -5640,7 +5640,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this5 = this;
 
       var vm = this;
-      page_url = '../../api/admin/user-sv/sinh-vien/search/' + this.query + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      page_url = '../../api/admin/user-sv/sinh-vien/search/' + this.query + '/' + this.currentEntries + '?page=1';
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
