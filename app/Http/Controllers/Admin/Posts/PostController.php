@@ -162,6 +162,11 @@ class PostController extends Controller
 
     public function post(Request $request, $post_id)
     {
-        return PostNewsResource::collection(Post::where('Post_id', $post_id)->orderby('post_id','DESC')->get());
+        return PostNewsResource::collection(Post::where('post_id', $post_id)->orderby('post_id','DESC')->get());
     }
+
+    // public function detail($post)
+    // {
+    //     return PostNewsResource::collection(Post::where('post_id',$post)->get());
+    // }
 }
