@@ -47,9 +47,15 @@ class SubjectController extends Controller
      * @param  \App\Models\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function show($currentEntries)
+    public function show(Subject $subject)
     {
-        return SubjectResource::collection(Subject::orderby('subject_id','DESC')->paginate($currentEntries));
+        //
+    }
+
+    public function showdata($lecturer_id, $currentEntries)
+    {
+        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_code',$lecturer_id)->paginate($currentEntries);
+        return SubjectResource::collection($subject_faculty);
     }
 
     /**
@@ -100,4 +106,24 @@ class SubjectController extends Controller
             }
         }
     }
+<<<<<<< HEAD
+=======
+
+    public function change(Request $request, $subject)
+    {
+        $sj = Subject::find($subject);
+        if($sj->subject_status==0){
+            $sj->subject_status=1;
+            $sj->save();
+        }else{
+            $sj->subject_status=0;
+            $sj->save();
+        }
+    }
+
+    public function detail($subject)
+    {
+        return SubjectResource::collection(Subject::where('subject_id',$subject)->get());
+    }
+>>>>>>> phanphungvotin
 }
