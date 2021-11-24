@@ -294,8 +294,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchStudents();
 				}else{
+					this.pagination=1;
 					this.fetchStudents();
 				}
 			},

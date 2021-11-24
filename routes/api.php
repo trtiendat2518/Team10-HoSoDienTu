@@ -87,6 +87,8 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('manage')->group(function(){
+        Route::post('mon-hoc/destroyall/', 'Admin\Education\SubjectController@destroyall');
+        Route::get('mon-hoc/search/{query}/{currentEntries}','Admin\Education\SubjectController@search');
         Route::resource('mon-hoc', 'Admin\Education\SubjectController');
     });
 });

@@ -255,8 +255,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchMajors();
 				}else{
+					this.pagination=1;
 					this.fetchMajors();
 				}
 			},

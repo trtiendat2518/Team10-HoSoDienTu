@@ -23,12 +23,12 @@
 					</div>
 
 					<div class="row">
-						<!-- <div class="col-md-1">
+						<div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div> -->
-						<!-- <div class="col-md-6">
+						</div>
+						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div> -->
+						</div>
 						<!-- <div class="col-md-3">
 							<select class="form-control mt-2" v-model="value_author">
 								<option value="" disabled selected>Lọc theo tác giả</option>
@@ -99,8 +99,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<!-- <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchSubjects() : search() "></pagination> -->
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchSubjects()"></pagination>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchSubjects() : search() "></pagination>
 					</div>
 					<!-- table-responsive -->
 				</div>
@@ -141,19 +140,21 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchSubjects();
 				}else{
+					this.pagination=1;
 					this.fetchSubjects();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchSubjects();
-			// 	}else{
-			// 		this.value_author='';
-			// 		this.search();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchSubjects();
+				}else{
+					this.value_author='';
+					this.search();
+				}
+			},
 			// value_author(admin){
 			// 	if(admin === ''){
 			// 		this.fetchSubjects();
@@ -181,17 +182,17 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/subject-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page=1';
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.subjects = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			search(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/manage/mon-hoc/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.subjects = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			// create(){
 			// 	this.$router.push( {name: 'subjectcreate'} );
 			// },
@@ -203,70 +204,70 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// destroy(subject_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/subject-news/bai-viet/${subject_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchSubjects();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.subject('../../api/admin/subject-news/bai-viet/destroyall', { subject: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchSubjects();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.subjects){
-			// 			this.selected.push(this.subjects[i].subject_id);
-			// 		}
-			// 	}
-			// },
+			destroy(subject_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/manage/mon-hoc/${subject_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchSubjects();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/manage/mon-hoc/destroyall', { subject: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchSubjects();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			select() {
+				this.selected = [];
+				if(!this.selectAll){
+					for(let i in this.subjects){
+						this.selected.push(this.subjects[i].subject_id);
+					}
+				}
+			},
 			// detail(subject, page_url) {
 			// 	let vm = this;
 			// 	page_url = `../../api/admin/subject-news/bai-viet/detail/${subject.subject_id}`;
@@ -279,11 +280,10 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// reload(){
-			// 	this.fetchSubjects();
-			// 	this.query='';
-			// 	this.value_faculty='';
-			// },
+			reload(){
+				this.fetchSubjects();
+				this.query='';
+			},
 			// filter(page_url) {
 			// 	let vm = this;
 			// 	page_url = '../../api/admin/subject-news/bai-viet/filter/'+this.value_author+'/'+this.currentEntries+'?page='+this.pagination.current_page;
