@@ -3,6 +3,11 @@ import Vue from 'vue';
 //Dashboard
 Vue.component('dashboard-component', require('./components/admin/pages/DashboardComponent.vue').default);
 
+//Layouts
+Vue.component('main-component', require('./components/MainComponent.vue').default);
+Vue.component('slidebar-admin-component', require('./components/layouts/SlidebarAdminComponent.vue').default);
+Vue.component('slidebar-lecturer-component', require('./components/layouts/SlidebarLecturerComponent.vue').default);
+
 //Pagination
 Vue.component('pagination', require('./components/pagination/PaginationComponent.vue').default);
 
@@ -22,3 +27,6 @@ Vue.component('course-component', require('./components/admin/pages/education/Co
 Vue.component('post-component', require('./components/admin/pages/posts/PostComponent.vue').default);
 Vue.component('post-index-component', require('./components/admin/pages/posts/PostIndexComponent.vue').default);
 Vue.component('post-create-component', require('./components/admin/pages/posts/PostCreateComponent.vue').default);
+
+//Subjects
+Vue.component('subject-component', require('./components/admin/pages/subjects/SubjectComponent.vue').default);

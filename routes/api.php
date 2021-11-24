@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function(){
     Route::prefix('user-gv')->group(function(){
-        //Giang Vien
+            //Giang Vien
         Route::get('giang-vien/admin/','Admin\Users\LecturerManageController@admin');
         Route::get('giang-vien/lecturer/','Admin\Users\LecturerManageController@lecturer');
         Route::get('giang-vien/detail/{lecturer}','Admin\Users\LecturerManageController@detail');   
@@ -32,7 +32,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('user-sv')->group(function(){
-        //Sinh vien
+            //Sinh vien
         Route::get('sinh-vien/studentinfo/','Admin\Users\StudentManageController@studentinfo');
         Route::get('sinh-vien/detail/{student}','Admin\Users\StudentManageController@detail');
         Route::get('sinh-vien/search/{query}/{currentEntries}','Admin\Users\StudentManageController@search');
@@ -84,5 +84,9 @@ Route::prefix('admin')->group(function(){
         Route::get('bai-viet/search/{query}/{currentEntries}','Admin\Posts\PostController@search');
         Route::patch('bai-viet/change/{post}', 'Admin\Posts\PostController@change');
         Route::resource('bai-viet', 'Admin\Posts\PostController');
+    });
+
+    Route::prefix('manage')->group(function(){
+        Route::resource('mon-hoc', 'Admin\Education\SubjectController');
     });
 });

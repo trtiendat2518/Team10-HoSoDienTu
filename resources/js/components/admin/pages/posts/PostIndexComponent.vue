@@ -1,6 +1,14 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<div class="page-header">
+			<ol class="breadcrumb"><!-- breadcrumb -->
+				<li class="breadcrumb-item">
+					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Danh sách bài viết</li>
+			</ol><!-- End breadcrumb -->
+		</div>
 		<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
@@ -142,7 +150,6 @@
 	export default {
 		data() {
 			return {
-				details:[],
 				admins:[],
 				posts:[],
 				post_id:'',
