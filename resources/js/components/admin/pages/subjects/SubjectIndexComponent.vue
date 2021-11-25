@@ -100,6 +100,86 @@
 			</div><!-- col end -->
 		</div>
 
+		<!-- Modal -->
+		<div class="modal fade" id="SubjectModal" tabindex="-1" role="dialog" aria-labelledby="SubjectModalTitle" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<form @submit.prevent="editMode?update():store()" @keydown="form.onKeydown($event)">
+					<span class="alert-danger" :form="form"></span>
+					<div class="modal-content">
+						<div class="modal-header styling-modal-header-update">
+							<h5 class="modal-title" id="SubjectModalTitle">{{ editMode ? "Cập nhật" : "Thêm mới" }} Môn học</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-6">
+									<label>Mã môn học</label>
+									<input v-model="form.subject_code" type="text" name="subject_code"class="form-control" placeholder="Nhập mã môn học" :disabled="editMode" :class="[{'is-invalid': form.errors.has('subject_code')}, {'not-allowed': editMode}]">
+									<div class="text-danger" v-if="form.errors.has('subject_code')" v-html="form.errors.get('subject_code')"></div>
+								</div>
+								<div class="col-md-6">
+									<label>Số tín chỉ</label>
+									<input v-model="form.subject_credit" type="number" min="0" name="subject_credit"class="form-control" placeholder="Nhập tín chỉ môn học" :disabled="editMode" :class="[{'is-invalid': form.errors.has('subject_credit')}, {'not-allowed': editMode}]">
+									<div class="text-danger" v-if="form.errors.has('subject_credit')" v-html="form.errors.get('subject_credit')"></div>
+								</div>
+							</div>
+							
+							<label class="mt-3">Tên môn học</label>
+							<input v-model="form.subject_name" type="text" name="subject_name" class="form-control" placeholder="Nhập tên môn học" :class="{'is-invalid': form.errors.has('subject_name')}">
+							<div class="text-danger" v-if="form.errors.has('subject_name')" v-html="form.errors.get('subject_name')"></div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<label class="mt-3">Số giờ lý thuyết</label>
+									<input v-model="form.subject_theory_period" type="number" min="0" name="subject_theory_period"class="form-control" placeholder="Nhập số giờ học lý thuyết" :disabled="editMode" :class="[{'is-invalid': form.errors.has('subject_theory_period')}, {'not-allowed': editMode}]">
+									<div class="text-danger" v-if="form.errors.has('subject_theory_period')" v-html="form.errors.get('subject_theory_period')"></div>
+								</div>
+								<div class="col-md-6">
+									<label class="mt-3">Số giờ thực hành</label>
+									<input v-model="form.subject_practice_period" type="number" min="0" name="subject_practice_period"class="form-control" placeholder="Nhập số giờ học thực hành" :disabled="editMode" :class="[{'is-invalid': form.errors.has('subject_practice_period')}, {'not-allowed': editMode}]">
+									<div class="text-danger" v-if="form.errors.has('subject_practice_period')" v-html="form.errors.get('subject_practice_period')"></div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<label class="mt-3">Loại môn học</label>
+									<select v-model="form.subject_type" name="subject_type" class="form-control select-option" :class="{'is-invalid': form.errors.has('subject_type')}">
+										<option value="" selected disabled>Chọn loại</option>
+										<option disabled>---------------</option>
+										<option value="0">Bắt buộc</option>
+										<option value="1">Tự chọn</option>
+									</select>
+									<div class="text-danger mb-3" v-if="form.errors.has('subject_type')" v-html="form.errors.get('subject_type')"></div>
+								</div>
+								<div class="col-md-6">
+									<div v-if="!editMode">
+										<label class="mt-3">Trạng thái</label>
+										<select v-model="form.subject_status" name="subject_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('subject_status')}">
+											<option value="" selected disabled>Chọn trạng thái</option>
+											<option disabled>---------------</option>
+											<option value="0">Hiển thị</option>
+											<option value="1">Ẩn</option>
+										</select>
+										<div class="text-danger mb-3" v-if="form.errors.has('subject_status')" v-html="form.errors.get('subject_status')"></div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary background-update">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Modal end-->
+
+		<!-- Modal -->
 		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -157,6 +237,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- Modal end-->
 	</div>
 </template>
 
@@ -183,10 +264,12 @@
 					subject_id:'',
 					subject_code:'',
 					subject_name:'',
+					subject_faculty:'',
 					subject_credit:'',
 					subject_practice_period:'',
 					subject_theory_period:'',
 					subject_type: '',
+					subject_status:''
 				}),
 				selected: [],
 				selectAll: false,
@@ -268,9 +351,27 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// create(){
-			// 	this.$router.push( {name: 'subjectcreate'} );
-			// },
+			create(){
+				this.editMode = false;
+				this.form.reset();
+				this.form.clear();
+				$('#SubjectModal').modal('show');
+			},
+			store(){
+				this.form.busy = true;
+				this.form.subject_faculty = this.lecturer_faculty;
+				this.form.post('../../api/admin/manage/mon-hoc')
+				.then(res => {
+					this.fetchSubjects();
+					$('#SubjectModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Thêm mới thành công!');
+					}else{
+						this.$snotify.error('Không thể thêm Môn học', 'Lỗi');
+					}
+				})
+				.catch(err => console.log(err));
+			},
 			change(subject_id) {
 				axios.patch(`../../api/admin/manage/mon-hoc/change/${subject_id}`)
 				.then(res => {
