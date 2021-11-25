@@ -5239,50 +5239,42 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(err);
       });
     },
-    change: function change(subject_id) {
+    show: function show(subject) {
+      this.editMode = true;
+      this.form.reset();
+      this.form.clear();
+      this.form.fill(subject);
+      $('#SubjectModal').modal('show');
+    },
+    update: function update() {
       var _this6 = this;
 
-      axios.patch("../../api/admin/manage/mon-hoc/change/".concat(subject_id)).then(function (res) {
+      this.form.put('../../api/admin/manage/mon-hoc/' + this.form.subject_id).then(function (res) {
         _this6.fetchSubjects();
 
-        _this6.$snotify.warning('Đã thay đổi trạng thái');
+        $('#SubjectModal').modal('hide');
+
+        if (_this6.form.successful) {
+          _this6.$snotify.success('Cập nhật môn học thành công!');
+        } else {
+          _this6.$snotify.error('Không thể chỉnh sửa');
+        }
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    change: function change(subject_id) {
+      var _this7 = this;
+
+      axios.patch("../../api/admin/manage/mon-hoc/change/".concat(subject_id)).then(function (res) {
+        _this7.fetchSubjects();
+
+        _this7.$snotify.warning('Đã thay đổi trạng thái');
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     destroy: function destroy(subject_id) {
-      var _this7 = this;
-
-      this.$snotify.clear();
-      this.$snotify.confirm('Xác nhận xóa', {
-        timeout: 5000,
-        showProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        buttons: [{
-          text: 'Xóa',
-          action: function action(toast) {
-            _this7.$snotify.remove(toast.id);
-
-            axios["delete"]("../../api/admin/manage/mon-hoc/".concat(subject_id)).then(function (res) {
-              _this7.$snotify.success('Đã xóa!');
-
-              _this7.fetchSubjects();
-            })["catch"](function (err) {
-              return console.log(err);
-            });
-          },
-          bold: false
-        }, {
-          text: 'Đóng',
-          action: function action(toast) {
-            _this7.$snotify.remove(toast.id);
-          },
-          bold: true
-        }]
-      });
-    },
-    destroyall: function destroyall() {
       var _this8 = this;
 
       this.$snotify.clear();
@@ -5296,9 +5288,7 @@ __webpack_require__.r(__webpack_exports__);
           action: function action(toast) {
             _this8.$snotify.remove(toast.id);
 
-            axios.post('../../api/admin/manage/mon-hoc/destroyall', {
-              subject: _this8.selected
-            }).then(function (res) {
+            axios["delete"]("../../api/admin/manage/mon-hoc/".concat(subject_id)).then(function (res) {
               _this8.$snotify.success('Đã xóa!');
 
               _this8.fetchSubjects();
@@ -5316,6 +5306,40 @@ __webpack_require__.r(__webpack_exports__);
         }]
       });
     },
+    destroyall: function destroyall() {
+      var _this9 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this9.$snotify.remove(toast.id);
+
+            axios.post('../../api/admin/manage/mon-hoc/destroyall', {
+              subject: _this9.selected
+            }).then(function (res) {
+              _this9.$snotify.success('Đã xóa!');
+
+              _this9.fetchSubjects();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this9.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
     select: function select() {
       this.selected = [];
 
@@ -5326,22 +5350,22 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     detail: function detail(subject, page_url) {
-      var _this9 = this;
+      var _this10 = this;
 
       var vm = this;
       page_url = "../../api/admin/manage/mon-hoc/detail/".concat(subject.subject_id);
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this9.details = res.data;
+        _this10.details = res.data;
 
-        _this9.form.fill(subject);
+        _this10.form.fill(subject);
 
-        var faculty = _this9.faculties.filter(function (fct) {
+        var faculty = _this10.faculties.filter(function (fct) {
           return fct.faculty_id === subject.subject_faculty;
         });
 
-        _this9.subject_faculty = faculty[0].faculty_name;
+        _this10.subject_faculty = faculty[0].faculty_name;
         $('#DetailModal').modal('show');
       })["catch"](function (err) {
         return console.log(err);
@@ -85290,21 +85314,16 @@ var render = function() {
                                 "td",
                                 { staticStyle: { "text-align": "center" } },
                                 [
-                                  _c("router-link", {
+                                  _c("button", {
                                     staticClass:
                                       "active btn btn-outline-success btn-lg fa fa-pencil-square-o",
-                                    attrs: {
-                                      tag: "button",
-                                      to: {
-                                        name: "subjectupdate",
-                                        params: {
-                                          idsubject: subject.subject_id
-                                        }
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.show(subject)
                                       }
                                     }
                                   })
-                                ],
-                                1
+                                ]
                               ),
                               _vm._v(" "),
                               _c("td", [
@@ -85494,15 +85513,13 @@ var render = function() {
                                 "is-invalid": _vm.form.errors.has(
                                   "subject_credit"
                                 )
-                              },
-                              { "not-allowed": _vm.editMode }
+                              }
                             ],
                             attrs: {
                               type: "number",
                               min: "0",
                               name: "subject_credit",
-                              placeholder: "Nhập tín chỉ môn học",
-                              disabled: _vm.editMode
+                              placeholder: "Nhập tín chỉ môn học"
                             },
                             domProps: { value: _vm.form.subject_credit },
                             on: {
@@ -85601,15 +85618,13 @@ var render = function() {
                                 "is-invalid": _vm.form.errors.has(
                                   "subject_theory_period"
                                 )
-                              },
-                              { "not-allowed": _vm.editMode }
+                              }
                             ],
                             attrs: {
                               type: "number",
                               min: "0",
                               name: "subject_theory_period",
-                              placeholder: "Nhập số giờ học lý thuyết",
-                              disabled: _vm.editMode
+                              placeholder: "Nhập số giờ học lý thuyết"
                             },
                             domProps: { value: _vm.form.subject_theory_period },
                             on: {
@@ -85658,15 +85673,13 @@ var render = function() {
                                 "is-invalid": _vm.form.errors.has(
                                   "subject_practice_period"
                                 )
-                              },
-                              { "not-allowed": _vm.editMode }
+                              }
                             ],
                             attrs: {
                               type: "number",
                               min: "0",
                               name: "subject_practice_period",
-                              placeholder: "Nhập số giờ học thực hành",
-                              disabled: _vm.editMode
+                              placeholder: "Nhập số giờ học thực hành"
                             },
                             domProps: {
                               value: _vm.form.subject_practice_period
@@ -85701,88 +85714,95 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c("label", { staticClass: "mt-3" }, [
-                            _vm._v("Loại môn học")
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.subject_type,
-                                  expression: "form.subject_type"
-                                }
-                              ],
-                              staticClass: "form-control select-option",
-                              class: {
-                                "is-invalid": _vm.form.errors.has(
-                                  "subject_type"
-                                )
-                              },
-                              attrs: { name: "subject_type" },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.form,
-                                    "subject_type",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c(
-                                "option",
-                                {
-                                  attrs: {
-                                    value: "",
-                                    selected: "",
-                                    disabled: ""
+                        _c(
+                          "div",
+                          {
+                            staticClass: "col-md-6",
+                            class: { "col-md-12": _vm.editMode }
+                          },
+                          [
+                            _c("label", { staticClass: "mt-3" }, [
+                              _vm._v("Loại môn học")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.subject_type,
+                                    expression: "form.subject_type"
                                   }
-                                },
-                                [_vm._v("Chọn loại")]
-                              ),
-                              _vm._v(" "),
-                              _c("option", { attrs: { disabled: "" } }, [
-                                _vm._v("---------------")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "0" } }, [
-                                _vm._v("Bắt buộc")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("Tự chọn")
-                              ])
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _vm.form.errors.has("subject_type")
-                            ? _c("div", {
-                                staticClass: "text-danger mb-3",
-                                domProps: {
-                                  innerHTML: _vm._s(
-                                    _vm.form.errors.get("subject_type")
+                                ],
+                                staticClass: "form-control select-option",
+                                class: {
+                                  "is-invalid": _vm.form.errors.has(
+                                    "subject_type"
                                   )
+                                },
+                                attrs: { name: "subject_type" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.form,
+                                      "subject_type",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
                                 }
-                              })
-                            : _vm._e()
-                        ]),
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      value: "",
+                                      selected: "",
+                                      disabled: ""
+                                    }
+                                  },
+                                  [_vm._v("Chọn loại")]
+                                ),
+                                _vm._v(" "),
+                                _c("option", { attrs: { disabled: "" } }, [
+                                  _vm._v("---------------")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "0" } }, [
+                                  _vm._v("Bắt buộc")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "1" } }, [
+                                  _vm._v("Tự chọn")
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.form.errors.has("subject_type")
+                              ? _c("div", {
+                                  staticClass: "text-danger mb-3",
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.form.errors.get("subject_type")
+                                    )
+                                  }
+                                })
+                              : _vm._e()
+                          ]
+                        ),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-6" }, [
                           !_vm.editMode

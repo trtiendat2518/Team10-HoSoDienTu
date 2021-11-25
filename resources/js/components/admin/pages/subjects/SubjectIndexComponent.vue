@@ -78,7 +78,7 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<router-link class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'subjectupdate', params: {idsubject: subject.subject_id} }"></router-link>
+										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(subject)"></button>
 									</td>
 									<td>
 										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(subject.subject_id)"></button>
@@ -121,7 +121,7 @@
 								</div>
 								<div class="col-md-6">
 									<label>Số tín chỉ</label>
-									<input v-model="form.subject_credit" type="number" min="0" name="subject_credit"class="form-control" placeholder="Nhập tín chỉ môn học" :disabled="editMode" :class="[{'is-invalid': form.errors.has('subject_credit')}, {'not-allowed': editMode}]">
+									<input v-model="form.subject_credit" type="number" min="0" name="subject_credit"class="form-control" placeholder="Nhập tín chỉ môn học" :class="[{'is-invalid': form.errors.has('subject_credit')}]">
 									<div class="text-danger" v-if="form.errors.has('subject_credit')" v-html="form.errors.get('subject_credit')"></div>
 								</div>
 							</div>
@@ -133,18 +133,18 @@
 							<div class="row">
 								<div class="col-md-6">
 									<label class="mt-3">Số giờ lý thuyết</label>
-									<input v-model="form.subject_theory_period" type="number" min="0" name="subject_theory_period"class="form-control" placeholder="Nhập số giờ học lý thuyết" :disabled="editMode" :class="[{'is-invalid': form.errors.has('subject_theory_period')}, {'not-allowed': editMode}]">
+									<input v-model="form.subject_theory_period" type="number" min="0" name="subject_theory_period"class="form-control" placeholder="Nhập số giờ học lý thuyết" :class="[{'is-invalid': form.errors.has('subject_theory_period')}]">
 									<div class="text-danger" v-if="form.errors.has('subject_theory_period')" v-html="form.errors.get('subject_theory_period')"></div>
 								</div>
 								<div class="col-md-6">
 									<label class="mt-3">Số giờ thực hành</label>
-									<input v-model="form.subject_practice_period" type="number" min="0" name="subject_practice_period"class="form-control" placeholder="Nhập số giờ học thực hành" :disabled="editMode" :class="[{'is-invalid': form.errors.has('subject_practice_period')}, {'not-allowed': editMode}]">
+									<input v-model="form.subject_practice_period" type="number" min="0" name="subject_practice_period"class="form-control" placeholder="Nhập số giờ học thực hành" :class="[{'is-invalid': form.errors.has('subject_practice_period')}]">
 									<div class="text-danger" v-if="form.errors.has('subject_practice_period')" v-html="form.errors.get('subject_practice_period')"></div>
 								</div>
 							</div>
 
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-6" :class="{'col-md-12': editMode}">
 									<label class="mt-3">Loại môn học</label>
 									<select v-model="form.subject_type" name="subject_type" class="form-control select-option" :class="{'is-invalid': form.errors.has('subject_type')}">
 										<option value="" selected disabled>Chọn loại</option>
@@ -368,6 +368,26 @@
 						this.$snotify.success('Thêm mới thành công!');
 					}else{
 						this.$snotify.error('Không thể thêm Môn học', 'Lỗi');
+					}
+				})
+				.catch(err => console.log(err));
+			},
+			show(subject) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				this.form.fill(subject);
+				$('#SubjectModal').modal('show');
+			},
+			update() {
+				this.form.put('../../api/admin/manage/mon-hoc/'+this.form.subject_id)
+				.then(res => {
+					this.fetchSubjects();
+					$('#SubjectModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Cập nhật môn học thành công!');
+					}else{
+						this.$snotify.error('Không thể chỉnh sửa');
 					}
 				})
 				.catch(err => console.log(err));
