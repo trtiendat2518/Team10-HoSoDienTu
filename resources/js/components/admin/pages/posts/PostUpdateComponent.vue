@@ -8,21 +8,21 @@
 					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
 				</li>
 				<li class="breadcrumb-item active" aria-current="page">Danh sách bài viết</li>
-				<li class="breadcrumb-item active" aria-current="page">Tạo mới</li>
+				<li class="breadcrumb-item active" aria-current="page">Cập nhật</li>
 			</ol><!-- End breadcrumb -->
 		</div>
 		<button class="btn btn-primary mb-3" @click="back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại</button>
 		<div class="card">
 			<div class="card-header styling">
-				<h3 class="card-title">Tạo mới bài viết</h3>
+				<h3 class="card-title">Cập nhật bài viết</h3>
 			</div>
 			<div class="card-body">
-				<form @submit.prevent="store()" @keydown="form.onKeydown($event)">
+				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="form-label">Tiêu đề</label>
-								<input v-model="form.post_title" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết">
+								<input v-model="form.post_title" type="text" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -30,15 +30,6 @@
 					<div class="form-group">
 						<label class="form-label">Nội dung</label>
 						<vue-editor v-model="form.post_content" :editorToolbar="customToolbar"></vue-editor>
-					</div>
-					<div class="form-group">
-						<label class="form-label">Trạng thái</label>
-						<select class="form-control" v-model="form.post_status"> 
-							<option value="" selected disabled>Chọn trạng thái</option>
-							<option disabled>--------------------</option>
-							<option value="0">Hiển thị</option>
-							<option value="1">Ẩn</option>
-						</select>
 					</div>
 					<div class="card-footer text-right">
 						<button type="submit" class="btn btn-lg btn-success mt-1">Lưu</button>
@@ -56,12 +47,12 @@
 		data(){
 			return {
 				posts:[],
+				post_id: this.$route.params.idPost,
 				form: new Form({
-					post_id:'',
+					post_id: '',
 					post_title:'',
 					post_content:'',
 					post_author: this.$userId,
-					post_status:'',
 				}),
 				customToolbar: [
 				[{ header: [false, 1, 2, 3, 4, 5, 6] }],
@@ -82,14 +73,32 @@
 		components: {
 			VueEditor
 		},
+		mounted() {
+			this.fetchPosts();
+		},
+		watch: {
+			'$route'(to, from) {
+				this.post_id = to.params.idPost;
+			}
+		},
 		methods: {
-			store(){
-				this.form.post('../../api/admin/post-news/bai-viet')
+			fetchPosts(post_id, page_url) {
+				let vm = this;
+				post_id = this.post_id;
+				page_url = `../../api/admin/post-news/bai-viet/post/${post_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.posts = res.data;
+					this.form.fill(this.posts[0]);
+				})
+				.catch(err => console.log(err));
+			},
+			update(){
+				this.form.put('../../api/admin/post-news/bai-viet/'+this.form.post_id)
 				.then(res => {
 					if(this.form.successful){
-						this.form.reset();
-						this.form.clear();
-						this.$snotify.success('Thêm mới thành công!');
+						this.$snotify.success('Cập nhật thành công!');
 						this.$snotify.confirm('Bạn có muốn đi đến danh sách không?', {
 							timeout: 5000,
 							showProgressBar: true,
@@ -115,16 +124,13 @@
 				.catch(err => {
 					const null_content = err.response.data.errors?.post_content?.length;
 					const null_title = err.response.data.errors?.post_title?.length;
-					const null_status = err.response.data.errors?.post_status?.length;
 
-					if(null_title>0 && null_content>0 && null_status>0){
+					if(null_title>0 && null_content>0){
 						this.$snotify.error("Vui lòng không để trống!");
 					}else if(null_title>0){
 						this.$snotify.error(err.response.data.errors.post_title[0]);
 					}else if(null_content>0){
 						this.$snotify.error(err.response.data.errors.post_content[0]);
-					}else if(null_status>0){
-						this.$snotify.error(err.response.data.errors.post_status[0]);
 					}else {
 						this.$snotify.error("Lỗi định dạng!");
 					}

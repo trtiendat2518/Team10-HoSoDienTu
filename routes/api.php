@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function(){
     Route::prefix('user-gv')->group(function(){
-        //Giang Vien
+            //Giang Vien
         Route::get('giang-vien/admin/','Admin\Users\LecturerManageController@admin');
         Route::get('giang-vien/lecturer/','Admin\Users\LecturerManageController@lecturer');
         Route::get('giang-vien/detail/{lecturer}','Admin\Users\LecturerManageController@detail');   
@@ -32,7 +32,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('user-sv')->group(function(){
-        //Sinh vien
+            //Sinh vien
         Route::get('sinh-vien/studentinfo/','Admin\Users\StudentManageController@studentinfo');
         Route::get('sinh-vien/detail/{student}','Admin\Users\StudentManageController@detail');
         Route::get('sinh-vien/search/{query}/{currentEntries}','Admin\Users\StudentManageController@search');
@@ -77,9 +77,21 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('post-news')->group(function(){
+        //Route::get('bai-viet/detail/{post}','Admin\Posts\PostController@detail');
+        Route::get('bai-viet/post/{post_id}','Admin\Posts\PostController@post');
+        Route::post('bai-viet/destroyall/', 'Admin\Posts\PostController@destroyall');
         Route::get('bai-viet/filter/{admin}/{currentEntries}', 'Admin\Posts\PostController@filter');
         Route::get('bai-viet/search/{query}/{currentEntries}','Admin\Posts\PostController@search');
         Route::patch('bai-viet/change/{post}', 'Admin\Posts\PostController@change');
         Route::resource('bai-viet', 'Admin\Posts\PostController');
+    });
+
+    Route::prefix('manage')->group(function(){
+        Route::get('mon-hoc/showdata/{lecturer_id}/{currentEntries}','Admin\Education\SubjectController@showdata');
+        Route::patch('mon-hoc/change/{subject}', 'Admin\Education\SubjectController@change');
+        Route::get('mon-hoc/detail/{subject}','Admin\Education\SubjectController@detail');
+        Route::post('mon-hoc/destroyall/', 'Admin\Education\SubjectController@destroyall');
+        Route::get('mon-hoc/search/{query}/{currentEntries}','Admin\Education\SubjectController@search');
+        Route::resource('mon-hoc', 'Admin\Education\SubjectController');
     });
 });

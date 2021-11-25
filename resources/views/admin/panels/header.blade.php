@@ -79,7 +79,7 @@
 								</span>
 							</span>
 						</span>
-						<span class="avatar avatar-md brround"><img src="{{asset('public/lecturer/images/users/female/33.png')}}"" alt="Profile-img" class="avatar avatar-md brround"></span>
+						<span class="avatar avatar-md brround"><img src="{{asset('public/lecturer/images/users/female/33.png')}}" alt="Profile-img" class="avatar avatar-md brround"></span>
 					</a>
 				</div><!-- profile -->
 				<div class="dropdown">
