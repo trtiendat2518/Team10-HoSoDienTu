@@ -95,6 +95,18 @@ export default new VueRouter({
 					name: 'postupdate',
 					component: PostUpdate
 				}
+
+				// {
+				// 	path: 'tao-moi',
+				// 	name: 'postcreate',
+				// 	component: PostCreate
+				// },
+
+				// {
+				// 	path: 'cap-nhat/:idPost',
+				// 	name: 'postupdate',
+				// 	component: PostUpdate
+				// }
 			]
 		},
 
@@ -108,18 +120,6 @@ export default new VueRouter({
 					name: 'subjectindex',
 					component: SubjectIndex
 				}
-
-				// {
-				// 	path: 'tao-moi',
-				// 	name: 'postcreate',
-				// 	component: PostCreate
-				// },
-
-				// {
-				// 	path: 'cap-nhat/:idPost',
-				// 	name: 'postupdate',
-				// 	component: PostUpdate
-				// }
 			]
 		},
 
