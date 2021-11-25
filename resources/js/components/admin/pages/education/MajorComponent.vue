@@ -267,6 +267,7 @@
 					this.fetchMajors();
 				}else{
 					this.value_faculty='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -274,6 +275,7 @@
 				if(faculty === ''){
 					this.fetchMajors();
 				}else{
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},
@@ -309,7 +311,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {

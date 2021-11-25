@@ -306,6 +306,7 @@
 					this.fetchStudents();
 				}else{
 					this.value_role='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -313,6 +314,7 @@
 				if(value === ''){
 					this.fetchStudents();
 				}else{
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},
@@ -370,7 +372,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-sv/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = '../../api/admin/user-sv/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {

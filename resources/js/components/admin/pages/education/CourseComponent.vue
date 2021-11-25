@@ -246,6 +246,7 @@
 				if(keyword === ''){
 					this.fetchCourses();
 				}else{
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -286,7 +287,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-course/khoa-hoc/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = '../../api/admin/edu-course/khoa-hoc/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
