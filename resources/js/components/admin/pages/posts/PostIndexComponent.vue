@@ -1,6 +1,14 @@
 <template>
 	<div>
 		<vue-snotify></vue-snotify>
+		<div class="page-header">
+			<ol class="breadcrumb"><!-- breadcrumb -->
+				<li class="breadcrumb-item">
+					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Danh sách bài viết</li>
+			</ol><!-- End breadcrumb -->
+		</div>
 		<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
@@ -15,19 +23,19 @@
 					</div>
 
 					<div class="row">
-						<!-- <div class="col-md-1">
+						<div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div> -->
-						<!-- <div class="col-md-6">
+						</div>
+						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div> -->
-						<!-- <div class="col-md-3">
-							<select class="form-control mt-2" v-model="value_faculty">
-								<option value="" disabled selected>Lọc theo khoa</option>
+						</div>
+						<div class="col-md-3">
+							<select class="form-control mt-2" v-model="value_author">
+								<option value="" disabled selected>Lọc theo tác giả</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_code">{{ faculty.faculty_name }}</option>
+								<option v-for="admin in admins" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
 							</select>
-						</div> -->
+						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -77,7 +85,7 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(post)"></button>
+										<router-link class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'postupdate', params: {idPost: post.post_id} }"></router-link>
 									</td>
 									<td>
 										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(post.post_id)"></button>
@@ -92,8 +100,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<!-- <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchPosts() : search() "></pagination> -->
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchPosts()"></pagination>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchPosts() : search() "></pagination>
 					</div>
 					<!-- table-responsive -->
 				</div>
@@ -120,7 +127,7 @@
 									<td>Mã Chuyên Ngành: <strong> {{ form.post_title }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Chuyên Ngành: <strong> {{ form.post_content }}</strong></td>
+									<td>Nội dung: <strong class="styling-strong" v-html="form.post_content"></strong></td>
 								</tr>
 								<tr>
 									<td>Thuộc Khoa: <strong>{{ form.post_status }}</strong></td>
@@ -143,7 +150,7 @@
 	export default {
 		data() {
 			return {
-				details:[],
+				admins:[],
 				posts:[],
 				post_id:'',
 				pagination:{
@@ -165,51 +172,54 @@
 				selectAll: false,
 				details:[],
 				error: {},
-				value_faculty:'',
+				value_author:'',
 			};
 		},
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchPosts();
 				}else{
+					this.pagination=1;
 					this.fetchPosts();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchPosts();
-			// 	}else{
-			// 		this.value_faculty='';
-			// 		this.search();
-			// 	}
-			// },
-			// value_faculty(faculty){
-			// 	if(faculty === ''){
-			// 		this.fetchPosts();
-			// 	}else{
-			// 		this.filter();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchPosts();
+				}else{
+					this.value_author='';
+					this.search();
+				}
+			},
+			value_author(admin){
+				if(admin === ''){
+					this.fetchPosts();
+				}else{
+					this.query='';
+					this.filter();
+				}
+			},
 		},
 		mounted() {
-			// this.fetchFaculties();
+			this.fetchAdmins();
 			this.fetchPosts();
 		},
 		methods: {
 			empty() {
 				return (this.posts.length < 1);
 			},
-			// fetchFaculties(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/edu-faculty/khoa/faculty';
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.faculties = res.data;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			fetchAdmins(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/user-gv/giang-vien/admin';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.admins = res.data;
+				})
+				.catch(err => console.log(err));
+			},
 			fetchPosts(page_url) {
 				let vm = this;
 				page_url = '../../api/admin/post-news/bai-viet/'+this.currentEntries+'?page='+this.pagination.current_page;
@@ -221,40 +231,20 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.posts = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			search(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.posts = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			create(){
 				this.$router.push( {name: 'postcreate'} );
 			},
-			// show(major) {
-			// 	this.editMode = true;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	this.form.fill(major);
-			// 	$('#MajorModal').modal('show');
-			// },
-			// update() {
-			// 	this.form.put('../../api/admin/edu-major/chuyen-nganh/'+this.form.post_id)
-			// 	.then(res => {
-			// 		this.fetchPosts();
-			// 		$('#MajorModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Cập nhật Chuyên Ngành thành công!');
-			// 		}else{
-			// 			this.$snotify.error('Không thể chỉnh sửa');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 			change(post_id) {
 				axios.patch(`../../api/admin/post-news/bai-viet/change/${post_id}`)
 				.then(res => {
@@ -263,102 +253,98 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// destroy(post_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/edu-major/chuyen-nganh/${post_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchPosts();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/edu-major/chuyen-nganh/destroyall', { major: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchPosts();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.posts){
-			// 			this.selected.push(this.posts[i].post_id);
-			// 		}
-			// 	}
-			// },
-			// detail(post, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(post);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			destroy(post_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/post-news/bai-viet/${post_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchPosts();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/post-news/bai-viet/destroyall', { post: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchPosts();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			select() {
+				this.selected = [];
+				if(!this.selectAll){
+					for(let i in this.posts){
+						this.selected.push(this.posts[i].post_id);
+					}
+				}
+			},
+			detail(post, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					this.form.fill(post);
+					$('#DetailModal').modal('show');
+				})
+				.catch(err => console.log(err));
+			},
 			reload(){
 				this.fetchPosts();
 				this.query='';
-				this.value_faculty='';
+				this.value_author='';
 			},
-			// filter(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/edu-major/chuyen-nganh/filter/'+this.value_faculty+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.posts = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// filterFaculty(major) {
-			// 	const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
-			// 	return faculty.faculty_name;
-			// },
+			filter(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/post-news/bai-viet/filter/'+this.value_author+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.posts = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 		}
 	};
 </script>
@@ -426,5 +412,9 @@
 	.btn-export:hover {
 		background-color: seagreen;
 		color: white;
+	}
+	.styling-strong {
+		word-wrap: break-word;
+		white-space: pre-line;
 	}
 </style>
