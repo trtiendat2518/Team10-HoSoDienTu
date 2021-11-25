@@ -190,6 +190,7 @@
 					this.fetchPosts();
 				}else{
 					this.value_author='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -198,6 +199,7 @@
 					this.fetchPosts();
 				}else{
 					this.query='';
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},
@@ -233,7 +235,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {

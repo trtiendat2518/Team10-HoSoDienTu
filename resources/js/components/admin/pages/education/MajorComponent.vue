@@ -267,6 +267,7 @@
 					this.fetchMajors();
 				}else{
 					this.value_faculty='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -274,6 +275,7 @@
 				if(faculty === ''){
 					this.fetchMajors();
 				}else{
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},

@@ -264,6 +264,7 @@
 				if(keyword === ''){
 					this.fetchFaculties();
 				}else{
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},

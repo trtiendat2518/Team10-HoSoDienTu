@@ -9,7 +9,16 @@
 				<li class="breadcrumb-item active" aria-current="page">Danh sách môn học</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
+		<div class="row">
+			<div class="col-md-9">
+				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
+				<router-link class="btn btn-outline-dark btn-lg mb-3" tag="button" :to="{ name: 'subjectother' }"><li class="fa fa-info"></li> Xem môn học của khoa khác</router-link>
+			</div>
+			<div class="col-md-3">
+				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
+				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -58,7 +67,6 @@
 							</thead>
 							<tbody>
 								<tr v-show="subjects.length" v-for="subject in subjects" :key="subject.subject_id">
-									<div v-if="subject.subject_faculty===subject_faculty"></div>
 									<td>
 										<center><input type="checkbox" :value="subject.subject_id" v-model="selected"></center>
 									</td>
@@ -238,6 +246,31 @@
 			</div>
 		</div>
 		<!-- Modal end-->
+
+		<!-- Modal -->
+		<div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<form @submit.prevent="importFile()" @keydown="form.onKeydown($event)">
+					<div class="modal-content">
+						<div class="modal-header styling-modal-header-update">
+							<h5 class="modal-title" id="ImportModalTitle">Import môn học</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<label>Tệp Excel</label>
+							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="fileupload" @change="onFileChange">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" @click="reloadFile()" >Tải lại</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary">Import</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Modal end-->
 	</div>
 </template>
 
@@ -274,6 +307,8 @@
 				selected: [],
 				selectAll: false,
 				details:[],
+				fileImport: '',
+				error: {},
 			};
 		},
 		watch: {
@@ -291,6 +326,7 @@
 					this.fetchSubjects();
 				}else{
 					this.value_author='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -342,7 +378,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/manage/mon-hoc/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = '../../api/admin/manage/mon-hoc/search/'+this.lecturer_faculty+'/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -484,6 +520,47 @@
 				this.fetchSubjects();
 				this.query='';
 			},
+			exportFile() {
+				window.location.href =`../../api/admin/manage/mon-hoc/export/${this.lecturer_faculty}`;
+			},
+			openImport() {
+				this.$refs.fileupload.value='';
+				$('#ImportModal').modal('show');
+			},
+			onFileChange(e) {
+				this.fileImport = e.target.files[0];
+			},
+			reloadFile() {
+				this.$refs.fileupload.value='';
+				this.fileImport='';
+			},
+			importFile() {
+				let formData = new FormData();
+				formData.append('fileImport', this.fileImport);
+				axios.post(`../../api/admin/manage/mon-hoc/import/${this.lecturer_faculty}`, formData, {
+					headers: { 'content-type': 'multipart/form-data' }
+				})
+				.then(res => {
+					if(res.status === 200) {
+						$('#ImportModal').modal('hide');
+						this.fetchSubjects();
+						this.$snotify.success('Import thành công');
+					}
+				})
+				.catch(err => {
+					console.log(err);
+					if(err.response.data.errors?.fileImport?.length > 0){
+						this.error = err.response.data.errors.fileImport[0];
+					}else if(err.response.data.errors[0].length > 0){
+						const  stringError = err.response.data.errors[0][0];
+						const  stringSplit = stringError.split(".");
+						this.error = stringSplit[1];
+					}
+					
+					this.fetchSubjects();
+					this.$snotify.error(this.error);
+				});
+			}
 		}
 	};
 </script>

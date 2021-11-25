@@ -87,11 +87,16 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('manage')->group(function(){
+        Route::post('mon-hoc/import/{faculty}', 'Admin\Education\SubjectController@import');
+        Route::get('mon-hoc/export/{faculty}', 'Admin\Education\SubjectController@export');
+        Route::get('mon-hoc/filter/{faculty}/{currentEntries}', 'Admin\Education\SubjectController@filter');
+        Route::get('mon-hoc/showother/{lecturer_id}/{currentEntries}','Admin\Education\SubjectController@showother');
         Route::get('mon-hoc/showdata/{lecturer_id}/{currentEntries}','Admin\Education\SubjectController@showdata');
         Route::patch('mon-hoc/change/{subject}', 'Admin\Education\SubjectController@change');
         Route::get('mon-hoc/detail/{subject}','Admin\Education\SubjectController@detail');
         Route::post('mon-hoc/destroyall/', 'Admin\Education\SubjectController@destroyall');
-        Route::get('mon-hoc/search/{query}/{currentEntries}','Admin\Education\SubjectController@search');
+        Route::get('mon-hoc/searchother/{faculty}/{query}/{currentEntries}','Admin\Education\SubjectController@searchother');
+        Route::get('mon-hoc/search/{faculty}/{query}/{currentEntries}','Admin\Education\SubjectController@search');
         Route::resource('mon-hoc', 'Admin\Education\SubjectController');
     });
 });

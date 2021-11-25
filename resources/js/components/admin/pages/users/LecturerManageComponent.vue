@@ -311,6 +311,7 @@
 					this.fetchLecturers();
 				}else{
 					this.value_role='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -318,6 +319,7 @@
 				if(value === ''){
 					this.fetchLecturers();
 				}else{
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},
