@@ -20,6 +20,7 @@ import PostUpdate from './components/admin/pages/posts/PostUpdateComponent.vue';
 
 import Subject from './components/admin/pages/subjects/SubjectComponent.vue';
 import SubjectIndex from './components/admin/pages/subjects/SubjectIndexComponent.vue';
+import SubjectOther from './components/admin/pages/subjects/SubjectOtherComponent.vue';
 
 import Error404 from './components/layouts/ErrorComponent.vue';
 
@@ -107,6 +108,12 @@ export default new VueRouter({
 					path: '',
 					name: 'subjectindex',
 					component: SubjectIndex
+				},
+
+				{
+					path: 'khoa-khac',
+					name: 'subjectother',
+					component: SubjectOther
 				}
 			]
 		},

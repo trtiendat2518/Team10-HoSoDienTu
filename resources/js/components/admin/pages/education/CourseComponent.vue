@@ -246,6 +246,7 @@
 				if(keyword === ''){
 					this.fetchCourses();
 				}else{
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
