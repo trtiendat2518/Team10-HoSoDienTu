@@ -66,7 +66,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('edu-course')->group(function(){
-        Route::get('khoa-hoc/course/','Admin\Education\CourseController@course');
+        Route::get('khoa-hoc/course','Admin\Education\CourseController@course');
         Route::post('khoa-hoc/import', 'Admin\Education\CourseController@import');
         Route::get('khoa-hoc/export', 'Admin\Education\CourseController@export');
         Route::get('khoa-hoc/detail/{course}','Admin\Education\CourseController@detail');
@@ -87,11 +87,23 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('manage')->group(function(){
+        Route::post('mon-hoc/import/{faculty}', 'Admin\Education\SubjectController@import');
+        Route::get('mon-hoc/export/{faculty}', 'Admin\Education\SubjectController@export');
+        Route::get('mon-hoc/filter/{faculty}/{currentEntries}', 'Admin\Education\SubjectController@filter');
+        Route::get('mon-hoc/showother/{lecturer_id}/{currentEntries}','Admin\Education\SubjectController@showother');
         Route::get('mon-hoc/showdata/{lecturer_id}/{currentEntries}','Admin\Education\SubjectController@showdata');
         Route::patch('mon-hoc/change/{subject}', 'Admin\Education\SubjectController@change');
         Route::get('mon-hoc/detail/{subject}','Admin\Education\SubjectController@detail');
         Route::post('mon-hoc/destroyall/', 'Admin\Education\SubjectController@destroyall');
-        Route::get('mon-hoc/search/{query}/{currentEntries}','Admin\Education\SubjectController@search');
+        Route::get('mon-hoc/searchother/{faculty}/{query}/{currentEntries}','Admin\Education\SubjectController@searchother');
+        Route::get('mon-hoc/search/{faculty}/{query}/{currentEntries}','Admin\Education\SubjectController@search');
         Route::resource('mon-hoc', 'Admin\Education\SubjectController');
+    });
+
+    Route::prefix('program')->group(function(){
+        Route::get('chuong-trinh-dao-tao/filter-course/{course}/{currentEntries}', 'Admin\Education\EducationProgramController@filter_course');
+        Route::get('chuong-trinh-dao-tao/filter-major/{major}/{currentEntries}', 'Admin\Education\EducationProgramController@filter_major');
+        Route::get('chuong-trinh-dao-tao/showdata/{lecturer_id}/{currentEntries}','Admin\Education\EducationProgramController@showdata');
+        Route::resource('chuong-trinh-dao-tao', 'Admin\Education\EducationProgramController');
     });
 });

@@ -52,7 +52,7 @@
 					post_id: '',
 					post_title:'',
 					post_content:'',
-					post_author: this.$userId,
+					post_author: this.$adminId,
 				}),
 				customToolbar: [
 				[{ header: [false, 1, 2, 3, 4, 5, 6] }],
@@ -108,7 +108,7 @@
 								text: 'Có', 
 								action: toast =>{
 									this.$snotify.remove(toast.id);
-									this.$router.push( '/' );
+									this.$router.push( { name: 'postindex' } );
 								}, 
 								bold: false
 							},{

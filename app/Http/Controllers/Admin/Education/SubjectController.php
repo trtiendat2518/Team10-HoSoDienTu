@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Http\Resources\SubjectResource;
+use Excel;
+use App\Exports\SubjectExport;
+use App\Imports\SubjectImport;
 use Validator;
+use Session;
 
 class SubjectController extends Controller
 {
@@ -100,6 +104,12 @@ class SubjectController extends Controller
         return SubjectResource::collection($subject_faculty);
     }
 
+    public function showother($lecturer_id, $currentEntries)
+    {
+        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','!=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_code',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
+        return SubjectResource::collection($subject_faculty);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -174,9 +184,16 @@ class SubjectController extends Controller
         $sj->delete();
     }
 
-    public function search($query, $currentEntries)
+    public function search($faculty, $query, $currentEntries)
     {
-        return SubjectResource::collection(Subject::where('subject_code','LIKE','%'.$query.'%')->orwhere('subject_name','LIKE','%'.$query.'%')->orderby('subject_id','DESC')->paginate($currentEntries));
+        $get= Subject::where('subject_code','LIKE','%'.$query.'%')->where('subject_faculty', $faculty)->orwhere('subject_name','LIKE','%'.$query.'%')->where('subject_faculty', $faculty)->orderby('subject_id','DESC')->paginate($currentEntries);
+        return SubjectResource::collection($get);
+    }
+
+    public function searchother($faculty, $query, $currentEntries)
+    {
+        $get= Subject::where('subject_code','LIKE','%'.$query.'%')->where('subject_faculty', '!=', $faculty)->orwhere('subject_name','LIKE','%'.$query.'%')->where('subject_faculty', '!=', $faculty)->orderby('subject_id','DESC')->paginate($currentEntries);
+        return SubjectResource::collection($get);
     }
 
     public function destroyall(Request $request, $subject = null)
@@ -203,5 +220,29 @@ class SubjectController extends Controller
     public function detail($subject)
     {
         return SubjectResource::collection(Subject::where('subject_id',$subject)->get());
+    }
+
+    public function filter($faculty, $currentEntries)
+    {
+        return SubjectResource::collection(Subject::where('subject_faculty', $faculty)->orderby('subject_name','ASC')->paginate($currentEntries));
+    }
+
+    public function export(Request $request, $faculty)
+    {
+        return Excel::download(new SubjectExport($faculty) , 'list_of_subject.xlsx');
+    }
+
+    public function import(Request $request, $faculty)
+    {
+        $request->validate([
+            'fileImport' => 'required|file|mimes:xls,xlsx'
+        ],[
+            'fileImport.required' => 'Vui lòng không để trống!',
+            'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
+            'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
+        ]);
+        $path = $request->file('fileImport')->getRealPath();
+        $data = Excel::import(new SubjectImport($faculty), $path);
+        return response()->json(200);
     }
 }

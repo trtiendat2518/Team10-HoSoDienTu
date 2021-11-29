@@ -306,6 +306,7 @@
 					this.fetchStudents();
 				}else{
 					this.value_role='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -313,6 +314,7 @@
 				if(value === ''){
 					this.fetchStudents();
 				}else{
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},
@@ -500,15 +502,15 @@
 				this.value_role='';
 			},
 			studentCourse(info) {
-				const course = this.courses.find((crs) => crs.course_id === info.student_course);
+				const course = this.courses.find((crs) => crs.course_code === info.student_course);
 				return course.course_code;
 			},
 			studentFaculty(info) {
-				const faculty = this.faculties.find((fac) => fac.faculty_id === info.student_faculty);
+				const faculty = this.faculties.find((fac) => fac.faculty_code === info.student_faculty);
 				return faculty.faculty_name;
 			},
 			studentMajor(info) {
-				const major = this.majors.find((mjr) => mjr.major_id === info.student_major);
+				const major = this.majors.find((mjr) => mjr.major_code === info.student_major);
 				return major.major_name;
 			},
 		}
