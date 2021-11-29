@@ -446,12 +446,12 @@
 					this.details = res.data;
 					this.form.fill(faculty);
 					let head = this.lecturers.filter(function(lec){
-						return lec.lecturer_faculty===faculty.faculty_id && lec.lecturer_level===1
+						return lec.lecturer_faculty===faculty.faculty_code && lec.lecturer_level===1
 					})
 					this.head_lecturer = head[0].lecturer_fullname;
 
 					let vice = this.lecturers.filter(function(lec){
-						return lec.lecturer_faculty===faculty.faculty_id && lec.lecturer_level===2
+						return lec.lecturer_faculty===faculty.faculty_code && lec.lecturer_level===2
 					})
 					this.vice_lecturer = vice[0].lecturer_fullname;
 

@@ -90,4 +90,14 @@ class EducationProgramController extends Controller
     {
         //
     }
+
+    public function filter_course($course, $currentEntries)
+    {
+        return EducationProgramResource::collection(EducationProgram::where('education_program_course','LIKE','%'.$course.'%')->orderby('education_program_id','DESC')->paginate($currentEntries));
+    }
+
+    public function filter_major($major, $currentEntries)
+    {
+        return EducationProgramResource::collection(EducationProgram::where('education_program_major','LIKE','%'.$major.'%')->orderby('education_program_id','DESC')->paginate($currentEntries));
+    }
 }

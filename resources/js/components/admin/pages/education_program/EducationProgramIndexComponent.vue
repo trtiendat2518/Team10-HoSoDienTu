@@ -34,10 +34,29 @@
 						<!-- <div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div> -->
-						<!-- <div class="col-md-9">
-							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div> -->
-						<div class="col-md-2">
+						<div class="col-md-4">
+							<select class="form-control mt-2" v-model="value_choose">
+								<option value="" disabled selected>Chọn kiểu lọc</option>
+								<option disabled>----------------------------------------</option>
+								<option value="choose_course">Lọc theo khóa học</option>
+								<option value="choose_major">Lọc theo chuyên ngành</option>
+							</select>
+						</div>
+						<div v-show="value_choose==='choose_course'" class="col-md-4">
+							<select class="form-control mt-2" v-model="value_course">
+								<option value="" disabled selected>Lọc theo Khóa học</option>
+								<option disabled>----------------------------------------</option>
+								<option v-for="course in courses" :value="course.course_code">{{ course.course_name }}</option>
+							</select>
+						</div>
+						<div v-show="value_choose==='choose_major'" class="col-md-4">
+							<select class="form-control mt-2" v-model="value_major">
+								<option value="" disabled selected>Lọc theo chuyên ngành</option>
+								<option disabled>----------------------------------------</option>
+								<option v-for="major in majors" :value="major.major_code" :hidden="major.major_faculty != lecturer_faculty">{{ major.major_name }}</option>
+							</select>
+						</div>
+						<div class="col-md-3">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
 									<span class="right:marign-1">Hiển thị</span>
@@ -102,7 +121,6 @@
 								</tr>
 							</tbody>
 						</table>
-						<!-- <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchPrograms() : search() "></pagination> -->
 						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchPrograms()"></pagination>
 					</div>
 					<!-- table-responsive -->
@@ -295,7 +313,6 @@
 				},
 				currentEntries: 5,
 				showEntries: [5, 10, 25, 50],
-				query: '',
 				editMode: false,
 				form: new Form({
 					education_program_id:'',
@@ -310,8 +327,9 @@
 				selected: [],
 				selectAll: false,
 				details:[],
-				fileImport: '',
-				error: {},
+				value_course:'',
+				value_major:'',
+				value_choose:'',
 			};
 		},
 		watch: {
@@ -324,15 +342,28 @@
 					this.fetchPrograms();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchPrograms();
-			// 	}else{
-			// 		this.value_author='';
-			// 		this.pagination.current_page=1;
-			// 		this.search();
-			// 	}
-			// },
+			value_course(course){
+				if(course === ''){
+					this.fetchPrograms();
+				}else{
+					this.value_major='';
+					this.pagination.current_page=1;
+					this.filterCourse();
+				}
+			},
+			value_major(major){
+				if(major === ''){
+					this.fetchPrograms();
+				}else{
+					this.value_course='';
+					this.pagination.current_page=1;
+					this.filterMajor();
+				}
+			},
+			value_choose() {
+				this.value_course='';
+				this.value_major='';
+			}
 		},
 		mounted() {
 			this.fetchFaculties();
@@ -402,22 +433,11 @@
 				.catch(err => console.log(err));
 			},
 			nameProgram(program) {
-				const major = this.majors.find((mjr) => mjr.major_id === program.education_program_major);
-				const course = this.courses.find((crs) => crs.course_id === program.education_program_course);
+				const major = this.majors.find((mjr) => mjr.major_code === program.education_program_major);
+				const course = this.courses.find((crs) => crs.course_code === program.education_program_course);
 
 				return course.course_code + ' - ' + major.major_name ;
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/manage/mon-hoc/search/'+this.lecturer_faculty+'/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.programs = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 			// create(){
 			// 	this.editMode = false;
 			// 	this.form.reset();
@@ -550,48 +570,36 @@
 			reload(){
 				this.fetchPrograms();
 				this.query='';
+				this.value_major='';
+				this.value_course='';
 			},
 			// exportFile() {
 			// 	window.location.href =`../../api/admin/manage/mon-hoc/export/${this.lecturer_faculty}`;
 			// },
-			// openImport() {
-			// 	this.$refs.fileupload.value='';
-			// 	$('#ImportModal').modal('show');
-			// },
-			// onFileChange(e) {
-			// 	this.fileImport = e.target.files[0];
-			// },
-			// reloadFile() {
-			// 	this.$refs.fileupload.value='';
-			// 	this.fileImport='';
-			// },
-			// importFile() {
-			// 	let formData = new FormData();
-			// 	formData.append('fileImport', this.fileImport);
-			// 	axios.post(`../../api/admin/manage/mon-hoc/import/${this.lecturer_faculty}`, formData, {
-			// 		headers: { 'content-type': 'multipart/form-data' }
-			// 	})
-			// 	.then(res => {
-			// 		if(res.status === 200) {
-			// 			$('#ImportModal').modal('hide');
-			// 			this.fetchPrograms();
-			// 			this.$snotify.success('Import thành công');
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		console.log(err);
-			// 		if(err.response.data.errors?.fileImport?.length > 0){
-			// 			this.error = err.response.data.errors.fileImport[0];
-			// 		}else if(err.response.data.errors[0].length > 0){
-			// 			const  stringError = err.response.data.errors[0][0];
-			// 			const  stringSplit = stringError.split(".");
-			// 			this.error = stringSplit[1];
-			// 		}
-					
-			// 		this.fetchPrograms();
-			// 		this.$snotify.error(this.error);
-			// 	});
-			// }
+			filterCourse(page_url) {
+				let vm = this;
+				this.value_major='';
+				page_url = '../../api/admin/program/chuong-trinh-dao-tao/filter-course/'+this.value_course+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.programs = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
+			filterMajor(page_url) {
+				let vm = this;
+				this.value_course='';
+				page_url = '../../api/admin/program/chuong-trinh-dao-tao/filter-major/'+this.value_major+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.programs = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 		}
 	};
 </script>

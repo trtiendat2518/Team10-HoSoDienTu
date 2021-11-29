@@ -509,7 +509,7 @@
 					this.details = res.data;
 					this.form.fill(subject);
 					let faculty = this.faculties.filter(function(fct){
-						return fct.faculty_id===subject.subject_faculty
+						return fct.faculty_code===subject.subject_faculty
 					})
 					this.subject_faculty = faculty[0].faculty_name;
 					$('#DetailModal').modal('show');

@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class SubjectImport implements ToModel, WithHeadingRow, WithValidation
 {
-    public function __construct(int $faculty)
+    public function __construct(string $faculty)
     {
         $this->faculty = $faculty;
     }

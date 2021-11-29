@@ -3143,13 +3143,13 @@ __webpack_require__.r(__webpack_exports__);
         _this11.form.fill(faculty);
 
         var head = _this11.lecturers.filter(function (lec) {
-          return lec.lecturer_faculty === faculty.faculty_id && lec.lecturer_level === 1;
+          return lec.lecturer_faculty === faculty.faculty_code && lec.lecturer_level === 1;
         });
 
         _this11.head_lecturer = head[0].lecturer_fullname;
 
         var vice = _this11.lecturers.filter(function (lec) {
-          return lec.lecturer_faculty === faculty.faculty_id && lec.lecturer_level === 2;
+          return lec.lecturer_faculty === faculty.faculty_code && lec.lecturer_level === 2;
         });
 
         _this11.vice_lecturer = vice[0].lecturer_fullname;
@@ -4106,6 +4106,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4124,7 +4142,6 @@ __webpack_require__.r(__webpack_exports__);
       },
       currentEntries: 5,
       showEntries: [5, 10, 25, 50],
-      query: '',
       editMode: false,
       form: new Form({
         education_program_id: '',
@@ -4139,8 +4156,9 @@ __webpack_require__.r(__webpack_exports__);
       selected: [],
       selectAll: false,
       details: [],
-      fileImport: '',
-      error: {}
+      value_course: '',
+      value_major: '',
+      value_choose: ''
     };
   },
   watch: {
@@ -4152,16 +4170,29 @@ __webpack_require__.r(__webpack_exports__);
         this.pagination = 1;
         this.fetchPrograms();
       }
-    } // query(keyword){
-    // 	if(keyword === ''){
-    // 		this.fetchPrograms();
-    // 	}else{
-    // 		this.value_author='';
-    // 		this.pagination.current_page=1;
-    // 		this.search();
-    // 	}
-    // },
-
+    },
+    value_course: function value_course(course) {
+      if (course === '') {
+        this.fetchPrograms();
+      } else {
+        this.value_major = '';
+        this.pagination.current_page = 1;
+        this.filterCourse();
+      }
+    },
+    value_major: function value_major(major) {
+      if (major === '') {
+        this.fetchPrograms();
+      } else {
+        this.value_course = '';
+        this.pagination.current_page = 1;
+        this.filterMajor();
+      }
+    },
+    value_choose: function value_choose() {
+      this.value_course = '';
+      this.value_major = '';
+    }
   },
   mounted: function mounted() {
     this.fetchFaculties();
@@ -4248,24 +4279,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     nameProgram: function nameProgram(program) {
       var major = this.majors.find(function (mjr) {
-        return mjr.major_id === program.education_program_major;
+        return mjr.major_code === program.education_program_major;
       });
       var course = this.courses.find(function (crs) {
-        return crs.course_id === program.education_program_course;
+        return crs.course_code === program.education_program_course;
       });
       return course.course_code + ' - ' + major.major_name;
     },
-    // search(page_url) {
-    // 	let vm = this;
-    // 	page_url = '../../api/admin/manage/mon-hoc/search/'+this.lecturer_faculty+'/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-    // 	fetch(page_url)
-    // 	.then(res => res.json())
-    // 	.then(res => {
-    // 		this.programs = res.data;
-    // 		this.pagination = res.meta;
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
     // create(){
     // 	this.editMode = false;
     // 	this.form.reset();
@@ -4398,47 +4418,42 @@ __webpack_require__.r(__webpack_exports__);
     reload: function reload() {
       this.fetchPrograms();
       this.query = '';
-    } // exportFile() {
+      this.value_major = '';
+      this.value_course = '';
+    },
+    // exportFile() {
     // 	window.location.href =`../../api/admin/manage/mon-hoc/export/${this.lecturer_faculty}`;
     // },
-    // openImport() {
-    // 	this.$refs.fileupload.value='';
-    // 	$('#ImportModal').modal('show');
-    // },
-    // onFileChange(e) {
-    // 	this.fileImport = e.target.files[0];
-    // },
-    // reloadFile() {
-    // 	this.$refs.fileupload.value='';
-    // 	this.fileImport='';
-    // },
-    // importFile() {
-    // 	let formData = new FormData();
-    // 	formData.append('fileImport', this.fileImport);
-    // 	axios.post(`../../api/admin/manage/mon-hoc/import/${this.lecturer_faculty}`, formData, {
-    // 		headers: { 'content-type': 'multipart/form-data' }
-    // 	})
-    // 	.then(res => {
-    // 		if(res.status === 200) {
-    // 			$('#ImportModal').modal('hide');
-    // 			this.fetchPrograms();
-    // 			this.$snotify.success('Import thành công');
-    // 		}
-    // 	})
-    // 	.catch(err => {
-    // 		console.log(err);
-    // 		if(err.response.data.errors?.fileImport?.length > 0){
-    // 			this.error = err.response.data.errors.fileImport[0];
-    // 		}else if(err.response.data.errors[0].length > 0){
-    // 			const  stringError = err.response.data.errors[0][0];
-    // 			const  stringSplit = stringError.split(".");
-    // 			this.error = stringSplit[1];
-    // 		}
-    // 		this.fetchPrograms();
-    // 		this.$snotify.error(this.error);
-    // 	});
-    // }
+    filterCourse: function filterCourse(page_url) {
+      var _this6 = this;
 
+      var vm = this;
+      this.value_major = '';
+      page_url = '../../api/admin/program/chuong-trinh-dao-tao/filter-course/' + this.value_course + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this6.programs = res.data;
+        _this6.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    filterMajor: function filterMajor(page_url) {
+      var _this7 = this;
+
+      var vm = this;
+      this.value_course = '';
+      page_url = '../../api/admin/program/chuong-trinh-dao-tao/filter-major/' + this.value_major + '/' + this.currentEntries + '?page=' + this.pagination.current_page;
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this7.programs = res.data;
+        _this7.pagination = res.meta;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    }
   }
 });
 
@@ -6008,7 +6023,7 @@ __webpack_require__.r(__webpack_exports__);
         _this10.form.fill(subject);
 
         var faculty = _this10.faculties.filter(function (fct) {
-          return fct.faculty_id === subject.subject_faculty;
+          return fct.faculty_code === subject.subject_faculty;
         });
 
         _this10.subject_faculty = faculty[0].faculty_name;
@@ -6378,7 +6393,7 @@ __webpack_require__.r(__webpack_exports__);
         _this5.form.fill(subject);
 
         var faculty = _this5.faculties.filter(function (fct) {
-          return fct.faculty_id === subject.subject_faculty;
+          return fct.faculty_code === subject.subject_faculty;
         });
 
         _this5.subject_faculty = faculty[0].faculty_name;
@@ -6394,7 +6409,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     getFacultyName: function getFacultyName(subject) {
       var faculty = this.faculties.find(function (fac) {
-        return fac.faculty_id === subject.subject_faculty;
+        return fac.faculty_code === subject.subject_faculty;
       });
       return faculty.faculty_name;
     },
@@ -6913,7 +6928,7 @@ __webpack_require__.r(__webpack_exports__);
         _this7.form.fill(lecturer);
 
         var faculty = _this7.faculties.find(function (fac) {
-          return fac.faculty_id === lecturer.lecturer_faculty;
+          return fac.faculty_code === lecturer.lecturer_faculty;
         });
 
         _this7.lecturer_faculty = faculty.faculty_name;
@@ -7517,19 +7532,19 @@ __webpack_require__.r(__webpack_exports__);
     },
     studentCourse: function studentCourse(info) {
       var course = this.courses.find(function (crs) {
-        return crs.course_id === info.student_course;
+        return crs.course_code === info.student_course;
       });
       return course.course_code;
     },
     studentFaculty: function studentFaculty(info) {
       var faculty = this.faculties.find(function (fac) {
-        return fac.faculty_id === info.student_faculty;
+        return fac.faculty_code === info.student_faculty;
       });
       return faculty.faculty_name;
     },
     studentMajor: function studentMajor(info) {
       var major = this.majors.find(function (mjr) {
-        return mjr.major_id === info.student_major;
+        return mjr.major_code === info.student_major;
       });
       return major.major_name;
     }
@@ -85179,7 +85194,196 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-2" }, [
+              _c("div", { staticClass: "col-md-4" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.value_choose,
+                        expression: "value_choose"
+                      }
+                    ],
+                    staticClass: "form-control mt-2",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.value_choose = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { value: "", disabled: "", selected: "" } },
+                      [_vm._v("Chọn kiểu lọc")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { disabled: "" } }, [
+                      _vm._v("----------------------------------------")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "choose_course" } }, [
+                      _vm._v("Lọc theo khóa học")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "choose_major" } }, [
+                      _vm._v("Lọc theo chuyên ngành")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.value_choose === "choose_course",
+                      expression: "value_choose==='choose_course'"
+                    }
+                  ],
+                  staticClass: "col-md-4"
+                },
+                [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value_course,
+                          expression: "value_course"
+                        }
+                      ],
+                      staticClass: "form-control mt-2",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.value_course = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "option",
+                        { attrs: { value: "", disabled: "", selected: "" } },
+                        [_vm._v("Lọc theo Khóa học")]
+                      ),
+                      _vm._v(" "),
+                      _c("option", { attrs: { disabled: "" } }, [
+                        _vm._v("----------------------------------------")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.courses, function(course) {
+                        return _c(
+                          "option",
+                          { domProps: { value: course.course_code } },
+                          [_vm._v(_vm._s(course.course_name))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.value_choose === "choose_major",
+                      expression: "value_choose==='choose_major'"
+                    }
+                  ],
+                  staticClass: "col-md-4"
+                },
+                [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value_major,
+                          expression: "value_major"
+                        }
+                      ],
+                      staticClass: "form-control mt-2",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.value_major = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "option",
+                        { attrs: { value: "", disabled: "", selected: "" } },
+                        [_vm._v("Lọc theo chuyên ngành")]
+                      ),
+                      _vm._v(" "),
+                      _c("option", { attrs: { disabled: "" } }, [
+                        _vm._v("----------------------------------------")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.majors, function(major) {
+                        return _c(
+                          "option",
+                          {
+                            attrs: {
+                              hidden:
+                                major.major_faculty != _vm.lecturer_faculty
+                            },
+                            domProps: { value: major.major_code }
+                          },
+                          [_vm._v(_vm._s(major.major_name))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-3" }, [
                 _c(
                   "div",
                   { staticClass: "between:flex bottom:margin-3 ml-2" },
@@ -88524,9 +88728,9 @@ var render = function() {
                         "option",
                         {
                           attrs: {
-                            hidden: faculty.faculty_id == _vm.lecturer_faculty
+                            hidden: faculty.faculty_code == _vm.lecturer_faculty
                           },
-                          domProps: { value: faculty.faculty_id }
+                          domProps: { value: faculty.faculty_code }
                         },
                         [_vm._v(_vm._s(faculty.faculty_name))]
                       )
@@ -89903,7 +90107,7 @@ var render = function() {
                   [
                     _c("div", { staticClass: "alert alert-danger" }, [
                       _vm._v(
-                        "\n\t\t\t\t\t\tGiảng viên này chưa cập nhật thông tin!\n\t\t\t\t\t"
+                        "\n\t\t\t\t\t\tGiảng viên này chưa cập nhật đủ thông tin!\n\t\t\t\t\t"
                       )
                     ])
                   ]
