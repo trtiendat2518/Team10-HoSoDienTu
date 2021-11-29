@@ -180,6 +180,6 @@ class CourseController extends Controller
 
     public function course()
     {
-        return CourseResource::collection(Course::where('course_status',0)->orderby('course_code','DESC')->get());
+        return CourseResource::collection(Course::orderby('course_code','DESC')->get());
     }
 }
