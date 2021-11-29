@@ -68,11 +68,11 @@
 									<td>
 										<center><input type="checkbox" :value="post.post_id" v-model="selected"></center>
 									</td>
-									<td @click="detail(post)">
-										<a href="javascript:void(0)">
+									<td>
+										<router-link tag="a" :to="{ name: 'postupdate', params: {idPost: post.post_id} }">
 											<div v-if="post.post_title<40">{{ post.post_title }}</div>
 											<div v-else>{{ post.post_title.substring(0,40)+"..." }}</div>
-										</a>
+										</router-link>
 									</td>
 									<td>{{ post.post_author }}</td>
 									<td>{{ post.post_date | formatDate}}</td>
@@ -106,42 +106,6 @@
 				</div>
 			</div><!-- col end -->
 		</div>
-
-		<!-- Modal -->
-		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header styling-modal-header-info">
-						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết Chuyên Ngành</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<table class="table row table-borderless w-100 m-0 border">
-							<tbody class="col-lg-12 p-0">
-								<tr>
-									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
-								</tr>
-								<tr>
-									<td>Mã Chuyên Ngành: <strong> {{ form.post_title }}</strong></td>
-								</tr>
-								<tr>
-									<td>Nội dung: <strong class="styling-strong" v-html="form.post_content"></strong></td>
-								</tr>
-								<tr>
-									<td>Thuộc Khoa: <strong>{{ form.post_status }}</strong></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-					</div>
-				</div>
-			</div>
-		</div> -->
-		<!-- Modal end-->
 	</div>
 </template>
 
@@ -170,7 +134,6 @@
 				}),
 				selected: [],
 				selectAll: false,
-				details:[],
 				error: {},
 				value_author:'',
 			};
@@ -178,8 +141,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchPosts();
 				}else{
+					this.pagination=1;
 					this.fetchPosts();
 				}
 			},
@@ -188,6 +153,7 @@
 					this.fetchPosts();
 				}else{
 					this.value_author='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -196,6 +162,7 @@
 					this.fetchPosts();
 				}else{
 					this.query='';
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},
@@ -231,7 +198,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -314,18 +281,6 @@
 						this.selected.push(this.posts[i].post_id);
 					}
 				}
-			},
-			detail(post, page_url) {
-				let vm = this;
-				page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.details = res.data;
-					this.form.fill(post);
-					$('#DetailModal').modal('show');
-				})
-				.catch(err => console.log(err));
 			},
 			reload(){
 				this.fetchPosts();

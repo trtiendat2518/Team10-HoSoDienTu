@@ -7,7 +7,8 @@
 				<li class="breadcrumb-item">
 					<router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
 				</li>
-				<li class="breadcrumb-item active" aria-current="page">Danh sách bài viết</li>
+				<li class="breadcrumb-item active" aria-current="page">
+					<router-link tag="a" :to="{ name: 'postindex' }">Danh sách bài viết</router-link></li>
 				<li class="breadcrumb-item active" aria-current="page">Tạo mới</li>
 			</ol><!-- End breadcrumb -->
 		</div>
@@ -60,7 +61,7 @@
 					post_id:'',
 					post_title:'',
 					post_content:'',
-					post_author: this.$userId,
+					post_author: this.$adminId,
 					post_status:'',
 				}),
 				customToolbar: [
@@ -99,7 +100,7 @@
 								text: 'Có', 
 								action: toast =>{
 									this.$snotify.remove(toast.id);
-									this.$router.push( '/' );
+									this.$router.push( { name: 'postindex' } );
 								}, 
 								bold: false
 							},{
@@ -131,7 +132,7 @@
 				});
 			},
 			back() {
-				this.$router.push( '/bai-viet' );
+				this.$router.push( { name: 'postindex' } );
 			},
 		},
 		beforeRouteLeave(to, from, next) {

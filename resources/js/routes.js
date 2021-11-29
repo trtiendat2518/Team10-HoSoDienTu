@@ -20,8 +20,20 @@ import PostUpdate from './components/admin/pages/posts/PostUpdateComponent.vue';
 
 import Subject from './components/admin/pages/subjects/SubjectComponent.vue';
 import SubjectIndex from './components/admin/pages/subjects/SubjectIndexComponent.vue';
+import SubjectOther from './components/admin/pages/subjects/SubjectOtherComponent.vue';
+
+import EducationProgram from './components/admin/pages/education_program/EducationProgramComponent.vue';
+import EducationProgramIndex from './components/admin/pages/education_program/EducationProgramIndexComponent.vue';
 
 import Error404 from './components/layouts/ErrorComponent.vue';
+
+if (document.querySelector("meta[name='admin-fullname']")) {
+    Vue.prototype.$adminId = document.querySelector("meta[name='admin-fullname']").getAttribute('content');
+} else if (document.querySelector("meta[name='deanfaculty-id']")) {
+    Vue.prototype.$facultyId = document.querySelector("meta[name='deanfaculty-id']").getAttribute('content');
+} else if (document.querySelector("meta[name='formteacher-id']")) {
+    Vue.prototype.$teacherId = document.querySelector("meta[name='formteacher-id']").getAttribute('content');
+}
 
 export default new VueRouter({
 	routes: [
@@ -38,7 +50,14 @@ export default new VueRouter({
 			name: 'lecturer',
 			components: {
 				default: Lecturer
-			}
+			},
+			beforeEnter: (to, from, next) => {
+				if (Vue.prototype.$adminId != null) {	
+					next();
+				}else {
+					next(false);
+				}
+			} 
 		},
 
 		{
@@ -46,6 +65,13 @@ export default new VueRouter({
 			name: 'student',
 			components: {
 				default: Student
+			},
+			beforeEnter: (to, from, next) => {
+				if (Vue.prototype.$adminId != null) {	
+					next();
+				}else {
+					next(false);
+				}
 			}
 		},
 
@@ -54,7 +80,14 @@ export default new VueRouter({
 			name: 'faculty',
 			components: {
 				default: Faculty
-			}
+			},
+			beforeEnter: (to, from, next) => {
+				if (Vue.prototype.$adminId != null) {	
+					next();
+				}else {
+					next(false);
+				}
+			} 
 		},
 
 		{
@@ -62,6 +95,13 @@ export default new VueRouter({
 			name: 'major',
 			components: {
 				default: Major
+			},
+			beforeEnter: (to, from, next) => {
+				if (Vue.prototype.$adminId != null) {	
+					next();
+				}else {
+					next(false);
+				}
 			}
 		},
 
@@ -70,6 +110,13 @@ export default new VueRouter({
 			name: 'course',
 			components: {
 				default: Course
+			},
+			beforeEnter: (to, from, next) => {
+				if (Vue.prototype.$adminId != null) {	
+					next();
+				}else {
+					next(false);
+				}
 			}
 		},
 
@@ -95,7 +142,14 @@ export default new VueRouter({
 					name: 'postupdate',
 					component: PostUpdate
 				}
-			]
+			],
+			beforeEnter: (to, from, next) => {
+				if (Vue.prototype.$adminId != null) {	
+					next();
+				}else {
+					next(false);
+				}
+			}
 		},
 
 		{
@@ -107,20 +161,41 @@ export default new VueRouter({
 					path: '',
 					name: 'subjectindex',
 					component: SubjectIndex
+				},
+
+				{
+					path: 'khoa-khac',
+					name: 'subjectother',
+					component: SubjectOther
 				}
+			],
+			beforeEnter: (to, from, next) => {
+				if (Vue.prototype.$facultyId != null) {	
+					next();
+				}else {
+					next(false);
+				}
+			}
+		},
 
-				// {
-				// 	path: 'tao-moi',
-				// 	name: 'postcreate',
-				// 	component: PostCreate
-				// },
-
-				// {
-				// 	path: 'cap-nhat/:idPost',
-				// 	name: 'postupdate',
-				// 	component: PostUpdate
-				// }
-			]
+		{
+			path: '/chuong-trinh-dao-tao',
+			name: 'educationprogram',
+			component: EducationProgram,
+			children: [
+				{
+					path: '',
+					name: 'educationprogramindex',
+					component: EducationProgramIndex
+				},
+			],
+			beforeEnter: (to, from, next) => {
+				if (Vue.prototype.$facultyId != null) {	
+					next();
+				}else {
+					next(false);
+				}
+			}
 		},
 
 		{ 	

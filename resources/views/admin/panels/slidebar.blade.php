@@ -1,4 +1,4 @@
- Sidebar menu-->
+<!-- Sidebar menu-->
  <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
  <aside class="app-sidebar toggle-sidebar">
  	<div class="app-sidebar__user pb-0">
@@ -57,75 +57,5 @@
  	@endforeach
  	@endif
  	<br>
-	{{-- <div class="panel-body tabs-menu-body side-tab-body p-0 border-0 ">
-		<div class="tab-content">
-			<div class="tab-pane active " id="index1">
-				<ul class="side-menu toggle-menu">
-
-					<li class="mb-2 ml-4"><span class="side-menu__label"><strong style="color: darkblue;">TRANG CHỦ</strong></span></li>
-					<li class="slide">
-						<a class="side-menu__item" href="">
-							<i class="side-menu__icon typcn typcn-device-desktop"></i>
-							<span class="side-menu__label">Dashboard</span>
-						</a>
-					</li>
-
-					@if (Session::get('lecturer_id'))
-					@foreach ($check_role as $check)
-					@if ($check->lecturer_role==1)
-					<li class="mt-5 mb-2 ml-4"><span class="side-menu__label"><strong style="color: darkblue;">QUẢN LÝ</strong></span></li>
-					<li class="slide">
-						<a class="side-menu__item" href="{{ route('subject.index') }}">
-							<i class="side-menu__icon fa fa-wpforms"></i>
-							<span class="side-menu__label">Môn học</span>
-						</a>
-					</li>
-					<li class="slide">
-						<a class="side-menu__item" href="#">
-							<i class="side-menu__icon fa fa-tasks"></i>
-							<span class="side-menu__label">Chương trình đào tạo</span>
-						</a>
-					</li>
-					<li class="slide">
-						<a class="side-menu__item" href="#">
-							<i class="side-menu__icon fa fa-sitemap"></i>
-							<span class="side-menu__label">Lớp học</span>
-						</a>
-					</li>
-					<li class="slide">
-						<a class="side-menu__item" href="#">
-							<i class="side-menu__icon fa fa-black-tie"></i>
-							<span class="side-menu__label">Chủ nhiệm sinh viên</span>
-						</a>
-					</li>
-					<li class="slide">
-						<a class="side-menu__item" href="#">
-							<i class="side-menu__icon fa fa-calendar"></i>
-							<span class="side-menu__label">Lịch</span>
-						</a>
-					</li>
-
-					<li class="mt-5 mb-2 ml-4"><span class="side-menu__label"><strong style="color: darkblue;">THỐNG KÊ</strong></span></li>
-					<li class="slide">
-						<a class="side-menu__item" href="#">
-							<i class="side-menu__icon fa fa-line-chart"></i>
-							<span class="side-menu__label">Số lượng đăng ký kế hoạch</span>
-						</a>
-					</li>
-					<li class="slide">
-						<a class="side-menu__item" href="#">
-							<i class="side-menu__icon fa fa-area-chart"></i>
-							<span class="side-menu__label">Số lượng đăng ký kế hoạch</span>
-						</a>
-					</li>
-					@elseif ($check->lecturer_role==2)
-					@endif
-					@endforeach
-					@endif
-					<br>
-				</ul>
-			</div>
-		</div>
-	</div> --}}
 </aside>
 <!--sidemenu end

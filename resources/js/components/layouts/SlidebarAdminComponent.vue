@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="panel-body tabs-menu-body side-tab-body p-0 border-0 styling-scroll" id="style-1">
+        <div class="panel-body tabs-menu-body side-tab-body p-0 border-0" id="style-1">
             <div class="tab-content">
                 <div class="tab-pane active ">
                     <ul class="side-menu toggle-menu">
@@ -83,13 +83,5 @@
 <style scoped>
     .color-text {
         color: darkblue;
-    }
-    .styling-scroll {
-        height: 60%;
-        overflow-y: scroll;
-    }
-    #style-1::-webkit-scrollbar {
-        width: 6px;
-        background-color: #F5F5F5;
     }
 </style>

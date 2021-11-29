@@ -294,8 +294,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchStudents();
 				}else{
+					this.pagination=1;
 					this.fetchStudents();
 				}
 			},
@@ -304,6 +306,7 @@
 					this.fetchStudents();
 				}else{
 					this.value_role='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -311,6 +314,7 @@
 				if(value === ''){
 					this.fetchStudents();
 				}else{
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},

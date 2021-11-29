@@ -235,8 +235,10 @@
 		watch: {
 			currentEntries(number) {
 				if(number===5) {
+					this.pagination=1;
 					this.fetchCourses();
 				}else{
+					this.pagination=1;
 					this.fetchCourses();
 				}
 			},
@@ -244,6 +246,7 @@
 				if(keyword === ''){
 					this.fetchCourses();
 				}else{
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
