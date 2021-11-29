@@ -101,6 +101,8 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('program')->group(function(){
+        Route::patch('chuong-trinh-dao-tao/change/{educationProgram}', 'Admin\Education\EducationProgramController@change');
+        Route::post('chuong-trinh-dao-tao/destroyall/', 'Admin\Education\EducationProgramController@destroyall');
         Route::get('chuong-trinh-dao-tao/filter-course/{course}/{currentEntries}', 'Admin\Education\EducationProgramController@filter_course');
         Route::get('chuong-trinh-dao-tao/filter-major/{major}/{currentEntries}', 'Admin\Education\EducationProgramController@filter_major');
         Route::get('chuong-trinh-dao-tao/showdata/{lecturer_id}/{currentEntries}','Admin\Education\EducationProgramController@showdata');

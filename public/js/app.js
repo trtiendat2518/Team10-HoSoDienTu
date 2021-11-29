@@ -4099,31 +4099,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4327,78 +4302,92 @@ __webpack_require__.r(__webpack_exports__);
     // 	})
     // 	.catch(err => console.log(err));
     // },
-    // change(education_program_id) {
-    // 	axios.patch(`../../api/admin/manage/mon-hoc/change/${education_program_id}`)
-    // 	.then(res => {
-    // 		this.fetchPrograms();
-    // 		this.$snotify.warning('Đã thay đổi trạng thái');
-    // 	})
-    // 	.catch(err => console.log(err));
-    // },
-    // destroy(education_program_id) {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.delete(`../../api/admin/manage/mon-hoc/${education_program_id}`)
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchPrograms();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
-    // destroyall() {
-    // 	this.$snotify.clear();
-    // 	this.$snotify.confirm('Xác nhận xóa', {
-    // 		timeout: 5000,
-    // 		showProgressBar: true,
-    // 		closeOnClick: false,
-    // 		pauseOnHover: true,
-    // 		buttons: [{
-    // 			text: 'Xóa', 
-    // 			action: toast =>{
-    // 				this.$snotify.remove(toast.id);
-    // 				axios.post('../../api/admin/manage/mon-hoc/destroyall', { subject: this.selected })
-    // 				.then(res => {
-    // 					this.$snotify.success('Đã xóa!');
-    // 					this.fetchPrograms();
-    // 				})
-    // 				.catch(err => console.log(err));
-    // 			}, 
-    // 			bold: false
-    // 		},{
-    // 			text: 'Đóng', 
-    // 			action: toast => { 
-    // 				this.$snotify.remove(toast.id); 
-    // 			}, 
-    // 			bold: true
-    // 		}]
-    // 	});
-    // },
-    // select() {
-    // 	this.selected = [];
-    // 	if(!this.selectAll){
-    // 		for(let i in this.programs){
-    // 			this.selected.push(this.programs[i].education_program_id);
-    // 		}
-    // 	}
-    // },
+    change: function change(education_program_id) {
+      var _this6 = this;
+
+      axios.patch("../../api/admin/program/chuong-trinh-dao-tao/change/".concat(education_program_id)).then(function (res) {
+        _this6.fetchPrograms();
+
+        _this6.$snotify.warning('Đã thay đổi trạng thái');
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    destroy: function destroy(education_program_id) {
+      var _this7 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this7.$snotify.remove(toast.id);
+
+            axios["delete"]("../../api/admin/program/chuong-trinh-dao-tao/".concat(education_program_id)).then(function (res) {
+              _this7.$snotify.success('Đã xóa!');
+
+              _this7.fetchPrograms();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this7.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    destroyall: function destroyall() {
+      var _this8 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('Xác nhận xóa', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Xóa',
+          action: function action(toast) {
+            _this8.$snotify.remove(toast.id);
+
+            axios.post('../../api/admin/program/chuong-trinh-dao-tao/destroyall', {
+              educationProgram: _this8.selected
+            }).then(function (res) {
+              _this8.$snotify.success('Đã xóa!');
+
+              _this8.fetchPrograms();
+            })["catch"](function (err) {
+              return console.log(err);
+            });
+          },
+          bold: false
+        }, {
+          text: 'Đóng',
+          action: function action(toast) {
+            _this8.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
+    },
+    select: function select() {
+      this.selected = [];
+
+      if (!this.selectAll) {
+        for (var i in this.programs) {
+          this.selected.push(this.programs[i].education_program_id);
+        }
+      }
+    },
     // detail(subject, page_url) {
     // 	let vm = this;
     // 	page_url = `../../api/admin/manage/mon-hoc/detail/${subject.education_program_id}`;
@@ -4425,7 +4414,7 @@ __webpack_require__.r(__webpack_exports__);
     // 	window.location.href =`../../api/admin/manage/mon-hoc/export/${this.lecturer_faculty}`;
     // },
     filterCourse: function filterCourse(page_url) {
-      var _this6 = this;
+      var _this9 = this;
 
       var vm = this;
       this.value_major = '';
@@ -4433,14 +4422,14 @@ __webpack_require__.r(__webpack_exports__);
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this6.programs = res.data;
-        _this6.pagination = res.meta;
+        _this9.programs = res.data;
+        _this9.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
     },
     filterMajor: function filterMajor(page_url) {
-      var _this7 = this;
+      var _this10 = this;
 
       var vm = this;
       this.value_course = '';
@@ -4448,8 +4437,8 @@ __webpack_require__.r(__webpack_exports__);
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this7.programs = res.data;
-        _this7.pagination = res.meta;
+        _this10.programs = res.data;
+        _this10.pagination = res.meta;
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -85194,6 +85183,19 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-1" }, [
+                _c("button", {
+                  staticClass:
+                    "active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash",
+                  attrs: { disabled: !_vm.selected.length },
+                  on: {
+                    click: function($event) {
+                      return _vm.destroyall()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-4" }, [
                 _c(
                   "select",
@@ -85647,7 +85649,7 @@ var render = function() {
                                           on: {
                                             click: function($event) {
                                               return _vm.change(
-                                                program.education_education_program_id
+                                                program.education_program_id
                                               )
                                             }
                                           }

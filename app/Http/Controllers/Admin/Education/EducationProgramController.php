@@ -86,9 +86,10 @@ class EducationProgramController extends Controller
      * @param  \App\Models\EducationProgram  $educationProgram
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EducationProgram $educationProgram)
+    public function destroy($educationProgram)
     {
-        //
+        $pro = EducationProgram::find($educationProgram);
+        $pro->delete();
     }
 
     public function filter_course($course, $currentEntries)
@@ -99,5 +100,26 @@ class EducationProgramController extends Controller
     public function filter_major($major, $currentEntries)
     {
         return EducationProgramResource::collection(EducationProgram::where('education_program_major','LIKE','%'.$major.'%')->orderby('education_program_id','DESC')->paginate($currentEntries));
+    }
+
+    public function destroyall(Request $request, $educationProgram = null)
+    {
+        if ($request->educationProgram) {
+            foreach ($request->educationProgram as $id) {
+                EducationProgram::where('education_program_id', $id)->delete();
+            }
+        }
+    }
+
+    public function change(Request $request, $educationProgram)
+    {
+        $pro = EducationProgram::find($educationProgram);
+        if($pro->education_program_status==0){
+            $pro->education_program_status=1;
+            $pro->save();
+        }else{
+            $pro->education_program_status=0;
+            $pro->save();
+        }
     }
 }

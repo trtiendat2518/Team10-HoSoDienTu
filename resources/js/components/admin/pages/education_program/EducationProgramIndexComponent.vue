@@ -31,9 +31,9 @@
 					</div>
 
 					<div class="row">
-						<!-- <div class="col-md-1">
+						<div class="col-md-1">
 							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div> -->
+						</div>
 						<div class="col-md-4">
 							<select class="form-control mt-2" v-model="value_choose">
 								<option value="" disabled selected>Chọn kiểu lọc</option>
@@ -99,7 +99,7 @@
 									<td class="text-center">{{ program.education_program_credit}}</td>
 									<td class="td-styling text-center">
 										<div v-if="program.education_program_status==0">
-											<button class="fa fa-eye btn-eye" @click="change(program.education_education_program_id)"></button>
+											<button class="fa fa-eye btn-eye" @click="change(program.education_program_id)"></button>
 										</div>
 										<div v-else>
 											<button class="fa fa-eye-slash btn-eye-slash" @click="change(program.education_program_id)"></button>
@@ -263,31 +263,6 @@
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
-			</div> -->
-		</div>
-		<!-- Modal end-->
-
-		<!-- Modal -->
-		<!-- <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<form @submit.prevent="importFile()" @keydown="form.onKeydown($event)">
-					<div class="modal-content">
-						<div class="modal-header styling-modal-header-update">
-							<h5 class="modal-title" id="ImportModalTitle">Import môn học</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<label>Tệp Excel</label>
-							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="fileupload" @change="onFileChange">
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" @click="reloadFile()" >Tải lại</button>
-							<button :disabled="form.busy" type="submit" class="btn btn-primary">Import</button>
-						</div>
-					</div>
-				</form>
 			</div> -->
 		</div>
 		<!-- Modal end-->
@@ -479,78 +454,78 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// change(education_program_id) {
-			// 	axios.patch(`../../api/admin/manage/mon-hoc/change/${education_program_id}`)
-			// 	.then(res => {
-			// 		this.fetchPrograms();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// destroy(education_program_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/manage/mon-hoc/${education_program_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchPrograms();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/manage/mon-hoc/destroyall', { subject: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchPrograms();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.programs){
-			// 			this.selected.push(this.programs[i].education_program_id);
-			// 		}
-			// 	}
-			// },
+			change(education_program_id) {
+				axios.patch(`../../api/admin/program/chuong-trinh-dao-tao/change/${education_program_id}`)
+				.then(res => {
+					this.fetchPrograms();
+					this.$snotify.warning('Đã thay đổi trạng thái');
+				})
+				.catch(err => console.log(err));
+			},
+			destroy(education_program_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/program/chuong-trinh-dao-tao/${education_program_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchPrograms();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/program/chuong-trinh-dao-tao/destroyall', { educationProgram: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchPrograms();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			select() {
+				this.selected = [];
+				if(!this.selectAll){
+					for(let i in this.programs){
+						this.selected.push(this.programs[i].education_program_id);
+					}
+				}
+			},
 			// detail(subject, page_url) {
 			// 	let vm = this;
 			// 	page_url = `../../api/admin/manage/mon-hoc/detail/${subject.education_program_id}`;
