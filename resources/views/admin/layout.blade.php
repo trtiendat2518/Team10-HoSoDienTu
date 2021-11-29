@@ -9,11 +9,13 @@
 		<meta content="CAP - Team 10" name="author">
 		<meta name="keywords" content=""/>
 		@if (Session::get('admin_fullname'))
-		<meta name="user-fullname" content="{{ Session::get('admin_fullname') }}">
+		<meta name="admin-fullname" content="{{ Session::get('admin_fullname') }}">
 		@elseif (Session::get('lecturer_id'))
 		@foreach ($check_role as $check)
-		@if ($check->lecturer_role==1 || $check->lecturer_role==2)
-		<meta name="user-fullname" content="{{ Session::get('lecturer_id') }}">
+		@if ($check->lecturer_role==1)
+		<meta name="deanfaculty-id" content="{{ Session::get('lecturer_id') }}">
+		@elseif ($check->lecturer_role==2)
+		<meta name="formteacher-id" content="{{ Session::get('lecturer_id') }}">
 		@endif
 		@endforeach
 		@endif
@@ -51,13 +53,13 @@
 
 		<div class="page" id="app">
 			<div class="page-main">
-				@include('admin.panels.header');
+				@include('admin.panels.header')
 				
-				@include('admin.panels.slidebar');
+				@include('admin.panels.slidebar')
 				
-				@yield('admin-content');
+				@yield('admin-content')
 
-				@include('admin.panels.footer');
+				@include('admin.panels.footer')
 			</div>
 		</div>
 		<!-- End Page -->
@@ -80,8 +82,6 @@
 		<script src="{{asset('public/lecturer/plugins/toggle-sidebar/sidemenu.js')}}"></script>
 		<!-- Sidebar Accordions js -->
 		<script src="{{asset('public/lecturer/plugins/accordion1/js/easyResponsiveTabs.js')}}"></script>
-		<!-- Custom scroll bar js-->
-		<script src="{{asset('public/lecturer/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js')}}"></script>
 		<!-- Rightsidebar js -->
 		<script src="{{asset('public/lecturer/plugins/sidebar/sidebar.js')}}"></script>
 		<!-- Custom js-->

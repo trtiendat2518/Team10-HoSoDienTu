@@ -154,7 +154,7 @@
 			return {
 				faculties:[],
 				lecturers:[],
-				lecturer_id: this.$userId,
+				lecturer_id: this.$facultyId,
 				lecturer_faculty:'',
 				subjects:[],
 				subject_id:'',

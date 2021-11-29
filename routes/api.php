@@ -66,7 +66,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('edu-course')->group(function(){
-        Route::get('khoa-hoc/course/','Admin\Education\CourseController@course');
+        Route::get('khoa-hoc/course','Admin\Education\CourseController@course');
         Route::post('khoa-hoc/import', 'Admin\Education\CourseController@import');
         Route::get('khoa-hoc/export', 'Admin\Education\CourseController@export');
         Route::get('khoa-hoc/detail/{course}','Admin\Education\CourseController@detail');
@@ -98,5 +98,10 @@ Route::prefix('admin')->group(function(){
         Route::get('mon-hoc/searchother/{faculty}/{query}/{currentEntries}','Admin\Education\SubjectController@searchother');
         Route::get('mon-hoc/search/{faculty}/{query}/{currentEntries}','Admin\Education\SubjectController@search');
         Route::resource('mon-hoc', 'Admin\Education\SubjectController');
+    });
+
+    Route::prefix('program')->group(function(){
+        Route::get('chuong-trinh-dao-tao/showdata/{lecturer_id}/{currentEntries}','Admin\Education\EducationProgramController@showdata');
+        Route::resource('chuong-trinh-dao-tao', 'Admin\Education\EducationProgramController');
     });
 });
