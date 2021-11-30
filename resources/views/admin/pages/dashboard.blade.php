@@ -1,7 +1,7 @@
 @extends('admin.layout');
 @section('admin-content')
 <!-- app-content-->
-<div class="app-content  my-3 my-md-5 toggle-content" >
+<div class="app-content toggle-content" >
 	@if (Session::get('admin_id'))
 	<div class="side-app" style="padding-top: 0px;">
 		<main-component></main-component>

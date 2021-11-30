@@ -372,7 +372,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-sv/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/user-sv/sinh-vien/search/'+this.query+'/'+this.currentEntries+'?page=1';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -502,15 +502,15 @@
 				this.value_role='';
 			},
 			studentCourse(info) {
-				const course = this.courses.find((crs) => crs.course_id === info.student_course);
+				const course = this.courses.find((crs) => crs.course_code === info.student_course);
 				return course.course_code;
 			},
 			studentFaculty(info) {
-				const faculty = this.faculties.find((fac) => fac.faculty_id === info.student_faculty);
+				const faculty = this.faculties.find((fac) => fac.faculty_code === info.student_faculty);
 				return faculty.faculty_name;
 			},
 			studentMajor(info) {
-				const major = this.majors.find((mjr) => mjr.major_id === info.student_major);
+				const major = this.majors.find((mjr) => mjr.major_code === info.student_major);
 				return major.major_name;
 			},
 		}

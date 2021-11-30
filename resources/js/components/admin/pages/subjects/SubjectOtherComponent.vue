@@ -33,7 +33,7 @@
 							<select class="form-control mt-2" v-model="value_faculty">
 								<option value="" disabled selected>Lọc theo khoa</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_id" :hidden="faculty.faculty_id==lecturer_faculty">{{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :value="faculty.faculty_code" :hidden="faculty.faculty_code==lecturer_faculty">{{ faculty.faculty_name }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -154,7 +154,7 @@
 			return {
 				faculties:[],
 				lecturers:[],
-				lecturer_id: this.$userId,
+				lecturer_id: this.$facultyId,
 				lecturer_faculty:'',
 				subjects:[],
 				subject_id:'',
@@ -273,7 +273,7 @@
 					this.details = res.data;
 					this.form.fill(subject);
 					let faculty = this.faculties.filter(function(fct){
-						return fct.faculty_id===subject.subject_faculty
+						return fct.faculty_code===subject.subject_faculty
 					})
 					this.subject_faculty = faculty[0].faculty_name;
 					$('#DetailModal').modal('show');
@@ -286,7 +286,7 @@
 				this.value_faculty='';
 			},
 			getFacultyName(subject) {
-				const faculty = this.faculties.find((fac) => fac.faculty_id === subject.subject_faculty);
+				const faculty = this.faculties.find((fac) => fac.faculty_code === subject.subject_faculty);
 				return faculty.faculty_name;
 			},
 			filter(page_url) {

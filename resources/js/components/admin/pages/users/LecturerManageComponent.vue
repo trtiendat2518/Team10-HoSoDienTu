@@ -253,7 +253,7 @@
 					</div>
 					<div class="modal-body" v-show="!details.length">
 						<div class="alert alert-danger">
-							Giảng viên này chưa cập nhật thông tin!
+							Giảng viên này chưa cập nhật đủ thông tin!
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -345,7 +345,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-gv/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/user-gv/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page=1';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -454,7 +454,7 @@
 				.then(res => {
 					this.details = res.data;
 					this.form.fill(lecturer);
-					const faculty = this.faculties.find((fac) => fac.faculty_id === lecturer.lecturer_faculty );
+					const faculty = this.faculties.find((fac) => fac.faculty_code === lecturer.lecturer_faculty );
 					this.lecturer_faculty = faculty.faculty_name;
 					$('#DetailModal').modal('show');
 				})

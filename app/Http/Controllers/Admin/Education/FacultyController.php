@@ -190,6 +190,6 @@ class FacultyController extends Controller
 
     public function faculty()
     {
-        return FacultyResource::collection(Faculty::where('faculty_status',0)->orderby('faculty_name','DESC')->get());
+        return FacultyResource::collection(Faculty::orderby('faculty_name','DESC')->get());
     }
 }

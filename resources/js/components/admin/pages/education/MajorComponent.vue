@@ -135,7 +135,7 @@
 							<select v-model="form.major_faculty" name="major_faculty" class="form-control select-option" :class="{'is-invalid': form.errors.has('major_faculty')}">
 								<option value="" selected disabled>Chọn Khoa</option>
 								<option disabled>---------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_code">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :value="faculty.faculty_code" :hidden="faculty.faculty_status>0">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
 							</select>
 							<div class="text-danger mb-3" v-if="form.errors.has('major_faculty')" v-html="form.errors.get('major_faculty')"></div>
 
@@ -311,7 +311,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page=1';
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {

@@ -14,7 +14,7 @@ class SubjectExport implements FromQuery, WithHeadings, WithMapping, WithColumnW
 {
     use Exportable;
 
-    public function __construct(int $faculty)
+    public function __construct(string $faculty)
     {
         $this->faculty = $faculty;
     }
