@@ -18,7 +18,7 @@ class TableEducationProgram extends Migration
             $table->string('education_program_code', 10);
             $table->integer('education_program_course');
             $table->integer('education_program_major');
-            $table->integer('education_program_faculty');
+            $table->string('education_program_faculty',10);
             $table->integer('education_program_year');
             $table->integer('education_program_credit')->default(0);
             $table->integer('education_program_status')->default(0);

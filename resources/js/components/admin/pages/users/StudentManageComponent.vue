@@ -127,7 +127,7 @@
 						</div>
 						<div class="modal-body">
 							<label>Họ và tên</label>
-							<input v-model="form.student_fullname" type="text" name="student_fullname"class="form-control not-allowed mb-3" disabled>
+							<input v-model="form.student_fullname" type="text" name="student_fullname" class="form-control not-allowed mb-3" disabled>
 
 							<label>Địa chỉ Email</label>
 							<input v-model="form.student_email" type="text" name="student_email" class="form-control not-allowed" disabled>

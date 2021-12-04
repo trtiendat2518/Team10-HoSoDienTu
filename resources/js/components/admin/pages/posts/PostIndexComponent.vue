@@ -33,7 +33,7 @@
 							<select class="form-control mt-2" v-model="value_author">
 								<option value="" disabled selected>Lọc theo tác giả</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="admin in admins" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
+								<option v-for="admin in admins" :key="admin.admin_id" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">

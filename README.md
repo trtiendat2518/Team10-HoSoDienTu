@@ -2,7 +2,7 @@
 <br>
 <p>2. move into code folder</p>
 <br>
-<p>3. git checkout trantiendat</p>
+<p>3. git checkout < your branch > </p>
 <br>
 <p>4. composer update</p>
 <br>
@@ -18,8 +18,3 @@
 <br>
 <p>8. php artisan key:generate</p>
 <br>
-<p>9. run the necessary commands:</p>
-<ul>
-	<li>npm install vue-snotify</li>
-	<li>npm install vform</li>
-</ul>

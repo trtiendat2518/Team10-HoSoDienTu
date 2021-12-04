@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin\Education;
 
 use App\Http\Controllers\Controller;
 use App\Models\EducationProgram;
+use App\Models\ProgramDetail;
 use Illuminate\Http\Request;
+use Excel;
+use App\Imports\ProgramDetailImport;
 use App\Http\Resources\EducationProgramResource;
 
 class EducationProgramController extends Controller
@@ -43,7 +46,42 @@ class EducationProgramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'education_program_code' => ['required', 'max:10', 'unique:tbl_education_program', 'notspecial_spaces'],
+            'education_program_type' => ['required'],
+            'education_program_course' => ['required'],
+            'education_program_year' => ['required', 'max:10'],
+            'education_program_status' => ['required'],
+            'file_data' => ['required', 'file', 'mimes:xls,xlsx'],
+        ],[
+            'education_program_code.required' => 'Mã CTĐT không dược để trống!',
+            'education_program_code.max' => 'Mã CTĐT không nhập quá 10 ký tự!',
+            'education_program_code.unique' => 'Mã CTĐT đã tồn tại!',
+            'education_program_code.notspecial_spaces' => 'Mã CTĐT không được chứa ký tự đặc biệt!',
+
+            'education_program_year.required' => 'Năm đào tạo không dược để trống!',
+            'education_program_year.max' => 'Năm đào tạo không nhập quá 100 ký tự!',
+
+            'education_program_type.required' => 'Vui lòng chọn hệ đào tạo!',
+            'education_program_course.required' => 'Vui lòng chọn khóa học!',
+            'education_program_status.required' => 'Vui lòng chọn trạng thái!',
+
+            'file_data.required' => 'Vui lòng không để trống file!',
+            'file_data.file' => 'Vui lòng nhập tệp Excel để import!',
+            'file_data.mimes' => 'Vui lòng nhập tệp Excel để import!',
+        ]);
+
+        $program = new EducationProgram();
+        $program->education_program_code = $data['education_program_code'];
+        $program->education_program_type = $data['education_program_type'];
+        $program->education_program_course = $data['education_program_course'];
+        $program->education_program_year = $data['education_program_year'];
+        $program->education_program_faculty = $request->education_program_faculty;
+        $program->education_program_status = $data['education_program_status'];
+        $save = $program->save();
+        $program_code = $data['education_program_code'];
+        $path = $request->file('file_data')->getRealPath();
+        $import = Excel::import(new ProgramDetailImport($program_code), $path);
     }
 
     /**

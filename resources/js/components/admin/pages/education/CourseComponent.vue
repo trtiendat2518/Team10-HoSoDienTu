@@ -115,7 +115,7 @@
 						</div>
 						<div class="modal-body">
 							<label>Mã khóa học</label>
-							<input v-model="form.course_code" type="text" name="course_code"class="form-control" placeholder="Nhập mã khóa học" :disabled="editMode" :class="[{'is-invalid': form.errors.has('course_code')}, {'not-allowed': editMode}]">
+							<input v-model="form.course_code" type="text" name="course_code" class="form-control" placeholder="Nhập mã khóa học" :disabled="editMode" :class="[{'is-invalid': form.errors.has('course_code')}, {'not-allowed': editMode}]">
 							<div class="text-danger" v-if="form.errors.has('course_code')" v-html="form.errors.get('course_code')"></div>
 
 							<label class="mt-3">Tên khóa học</label>

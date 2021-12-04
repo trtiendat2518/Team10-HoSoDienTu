@@ -87,6 +87,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('manage')->group(function(){
+        Route::get('mon-hoc/subject', 'Admin\Education\SubjectController@subject');
         Route::post('mon-hoc/import/{faculty}', 'Admin\Education\SubjectController@import');
         Route::get('mon-hoc/export/{faculty}', 'Admin\Education\SubjectController@export');
         Route::get('mon-hoc/filter/{faculty}/{currentEntries}', 'Admin\Education\SubjectController@filter');
@@ -107,5 +108,13 @@ Route::prefix('admin')->group(function(){
         Route::get('chuong-trinh-dao-tao/filter-major/{major}/{currentEntries}', 'Admin\Education\EducationProgramController@filter_major');
         Route::get('chuong-trinh-dao-tao/showdata/{lecturer_id}/{currentEntries}','Admin\Education\EducationProgramController@showdata');
         Route::resource('chuong-trinh-dao-tao', 'Admin\Education\EducationProgramController');
+    });
+
+    Route::prefix('type')->group(function(){
+        Route::get('he-dao-tao/program-type','Admin\Education\ProgramTypeController@program_type');
+        Route::patch('he-dao-tao/change/{programType}', 'Admin\Education\ProgramTypeController@change');
+        Route::post('he-dao-tao/destroyall/', 'Admin\Education\ProgramTypeController@destroyall');
+        Route::get('he-dao-tao/search/{query}/{currentEntries}','Admin\Education\ProgramTypeController@search');
+        Route::resource('he-dao-tao', 'Admin\Education\ProgramTypeController');
     });
 });
