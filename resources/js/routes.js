@@ -23,6 +23,7 @@ import SubjectOther from "./components/admin/pages/subjects/SubjectOtherComponen
 import EducationProgram from "./components/admin/pages/education_program/EducationProgramComponent.vue";
 import EducationProgramIndex from "./components/admin/pages/education_program/EducationProgramIndexComponent.vue";
 import EducationProgramCreate from "./components/admin/pages/education_program/EducationProgramCreateComponent.vue";
+import EducationProgramUpdate from "./components/admin/pages/education_program/EducationProgramUpdateComponent.vue";
 import ProgramType from "./components/admin/pages/education_program/ProgramTypeComponent.vue";
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
@@ -214,6 +215,12 @@ export default new VueRouter({
                     path: "tao-moi",
                     name: "educationprogramcreate",
                     component: EducationProgramCreate
+                },
+
+                {
+                    path: "cap-nhat/:idProgram",
+                    name: "educationprogramupdate",
+                    component: EducationProgramUpdate
                 }
             ],
             beforeEnter: (to, from, next) => {

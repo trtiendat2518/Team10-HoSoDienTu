@@ -94,7 +94,7 @@
 						<input type="file" class="form-control" id="file_data" name="file_data" ref="fileupload" @change="onFileChange">
 					</div>
 
-					<!-- <div v-show="displayData.length">
+					<div v-show="displayData.length">
 						<h3 class="text-center"><strong>Chương trình đào tạo</strong></h3>
 						<table class="table table-striped">
 							<thead class="thead-styling">
@@ -118,10 +118,10 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="data in displayData" :key="data.ma_mon_hoc">
+								<tr v-for="(data, index) in displayData" :key="data.ma_mon_hoc">
 									<td hidden>{{ getCode(data) }}</td>
 									<td class="text-center" scope="row">
-										{{ data.stt }}
+										{{ index += 1 }}
 									</td>
 									<td class="text-center">{{ subject_code }}</td>
 									<td class="text-center">{{ subject_name }}</td>
@@ -152,7 +152,7 @@
 								</tr>
 							</tbody>
 						</table>
-					</div> -->
+					</div>
 
 					<div class="card-footer text-right">
 						<button :disabled="form.busy" class="btn btn-success btn-lg mt-1" type="submit">Lưu</button>
@@ -199,6 +199,7 @@
 				subject_score_final: "",
 				subject_type: "",
 				error: {},
+				number_no: 1
 			};
 		},
 		mounted() {
@@ -330,7 +331,9 @@
 						this.$snotify.success('Thêm mới thành công!');
 						this.form.clear();
 						this.form.reset();
+						this.displayData=[];
 						this.$refs.fileupload.value='';
+						this.form.file_data='';
 					}
 				})
 				.catch(err => {

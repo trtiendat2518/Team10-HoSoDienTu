@@ -48,140 +48,79 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table
-                        class="table card-table table-vcenter text-nowrap table-nowrap"
-                        >
-                        <thead class="blue-background text-white">
-                            <tr>
-                                <th class="w-5">
-                                    <input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll"/>
-                                </th>
-                                <th class="text-white w-15">Mã CTĐT</th>
-                                <th class="text-white w-45">
-                                    Tên chương trình đào tạo
-                                </th>
-                                <th class="text-white w-10 text-center">
-                                    Tổng năm học
-                                </th>
-                                <th class="text-white w-10 text-center">
-                                    Tổng tín chỉ
-                                </th>
-                                <th class="text-white w-5 text-center">
-                                    Trạng thái
-                                </th>
-                                <th class="w-5"></th>
-                                <th class="w-5"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-show="programs.length" v-for="program in programs" :key="program.education_program_id">
-                                <td>
-                                    <center>
-                                        <input type="checkbox" :value="program.education_program_id" v-model="selected"/>
-                                    </center>
-                                </td>
-                                <td @click="detail(program)">
-                                    <a href="javascript:void(0)">
-                                        {{ program.education_program_code }}
-                                    </a>
-                                </td>
-                                <td>{{ nameProgram(program) }}</td>
-                                <td class="text-center">
-                                    {{ program.education_program_year }}
-                                </td>
-                                <td class="text-center">
-                                    {{ program.education_program_credit }}
-                                </td>
-                                <td class="td-styling text-center">
-                                    <div v-if="program.education_program_status == 0">
-                                        <button class="fa fa-eye btn-eye" @click="change(program.education_program_id)"></button>
-                                    </div>
-                                    <div v-else>
-                                        <button  class="fa fa-eye-slash btn-eye-slash" @click="change(program.education_program_id)"></button>
-                                    </div>
-                                </td>
-                                <td style="text-align: center">
-                                    <button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(program)"></button>
-                                </td>
-                                <td>
-                                    <button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(program.education_program_id)"></button>
-                                </td>
-                            </tr>
-                            <tr v-show="!programs.length">
-                                <td colspan="8">
-                                    <div class="alert alert-danger">
-                                        Không tìm thấy kết quả phù hợp!
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchPrograms()"></pagination>
+                        <table class="table card-table table-vcenter text-nowrap table-nowrap">
+                            <thead class="blue-background text-white">
+                                <tr>
+                                    <th class="w-5">
+                                        <input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll"/>
+                                    </th>
+                                    <th class="text-white w-20">Mã CTĐT</th>
+                                    <th class="text-white w-40">
+                                        Tên chương trình đào tạo
+                                    </th>
+                                    <th class="text-white w-10 text-center">
+                                        Tổng năm học
+                                    </th>
+                                    <th class="text-white w-10 text-center">
+                                        Tổng tín chỉ
+                                    </th>
+                                    <th class="text-white w-5 text-center">
+                                        Trạng thái
+                                    </th>
+                                    <th class="w-5"></th>
+                                    <th class="w-5"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-show="programs.length" v-for="program in programs" :key="program.education_program_id">
+                                    <td>
+                                        <center>
+                                            <input type="checkbox" :value="program.education_program_id" v-model="selected"/>
+                                        </center>
+                                    </td>
+                                    <td @click="detail(program)">
+                                        <a href="javascript:void(0)">
+                                            {{ program.education_program_code }}
+                                        </a>
+                                    </td>
+                                    <td>{{ nameProgram(program) }}</td>
+                                    <td class="text-center">
+                                        {{ program.education_program_year }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ program.education_program_credit }}
+                                    </td>
+                                    <td class="td-styling text-center">
+                                        <div v-if="program.education_program_status == 0">
+                                            <button class="fa fa-eye btn-eye" @click="change(program.education_program_id)"></button>
+                                        </div>
+                                        <div v-else>
+                                            <button  class="fa fa-eye-slash btn-eye-slash" @click="change(program.education_program_id)"></button>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <router-link class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'educationprogramupdate', params: {idProgram: program.education_program_id} }"></router-link>
+                                    </td>
+                                    <td>
+                                        <button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(program.education_program_id)"></button>
+                                    </td>
+                                </tr>
+                                <tr v-show="!programs.length">
+                                    <td colspan="8">
+                                        <div class="alert alert-danger">
+                                            Không tìm thấy kết quả phù hợp!
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchPrograms()"></pagination>
+                    </div>
+                    <!-- table-responsive -->
                 </div>
-                <!-- table-responsive -->
             </div>
+            <!-- col end -->
         </div>
-        <!-- col end -->
-    </div>
-    <!-- Modal -->
-        <!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header styling-modal-header-info">
-						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết môn học</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<table class="table row table-borderless w-100 m-0 border">
-							<tbody class="col-lg-6 p-0">
-								<tr>
-									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
-								</tr>
-								<tr>
-									<td>Mã Môn học: <strong> {{ form.subject_code }}</strong></td>
-								</tr>
-								<tr>
-									<td>Tên Môn học: <strong> {{ form.subject_name }}</strong></td>
-								</tr>
-								<tr>
-									<td>Số tín chỉ: <strong> {{ form.subject_credit }}</strong></td>
-								</tr>
-								<tr>
-									<td>Khoa: <strong> {{ subject_faculty }}</strong></td>
-								</tr>
-								<tr>
-									<td>Loại môn học:
-										<strong v-if="form.subject_type==0"> Bắt buộc</strong>
-										<strong v-else> Tự chọn</strong>
-									</td>
-								</tr>
-							</tbody>
-							<tbody class="col-lg-6 p-0">
-								<tr>
-									<td class="h3-strong"><h3><strong> Số tiết (giờ)</strong></h3></td>
-								</tr>
-								<tr>
-									<td>Lý thuyết:
-										<strong>{{ form.subject_theory_period }}</strong>
-									</td>
-								</tr>
-								<tr>
-									<td>Thực hành:
-										<strong>{{ form.subject_practice_period }}</strong>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-					</div>
-				</div>
-			</div>
-		</div> -->
-        <!-- Modal end-->
     </div>
 </template>
 
@@ -401,9 +340,6 @@
             // 		$('#DetailModal').modal('show');
             // 	})
             // 	.catch(err => console.log(err));
-            // },
-            // exportFile() {
-            // 	window.location.href =`../../api/admin/manage/mon-hoc/export/${this.lecturer_faculty}`;
             // },
         }
     };
