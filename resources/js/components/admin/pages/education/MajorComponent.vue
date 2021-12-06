@@ -41,7 +41,7 @@
 							<select class="form-control mt-2" v-model="value_faculty">
 								<option value="" disabled selected>Lọc theo khoa</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_code">{{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :key="faculty.faculty_code" :value="faculty.faculty_code">{{ faculty.faculty_name }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -124,7 +124,7 @@
 						</div>
 						<div class="modal-body">
 							<label>Mã Chuyên Ngành</label>
-							<input v-model="form.major_code" type="text" name="major_code"class="form-control" placeholder="Nhập mã Chuyên Ngành" :disabled="editMode" :class="[{'is-invalid': form.errors.has('major_code')}, {'not-allowed': editMode}]">
+							<input v-model="form.major_code" type="text" name="major_code" class="form-control" placeholder="Nhập mã Chuyên Ngành" :disabled="editMode" :class="[{'is-invalid': form.errors.has('major_code')}, {'not-allowed': editMode}]">
 							<div class="text-danger" v-if="form.errors.has('major_code')" v-html="form.errors.get('major_code')"></div>
 
 							<label class="mt-3">Tên Chuyên Ngành</label>
@@ -135,7 +135,7 @@
 							<select v-model="form.major_faculty" name="major_faculty" class="form-control select-option" :class="{'is-invalid': form.errors.has('major_faculty')}">
 								<option value="" selected disabled>Chọn Khoa</option>
 								<option disabled>---------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_code">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :key="faculty.faculty_code" :value="faculty.faculty_code" :hidden="faculty.faculty_status>0">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
 							</select>
 							<div class="text-danger mb-3" v-if="form.errors.has('major_faculty')" v-html="form.errors.get('major_faculty')"></div>
 
@@ -258,7 +258,7 @@
 					this.pagination=1;
 					this.fetchMajors();
 				}else{
-					this.pagination=1;
+					this.pagination.current_page=1;
 					this.fetchMajors();
 				}
 			},
@@ -267,6 +267,7 @@
 					this.fetchMajors();
 				}else{
 					this.value_faculty='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -274,6 +275,7 @@
 				if(faculty === ''){
 					this.fetchMajors();
 				}else{
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},
@@ -309,7 +311,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {

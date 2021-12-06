@@ -10,7 +10,6 @@ use Excel;
 use App\Exports\MajorExport;
 use App\Imports\MajorImport;
 use Validator;
-use Session;
 
 class MajorController extends Controller
 {
@@ -142,7 +141,7 @@ class MajorController extends Controller
 
     public function major()
     {
-        return MajorResource::collection(Major::where('major_status',0)->orderby('major_name','DESC')->get());
+        return MajorResource::collection(Major::orderby('major_name','DESC')->get());
     }
 
     public function destroyall(Request $request, $major = null)

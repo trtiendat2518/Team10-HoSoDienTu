@@ -128,7 +128,7 @@ class LecturerManageController extends Controller
 
     public function lecturer()
     {
-        return LecturerManageResource::collection(Lecturer::where('lecturer_status',0)->orderby('lecturer_id','DESC')->get());
+        return LecturerManageResource::collection(Lecturer::orderby('lecturer_id','DESC')->get());
     }
 
     public function admin()
