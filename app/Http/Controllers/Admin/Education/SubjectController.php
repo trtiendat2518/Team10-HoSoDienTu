@@ -10,7 +10,6 @@ use Excel;
 use App\Exports\SubjectExport;
 use App\Imports\SubjectImport;
 use Validator;
-use Session;
 
 class SubjectController extends Controller
 {
@@ -48,6 +47,9 @@ class SubjectController extends Controller
             'subject_credit' => ['required', 'max:11'],
             'subject_practice_period' => ['required', 'max:11'],
             'subject_theory_period' => ['required', 'max:11'],
+            'subject_score_exercise' => ['required', 'max:11', 'sum:100,subject_score_exam,subject_score_final'],
+            'subject_score_exam' => ['required', 'max:11', 'sum:100,subject_score_exercise,subject_score_final'],
+            'subject_score_final' => ['required', 'max:11', 'sum:100,subject_score_exercise,subject_score_exam'],
             'subject_type' => ['required'],
             'subject_status' => ['required'],
         ],[
@@ -71,6 +73,18 @@ class SubjectController extends Controller
             'subject_theory_period.required' => 'Số giờ lý thuyết không dược để trống!',
             'subject_theory_period.max' => 'Số giờ lý thuyết không nhập quá 11 ký tự số!',
 
+            'subject_score_exercise.required' => 'Trọng số bài tập không dược để trống!',
+            'subject_score_exercise.max' => 'Trọng số bài tập không nhập quá 11 ký tự số!',
+            'subject_score_exercise.sum' => 'Tổng trọng số phải bằng 100!',
+
+            'subject_score_exam.required' => 'Trọng số kiểm tra không dược để trống!',
+            'subject_score_exam.max' => 'Trọng số kiểm tra không nhập quá 11 ký tự số!',
+            'subject_score_exam.sum' => 'Tổng trọng số phải bằng 100!',
+
+            'subject_score_final.required' => 'Trọng số thi không dược để trống!',
+            'subject_score_final.max' => 'Trọng số thi không nhập quá 11 ký tự số!',
+            'subject_score_final.sum' => 'Tổng trọng số phải bằng 100!',
+
             'subject_type.required' => 'Loại Môn học không dược để trống!',
             'subject_status.required' => 'Trạng thái Môn học không dược để trống!',
         ]);
@@ -82,6 +96,9 @@ class SubjectController extends Controller
         $subject->subject_credit = $data['subject_credit'];
         $subject->subject_theory_period = $data['subject_theory_period'];
         $subject->subject_practice_period = $data['subject_practice_period'];
+        $subject->subject_score_exercise = $data['subject_score_exercise'];
+        $subject->subject_score_exam = $data['subject_score_exam'];
+        $subject->subject_score_final = $data['subject_score_final'];
         $subject->subject_type = $data['subject_type'];
         $subject->subject_status = $data['subject_status'];
         $subject->save();
@@ -136,8 +153,10 @@ class SubjectController extends Controller
             'subject_credit' => ['required', 'max:11'],
             'subject_practice_period' => ['required', 'max:11'],
             'subject_theory_period' => ['required', 'max:11'],
+            'subject_score_exercise' => ['required', 'max:11', 'sum:100,subject_score_exam,subject_score_final'],
+            'subject_score_exam' => ['required', 'max:11', 'sum:100,subject_score_exercise,subject_score_final'],
+            'subject_score_final' => ['required', 'max:11', 'sum:100,subject_score_exercise,subject_score_exam'],
             'subject_type' => ['required'],
-            'subject_status' => ['required'],
         ],[
             'subject_code.required' => 'Mã Môn học không dược để trống!',
             'subject_code.max' => 'Mã Môn học không nhập quá 10 ký tự chữ!',
@@ -157,6 +176,18 @@ class SubjectController extends Controller
             'subject_theory_period.required' => 'Số giờ lý thuyết không dược để trống!',
             'subject_theory_period.max' => 'Số giờ lý thuyết không nhập quá 11 ký tự số!',
 
+            'subject_score_exercise.required' => 'Trọng số bài tập không dược để trống!',
+            'subject_score_exercise.max' => 'Trọng số bài tập không nhập quá 11 ký tự số!',
+            'subject_score_exercise.sum' => 'Tổng trọng số phải bằng 100!',
+
+            'subject_score_exam.required' => 'Trọng số kiểm tra không dược để trống!',
+            'subject_score_exam.max' => 'Trọng số kiểm tra không nhập quá 11 ký tự số!',
+            'subject_score_exam.sum' => 'Tổng trọng số phải bằng 100!',
+
+            'subject_score_final.required' => 'Trọng số thi không dược để trống!',
+            'subject_score_final.max' => 'Trọng số thi không nhập quá 11 ký tự số!',
+            'subject_score_final.sum' => 'Tổng trọng số phải bằng 100!',
+
             'subject_type.required' => 'Loại Môn học không dược để trống!',
             'subject_status.required' => 'Trạng thái Môn học không dược để trống!',
         ]);
@@ -167,8 +198,10 @@ class SubjectController extends Controller
         $sj->subject_credit = $data['subject_credit'];
         $sj->subject_theory_period = $data['subject_theory_period'];
         $sj->subject_practice_period = $data['subject_practice_period'];
+        $sj->subject_score_exercise = $data['subject_score_exercise'];
+        $sj->subject_score_exam = $data['subject_score_exam'];
+        $sj->subject_score_final = $data['subject_score_final'];
         $sj->subject_type = $data['subject_type'];
-        $sj->subject_status = $data['subject_status'];
         $sj->save();
     }
 
@@ -244,5 +277,10 @@ class SubjectController extends Controller
         $path = $request->file('fileImport')->getRealPath();
         $data = Excel::import(new SubjectImport($faculty), $path);
         return response()->json(200);
+    }
+
+    public function subject(Request $request)
+    {
+        return SubjectResource::collection(Subject::orderby('subject_id', 'DESC')->get());
     }
 }

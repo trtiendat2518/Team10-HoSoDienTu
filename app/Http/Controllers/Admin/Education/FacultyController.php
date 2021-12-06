@@ -10,7 +10,6 @@ use Excel;
 use App\Exports\FacultyExport;
 use App\Imports\FacultyImport;
 use Validator;
-use Session;
 
 class FacultyController extends Controller
 {
