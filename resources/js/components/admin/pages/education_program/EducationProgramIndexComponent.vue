@@ -78,10 +78,8 @@
                                             <input type="checkbox" :value="program.education_program_id" v-model="selected"/>
                                         </center>
                                     </td>
-                                    <td @click="detail(program)">
-                                        <a href="javascript:void(0)">
-                                            {{ program.education_program_code }}
-                                        </a>
+                                    <td>
+                                        <router-link tag="a" :to="{ name: 'educationprogramdetail', params: {idProgram: program.education_program_id} }">{{ program.education_program_code }}</router-link>
                                     </td>
                                     <td>{{ nameProgram(program) }}</td>
                                     <td class="text-center">
@@ -325,22 +323,6 @@
                     }
                 }
             },
-            // detail(subject, page_url) {
-            // 	let vm = this;
-            // 	page_url = `../../api/admin/manage/mon-hoc/detail/${subject.education_program_id}`;
-            // 	fetch(page_url)
-            // 	.then(res => res.json())
-            // 	.then(res => {
-            // 		this.details = res.data;
-            // 		this.form.fill(subject);
-            // 		let faculty = this.faculties.filter(function(fct){
-            // 			return fct.faculty_id===subject.subject_faculty
-            // 		})
-            // 		this.subject_faculty = faculty[0].faculty_name;
-            // 		$('#DetailModal').modal('show');
-            // 	})
-            // 	.catch(err => console.log(err));
-            // },
         }
     };
 </script>
