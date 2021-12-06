@@ -554,6 +554,7 @@
 				axios.post(`../../api/admin/program/chuong-trinh-dao-tao/update-subject-program/${this.updatedata.subject_id}`, formData)
 				.then(res => {
 					this.$snotify.success('Cập nhật Khoa thành công!');
+					$('#UpdateModal').modal('hide');
 				})
 				.catch(err => {
 					this.$snotify.error(err.response.data.errors.subject_semester[0]);
