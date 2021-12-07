@@ -9,6 +9,7 @@ require('./bootstrap');
 import Form from 'vform'
 import notify from './notify.js'
 import formatDatetime from './format-datetime.js'
+import formatNumber from './format-number.js'
 import compo from './component.js'
 import router from './routes.js'
 

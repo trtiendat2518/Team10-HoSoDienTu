@@ -13,7 +13,7 @@
             </ol>
             <!-- End breadcrumb -->
         </div>
-        <router-link tag="button" class="btn btn-info btn-lg mb-3" :to="{ name: 'educationprogramcreate' }">
+        <router-link tag="button" class="btn btn-info btn-lg mb-3 btn-3d" :to="{ name: 'educationprogramcreate' }">
             <li class="fa fa-plus"></li>
             Tạo mới
         </router-link>
@@ -30,7 +30,7 @@
 
                     <div class="row">
                         <div class="col-md-1">
-                            <button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
+                            <button class="btn btn-danger mt-3 ml-3 btn-lg fa fa-trash btn-3d" @click="destroyall()" :disabled="!selected.length"></button>
                         </div>
                         <div class="col-md-9"></div>
                         <div class="col-md-2">
@@ -97,10 +97,10 @@
                                         </div>
                                     </td>
                                     <td style="text-align: center">
-                                        <router-link class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'educationprogramupdate', params: {idProgram: program.education_program_id} }"></router-link>
+                                        <router-link class="btn btn-success btn-lg fa fa-pencil-square-o btn-3d" tag="button" :to="{ name: 'educationprogramupdate', params: {idProgram: program.education_program_id} }"></router-link>
                                     </td>
                                     <td>
-                                        <button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(program.education_program_id)"></button>
+                                        <button class="btn btn-danger btn-lg fa fa-trash btn-3d" @click="destroy(program.education_program_id)"></button>
                                     </td>
                                 </tr>
                                 <tr v-show="!programs.length">
@@ -394,5 +394,9 @@
     .styling-strong {
         word-wrap: break-word;
         white-space: pre-line;
+    }
+    .btn-3d {
+        border-bottom: 3px solid #6c757db0;
+        border-right: 3px solid #6c757db0;
     }
 </style>

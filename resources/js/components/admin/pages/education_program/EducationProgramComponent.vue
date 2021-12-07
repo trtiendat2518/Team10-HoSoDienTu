@@ -1,33 +1,23 @@
 <template>
 	<div>
-		<transition name="slide">
+		<transition appear
+                    enter-class=""
+                    enter-active-class="animate__animated animate__fast"
+                    leave-class=""
+                    leave-active-class="animate__animated animate__fast">
 			<router-view></router-view>
 		</transition>
 	</div>
 </template>
 
 <script>
+	import 'animate.css';
 	export default {
 	};
 </script>
 
 <style lang="css" scoped>
-	.slide-leave-active {
-		transition: opacity 1s ease;
-		opacity: 0;
-		animation: slide-out 1s ease-out forwards;
-	}
-	.slide-leave {
-		opacity: 1;
-		transform: translateX(0);
-	}
-
-	@keyframes slide-out {
-		0% {
-			transform: translateX(0);
-		}	
-		100% {
-			transform: translateX(30px);
-		}
+	.animate__animated.animate__fast {
+		--animate-duration: 0.4s;
 	}
 </style>

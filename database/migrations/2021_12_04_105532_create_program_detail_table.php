@@ -18,7 +18,7 @@ class CreateProgramDetailTable extends Migration
             $table->string('program_detail_code', 10);
             $table->string('program_detail_subject', 10);
             $table->integer('program_detail_semester');
-            $table->string('program_detail_major', 10);
+            $table->string('program_detail_note', 10);
         });
     }
 

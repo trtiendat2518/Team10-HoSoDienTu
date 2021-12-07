@@ -12,7 +12,7 @@
 				<li class="breadcrumb-item active" aria-current="page">Tạo mới</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<button class="btn btn-primary mb-3" @click="back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại</button>
+		<button class="btn btn-primary mb-3 btn-3d" @click="back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại</button>
 		<div class="card">
 			<div class="card-header styling">
 				<h3 class="card-title">Tạo mới bài viết</h3>
@@ -42,7 +42,7 @@
 						</select>
 					</div>
 					<div class="card-footer text-right">
-						<button type="submit" class="btn btn-lg btn-success mt-1">Lưu</button>
+						<button type="submit" class="btn btn-lg btn-success mt-1 btn-3d">Lưu</button>
 					</div>
 				</form>
 			</div>
@@ -170,5 +170,9 @@
 		background-color: darkblue;
 		color: white;
 		border-left: 2px solid white;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>
