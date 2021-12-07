@@ -20,7 +20,7 @@
 			</ol>
 			<!-- End breadcrumb -->
 		</div>
-		<router-link tag="button" class="btn btn-lg btn-primary mb-3" :to="{ name: 'educationprogramindex' }">
+		<router-link tag="button" class="btn btn-lg btn-primary mb-3 btn-3d" :to="{ name: 'educationprogramindex' }">
 			<i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại
 		</router-link>
 		<div class="card">
@@ -36,7 +36,7 @@
 								<select class="form-control" name="education_program_type" v-model="form.education_program_type" :class="{'is-invalid': form.errors.has('education_program_type')}">
 									<option value="" disabled selected="">Chọn hệ đào tạo</option>
 									<option value="" disabled>-------</option>
-									<option v-for="type in types" :key="type.program_type_code" :value="type.program_type_code">{{ type.program_type_name }}</option>
+									<option v-for="type in types" :key="type.program_type_code" :value="type.program_type_code" :hidden="type.program_type_status>0">{{ type.program_type_name }}</option>
 								</select>
 								<div class="text-danger" v-if="form.errors.has('education_program_type')" v-html="form.errors.get('education_program_type')"></div>
 							</div>
@@ -155,7 +155,7 @@
 					</div>
 
 					<div class="card-footer text-right">
-						<button :disabled="form.busy" class="btn btn-success btn-lg mt-1" type="submit">Lưu</button>
+						<button :disabled="form.busy" class="btn btn-success btn-lg mt-1 btn-3d" type="submit">Lưu</button>
 					</div>
 				</form>
 			</div>
@@ -364,5 +364,9 @@
 	td {
 		vertical-align: middle;
 		border: 0.5px solid black !important;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757d;
+		border-right: 3px solid #6c757d;
 	}
 </style>

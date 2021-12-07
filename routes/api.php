@@ -122,4 +122,8 @@ Route::prefix('admin')->group(function(){
         Route::get('he-dao-tao/search/{query}/{currentEntries}','Admin\Education\ProgramTypeController@search');
         Route::resource('he-dao-tao', 'Admin\Education\ProgramTypeController');
     });
+
+    Route::prefix('procedure')->group(function() {
+        Route::resource('thu-tuc', 'Admin\Posts\ProcedureController');
+    });
 });

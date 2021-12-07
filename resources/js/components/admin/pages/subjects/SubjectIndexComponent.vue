@@ -11,12 +11,12 @@
 		</div>
 		<div class="row">
 			<div class="col-md-9">
-				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
-				<router-link class="btn btn-outline-dark btn-lg mb-3" tag="button" :to="{ name: 'subjectother' }"><li class="fa fa-info"></li> Xem môn học của khoa khác</router-link>
+				<button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
+				<router-link class="btn btn-outline-dark btn-lg mb-3 btn-3d" tag="button" :to="{ name: 'subjectother' }"><li class="fa fa-info"></li> Xem môn học của khoa khác</router-link>
 			</div>
 			<div class="col-md-3">
-				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
-				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
+				<button class="btn btn-import btn-lg mb-3 btn-3d" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
+				<button class="btn btn-export btn-lg mb-3 btn-3d" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
 			</div>
 		</div>
 		<div class="row">
@@ -27,13 +27,13 @@
 							<h3 class="card-title">Danh sách Môn học</h3>
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+							<button class="btn btn-lg btn-primary btn-3d fa fa-refresh" @click="reload()"> Tải lại</button>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-md-1">
-							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
+							<button class="btn btn-danger mt-3 ml-3 btn-lg fa fa-trash btn-3d" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
 						<div class="col-md-9">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
@@ -86,10 +86,10 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(subject)"></button>
+										<button class="btn btn-success btn-lg fa fa-pencil-square-o btn-3d" @click="show(subject)"></button>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(subject.subject_id)"></button>
+										<button class="btn btn-danger btn-lg fa fa-trash btn-3d" @click="destroy(subject.subject_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!subjects.length">
@@ -195,8 +195,8 @@
 
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button :disabled="form.busy" type="submit" class="btn btn-primary background-update">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
+							<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary background-update btn-3d">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
 						</div>
 					</div>
 				</form>
@@ -277,7 +277,7 @@
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
@@ -300,8 +300,8 @@
 							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="fileupload" @change="onFileChange">
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" @click="reloadFile()" >Tải lại</button>
-							<button :disabled="form.busy" type="submit" class="btn btn-primary">Import</button>
+							<button type="button" class="btn btn-secondary btn-3d" @click="reloadFile()" >Tải lại</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary btn-3d">Import</button>
 						</div>
 					</div>
 				</form>
@@ -670,5 +670,9 @@
 	.styling-strong {
 		word-wrap: break-word;
 		white-space: pre-line;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757d;
+		border-right: 3px solid #6c757d;
 	}
 </style>
