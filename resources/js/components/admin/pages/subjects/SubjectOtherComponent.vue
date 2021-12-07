@@ -33,7 +33,7 @@
 							<select class="form-control mt-2" v-model="value_faculty">
 								<option value="" disabled selected>Lọc theo khoa</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_code" :hidden="faculty.faculty_code==lecturer_faculty">{{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :key="faculty.faculty_code" :value="faculty.faculty_code" :hidden="faculty.faculty_code==lecturer_faculty">{{ faculty.faculty_name }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -99,7 +99,7 @@
 						<table class="table row table-borderless w-100 m-0 border">
 							<tbody class="col-lg-6 p-0">
 								<tr>
-									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
+									<td class="h3-strong"><h3><strong><u> Thông tin chi tiết</u></strong></h3></td>
 								</tr>
 								<tr>
 									<td>Mã Môn học: <strong> {{ form.subject_code }}</strong></td>
@@ -120,18 +120,38 @@
 									</td>
 								</tr>
 							</tbody>
-							<tbody class="col-lg-6 p-0">
+							<tbody class="col-lg-3 p-0">
 								<tr>
-									<td class="h3-strong"><h3><strong> Số tiết (giờ)</strong></h3></td>
+									<td class="h3-strong"><h3><strong><u> Số tiết</u></strong></h3></td>
 								</tr>
 								<tr>
 									<td>Lý thuyết: 
-										<strong>{{ form.subject_theory_period }}</strong>
+										<strong>{{ form.subject_theory_period }} giờ</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Thực hành: 
-										<strong>{{ form.subject_practice_period }}</strong>
+										<strong>{{ form.subject_practice_period }} giờ</strong>
+									</td>
+								</tr>
+							</tbody>
+							<tbody class="col-lg-3 p-0">
+								<tr>
+									<td class="h3-strong"><h3><strong><u> Trọng số</u></strong></h3></td>
+								</tr>
+								<tr>
+									<td>Điểm bài tập: 
+										<strong>{{ form.subject_score_exercise }}%</strong>
+									</td>
+								</tr>
+								<tr>
+									<td>Điểm kiểm tra: 
+										<strong>{{ form.subject_score_exam }}%</strong>
+									</td>
+								</tr>
+								<tr>
+									<td>Điểm thi: 
+										<strong>{{ form.subject_score_final }}%</strong>
 									</td>
 								</tr>
 							</tbody>
@@ -173,6 +193,9 @@
 					subject_credit:'',
 					subject_practice_period:'',
 					subject_theory_period:'',
+					subject_score_exercise:'',
+					subject_score_exam:'',
+					subject_score_final:'',
 					subject_type: '',
 					subject_status:''
 				}),

@@ -48,6 +48,13 @@
                                 <i class="side-menu__icon fa fa-book"></i>
                                 <span class="side-menu__label">Khóa học</span>
                             </router-link>
+                        </li>
+
+                        <li class="slide">
+                            <router-link tag="a" class="side-menu__item" to="/he-dao-tao" active-class="active">
+                                <i class="side-menu__icon fa fa-leanpub"></i>
+                                <span class="side-menu__label">Hệ thống đào tạo</span>
+                            </router-link>
                         </li>   
 
                         <li class="slide">

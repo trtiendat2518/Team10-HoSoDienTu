@@ -10,7 +10,6 @@ use Excel;
 use App\Exports\MajorExport;
 use App\Imports\MajorImport;
 use Validator;
-use Session;
 
 class MajorController extends Controller
 {
