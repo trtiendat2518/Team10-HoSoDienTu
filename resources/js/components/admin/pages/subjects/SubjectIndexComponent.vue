@@ -123,17 +123,17 @@
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-md-6">
-									<label>Mã môn học</label>
+									<label>Mã môn học <span :hidden="editMode" class="text-danger">(*)</span></label>
 									<input v-model="form.subject_code" type="text" name="subject_code" class="form-control" placeholder="Nhập mã môn học" :disabled="editMode" :class="[{'is-invalid': form.errors.has('subject_code')}, {'not-allowed': editMode}]">
 									<div class="text-danger" v-if="form.errors.has('subject_code')" v-html="form.errors.get('subject_code')"></div>
 								</div>
 								<div class="col-md-3">
-									<label>Số tín chỉ</label>
+									<label>Số tín chỉ <span class="text-danger">(*)</span></label>
 									<input v-model="form.subject_credit" type="number" min="0" name="subject_credit" class="form-control" placeholder="Nhập sô tín chỉ" :class="[{'is-invalid': form.errors.has('subject_credit')}]">
 									<div class="text-danger" v-if="form.errors.has('subject_credit')" v-html="form.errors.get('subject_credit')"></div>
 								</div>
 								<div class="col-md-3">
-									<label>Loại môn học</label>
+									<label>Loại môn học <span class="text-danger">(*)</span></label>
 									<select v-model="form.subject_type" name="subject_type" class="form-control select-option" :class="{'is-invalid': form.errors.has('subject_type')}">
 										<option value="" selected disabled>Chọn loại</option>
 										<option disabled>---------------</option>
@@ -146,17 +146,17 @@
 
 							<div class="row">
 								<div class="col-md-6">
-									<label class="mt-3">Tên môn học</label>
+									<label class="mt-3">Tên môn học <span class="text-danger">(*)</span></label>
 									<input v-model="form.subject_name" type="text" name="subject_name" class="form-control" placeholder="Nhập tên môn học" :class="{'is-invalid': form.errors.has('subject_name')}">
 									<div class="text-danger" v-if="form.errors.has('subject_name')" v-html="form.errors.get('subject_name')"></div>
 								</div>
 								<div class="col-md-3">
-									<label class="mt-3">Số giờ lý thuyết</label>
+									<label class="mt-3">Số giờ lý thuyết <span class="text-danger">(*)</span></label>
 									<input v-model="form.subject_theory_period" type="number" min="0" name="subject_theory_period" class="form-control" placeholder="Nhập số giờ" :class="[{'is-invalid': form.errors.has('subject_theory_period')}]">
 									<div class="text-danger" v-if="form.errors.has('subject_theory_period')" v-html="form.errors.get('subject_theory_period')"></div>
 								</div>
 								<div class="col-md-3">
-									<label class="mt-3">Số giờ thực hành</label>
+									<label class="mt-3">Số giờ thực hành <span class="text-danger">(*)</span></label>
 									<input v-model="form.subject_practice_period" type="number" min="0" name="subject_practice_period" class="form-control" placeholder="Nhập số giờ" :class="[{'is-invalid': form.errors.has('subject_practice_period')}]">
 									<div class="text-danger" v-if="form.errors.has('subject_practice_period')" v-html="form.errors.get('subject_practice_period')"></div>
 								</div>
@@ -164,24 +164,24 @@
 
 							<div class="row">
 								<div class="col-md-3" :class="{'col-md-4': editMode}">
-									<label class="mt-3">Điểm bài tập</label>
+									<label class="mt-3">Điểm bài tập <span class="text-danger">(*)</span></label>
 									<input v-model="form.subject_score_exercise" type="number" min="0" name="subject_score_exercise" class="form-control" placeholder="Nhập số phần trăm" :class="[{'is-invalid': form.errors.has('subject_score_exercise')}]">
 									<div class="text-danger" v-if="form.errors.has('subject_score_exercise')" v-html="form.errors.get('subject_score_exercise')"></div>
 								</div>
 								<div class="col-md-3" :class="{'col-md-4': editMode}">
-									<label class="mt-3">Điểm kiểm tra</label>
+									<label class="mt-3">Điểm kiểm tra <span class="text-danger">(*)</span></label>
 									<input v-model="form.subject_score_exam" type="number" min="0" name="subject_score_exam" class="form-control" placeholder="Nhập số phần trăm" :class="[{'is-invalid': form.errors.has('subject_score_exam')}]">
 									<div class="text-danger" v-if="form.errors.has('subject_score_exam')" v-html="form.errors.get('subject_score_exam')"></div>
 								</div>
 								<div class="col-md-3" :class="{'col-md-4': editMode}">
-									<label class="mt-3">Điểm thi</label>
+									<label class="mt-3">Điểm thi <span class="text-danger">(*)</span></label>
 									<input v-model="form.subject_score_final" type="number" min="0" name="subject_score_final" class="form-control" placeholder="Nhập số phần trăm" :class="[{'is-invalid': form.errors.has('subject_score_final')}]">
 									<div class="text-danger" v-if="form.errors.has('subject_score_final')" v-html="form.errors.get('subject_score_final')"></div>
 								</div>
 
 								<div class="col-md-3">
 									<div v-if="!editMode">
-										<label class="mt-3">Trạng thái</label>
+										<label class="mt-3">Trạng thái <span class="text-danger">(*)</span></label>
 										<select v-model="form.subject_status" name="subject_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('subject_status')}">
 											<option value="" selected disabled>Chọn trạng thái</option>
 											<option disabled>---------------</option>
@@ -296,7 +296,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Tệp Excel</label>
+							<label>Tệp Excel <span class="text-danger">(*)</span></label>
 							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="fileupload" @change="onFileChange">
 						</div>
 						<div class="modal-footer">

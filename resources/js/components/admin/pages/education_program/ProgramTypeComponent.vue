@@ -106,16 +106,16 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Mã hệ đào tạo</label>
+							<label>Mã hệ đào tạo <span :hidden="editMode" class="text-danger">(*)</span></label>
 							<input v-model="form.program_type_code" type="text" name="program_type_code" class="form-control" placeholder="Nhập mã hệ thống đào tạo" :disabled="editMode" :class="[{'is-invalid': form.errors.has('program_type_code')}, {'not-allowed': editMode}]">
 							<div class="text-danger" v-if="form.errors.has('program_type_code')" v-html="form.errors.get('program_type_code')"></div>
 
-							<label class="mt-3">Tên môn học</label>
+							<label class="mt-3">Tên môn học <span class="text-danger">(*)</span></label>
 							<input v-model="form.program_type_name" type="text" name="program_type_name" class="form-control" placeholder="Nhập tên hệ thống đào tạo" :class="{'is-invalid': form.errors.has('program_type_name')}">
 							<div class="text-danger" v-if="form.errors.has('program_type_name')" v-html="form.errors.get('program_type_name')"></div>
 
 							<div v-if="!editMode">
-								<label class="mt-3">Trạng thái</label>
+								<label class="mt-3">Trạng thái <span class="text-danger">(*)</span></label>
 								<select v-model="form.program_type_status" name="program_type_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('program_type_status')}">
 									<option value="" selected disabled>Chọn trạng thái</option>
 									<option disabled>---------------</option>

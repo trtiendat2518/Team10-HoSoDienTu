@@ -32,7 +32,7 @@
 					<div class="row">
 						<div class="col-md-8">
 							<div class="form-group">
-								<label class="form-label">Hệ đào tạo</label>
+								<label class="form-label">Hệ đào tạo <span class="text-danger">(*)</span></label>
 								<select class="form-control" name="education_program_type" v-model="form.education_program_type" :class="{'is-invalid': form.errors.has('education_program_type')}">
 									<option value="" disabled selected="">Chọn hệ đào tạo</option>
 									<option value="" disabled>-------</option>
@@ -43,7 +43,7 @@
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
-								<label class="form-label">Khóa học</label>
+								<label class="form-label">Khóa học <span class="text-danger">(*)</span></label>
 								<select class="form-control" name="education_program_course" v-model="form.education_program_course" :class="{'is-invalid': form.errors.has('education_program_course')}">
 									<option value="" disabled selected="">
 										Chọn khóa học
@@ -59,23 +59,21 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label class="form-label">
-									Mã chương trình đào tạo
-								</label>
+								<label class="form-label">Mã chương trình đào tạo <span class="text-danger">(*)</span></label>
 								<input type="text" name="education_program_code" class="form-control" v-model="form.education_program_code" :class="{'is-invalid': form.errors.has('education_program_code')}" placeholder="Nhập mã cho CTĐT"/>
 								<div class="text-danger" v-if="form.errors.has('education_program_code')" v-html="form.errors.get('education_program_code')"></div>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-								<label class="form-label"> Tổng năm đào tạo </label>
+								<label class="form-label"> Tổng năm đào tạo <span class="text-danger">(*)</span></label>
 								<input type="number" name="education_program_year" class="form-control" v-model="form.education_program_year" :class="{'is-invalid': form.errors.has('education_program_year')}" placeholder="Nhập số năm"/>
 								<div class="text-danger" v-if="form.errors.has('education_program_year')" v-html="form.errors.get('education_program_year')"></div>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-								<label class="form-label">Trạng thái</label> 
+								<label class="form-label">Trạng thái <span class="text-danger">(*)</span></label> 
 								<select class="form-control" name="education_program_status" v-model="form.education_program_status" :class="{'is-invalid': form.errors.has('education_program_status')}">
 									<option value="" disabled selected="">
 										Chọn Trạng thái
@@ -90,7 +88,7 @@
 					</div>
 					
 					<div class="form-group">
-						<label class="form-label">Tệp Excel</label>
+						<label class="form-label">Tệp Excel <span class="text-danger">(*)</span></label>
 						<input type="file" class="form-control" id="file_data" name="file_data" ref="fileupload" @change="onFileChange">
 					</div>
 

@@ -9,7 +9,7 @@
 				<li class="breadcrumb-item active" aria-current="page">Danh sách thủ tục</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<router-link tag="button" class="btn btn-info btn-lg mb-3 btn-3d" :to="{ name: 'procedureindex' }">
+		<router-link tag="button" class="btn btn-info btn-lg mb-3 btn-3d" :to="{ name: 'procedurecreate' }">
             <li class="fa fa-plus"></li>
             Tạo mới
         </router-link>

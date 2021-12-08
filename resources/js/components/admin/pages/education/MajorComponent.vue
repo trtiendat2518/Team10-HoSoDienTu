@@ -123,15 +123,15 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Mã Chuyên Ngành</label>
+							<label>Mã Chuyên Ngành <span :hidden="editMode" class="text-danger">(*)</span></label>
 							<input v-model="form.major_code" type="text" name="major_code" class="form-control" placeholder="Nhập mã Chuyên Ngành" :disabled="editMode" :class="[{'is-invalid': form.errors.has('major_code')}, {'not-allowed': editMode}]">
 							<div class="text-danger" v-if="form.errors.has('major_code')" v-html="form.errors.get('major_code')"></div>
 
-							<label class="mt-3">Tên Chuyên Ngành</label>
+							<label class="mt-3">Tên Chuyên Ngành <span class="text-danger">(*)</span></label>
 							<input v-model="form.major_name" type="text" name="major_name" class="form-control" placeholder="Nhập tên Chuyên Ngành" :class="{'is-invalid': form.errors.has('major_name')}">
 							<div class="text-danger" v-if="form.errors.has('major_name')" v-html="form.errors.get('major_name')"></div>
 
-							<label class="mt-3">Thuộc Khoa</label>
+							<label class="mt-3">Thuộc Khoa <span class="text-danger">(*)</span></label>
 							<select v-model="form.major_faculty" name="major_faculty" class="form-control select-option" :class="{'is-invalid': form.errors.has('major_faculty')}">
 								<option value="" selected disabled>Chọn Khoa</option>
 								<option disabled>---------------</option>
@@ -140,7 +140,7 @@
 							<div class="text-danger mb-3" v-if="form.errors.has('major_faculty')" v-html="form.errors.get('major_faculty')"></div>
 
 							<div v-if="!editMode">
-								<label class="mt-3">Trạng thái</label>
+								<label class="mt-3">Trạng thái <span class="text-danger">(*)</span></label>
 								<select v-model="form.major_status" name="major_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('major_status')}">
 									<option value="" selected disabled>Chọn trạng thái:</option>
 									<option disabled>---------------</option>
@@ -206,7 +206,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Tệp Excel</label>
+							<label>Tệp Excel <span class="text-danger">(*)</span></label>
 							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="fileupload" @change="onFileChange">
 						</div>
 						<div class="modal-footer">
