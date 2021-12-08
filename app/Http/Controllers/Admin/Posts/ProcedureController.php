@@ -159,4 +159,14 @@ class ProcedureController extends Controller
             }
         }
     }
+
+    public function search($query, $currentEntries)
+    {
+        return ProcedureResource::collection(Procedure::where('procedure_title','LIKE','%'.$query.'%')->orderby('procedure_id','DESC')->paginate($currentEntries));
+    }
+
+    public function filter($value, $currentEntries)
+    {
+        return ProcedureResource::collection(Procedure::where('procedure_category','LIKE','%'.$value.'%')->orderby('procedure_id','DESC')->paginate($currentEntries));
+    }
 }
