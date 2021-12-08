@@ -29,16 +29,18 @@
 						<div class="col-md-1">
 							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
-						<!-- <div class="col-md-6">
+						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
 						<div class="col-md-3">
 							<select class="form-control mt-2" v-model="value_category">
-								<option value="" disabled selected>Lọc theo tác giả</option>
+								<option value="" disabled selected>Lọc theo danh mục</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="admin in admins" :key="admin.admin_id" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
+								<option value="0">Phòng đào tạo</option>
+								<option value="1">Phòng hành chính</option>
+								<option value="2">Trung tâm hỗ trợ sinh viên</option>
 							</select>
-						</div> -->
+						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -117,8 +119,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<!-- <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchProcedures() : search() "></pagination> -->
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchProcedures()"></pagination>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchProcedures() : search() "></pagination>
 					</div>
 					<!-- table-responsive -->
 				</div>
@@ -166,24 +167,24 @@
 					this.fetchProcedures();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchProcedures();
-			// 	}else{
-			// 		this.value_author='';
-			// 		this.pagination.current_page=1;
-			// 		this.search();
-			// 	}
-			// },
-			// value_author(admin){
-			// 	if(admin === ''){
-			// 		this.fetchProcedures();
-			// 	}else{
-			// 		this.query='';
-			// 		this.pagination.current_page=1;
-			// 		this.filter();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchProcedures();
+				}else{
+					this.value_category='';
+					this.pagination.current_page=1;
+					this.search();
+				}
+			},
+			value_category(value){
+				if(value === ''){
+					this.fetchProcedures();
+				}else{
+					this.query='';
+					this.pagination.current_page=1;
+					this.filter();
+				}
+			},
 		},
 		mounted() {
 			this.fetchProcedures();
@@ -203,17 +204,17 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.procedures = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			search(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/procedure/thu-tuc/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.procedures = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			change(procedure_id) {
 				axios.patch(`../../api/admin/procedure/thu-tuc/change/${procedure_id}`)
 				.then(res => {
@@ -291,17 +292,17 @@
 				this.query='';
 				this.value_category='';
 			},
-			// filter(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/post-news/bai-viet/filter/'+this.value_author+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.procedures = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			filter(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/procedure/thu-tuc/filter/'+this.value_category+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.procedures = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 		}
 	};
 </script>
