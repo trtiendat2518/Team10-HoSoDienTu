@@ -57,7 +57,7 @@
 					<div class="row">
 						<div class="col-md-8">
 							<div class="form-group">
-								<label class="form-label">Hệ đào tạo</label>
+								<label class="form-label">Hệ đào tạo <span class="text-danger">(*)</span></label>
 								<select class="form-control" name="education_program_type" v-model="form.education_program_type" :class="{'is-invalid': form.errors.has('education_program_type')}">
 									<option value="" disabled selected="">Chọn hệ đào tạo</option>
 									<option value="" disabled>-------</option>
@@ -68,7 +68,7 @@
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
-								<label class="form-label"> Tổng năm đào tạo </label>
+								<label class="form-label"> Tổng năm đào tạo <span class="text-danger">(*)</span></label>
 								<input type="number" name="education_program_year" class="form-control" v-model="form.education_program_year" :class="{'is-invalid': form.errors.has('education_program_year')}"/>
 								<div class="text-danger" v-if="form.errors.has('education_program_year')" v-html="form.errors.get('education_program_year')"></div>
 							</div>
@@ -265,7 +265,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Tệp Excel</label>
+							<label>Tệp Excel <span class="text-danger">(*)</span></label>
 							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="importupload" @change="onFileChange">
 						</div>
 						<div class="modal-footer">
@@ -291,11 +291,11 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label>Mã môn học</label>
+								<label>Mã môn học <span class="text-danger">(*)</span></label>
 								<input v-model="updatedata.subject_code" class="form-control not-allow" name="subject_code" disabled>
 							</div>
 							<div class="form-group">
-								<label>Học kỳ</label>
+								<label>Học kỳ <span class="text-danger">(*)</span></label>
 								<input v-model="updatedata.subject_semester" type="number" class="form-control" name="subject_semester">
 							</div>
 							<div class="form-group">

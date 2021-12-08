@@ -21,14 +21,14 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label class="form-label">Tiêu đề</label>
+								<label class="form-label">Tiêu đề <span class="text-danger">(*)</span></label>
 								<input v-model="form.post_title" type="text" class="form-control">
 							</div>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">Nội dung</label>
+						<label class="form-label">Nội dung <span class="text-danger">(*)</span></label>
 						<vue-editor v-model="form.post_content" :editorToolbar="customToolbar"></vue-editor>
 					</div>
 					<div class="card-footer text-right">

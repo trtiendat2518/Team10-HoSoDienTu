@@ -114,16 +114,16 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Mã khoa</label>
+							<label>Mã khoa <span :hidden="editMode" class="text-danger">(*)</span></label>
 							<input v-model="form.faculty_code" type="text" name="faculty_code" class="form-control" placeholder="Nhập mã Khoa" :disabled="editMode" :class="[{'is-invalid': form.errors.has('faculty_code')}, {'not-allowed': editMode}]">
 							<div class="text-danger" v-if="form.errors.has('faculty_code')" v-html="form.errors.get('faculty_code')"></div>
 
-							<label class="mt-3">Tên Khoa</label>
+							<label class="mt-3">Tên Khoa <span class="text-danger">(*)</span></label>
 							<input v-model="form.faculty_name" type="text" name="faculty_name" class="form-control" placeholder="Nhập tên Khoa" :class="{'is-invalid': form.errors.has('faculty_name')}">
 							<div class="text-danger" v-if="form.errors.has('faculty_name')" v-html="form.errors.get('faculty_name')"></div>
 
 							<div v-if="!editMode">
-								<label class="mt-3">Trạng thái</label>
+								<label class="mt-3">Trạng thái <span class="text-danger">(*)</span></label>
 								<select v-model="form.faculty_status" name="faculty_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('faculty_status')}">
 									<option value="" selected disabled>Chọn trạng thái:</option>
 									<option disabled>---------------</option>
@@ -204,7 +204,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Tệp Excel</label>
+							<label>Tệp Excel <span class="text-danger">(*)</span></label>
 							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="fileupload" @change="onFileChange">
 						</div>
 						<div class="modal-footer">
