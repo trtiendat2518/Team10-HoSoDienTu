@@ -24,7 +24,13 @@ import EducationProgram from "./components/admin/pages/education_program/Educati
 import EducationProgramIndex from "./components/admin/pages/education_program/EducationProgramIndexComponent.vue";
 import EducationProgramCreate from "./components/admin/pages/education_program/EducationProgramCreateComponent.vue";
 import EducationProgramUpdate from "./components/admin/pages/education_program/EducationProgramUpdateComponent.vue";
+import EducationProgramDetail from "./components/admin/pages/education_program/EducationProgramDetailComponent.vue";
 import ProgramType from "./components/admin/pages/education_program/ProgramTypeComponent.vue";
+
+import Procedure from "./components/admin/pages/procedures/ProcedureComponent.vue";
+import ProcedureIndex from "./components/admin/pages/procedures/ProcedureIndexComponent.vue";
+import ProcedureCreate from "./components/admin/pages/procedures/ProcedureCreateComponent.vue";
+import ProcedureUpdate from "./components/admin/pages/procedures/ProcedureUpdateComponent.vue";
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
@@ -40,6 +46,14 @@ if (document.querySelector("meta[name='admin-fullname']")) {
     Vue.prototype.$teacherId = document
         .querySelector("meta[name='formteacher-id']")
         .getAttribute("content");
+}
+
+if (document.querySelector("meta[name='admin-fullname']")) {
+    Vue.prototype.$adminId = document.querySelector("meta[name='admin-fullname']").getAttribute('content');
+} else if (document.querySelector("meta[name='deanfaculty-id']")) {
+    Vue.prototype.$facultyId = document.querySelector("meta[name='deanfaculty-id']").getAttribute('content');
+} else if (document.querySelector("meta[name='formteacher-id']")) {
+    Vue.prototype.$teacherId = document.querySelector("meta[name='formteacher-id']").getAttribute('content');
 }
 
 export default new VueRouter({
@@ -221,10 +235,48 @@ export default new VueRouter({
                     path: "cap-nhat/:idProgram",
                     name: "educationprogramupdate",
                     component: EducationProgramUpdate
+                },
+
+                {
+                    path: "chi-tiet/:idProgram",
+                    name: "educationprogramdetail",
+                    component: EducationProgramDetail
                 }
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$facultyId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/thu-tuc",
+            name: "procedure",
+            component: Procedure,
+            children: [
+                {
+                    path: "",
+                    name: "procedureindex",
+                    component: ProcedureIndex
+                },
+
+                {
+                    path: "tao-moi",
+                    name: "procedurecreate",
+                    component: ProcedureCreate
+                },
+
+                {
+                    path: "cap-nhat/:idProcedure",
+                    name: "procedureupdate",
+                    component: ProcedureUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminId != null) {
                     next();
                 } else {
                     next(false);
