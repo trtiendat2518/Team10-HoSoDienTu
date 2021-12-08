@@ -102,7 +102,7 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<router-link class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'postupdate', params: {idPost: procedure.procedure_id} }"></router-link>
+										<router-link class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'procedureupdate', params: {idProcedure: procedure.procedure_id} }"></router-link>
 									</td>
 									<td>
 										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(procedure.procedure_id)"></button>

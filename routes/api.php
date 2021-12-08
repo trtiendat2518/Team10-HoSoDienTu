@@ -124,6 +124,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('procedure')->group(function() {
+        Route::get('thu-tuc/procedure-one/{procedure_id}','Admin\Posts\ProcedureController@procedure');
         Route::resource('thu-tuc', 'Admin\Posts\ProcedureController');
     });
 });

@@ -84,9 +84,42 @@ class ProcedureController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $procedure_id)
     {
-        //
+        $data = $request->validate([
+            'procedure_title' => ['required', 'max:200', 'min:10', 'unique:tbl_procedure'],
+            'procedure_content' => ['required', 'min:20'],
+            'procedure_time' => ['required', 'max:10'],
+            'procedure_method' => ['required'],
+            'procedure_fee' => ['required', 'max:10'],
+            'procedure_category' => ['required'],
+        ],[
+            'procedure_title.required' => 'Tiêu đề thủ tục không dược để trống!',
+            'procedure_title.max' => 'Tiêu đề thủ tục không nhập quá 200 ký tự!',
+            'procedure_title.min' => 'Tiêu đề thủ tục phải có 10 ký tự trở lên!',
+            'procedure_title.unique' => 'Tiêu đề thủ tục đã tồn tại!',
+
+            'procedure_content.required' => 'Nội dung thủ tục không dược để trống!',
+            'procedure_content.min' => 'Nội dung thủ tục phải có 20 ký tự trở lên!',
+
+            'procedure_time.required' => 'Thời gian chuẩn bị thủ tục không dược để trống!',
+            'procedure_time.max' => 'Thời gian chuẩn bị thủ tục tối đa có 10 ký tự!',
+
+            'procedure_fee.required' => 'Phí của thủ tục không dược để trống!',
+            'procedure_fee.max' => 'Phí của thủ tục tối đa có 10 ký tự!',
+
+            'procedure_method.required' => 'Vui lòng chọn phương thức cho thủ tục này!',
+            'procedure_category.required' => 'Vui lòng chọn danh mục cho thủ tục này!',
+        ]);
+
+        $procedure = Procedure::find($procedure_id);
+        $procedure->procedure_title = $data['procedure_title'];
+        $procedure->procedure_content = $data['procedure_content'];
+        $procedure->procedure_time = $data['procedure_time'];
+        $procedure->procedure_method = $data['procedure_method'];
+        $procedure->procedure_fee = $data['procedure_fee'];
+        $procedure->procedure_category = $data['procedure_category'];
+        $procedure->save();
     }
 
     /**
@@ -98,5 +131,10 @@ class ProcedureController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function procedure(Request $request, $procedure_id)
+    {
+        return ProcedureResource::collection(Procedure::where('procedure_id', $procedure_id)->orderby('procedure_id','DESC')->get());
     }
 }
