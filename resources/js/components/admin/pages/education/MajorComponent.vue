@@ -11,11 +11,11 @@
 		</div>
 		<div class="row">
 			<div class="col-md-9">
-				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
+				<button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 			</div>
 			<div class="col-md-3">
-				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
-				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
+				<button class="btn btn-import btn-lg mb-3 btn-3d" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
+				<button class="btn btn-export btn-lg mb-3 btn-3d" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
 			</div>
 		</div>
 		<div class="row">
@@ -26,7 +26,7 @@
 							<h3 class="card-title">Danh sách Chuyên Ngành</h3>
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+							<button class="btn btn-lg btn-primary fa fa-refresh btn-3d" @click="reload()"> Tải lại</button>
 						</div>
 					</div>
 
@@ -41,7 +41,7 @@
 							<select class="form-control mt-2" v-model="value_faculty">
 								<option value="" disabled selected>Lọc theo khoa</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_code">{{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :key="faculty.faculty_code" :value="faculty.faculty_code">{{ faculty.faculty_name }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -88,10 +88,10 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(major)"></button>
+										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(major)"></button>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(major.major_id)"></button>
+										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(major.major_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!majors.length">
@@ -124,7 +124,7 @@
 						</div>
 						<div class="modal-body">
 							<label>Mã Chuyên Ngành</label>
-							<input v-model="form.major_code" type="text" name="major_code"class="form-control" placeholder="Nhập mã Chuyên Ngành" :disabled="editMode" :class="[{'is-invalid': form.errors.has('major_code')}, {'not-allowed': editMode}]">
+							<input v-model="form.major_code" type="text" name="major_code" class="form-control" placeholder="Nhập mã Chuyên Ngành" :disabled="editMode" :class="[{'is-invalid': form.errors.has('major_code')}, {'not-allowed': editMode}]">
 							<div class="text-danger" v-if="form.errors.has('major_code')" v-html="form.errors.get('major_code')"></div>
 
 							<label class="mt-3">Tên Chuyên Ngành</label>
@@ -135,7 +135,7 @@
 							<select v-model="form.major_faculty" name="major_faculty" class="form-control select-option" :class="{'is-invalid': form.errors.has('major_faculty')}">
 								<option value="" selected disabled>Chọn Khoa</option>
 								<option disabled>---------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_code" :hidden="faculty.faculty_status>0">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :key="faculty.faculty_code" :value="faculty.faculty_code" :hidden="faculty.faculty_status>0">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
 							</select>
 							<div class="text-danger mb-3" v-if="form.errors.has('major_faculty')" v-html="form.errors.get('major_faculty')"></div>
 
@@ -151,8 +151,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button :disabled="form.busy" type="submit" class="btn btn-primary background-update">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
+							<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary background-update btn-3d">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
 						</div>
 					</div>
 				</form>
@@ -188,7 +188,7 @@
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
@@ -210,8 +210,8 @@
 							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="fileupload" @change="onFileChange">
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" @click="reloadFile()" >Tải lại</button>
-							<button :disabled="form.busy" type="submit" class="btn btn-primary">Import</button>
+							<button type="button" class="btn btn-secondary btn-3d" @click="reloadFile()" >Tải lại</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary btn-3d">Import</button>
 						</div>
 					</div>
 				</form>
@@ -258,7 +258,7 @@
 					this.pagination=1;
 					this.fetchMajors();
 				}else{
-					this.pagination=1;
+					this.pagination.current_page=1;
 					this.fetchMajors();
 				}
 			},
@@ -311,7 +311,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = '../../api/admin/edu-major/chuyen-nganh/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -575,5 +575,9 @@
 	.btn-export:hover {
 		background-color: seagreen;
 		color: white;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>

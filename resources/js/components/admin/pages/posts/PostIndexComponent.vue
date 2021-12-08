@@ -9,7 +9,7 @@
 				<li class="breadcrumb-item active" aria-current="page">Danh sách bài viết</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
+		<button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -18,13 +18,13 @@
 							<h3 class="card-title">Danh sách Bài Viết</h3>
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+							<button class="btn btn-lg btn-primary fa fa-refresh btn-3d" @click="reload()"> Tải lại</button>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-md-1">
-							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
+							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
 						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
@@ -33,7 +33,7 @@
 							<select class="form-control mt-2" v-model="value_author">
 								<option value="" disabled selected>Lọc theo tác giả</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="admin in admins" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
+								<option v-for="admin in admins" :key="admin.admin_id" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -85,10 +85,10 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<router-link class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'postupdate', params: {idPost: post.post_id} }"></router-link>
+										<router-link class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'postupdate', params: {idPost: post.post_id} }"></router-link>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(post.post_id)"></button>
+										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(post.post_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!posts.length">
@@ -369,5 +369,9 @@
 	.styling-strong {
 		word-wrap: break-word;
 		white-space: pre-line;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>

@@ -17,13 +17,13 @@
 							<h3 class="card-title">Danh sách giảng viên</h3>
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+							<button class="btn btn-lg btn-primary fa fa-refresh btn-3d" @click="reload()"> Tải lại</button>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-md-1">
-							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
+							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
 						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
@@ -90,10 +90,10 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(lecturer)"></button>
+										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(lecturer)"></button>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(lecturer.lecturer_id)"></button>
+										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(lecturer.lecturer_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!lecturers.length">
@@ -125,7 +125,7 @@
 						</div>
 						<div class="modal-body">
 							<label>Họ và tên</label>
-							<input v-model="form.lecturer_fullname" type="text" name="lecturer_fullname"class="form-control not-allowed mb-3" disabled>
+							<input v-model="form.lecturer_fullname" type="text" name="lecturer_fullname" class="form-control not-allowed mb-3" disabled>
 
 							<label>Địa chỉ Email</label>
 							<input v-model="form.lecturer_email" type="text" name="lecturer_email" class="form-control not-allowed" disabled>
@@ -148,8 +148,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button type="submit" class="btn btn-primary background-update">Cập nhật</button>
+							<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
+							<button type="submit" class="btn btn-primary background-update btn-3d">Cập nhật</button>
 						</div>
 					</div>
 				</form>
@@ -257,7 +257,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
@@ -538,5 +538,9 @@
 	.background-update {
 		background-color: darkblue;
 		border-color: darkblue;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>
