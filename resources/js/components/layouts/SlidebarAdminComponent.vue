@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="panel-body tabs-menu-body side-tab-body p-0 border-0 styling-scroll" id="style-1">
+        <div class="panel-body tabs-menu-body side-tab-body p-0 border-0" id="style-1">
             <div class="tab-content">
                 <div class="tab-pane active ">
                     <ul class="side-menu toggle-menu">
@@ -48,6 +48,13 @@
                                 <i class="side-menu__icon fa fa-book"></i>
                                 <span class="side-menu__label">Khóa học</span>
                             </router-link>
+                        </li>
+
+                        <li class="slide">
+                            <router-link tag="a" class="side-menu__item" to="/he-dao-tao" active-class="active">
+                                <i class="side-menu__icon fa fa-leanpub"></i>
+                                <span class="side-menu__label">Hệ thống đào tạo</span>
+                            </router-link>
                         </li>   
 
                         <li class="slide">
@@ -83,13 +90,5 @@
 <style scoped>
     .color-text {
         color: darkblue;
-    }
-    .styling-scroll {
-        height: 60%;
-        overflow-y: scroll;
-    }
-    #style-1::-webkit-scrollbar {
-        width: 6px;
-        background-color: #F5F5F5;
     }
 </style>

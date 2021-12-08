@@ -9,7 +9,7 @@
 				<li class="breadcrumb-item active" aria-current="page">Danh sách bài viết</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
+		<button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -18,13 +18,13 @@
 							<h3 class="card-title">Danh sách Bài Viết</h3>
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+							<button class="btn btn-lg btn-primary fa fa-refresh btn-3d" @click="reload()"> Tải lại</button>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-md-1">
-							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
+							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
 						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
@@ -33,7 +33,7 @@
 							<select class="form-control mt-2" v-model="value_author">
 								<option value="" disabled selected>Lọc theo tác giả</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="admin in admins" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
+								<option v-for="admin in admins" :key="admin.admin_id" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -68,11 +68,11 @@
 									<td>
 										<center><input type="checkbox" :value="post.post_id" v-model="selected"></center>
 									</td>
-									<td @click="detail(post)">
-										<a href="javascript:void(0)">
+									<td>
+										<router-link tag="a" :to="{ name: 'postupdate', params: {idPost: post.post_id} }">
 											<div v-if="post.post_title<40">{{ post.post_title }}</div>
 											<div v-else>{{ post.post_title.substring(0,40)+"..." }}</div>
-										</a>
+										</router-link>
 									</td>
 									<td>{{ post.post_author }}</td>
 									<td>{{ post.post_date | formatDate}}</td>
@@ -85,10 +85,10 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<router-link class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'postupdate', params: {idPost: post.post_id} }"></router-link>
+										<router-link class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'postupdate', params: {idPost: post.post_id} }"></router-link>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(post.post_id)"></button>
+										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(post.post_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!posts.length">
@@ -106,42 +106,6 @@
 				</div>
 			</div><!-- col end -->
 		</div>
-
-		<!-- Modal -->
-		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header styling-modal-header-info">
-						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết Chuyên Ngành</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<table class="table row table-borderless w-100 m-0 border">
-							<tbody class="col-lg-12 p-0">
-								<tr>
-									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
-								</tr>
-								<tr>
-									<td>Mã Chuyên Ngành: <strong> {{ form.post_title }}</strong></td>
-								</tr>
-								<tr>
-									<td>Nội dung: <strong class="styling-strong" v-html="form.post_content"></strong></td>
-								</tr>
-								<tr>
-									<td>Thuộc Khoa: <strong>{{ form.post_status }}</strong></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-					</div>
-				</div>
-			</div>
-		</div> -->
-		<!-- Modal end-->
 	</div>
 </template>
 
@@ -170,7 +134,6 @@
 				}),
 				selected: [],
 				selectAll: false,
-				details:[],
 				error: {},
 				value_author:'',
 			};
@@ -190,6 +153,7 @@
 					this.fetchPosts();
 				}else{
 					this.value_author='';
+					this.pagination.current_page=1;
 					this.search();
 				}
 			},
@@ -198,6 +162,7 @@
 					this.fetchPosts();
 				}else{
 					this.query='';
+					this.pagination.current_page=1;
 					this.filter();
 				}
 			},
@@ -233,7 +198,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -316,18 +281,6 @@
 						this.selected.push(this.posts[i].post_id);
 					}
 				}
-			},
-			detail(post, page_url) {
-				let vm = this;
-				page_url = `../../api/admin/post-news/bai-viet/detail/${post.post_id}`;
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.details = res.data;
-					this.form.fill(post);
-					$('#DetailModal').modal('show');
-				})
-				.catch(err => console.log(err));
 			},
 			reload(){
 				this.fetchPosts();
@@ -416,5 +369,9 @@
 	.styling-strong {
 		word-wrap: break-word;
 		white-space: pre-line;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>
