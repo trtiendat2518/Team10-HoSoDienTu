@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Http\Controllers\Admin\Posts;
+
+use App\Http\Resources\ProcedureResource;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Procedure;
+
+class ProcedureController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'procedure_title' => ['required', 'max:200', 'min:10', 'unique:tbl_procedure'],
+            'procedure_content' => ['required', 'min:20'],
+            'procedure_time' => ['required', 'max:10'],
+            'procedure_method' => ['required'],
+            'procedure_fee' => ['required', 'max:10'],
+            'procedure_category' => ['required'],
+            'procedure_status' => ['required'],
+        ],[
+            'procedure_title.required' => 'Tiêu đề thủ tục không dược để trống!',
+            'procedure_title.max' => 'Tiêu đề thủ tục không nhập quá 200 ký tự!',
+            'procedure_title.min' => 'Tiêu đề thủ tục phải có 10 ký tự trở lên!',
+            'procedure_title.unique' => 'Tiêu đề thủ tục đã tồn tại!',
+
+            'procedure_content.required' => 'Nội dung thủ tục không dược để trống!',
+            'procedure_content.min' => 'Nội dung thủ tục phải có 20 ký tự trở lên!',
+
+            'procedure_time.required' => 'Thời gian chuẩn bị thủ tục không dược để trống!',
+            'procedure_time.max' => 'Thời gian chuẩn bị thủ tục tối đa có 10 ký tự!',
+
+            'procedure_fee.required' => 'Phí của thủ tục không dược để trống!',
+            'procedure_fee.max' => 'Phí của thủ tục tối đa có 10 ký tự!',
+
+            'procedure_method.required' => 'Vui lòng chọn phương thức cho thủ tục này!',
+            'procedure_category.required' => 'Vui lòng chọn danh mục cho thủ tục này!',
+            'procedure_status.required' => 'Vui lòng chọn trạng thái cho thủ tục này!'
+        ]);
+
+        $procedure = new Procedure();
+        $procedure->procedure_title = $data['procedure_title'];
+        $procedure->procedure_content = $data['procedure_content'];
+        $procedure->procedure_time = $data['procedure_time'];
+        $procedure->procedure_method = $data['procedure_method'];
+        $procedure->procedure_fee = $data['procedure_fee'];
+        $procedure->procedure_category = $data['procedure_category'];
+        $procedure->procedure_status = $data['procedure_status'];
+        $procedure->save();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($currentEntries)
+    {
+        return ProcedureResource::collection(Procedure::orderby('procedure_id','DESC')->paginate($currentEntries));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}

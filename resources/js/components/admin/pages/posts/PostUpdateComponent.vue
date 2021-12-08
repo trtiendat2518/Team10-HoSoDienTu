@@ -11,7 +11,7 @@
 				<li class="breadcrumb-item active" aria-current="page">Cập nhật</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<button class="btn btn-primary mb-3" @click="back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại</button>
+		<button class="btn btn-primary mb-3 btn-3d" @click="back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại</button>
 		<div class="card">
 			<div class="card-header styling">
 				<h3 class="card-title">Cập nhật bài viết</h3>
@@ -21,18 +21,18 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label class="form-label">Tiêu đề</label>
+								<label class="form-label">Tiêu đề <span class="text-danger">(*)</span></label>
 								<input v-model="form.post_title" type="text" class="form-control">
 							</div>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">Nội dung</label>
+						<label class="form-label">Nội dung <span class="text-danger">(*)</span></label>
 						<vue-editor v-model="form.post_content" :editorToolbar="customToolbar"></vue-editor>
 					</div>
 					<div class="card-footer text-right">
-						<button type="submit" class="btn btn-lg btn-success mt-1">Lưu</button>
+						<button type="submit" class="btn-3d btn btn-lg btn-success mt-1">Lưu</button>
 					</div>
 				</form>
 			</div>
@@ -175,5 +175,9 @@
 		background-color: darkblue;
 		color: white;
 		border-left: 2px solid white;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>

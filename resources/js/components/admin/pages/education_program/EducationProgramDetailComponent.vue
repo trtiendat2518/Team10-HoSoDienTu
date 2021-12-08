@@ -19,9 +19,139 @@
 			</ol>
 			<!-- End breadcrumb -->
 		</div>
-		<router-link tag="button" class="btn btn-lg btn-primary mb-3" :to="{ name: 'educationprogramindex' }">
+		<router-link tag="button" class="btn btn-lg btn-primary mb-3 btn-3d" :to="{ name: 'educationprogramindex' }">
 			<i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại
 		</router-link>
+		<VueSlickCarousel :arrows="true" :dots="false" :infinite="true" :slidesToShow="3" :slidesToScroll="1" :autoplay="true" :speed="3000" :autoplaySpeed="2000">
+			<div class="item">
+				<div class="card mb-0">
+					<div class="row">
+						<div class="col-3">
+							<div class="feature">
+								<div class="fa-stack fa-lg fa-2x icon bg-primary-transparent">
+									<i class="fa fa-info-circle fa-stack-1x text-primary"></i>
+								</div>
+							</div>
+						</div>
+						<div class="col-9">
+							<div class="card-body p-3 d-flex">
+								<div>
+									<p class="text-primary mb-1">Mã hệ đào tạo: </p>
+									<h4 class="mb-0 text-dark">{{ educa.education_program_type }}</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="card mb-0">
+					<div class="row">
+						<div class="col-3">
+							<div class="feature">
+								<div class="fa-stack fa-lg fa-2x icon bg-success-transparent">
+									<i class="fa fa-suitcase fa-stack-1x text-success"></i>
+								</div>
+							</div>
+						</div>
+						<div class="col-9">
+							<div class="card-body p-3 d-flex">
+								<div>
+									<div hidden>{{ nameType(type) }}</div>
+									<p class="text-primary mb-1">Hệ đào tạo:</p>
+									<h4 class="mb-0 text-dark">{{ educa.type_name }}</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="card mb-0">
+					<div class="row">
+						<div class="col-3">
+							<div class="feature">
+								<div class="fa-stack fa-lg fa-2x icon bg-pink-transparent">
+									<i class="fa fa-barcode fa-stack-1x text-pink"></i>
+								</div>
+							</div>
+						</div>
+						<div class="col-9">
+							<div class="card-body p-3 d-flex">
+								<div>
+									<p class="text-primary mb-1">Mã chương trình đào tạo: </p>
+									<h4 class="mb-0 text-dark">{{ educa.education_program_code }}</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="card mb-0">
+					<div class="row">
+						<div class="col-3">
+							<div class="feature">
+								<div class="fa-stack fa-lg fa-2x icon bg-warning-transparent">
+									<i class="fa fa-university fa-stack-1x text-warning"></i>
+								</div>
+							</div>
+						</div>
+						<div class="col-9">
+							<div class="card-body p-3 d-flex">
+								<div v-for="faculty in faculties.slice(0, 1)" :key="faculty.faculty_code">
+									<div hidden>{{ nameFaculty(faculty) }}</div>
+									<p class="text-primary mb-1">Chương trình đào tạo:</p>
+									<h4 class="mb-0 text-dark">{{ educa.education_program_course }} - {{ educa.faculty_name }}</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="card mb-0">
+					<div class="row">
+						<div class="col-3">
+							<div class="feature">
+								<div class="fa-stack fa-lg fa-2x icon bg-danger-transparent">
+									<i class="fa fa-binoculars fa-stack-1x text-danger"></i>
+								</div>
+							</div>
+						</div>
+						<div class="col-9">
+							<div class="card-body p-3 d-flex">
+								<div>
+									<p class="text-primary mb-1">Tổng số tín chỉ: </p>
+									<h4 class="mb-0 text-dark">{{ educa.education_program_credit }}</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="card mb-0">
+					<div class="row">
+						<div class="col-3">
+							<div class="feature">
+								<div class="fa-stack fa-lg fa-2x icon bg-info-transparent">
+									<i class="fa fa-archive fa-stack-1x text-dark"></i>
+								</div>
+							</div>
+						</div>
+						<div class="col-9">
+							<div class="card-body p-3 d-flex">
+								<div>
+									<p class="text-primary mb-1">Số năm đào tạo: </p>
+									<h4 class="mb-0 text-dark">{{ educa.education_program_year }}</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</VueSlickCarousel>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -31,46 +161,6 @@
 								Chương trình đào tạo
 							</h1>
 						</div>
-					</div>
-					<div class="row mt-3 item">
-						<carousel :per-page="1" :mouse-drag="false" :loop="true" :autoplay="true" :perPageCustom="[[320, 2], [1199, 2]]" :paginationActiveColor="'#1753fc'" :paginationColor="'#868e96'">
-							<slide>
-								<div class="card">
-									<div class="card-body">
-										<div class="row">
-											<div class="col-md-12">Mã hệ đào tạo: <strong>{{ educa.education_program_type }}</strong></div>
-											<div class="col-md-12" v-for="type in types.slice(0, 1)" :key="type.program_type_code">Hệ đào tạo: 
-												<div hidden>{{ nameType(type) }}</div>
-												<strong>{{ educa.type_name }}</strong>
-											</div>
-										</div>
-									</div>
-								</div>
-							</slide>
-							<slide>
-								<div class="card">
-									<div class="card-body">
-										<div class="row">
-											<div class="col-md-12">Mã chương trình đào tạo: <strong>{{ educa.education_program_code }}</strong></div>
-											<div class="col-md-12" v-for="faculty in faculties.slice(0, 1)" :key="faculty.faculty_code">Chương trình đào tạo: 
-												<div hidden>{{ nameFaculty(faculty) }}</div>
-												<strong>{{ educa.education_program_course }} - {{ educa.faculty_name }}</strong>
-											</div>
-										</div>
-									</div>
-								</div>
-							</slide>
-							<slide>
-								<div class="card">
-									<div class="card-body">
-										<div class="row">
-											<div class="col-md-12">Tổng số tín chỉ: <strong>{{ educa.education_program_credit }}</strong></div>
-											<div class="col-md-12">Số năm đào tạo: <strong>{{ educa.education_program_year }}</strong></div>
-										</div>
-									</div>
-								</div>
-							</slide>
-						</carousel>
 					</div>
 
 					<div class="table-responsive">
@@ -134,12 +224,11 @@
 </template>
 
 <script>
-	import { Carousel, Slide } from 'vue-carousel';
+	import VueSlickCarousel from 'vue-slick-carousel'
+	import 'vue-slick-carousel/dist/vue-slick-carousel.css'
+	import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 	export default {
-		components: {
-			Carousel,
-			Slide
-		},
+		components: { VueSlickCarousel },
 		data() {
 			return {
 				education_program_id: this.$route.params.idProgram,
@@ -312,7 +401,8 @@
 		width: 100%;
 		padding: 20px;
 	}
-	.card-body {
-		background-color: #f8f9fa;
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>

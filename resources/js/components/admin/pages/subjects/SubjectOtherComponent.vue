@@ -12,7 +12,7 @@
 				<li class="breadcrumb-item active" aria-current="page">Khoa khác</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<router-link class="btn btn-primary btn-lg mb-3" tag="button" :to="{ name: 'subjectindex' }"><li class="fa fa-arrow-left"></li> Quay lại</router-link>
+		<router-link class="btn btn-primary btn-lg mb-3 btn-3d" tag="button" :to="{ name: 'subjectindex' }"><li class="fa fa-arrow-left"></li> Quay lại</router-link>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -21,7 +21,7 @@
 							<h3 class="card-title">Tổng hợp các môn học của khoa khác</h3>
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+							<button class="btn btn-lg btn-primary fa fa-refresh btn-3d" @click="reload()"> Tải lại</button>
 						</div>
 					</div>
 
@@ -158,7 +158,7 @@
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
@@ -394,5 +394,9 @@
 	.styling-strong {
 		word-wrap: break-word;
 		white-space: pre-line;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757d;
+		border-right: 3px solid #6c757d;
 	}
 </style>

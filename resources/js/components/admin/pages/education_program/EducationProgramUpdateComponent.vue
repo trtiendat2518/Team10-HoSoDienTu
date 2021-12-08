@@ -20,7 +20,7 @@
 			</ol>
 			<!-- End breadcrumb -->
 		</div>
-		<router-link tag="button" class="btn btn-lg btn-primary mb-3" :to="{ name: 'educationprogramindex' }">
+		<router-link tag="button" class="btn btn-lg btn-primary mb-3 btn-3d" :to="{ name: 'educationprogramindex' }">
 			<i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại
 		</router-link>
 		<div class="card">
@@ -57,7 +57,7 @@
 					<div class="row">
 						<div class="col-md-8">
 							<div class="form-group">
-								<label class="form-label">Hệ đào tạo</label>
+								<label class="form-label">Hệ đào tạo <span class="text-danger">(*)</span></label>
 								<select class="form-control" name="education_program_type" v-model="form.education_program_type" :class="{'is-invalid': form.errors.has('education_program_type')}">
 									<option value="" disabled selected="">Chọn hệ đào tạo</option>
 									<option value="" disabled>-------</option>
@@ -68,7 +68,7 @@
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
-								<label class="form-label"> Tổng năm đào tạo </label>
+								<label class="form-label"> Tổng năm đào tạo <span class="text-danger">(*)</span></label>
 								<input type="number" name="education_program_year" class="form-control" v-model="form.education_program_year" :class="{'is-invalid': form.errors.has('education_program_year')}"/>
 								<div class="text-danger" v-if="form.errors.has('education_program_year')" v-html="form.errors.get('education_program_year')"></div>
 							</div>
@@ -91,7 +91,7 @@
 
 								<div class="row">
 									<div class="col-md-12">
-										<button type="button" class="btn btn-outline-success btn-lg mt-2 mr-3 fa fa-upload" style="float: right;" @click="openImport()"> Import</button>
+										<button type="button" class="btn btn-outline-success btn-lg mt-2 mr-3 mb-3 fa fa-upload btn-3d" style="float: right;" @click="openImport()"> Import</button>
 									</div>
 								</div>
 								
@@ -137,10 +137,10 @@
 												</td>
 												<td class="text-center td-table">{{ subject_faculty }}</td>
 												<td style="text-align: center">
-													<button type="button" class="active btn btn-success btn-lg fa fa-pencil" @click="show(edu.program_detail_id)"></button>
+													<button type="button" class="btn btn-success btn-lg fa fa-pencil btn-3d" @click="show(edu.program_detail_id)"></button>
 												</td>
 												<td>
-													<button type="button" class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(edu.program_detail_id)"></button>
+													<button type="button" class="btn btn-danger btn-lg fa fa-trash btn-3d" @click="destroy(edu.program_detail_id)"></button>
 												</td>
 											</tr>
 											<tr v-show="!education.length">
@@ -158,14 +158,14 @@
 					</div>
 
 					<div class="text-right">
-						<button :disabled="form.busy" class="btn btn-success btn-lg mt-1" type="submit">Lưu</button>
+						<button :disabled="form.busy" class="btn btn-success btn-lg mt-1 btn-3d" type="submit">Lưu</button>
 					</div>
 				</form>
 			</div>
 		</div>
 		<!-- Modal -->
-		<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
-			<div class="modal-dialog">
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header styling-modal-header-info">
 						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết môn học</h5>
@@ -246,7 +246,7 @@
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
@@ -265,12 +265,12 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Tệp Excel</label>
+							<label>Tệp Excel <span class="text-danger">(*)</span></label>
 							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="importupload" @change="onFileChange">
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" @click="reloadFile()" >Tải lại</button>
-							<button :disabled="form.busy" type="submit" class="btn btn-primary">Import</button>
+							<button type="button" class="btn btn-secondary btn-3d" @click="reloadFile()" >Tải lại</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary btn-3d">Import</button>
 						</div>
 					</div>
 				</form>
@@ -291,11 +291,11 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label>Mã môn học</label>
+								<label>Mã môn học <span class="text-danger">(*)</span></label>
 								<input v-model="updatedata.subject_code" class="form-control not-allow" name="subject_code" disabled>
 							</div>
 							<div class="form-group">
-								<label>Học kỳ</label>
+								<label>Học kỳ <span class="text-danger">(*)</span></label>
 								<input v-model="updatedata.subject_semester" type="number" class="form-control" name="subject_semester">
 							</div>
 							<div class="form-group">
@@ -307,8 +307,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button :disabled="form.busy" type="submit" class="btn btn-primary">Cập nhật</button>
+							<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary btn-3d">Cập nhật</button>
 						</div>
 					</div>
 				</form>
@@ -695,6 +695,10 @@
 		border-right: 1px solid;
 	}
 	.modal-lg {
-		max-width: 1500px;
+		max-width: 900px;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>

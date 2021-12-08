@@ -11,11 +11,11 @@
 		</div>
 		<div class="row">
 			<div class="col-md-9">
-				<button class="btn btn-info btn-lg mb-3" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
+				<button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
 			</div>
 			<div class="col-md-3">
-				<button class="btn btn-import btn-lg mb-3" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
-				<button class="btn btn-export btn-lg mb-3" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
+				<button class="btn btn-import btn-lg mb-3 btn-3d" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
+				<button class="btn btn-export btn-lg mb-3 btn-3d" @click="exportFile()" name="export_csv"><li class="fa fa-download"></li> Export</button>
 			</div>
 		</div>
 		<div class="row">
@@ -26,13 +26,13 @@
 							<h3 class="card-title">Danh sách Khóa Học</h3>
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+							<button class="btn btn-lg btn-primary fa fa-refresh btn-3d" @click="reload()"> Tải lại</button>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-md-1">
-							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
+							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
 						<div class="col-md-9">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
@@ -79,10 +79,10 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(course)"></button>
+										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(course)"></button>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(course.course_id)"></button>
+										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(course.course_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!courses.length">
@@ -114,16 +114,16 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Mã khóa học</label>
+							<label>Mã khóa học <span :hidden="editMode" class="text-danger">(*)</span></label>
 							<input v-model="form.course_code" type="text" name="course_code" class="form-control" placeholder="Nhập mã khóa học" :disabled="editMode" :class="[{'is-invalid': form.errors.has('course_code')}, {'not-allowed': editMode}]">
 							<div class="text-danger" v-if="form.errors.has('course_code')" v-html="form.errors.get('course_code')"></div>
 
-							<label class="mt-3">Tên khóa học</label>
+							<label class="mt-3">Tên khóa học <span class="text-danger">(*)</span></label>
 							<input v-model="form.course_name" type="text" name="course_name" class="form-control" placeholder="Nhập tên khóa học" :class="{'is-invalid': form.errors.has('course_name')}">
 							<div class="text-danger" v-if="form.errors.has('course_name')" v-html="form.errors.get('course_name')"></div>
 
 							<div v-if="!editMode">
-								<label class="mt-3">Trạng thái</label>
+								<label class="mt-3">Trạng thái <span class="text-danger">(*)</span></label>
 								<select v-model="form.course_status" name="course_status" class="form-control select-option" :class="{'is-invalid': form.errors.has('course_status')}">
 									<option value="" selected disabled>Chọn trạng thái</option>
 									<option disabled>---------------</option>
@@ -134,8 +134,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button :disabled="form.busy" type="submit" class="btn btn-primary background-update">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
+							<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary background-update btn-3d">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
 						</div>
 					</div>
 				</form>
@@ -171,7 +171,7 @@
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
@@ -189,12 +189,12 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<label>Tệp Excel</label>
+							<label>Tệp Excel <span class="text-danger">(*)</span></label>
 							<input type="file" class="form-control" id="fileImport" name="fileImport" ref="fileupload" @change="onFileChange">
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" @click="reloadFile()" >Tải lại</button>
-							<button :disabled="form.busy" type="submit" class="btn btn-primary">Import</button>
+							<button type="button" class="btn btn-secondary btn-3d" @click="reloadFile()" >Tải lại</button>
+							<button :disabled="form.busy" type="submit" class="btn btn-primary btn-3d">Import</button>
 						</div>
 					</div>
 				</form>
@@ -549,5 +549,9 @@
 	.btn-export:hover {
 		background-color: seagreen;
 		color: white;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>
