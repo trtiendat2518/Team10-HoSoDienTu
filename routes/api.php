@@ -124,6 +124,8 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('procedure')->group(function() {
+        Route::post('thu-tuc/destroyall/', 'Admin\Posts\ProcedureController@destroyall');
+        Route::patch('thu-tuc/change/{procedure_id}', 'Admin\Posts\ProcedureController@change');
         Route::get('thu-tuc/procedure-one/{procedure_id}','Admin\Posts\ProcedureController@procedure');
         Route::resource('thu-tuc', 'Admin\Posts\ProcedureController');
     });

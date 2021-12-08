@@ -128,13 +128,35 @@ class ProcedureController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($procedure_id)
     {
-        //
+        $pst = Procedure::find($procedure_id);
+        $pst->delete();
     }
 
     public function procedure(Request $request, $procedure_id)
     {
         return ProcedureResource::collection(Procedure::where('procedure_id', $procedure_id)->orderby('procedure_id','DESC')->get());
+    }
+
+    public function change(Request $request, $procedure_id)
+    {
+        $pst = Procedure::find($procedure_id);
+        if($pst->procedure_status==0){
+            $pst->procedure_status=1;
+            $pst->save();
+        }else{
+            $pst->procedure_status=0;
+            $pst->save();
+        }
+    }
+
+    public function destroyall(Request $request, $procedure_id = null)
+    {
+        if ($request->procedure_id) {
+            foreach ($request->procedure_id as $id) {
+                Procedure::where('procedure_id', $id)->delete();
+            }
+        }
     }
 }

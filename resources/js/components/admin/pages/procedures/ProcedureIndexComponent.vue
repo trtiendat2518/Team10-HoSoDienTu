@@ -186,23 +186,12 @@
 			// },
 		},
 		mounted() {
-			// this.fetchAdmins();
 			this.fetchProcedures();
 		},
 		methods: {
 			empty() {
 				return (this.procedures.length < 1);
 			},
-			// fetchAdmins(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/user-gv/giang-vien/admin';
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.admins = res.data;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 			fetchProcedures(page_url) {
 				let vm = this;
 				page_url = '../../api/admin/procedure/thu-tuc/'+this.currentEntries+'?page='+this.pagination.current_page;
@@ -225,78 +214,78 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// change(procedure_id) {
-			// 	axios.patch(`../../api/admin/post-news/bai-viet/change/${procedure_id}`)
-			// 	.then(res => {
-			// 		this.fetchProcedures();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// destroy(procedure_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/post-news/bai-viet/${procedure_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchProcedures();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/post-news/bai-viet/destroyall', { post: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchProcedures();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.procedures){
-			// 			this.selected.push(this.procedures[i].procedure_id);
-			// 		}
-			// 	}
-			// },
+			change(procedure_id) {
+				axios.patch(`../../api/admin/procedure/thu-tuc/change/${procedure_id}`)
+				.then(res => {
+					this.fetchProcedures();
+					this.$snotify.warning('Đã thay đổi trạng thái');
+				})
+				.catch(err => console.log(err));
+			},
+			destroy(procedure_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/procedure/thu-tuc/${procedure_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchProcedures();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/procedure/thu-tuc/destroyall', { procedure_id: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchProcedures();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			select() {
+				this.selected = [];
+				if(!this.selectAll){
+					for(let i in this.procedures){
+						this.selected.push(this.procedures[i].procedure_id);
+					}
+				}
+			},
 			reload(){
 				this.fetchProcedures();
 				this.query='';
