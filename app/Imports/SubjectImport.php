@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class SubjectImport implements ToModel, WithHeadingRow, WithValidation
 {
-    public function __construct(int $faculty)
+    public function __construct(string $faculty)
     {
         $this->faculty = $faculty;
     }
@@ -21,17 +21,19 @@ class SubjectImport implements ToModel, WithHeadingRow, WithValidation
         }else{
             $row['loai_mon_hoc'] = 1;
         }
-
         
-        $row['thuoc_khoa'] = $this->faculty;
+        $fct = $this->faculty;
         
         return new Subject([
             'subject_code'=>$row['ma_mon_hoc'],
             'subject_name'=>$row['ten_mon_hoc'],
-            'subject_faculty'=>$row['thuoc_khoa'],
+            'subject_faculty'=>$fct,
             'subject_credit'=>$row['tin_chi'],
             'subject_theory_period'=>$row['so_gio_ly_thuyet'],
             'subject_practice_period'=>$row['so_gio_thuc_hanh'],
+            'subject_score_exercise'=>$row['bai_tap'],
+            'subject_score_exam'=>$row['kiem_tra'],
+            'subject_score_final'=>$row['cuoi_ky'],
             'subject_type'=>$row['loai_mon_hoc'],
         ]);
     }
@@ -44,6 +46,9 @@ class SubjectImport implements ToModel, WithHeadingRow, WithValidation
             'tin_chi' => 'required|numeric',
             'so_gio_ly_thuyet' => 'required|numeric',
             'so_gio_thuc_hanh' => 'required|numeric',
+            'bai_tap' => 'required|numeric',
+            'kiem_tra' => 'required|numeric',
+            'cuoi_ky' => 'required|numeric',
             'loai_mon_hoc' => 'required',
         ];
     }
@@ -66,6 +71,15 @@ class SubjectImport implements ToModel, WithHeadingRow, WithValidation
 
             'so_gio_thuc_hanh.required' => 'Số tiết thực hành tại hàng :row không được để trống',
             'so_gio_thuc_hanh.numeric' => 'Số tiết thực hành tại hàng :row phải là ký tự số',
+
+            'bai_tap.required' => 'Trọng số bài tập tại hàng :row không được để trống',
+            'bai_tap.numeric' => 'Trọng số bài tập tại hàng :row phải là ký tự số',
+
+            'kiem_tra.required' => 'Trọng số kiểm tra tại hàng :row không được để trống',
+            'kiem_tra.numeric' => 'Trọng số kiểm tra tại hàng :row phải là ký tự số',
+
+            'cuoi_ky.required' => 'Trọng số cuối kỳ tại hàng :row không được để trống',
+            'cuoi_ky.numeric' => 'Trọng số cuối kỳ tại hàng :row phải là ký tự số',
 
             'loai_mon_hoc.required' => 'Loại Môn học tại hàng :row không được để trống',
         ];

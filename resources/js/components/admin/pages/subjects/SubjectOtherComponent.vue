@@ -12,7 +12,7 @@
 				<li class="breadcrumb-item active" aria-current="page">Khoa khác</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<router-link class="btn btn-primary btn-lg mb-3" tag="button" :to="{ name: 'subjectindex' }"><li class="fa fa-arrow-left"></li> Quay lại</router-link>
+		<router-link class="btn btn-primary btn-lg mb-3 btn-3d" tag="button" :to="{ name: 'subjectindex' }"><li class="fa fa-arrow-left"></li> Quay lại</router-link>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -21,7 +21,7 @@
 							<h3 class="card-title">Tổng hợp các môn học của khoa khác</h3>
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+							<button class="btn btn-lg btn-primary fa fa-refresh btn-3d" @click="reload()"> Tải lại</button>
 						</div>
 					</div>
 
@@ -33,7 +33,7 @@
 							<select class="form-control mt-2" v-model="value_faculty">
 								<option value="" disabled selected>Lọc theo khoa</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="faculty in faculties" :value="faculty.faculty_id" :hidden="faculty.faculty_id==lecturer_faculty">{{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :key="faculty.faculty_code" :value="faculty.faculty_code" :hidden="faculty.faculty_code==lecturer_faculty">{{ faculty.faculty_name }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -99,7 +99,7 @@
 						<table class="table row table-borderless w-100 m-0 border">
 							<tbody class="col-lg-6 p-0">
 								<tr>
-									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
+									<td class="h3-strong"><h3><strong><u> Thông tin chi tiết</u></strong></h3></td>
 								</tr>
 								<tr>
 									<td>Mã Môn học: <strong> {{ form.subject_code }}</strong></td>
@@ -120,25 +120,45 @@
 									</td>
 								</tr>
 							</tbody>
-							<tbody class="col-lg-6 p-0">
+							<tbody class="col-lg-3 p-0">
 								<tr>
-									<td class="h3-strong"><h3><strong> Số tiết (giờ)</strong></h3></td>
+									<td class="h3-strong"><h3><strong><u> Số tiết</u></strong></h3></td>
 								</tr>
 								<tr>
 									<td>Lý thuyết: 
-										<strong>{{ form.subject_theory_period }}</strong>
+										<strong>{{ form.subject_theory_period }} giờ</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Thực hành: 
-										<strong>{{ form.subject_practice_period }}</strong>
+										<strong>{{ form.subject_practice_period }} giờ</strong>
+									</td>
+								</tr>
+							</tbody>
+							<tbody class="col-lg-3 p-0">
+								<tr>
+									<td class="h3-strong"><h3><strong><u> Trọng số</u></strong></h3></td>
+								</tr>
+								<tr>
+									<td>Điểm bài tập: 
+										<strong>{{ form.subject_score_exercise }}%</strong>
+									</td>
+								</tr>
+								<tr>
+									<td>Điểm kiểm tra: 
+										<strong>{{ form.subject_score_exam }}%</strong>
+									</td>
+								</tr>
+								<tr>
+									<td>Điểm thi: 
+										<strong>{{ form.subject_score_final }}%</strong>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
@@ -173,6 +193,9 @@
 					subject_credit:'',
 					subject_practice_period:'',
 					subject_theory_period:'',
+					subject_score_exercise:'',
+					subject_score_exam:'',
+					subject_score_final:'',
 					subject_type: '',
 					subject_status:''
 				}),
@@ -273,7 +296,7 @@
 					this.details = res.data;
 					this.form.fill(subject);
 					let faculty = this.faculties.filter(function(fct){
-						return fct.faculty_id===subject.subject_faculty
+						return fct.faculty_code===subject.subject_faculty
 					})
 					this.subject_faculty = faculty[0].faculty_name;
 					$('#DetailModal').modal('show');
@@ -286,7 +309,7 @@
 				this.value_faculty='';
 			},
 			getFacultyName(subject) {
-				const faculty = this.faculties.find((fac) => fac.faculty_id === subject.subject_faculty);
+				const faculty = this.faculties.find((fac) => fac.faculty_code === subject.subject_faculty);
 				return faculty.faculty_name;
 			},
 			filter(page_url) {
@@ -371,5 +394,9 @@
 	.styling-strong {
 		word-wrap: break-word;
 		white-space: pre-line;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757d;
+		border-right: 3px solid #6c757d;
 	}
 </style>

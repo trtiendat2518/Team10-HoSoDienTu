@@ -17,13 +17,13 @@
 							<h3 class="card-title">Danh sách sinh viên</h3>
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-lg btn-primary fa fa-refresh" @click="reload()"> Tải lại</button>
+							<button class="btn btn-lg btn-primary fa fa-refresh btn-3d" @click="reload()"> Tải lại</button>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-md-1">
-							<button class="active btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
+							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
 						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
@@ -92,10 +92,10 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="active btn btn-outline-success btn-lg fa fa-pencil-square-o" @click="show(student)"></button>
+										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(student)"></button>
 									</td>
 									<td>
-										<button class="active btn btn-danger btn-lg fa fa-trash" @click="destroy(student.student_id)"></button>
+										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(student.student_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!students.length">
@@ -127,7 +127,7 @@
 						</div>
 						<div class="modal-body">
 							<label>Họ và tên</label>
-							<input v-model="form.student_fullname" type="text" name="student_fullname"class="form-control not-allowed mb-3" disabled>
+							<input v-model="form.student_fullname" type="text" name="student_fullname" class="form-control not-allowed mb-3" disabled>
 
 							<label>Địa chỉ Email</label>
 							<input v-model="form.student_email" type="text" name="student_email" class="form-control not-allowed" disabled>
@@ -140,8 +140,8 @@
 							</select>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							<button type="submit" class="btn btn-primary background-update">Cập nhật</button>
+							<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
+							<button type="submit" class="btn btn-primary background-update btn-3d">Cập nhật</button>
 						</div>
 					</div>
 				</form>
@@ -252,7 +252,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
@@ -502,15 +502,15 @@
 				this.value_role='';
 			},
 			studentCourse(info) {
-				const course = this.courses.find((crs) => crs.course_id === info.student_course);
+				const course = this.courses.find((crs) => crs.course_code === info.student_course);
 				return course.course_code;
 			},
 			studentFaculty(info) {
-				const faculty = this.faculties.find((fac) => fac.faculty_id === info.student_faculty);
+				const faculty = this.faculties.find((fac) => fac.faculty_code === info.student_faculty);
 				return faculty.faculty_name;
 			},
 			studentMajor(info) {
-				const major = this.majors.find((mjr) => mjr.major_id === info.student_major);
+				const major = this.majors.find((mjr) => mjr.major_code === info.student_major);
 				return major.major_name;
 			},
 		}
@@ -564,5 +564,9 @@
 	.background-update {
 		background-color: darkblue;
 		border-color: darkblue;
+	}
+	.btn-3d {
+		border-bottom: 3px solid #6c757db0;
+		border-right: 3px solid #6c757db0;
 	}
 </style>

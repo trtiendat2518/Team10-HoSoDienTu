@@ -2,9 +2,9 @@
 	<div>
 		<transition appear
                     enter-class=""
-                    enter-active-class="animate__animated animate__fadeIn"
+                    enter-active-class="animate__animated animate__fast"
                     leave-class=""
-                    leave-active-class="animate__animated animate__fadeOut">
+                    leave-active-class="animate__animated animate__fast">
 			<router-view></router-view>	
 		</transition>
 	</div>
@@ -17,4 +17,7 @@
 </script>
 
 <style lang="css" scoped>
+	.animate__animated.animate__fast {
+		--animate-duration: 0.5s;
+	}
 </style>
