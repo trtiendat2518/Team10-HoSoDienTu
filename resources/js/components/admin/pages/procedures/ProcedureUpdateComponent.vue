@@ -20,10 +20,20 @@
 			</div>
 			<div class="card-body">
 				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
-					<div class="form-group">
-						<label class="form-label">Tiêu đề <span class="text-danger">(*)</span></label>
-						<input v-model="form.procedure_title" :class="{'is-invalid': form.errors.has('procedure_title')}" type="text" class="form-control">
-						<div class="text-danger" v-if="form.errors.has('procedure_title')" v-html="form.errors.get('procedure_title')"></div>
+					<div class="row">
+						<div class="col-md-9">
+							<div class="form-group">
+								<label class="form-label">Tiêu đề <span class="text-danger">(*)</span></label>
+								<input v-model="form.procedure_title" :class="{'is-invalid': form.errors.has('procedure_title')}" type="text" class="form-control">
+								<div class="text-danger" v-if="form.errors.has('procedure_title')" v-html="form.errors.get('procedure_title')"></div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="form-label">Mã thủ tục</label>
+								<input type="text" name="education_program_code" class="form-control not-allow" v-model="form.procedure_code" disabled/>
+							</div>
+						</div>
 					</div>
 
 					<div class="row">
@@ -105,6 +115,7 @@
 				procedure_id: this.$route.params.idProcedure,
 				form: new Form({
 					procedure_id:'',
+					procedure_code:'',
 					procedure_title:'',
 					procedure_content:'',
 					procedure_time:'',
@@ -225,5 +236,8 @@
 	.btn-3d {
 		border-bottom: 3px solid #6c757db0;
 		border-right: 3px solid #6c757db0;
+	}
+	.not-allow {
+		cursor: not-allowed;
 	}
 </style>
