@@ -9,10 +9,20 @@
 				<li class="breadcrumb-item active" aria-current="page">Danh sách thủ tục</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<router-link tag="button" class="btn btn-info btn-lg mb-3 btn-3d" :to="{ name: 'procedurecreate' }">
-            <li class="fa fa-plus"></li>
-            Tạo mới
-        </router-link>
+		<div class="row">
+			<div class="col-md-6">
+				<router-link tag="button" class="btn btn-info btn-lg mb-3 btn-3d" :to="{ name: 'procedurecreate' }">
+					<li class="fa fa-plus"></li>
+					Tạo mới
+				</router-link>
+			</div>
+			<div class="col-md-6">
+				<router-link tag="button" class="btn btn-indigo float-right btn-lg mb-3 btn-3d" :to="{ name: 'procedurerequire' }">
+					<li class="fa fa-window-maximize"></li>
+					Danh sách yêu cầu
+				</router-link>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -76,9 +86,13 @@
 										<center><input type="checkbox" :value="procedure.procedure_id" v-model="selected"></center>
 									</td>
 									<td>
-										<router-link tag="a" :to="{ name: 'procedureupdate', params: {idPost: procedure.procedure_id} }">
-											<div v-if="procedure.procedure_title<40">{{ procedure.procedure_title }}</div>
-											<div v-else>{{ procedure.procedure_title.substring(0,30)+"..." }}</div>
+										<router-link tag="a" :to="{ name: 'procedureupdate', params: {idProcedure: procedure.procedure_id} }">
+											<div v-if="procedure.procedure_title<40">
+												{{ procedure.procedure_title }}
+											</div>
+											<div v-else>
+												{{ procedure.procedure_title.substring(0,30)+"..." }}
+											</div>
 										</router-link>
 									</td>
 									<td class="text-center">

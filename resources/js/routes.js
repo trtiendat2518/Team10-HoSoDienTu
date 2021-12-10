@@ -31,6 +31,7 @@ import Procedure from "./components/admin/pages/procedures/ProcedureComponent.vu
 import ProcedureIndex from "./components/admin/pages/procedures/ProcedureIndexComponent.vue";
 import ProcedureCreate from "./components/admin/pages/procedures/ProcedureCreateComponent.vue";
 import ProcedureUpdate from "./components/admin/pages/procedures/ProcedureUpdateComponent.vue";
+import ProcedureRequire from "./components/admin/pages/procedures/ProcedureRequireComponent.vue";
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
@@ -273,6 +274,12 @@ export default new VueRouter({
                     path: "cap-nhat/:idProcedure",
                     name: "procedureupdate",
                     component: ProcedureUpdate
+                },
+
+                {
+                    path: "yeu-cau-cua-sinh-vien",
+                    name: "procedurerequire",
+                    component: ProcedureRequire
                 }
             ],
             beforeEnter: (to, from, next) => {
