@@ -6,6 +6,7 @@ import Dashboard from "./components/admin/pages/DashboardComponent.vue";
 
 import Lecturer from "./components/admin/pages/users/LecturerManageComponent.vue";
 import Student from "./components/admin/pages/users/StudentManageComponent.vue";
+import FormTeacher from "./components/admin/pages/users/FormTeacherComponent.vue";
 
 import Faculty from "./components/admin/pages/education/FacultyComponent.vue";
 import Major from "./components/admin/pages/education/MajorComponent.vue";
@@ -284,6 +285,21 @@ export default new VueRouter({
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$adminId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/chu-nhiem-sinh-vien",
+            name: "formteacher",
+            components: {
+                default: FormTeacher
+            },
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
                     next();
                 } else {
                     next(false);

@@ -37,22 +37,22 @@ class ProcedureController extends Controller
             'procedure_category' => ['required'],
             'procedure_status' => ['required'],
         ],[
-            'procedure_code.required' => 'Mã thủ tục không dược để trống!',
+            'procedure_code.required' => 'Mã thủ tục không được để trống!',
             'procedure_code.max' => 'Mã thủ tục không nhập quá 10 ký tự!',
             'procedure_code.unique' => 'Mã thủ tục đã tồn tại!',
 
-            'procedure_title.required' => 'Tiêu đề thủ tục không dược để trống!',
+            'procedure_title.required' => 'Tiêu đề thủ tục không được để trống!',
             'procedure_title.max' => 'Tiêu đề thủ tục không nhập quá 200 ký tự!',
             'procedure_title.min' => 'Tiêu đề thủ tục phải có 10 ký tự trở lên!',
             'procedure_title.unique' => 'Tiêu đề thủ tục đã tồn tại!',
 
-            'procedure_content.required' => 'Nội dung thủ tục không dược để trống!',
+            'procedure_content.required' => 'Nội dung thủ tục không được để trống!',
             'procedure_content.min' => 'Nội dung thủ tục phải có 20 ký tự trở lên!',
 
-            'procedure_time.required' => 'Thời gian chuẩn bị thủ tục không dược để trống!',
+            'procedure_time.required' => 'Thời gian chuẩn bị thủ tục không được để trống!',
             'procedure_time.max' => 'Thời gian chuẩn bị thủ tục tối đa có 10 ký tự!',
 
-            'procedure_fee.required' => 'Phí của thủ tục không dược để trống!',
+            'procedure_fee.required' => 'Phí của thủ tục không được để trống!',
             'procedure_fee.max' => 'Phí của thủ tục tối đa có 10 ký tự!',
 
             'procedure_method.required' => 'Vui lòng chọn phương thức cho thủ tục này!',
@@ -100,18 +100,18 @@ class ProcedureController extends Controller
             'procedure_fee' => ['required', 'max:10'],
             'procedure_category' => ['required'],
         ],[
-            'procedure_title.required' => 'Tiêu đề thủ tục không dược để trống!',
+            'procedure_title.required' => 'Tiêu đề thủ tục không được để trống!',
             'procedure_title.max' => 'Tiêu đề thủ tục không nhập quá 200 ký tự!',
             'procedure_title.min' => 'Tiêu đề thủ tục phải có 10 ký tự trở lên!',
             'procedure_title.unique' => 'Tiêu đề thủ tục đã tồn tại!',
 
-            'procedure_content.required' => 'Nội dung thủ tục không dược để trống!',
+            'procedure_content.required' => 'Nội dung thủ tục không được để trống!',
             'procedure_content.min' => 'Nội dung thủ tục phải có 20 ký tự trở lên!',
 
-            'procedure_time.required' => 'Thời gian chuẩn bị thủ tục không dược để trống!',
+            'procedure_time.required' => 'Thời gian chuẩn bị thủ tục không được để trống!',
             'procedure_time.max' => 'Thời gian chuẩn bị thủ tục tối đa có 10 ký tự!',
 
-            'procedure_fee.required' => 'Phí của thủ tục không dược để trống!',
+            'procedure_fee.required' => 'Phí của thủ tục không được để trống!',
             'procedure_fee.max' => 'Phí của thủ tục tối đa có 10 ký tự!',
 
             'procedure_method.required' => 'Vui lòng chọn phương thức cho thủ tục này!',

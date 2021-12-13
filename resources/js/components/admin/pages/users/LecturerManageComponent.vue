@@ -343,6 +343,17 @@
 				})
 				.catch(err => console.log(err));
 			},
+			fetchFaculties(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-faculty/khoa/faculty';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.faculties = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			search(page_url) {
 				let vm = this;
 				page_url = '../../api/admin/user-gv/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page=1';
@@ -362,7 +373,7 @@
 				$('#LecturerModal').modal('show');
 			},
 			update() {
-				this.form.put('../../api/admin/user-gv/giang-vien/'+this.form.lecturer_id)
+				this.form.post('../../api/admin/user-gv/giang-vien/role/'+this.form.lecturer_id)
 				.then(res => {
 					this.fetchLecturers();
 					$('#LecturerModal').modal('hide');
@@ -475,17 +486,6 @@
 				this.fetchLecturers();
 				this.query='';
 				this.value_role='';
-			},
-			fetchFaculties(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/edu-faculty/khoa/1000?page='+this.pagination.current_page;
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.faculties = res.data;
-					this.pagination = res.meta;
-				})
-				.catch(err => console.log(err));
 			},
 		}
 	};

@@ -71,46 +71,44 @@
 								<tr v-show="requires.length" v-for="prequire in requires" :key="prequire.procedure_require_id">
 									<td>{{ prequire.procedure_require_code }}</td>
 									<td>
-										<!-- <router-link tag="a" :to="{ name: 'procedureupdate', params: {idProcedure: procedure.procedure_id} }"> -->
-											<div v-if="getTitle(prequire)<20">
-												{{ getTitle(prequire) }}
-											</div>
-											<div v-else>
-												{{ getTitle(prequire).substring(0,50)+"..." }}
-											</div>
-										<!-- </router-link> -->
+										<div v-if="prequire.procedure_title<20">
+											{{ prequire.procedure_title }}
+										</div>
+										<div v-else>
+											{{ prequire.procedure_title.substring(0,50)+"..." }}
+										</div>
 									</td>
 									<td class="text-center">{{ prequire.procedure_require_student }}</td>
 									<td class="text-center">{{ prequire.procedure_require_datesend | formatDate}}</td>
 									<td class="text-center">
 										<select class="form-control" v-model="prequire.procedure_require_status" 
-											:class="[{'btn-outline-success': prequire.procedure_require_status==2}, 
-													{'btn-outline-danger': prequire.procedure_require_status==3}, 
-													{'btn-outline-dark': prequire.procedure_require_status==1}]" 
-											@change="change($event, prequire.procedure_require_id)" name="procedure_require_status">
-											<option value="0" :hidden="prequire.procedure_require_status!=0">Chờ xác nhận</option>
-											<option value="1" :hidden="prequire.procedure_require_status>1">Đang xử lý</option>
-											<option value="2" :hidden="prequire.procedure_require_status==3">Hoàn tất</option>
-											<option value="3" :hidden="prequire.procedure_require_status==2">Đã bị hủy</option>
-										</select>
-									</td>
-								</tr>
-								<tr v-show="!requires.length">
-									<td colspan="8">
-										<div class="alert alert-danger">
-											Không tìm thấy kết quả phù hợp!
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchRequires() : search() "></pagination>
-					</div>
-					<!-- table-responsive -->
+										:class="[{'btn-outline-success': prequire.procedure_require_status==2}, 
+										{'btn-outline-danger': prequire.procedure_require_status==3}, 
+										{'btn-outline-dark': prequire.procedure_require_status==1}]" 
+										@change="change($event, prequire.procedure_require_id)" name="procedure_require_status">
+										<option value="0" :hidden="prequire.procedure_require_status!=0">Chờ xác nhận</option>
+										<option value="1" :hidden="prequire.procedure_require_status>1">Đang xử lý</option>
+										<option value="2" :hidden="prequire.procedure_require_status==3">Hoàn tất</option>
+										<option value="3" :hidden="prequire.procedure_require_status==2">Đã bị hủy</option>
+									</select>
+								</td>
+							</tr>
+							<tr v-show="!requires.length">
+								<td colspan="8">
+									<div class="alert alert-danger">
+										Không tìm thấy kết quả phù hợp!
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchRequires() : search() "></pagination>
 				</div>
-			</div><!-- col end -->
-		</div>
+				<!-- table-responsive -->
+			</div>
+		</div><!-- col end -->
 	</div>
+</div>
 </template>
 
 <script>
@@ -118,7 +116,6 @@
 	export default {
 		data() {
 			return {
-				procedures:[],
 				requires:[],
 				procedure_require_status: '',
 				pagination:{
@@ -139,6 +136,9 @@
 				}),
 				value_status:'',
 			};
+		},
+		mounted() {
+			this.fetchRequires();
 		},
 		watch: {
 			currentEntries(number) {
@@ -169,24 +169,9 @@
 				}
 			},
 		},
-		mounted() {
-			this.fetchProcedures();
-			this.fetchRequires();
-		},
 		methods: {
 			empty() {
 				return (this.requires.length < 1);
-			},
-			fetchProcedures(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/procedure/thu-tuc/get-all';
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.procedures = res.data;
-					this.pagination = res.meta;
-				})
-				.catch(err => console.log(err));
 			},
 			fetchRequires(page_url) {
 				let vm = this;
@@ -235,10 +220,6 @@
 				})
 				.catch(err => console.log(err));
 			},
-			getTitle(prequire) {
-				const procedure = this.procedures.find((prc) => prc.procedure_code === prequire.procedure_require_detail);
-				return procedure.procedure_title;
-			}
 		}
 	};
 </script>

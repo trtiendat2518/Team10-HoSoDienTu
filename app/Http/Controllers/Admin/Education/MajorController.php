@@ -47,13 +47,13 @@ class MajorController extends Controller
             'major_faculty' => ['required'],
             'major_status' => ['required'],
         ],[
-            'major_code.required' => 'Mã Chuyên Ngành không dược để trống!',
+            'major_code.required' => 'Mã Chuyên Ngành không được để trống!',
             'major_code.max' => 'Mã Chuyên Ngành không nhập quá 10 ký tự chữ!',
             'major_code.min' => 'Mã Chuyên Ngành phải có 2 ký tự chữ trở lên!',
             'major_code.unique' => 'Mã Chuyên Ngành đã tồn tại!',
             'major_code.notspecial_spaces' => 'Mã Chuyên Ngành không được chứa ký tự đặc biệt!',
 
-            'major_name.required' => 'Tên Chuyên Ngành không dược để trống!',
+            'major_name.required' => 'Tên Chuyên Ngành không được để trống!',
             'major_name.max' => 'Tên Chuyên Ngành không nhập quá 50 ký tự chữ!',
             'major_name.min' => 'Tên Chuyên Ngành phải có 5 ký tự chữ trở lên!',
             'major_name.unique' => 'Tên Chuyên Ngành đã tồn tại!',
@@ -108,7 +108,7 @@ class MajorController extends Controller
             'major_name' => ['required', 'max:50', 'min:5', 'notspecial_spaces'],
             'major_faculty' => ['required'],
         ],[
-            'major_name.required' => 'Tên Chuyên Ngành không dược để trống!',
+            'major_name.required' => 'Tên Chuyên Ngành không được để trống!',
             'major_name.max' => 'Tên Chuyên Ngành không nhập quá 50 ký tự chữ!',
             'major_name.min' => 'Tên Chuyên Ngành phải có 5 ký tự chữ trở lên!',
             'major_name.unique' => 'Tên Chuyên Ngành đã tồn tại!',

@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Lecturer;
 use App\Models\LecturerInfo;
+use App\Models\FormTeacher;
+use Validator;
 use Session;
 
 class LecturerManageController extends Controller
@@ -70,10 +72,7 @@ class LecturerManageController extends Controller
      */
     public function update(Request $request, $lecturer)
     {
-        $lec = Lecturer::find($lecturer);
-        $lec->lecturer_role = $request->lecturer_role;
-        $lec->lecturer_level = $request->lecturer_level;
-        $lec->save();
+        //
     }
 
     /**
@@ -112,11 +111,20 @@ class LecturerManageController extends Controller
     public function change(Request $request, $lecturer)
     {
         $lec = Lecturer::find($lecturer);
+        $formteacher = FormTeacher::where('form_teacher_code', $lec->lecturer_code)->get();
         if($lec->lecturer_status==0){
             $lec->lecturer_status=1;
+            foreach ($formteacher as $key => $value) {
+                $value->form_teacher_status = 1;
+                $value->save();
+            }
             $lec->save();
         }else{
             $lec->lecturer_status=0;
+            foreach ($formteacher as $key => $value) {
+                $value->form_teacher_status = 0;
+                $value->save();
+            }
             $lec->save();
         }
     }
@@ -134,5 +142,29 @@ class LecturerManageController extends Controller
     public function admin()
     {
         return AdminResource::collection(Admin::orderby('admin_fullname','ASC')->get());
+    }
+
+    public function role(Request $request, $lecturer)
+    {
+        $lec = Lecturer::find($lecturer);
+        
+        if ($request->lecturer_role == 0) {
+            $lec->lecturer_role = $request->lecturer_role;
+            $lec->lecturer_level = 0;
+        } else if ($request->lecturer_role == 1) {
+            $lec->lecturer_role = $request->lecturer_role;
+            $lec->lecturer_level = $request->lecturer_level;
+        } else if ($request->lecturer_role == 2) {
+            $lec->lecturer_role = $request->lecturer_role;
+            $lec->lecturer_level = 0;
+            $find = FormTeacher::where('form_teacher_code', $lec->lecturer_code)->first();
+            if ($find === null) {
+                $new = new FormTeacher();
+                $new->form_teacher_code = $lec->lecturer_code;
+                $new->form_teacher_status = $lec->lecturer_status;
+                $new->save();
+            }
+        }
+        $lec->save();
     }
 }

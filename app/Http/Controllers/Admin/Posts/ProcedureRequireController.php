@@ -48,7 +48,8 @@ class ProcedureRequireController extends Controller
      */
     public function show($currentEntries)
     {
-        return ProcedureRequireResource::collection(ProcedureRequire::orderby('procedure_require_id','DESC')->paginate($currentEntries));
+        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_code','=','tbl_procedure_require.procedure_require_detail')->orderby('procedure_require_id','DESC')->paginate($currentEntries);
+        return ProcedureRequireResource::collection($join);
     }
 
     /**
@@ -93,7 +94,8 @@ class ProcedureRequireController extends Controller
 
     public function filter($value, $currentEntries)
     {
-        return ProcedureRequireResource::collection(ProcedureRequire::where('procedure_require_status','LIKE','%'.$value.'%')->orderby('procedure_require_id','DESC')->paginate($currentEntries));
+        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_code','=','tbl_procedure_require.procedure_require_detail')->where('procedure_require_status','LIKE','%'.$value.'%')->orderby('procedure_require_id','DESC')->paginate($currentEntries);
+        return ProcedureRequireResource::collection($join);
     }
 
     public function change(Request $request, $procedure_require_id)

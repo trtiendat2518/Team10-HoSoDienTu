@@ -57,12 +57,12 @@ class EducationProgramController extends Controller
             'education_program_status' => ['required'],
             'file_data' => ['required', 'file', 'mimes:xls,xlsx'],
         ],[
-            'education_program_code.required' => 'Mã CTĐT không dược để trống!',
+            'education_program_code.required' => 'Mã CTĐT không được để trống!',
             'education_program_code.max' => 'Mã CTĐT không nhập quá 10 ký tự!',
             'education_program_code.unique' => 'Mã CTĐT đã tồn tại!',
             'education_program_code.notspecial_spaces' => 'Mã CTĐT không được chứa ký tự đặc biệt!',
 
-            'education_program_year.required' => 'Năm đào tạo không dược để trống!',
+            'education_program_year.required' => 'Năm đào tạo không được để trống!',
             'education_program_year.max' => 'Năm đào tạo không nhập quá 100 ký tự!',
 
             'education_program_type.required' => 'Vui lòng chọn hệ đào tạo!',
@@ -138,7 +138,7 @@ class EducationProgramController extends Controller
             'education_program_type' => ['required'],
             'education_program_year' => ['required', 'max:10'],
         ],[
-            'education_program_year.required' => 'Năm đào tạo không dược để trống!',
+            'education_program_year.required' => 'Năm đào tạo không được để trống!',
             'education_program_year.max' => 'Năm đào tạo không nhập quá 100 ký tự!',
             'education_program_type.required' => 'Vui lòng chọn hệ đào tạo!',
         ]);
@@ -186,12 +186,13 @@ class EducationProgramController extends Controller
 
     public function program_one(Request $request, $education_program_id)
     {
-        return EducationProgramResource::collection(EducationProgram::where('education_program_id', $education_program_id)->orderby('education_program_id','DESC')->get());
+        $join = EducationProgram::join('tbl_program_type', 'tbl_program_type.program_type_code','=','tbl_education_program.education_program_type')->join('tbl_faculty', 'tbl_faculty.faculty_code','=','tbl_education_program.education_program_faculty')->where('education_program_id', $education_program_id)->orderby('education_program_id','DESC')->get();
+        return EducationProgramResource::collection($join);
     }
 
     public function show_subject_program($education_program_id)
     {
-        $program = ProgramDetail::join('tbl_education_program','tbl_education_program.education_program_code','=','tbl_program_detail.program_detail_code')->where('tbl_education_program.education_program_id',$education_program_id)->orderby('tbl_program_detail.program_detail_semester', 'ASC')->get();
+        $program = ProgramDetail::join('tbl_education_program','tbl_education_program.education_program_code','=','tbl_program_detail.program_detail_code')->join('tbl_subject','tbl_subject.subject_code','=','tbl_program_detail.program_detail_subject')->join('tbl_faculty', 'tbl_faculty.faculty_code','=','subject_faculty')->where('tbl_education_program.education_program_id',$education_program_id)->orderby('tbl_program_detail.program_detail_semester', 'ASC')->get();
         return ProgramDetailResource::collection($program);
     }
 
