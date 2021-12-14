@@ -6,6 +6,7 @@ import Dashboard from "./components/admin/pages/DashboardComponent.vue";
 
 import Lecturer from "./components/admin/pages/users/LecturerManageComponent.vue";
 import Student from "./components/admin/pages/users/StudentManageComponent.vue";
+import FormTeacher from "./components/admin/pages/users/FormTeacherComponent.vue";
 
 import Faculty from "./components/admin/pages/education/FacultyComponent.vue";
 import Major from "./components/admin/pages/education/MajorComponent.vue";
@@ -35,19 +36,19 @@ import ProcedureRequire from "./components/admin/pages/procedures/ProcedureRequi
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
-if (document.querySelector("meta[name='admin-fullname']")) {
-    Vue.prototype.$adminId = document
-        .querySelector("meta[name='admin-fullname']")
-        .getAttribute("content");
-} else if (document.querySelector("meta[name='deanfaculty-id']")) {
-    Vue.prototype.$facultyId = document
-        .querySelector("meta[name='deanfaculty-id']")
-        .getAttribute("content");
-} else if (document.querySelector("meta[name='formteacher-id']")) {
-    Vue.prototype.$teacherId = document
-        .querySelector("meta[name='formteacher-id']")
-        .getAttribute("content");
-}
+// if (document.querySelector("meta[name='admin-fullname']")) {
+//     Vue.prototype.$adminId = document
+//         .querySelector("meta[name='admin-fullname']")
+//         .getAttribute("content");
+// } else if (document.querySelector("meta[name='deanfaculty-id']")) {
+//     Vue.prototype.$facultyId = document
+//         .querySelector("meta[name='deanfaculty-id']")
+//         .getAttribute("content");
+// } else if (document.querySelector("meta[name='formteacher-id']")) {
+//     Vue.prototype.$teacherId = document
+//         .querySelector("meta[name='formteacher-id']")
+//         .getAttribute("content");
+// }
 
 if (document.querySelector("meta[name='admin-fullname']")) {
     Vue.prototype.$adminId = document.querySelector("meta[name='admin-fullname']").getAttribute('content');
@@ -284,6 +285,21 @@ export default new VueRouter({
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$adminId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/chu-nhiem-sinh-vien",
+            name: "formteacher",
+            components: {
+                default: FormTeacher
+            },
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
                     next();
                 } else {
                     next(false);

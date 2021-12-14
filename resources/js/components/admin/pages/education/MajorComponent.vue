@@ -41,7 +41,7 @@
 							<select class="form-control mt-2" v-model="value_faculty">
 								<option value="" disabled selected>Lọc theo khoa</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="faculty in faculties" :key="faculty.faculty_code" :value="faculty.faculty_code">{{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :key="faculty.faculty_id" :value="faculty.faculty_id">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -78,7 +78,7 @@
 									</td>
 									<td @click="detail(major)"><a href="javascript:void(0)">{{ major.major_code }}</a></td>
 									<td>{{ major.major_name }}</td>
-									<td>{{ filterFaculty(major) }}</td>
+									<td>{{ major.faculty_name }}</td>
 									<td class="td-styling">
 										<div v-if="major.major_status==0">
 											<button class="fa fa-eye btn-eye" @click="change(major.major_id)"></button>
@@ -135,7 +135,7 @@
 							<select v-model="form.major_faculty" name="major_faculty" class="form-control select-option" :class="{'is-invalid': form.errors.has('major_faculty')}">
 								<option value="" selected disabled>Chọn Khoa</option>
 								<option disabled>---------------</option>
-								<option v-for="faculty in faculties" :key="faculty.faculty_code" :value="faculty.faculty_code" :hidden="faculty.faculty_status>0">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :key="faculty.faculty_id" :value="faculty.faculty_id" :hidden="faculty.faculty_status>0">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
 							</select>
 							<div class="text-danger mb-3" v-if="form.errors.has('major_faculty')" v-html="form.errors.get('major_faculty')"></div>
 
@@ -171,18 +171,18 @@
 					</div>
 					<div class="modal-body">
 						<table class="table row table-borderless w-100 m-0 border">
-							<tbody class="col-lg-12 p-0">
+							<tbody class="col-lg-12 p-0" v-for="detail in details" :key="detail.major_id">
 								<tr>
 									<td class="h3-strong"><h3><strong> Thông tin chi tiết</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Mã Chuyên Ngành: <strong> {{ form.major_code }}</strong></td>
+									<td>Mã Chuyên Ngành: <strong> {{ detail.major_code }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Chuyên Ngành: <strong> {{ form.major_name }}</strong></td>
+									<td>Tên Chuyên Ngành: <strong> {{ detail.major_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Thuộc Khoa: <strong>{{ major_faculty }}</strong></td>
+									<td>Thuộc Khoa: <strong>{{ detail.faculty_name }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -440,8 +440,8 @@
 				.then(res => {
 					this.details = res.data;
 					this.form.fill(major);
-					const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
-					this.major_faculty = faculty.faculty_name;
+					// const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
+					// this.major_faculty = faculty.faculty_name;
 					$('#DetailModal').modal('show');
 				})
 				.catch(err => console.log(err));
@@ -504,10 +504,10 @@
 					this.$snotify.error(this.error);
 				});
 			},
-			filterFaculty(major) {
-				const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
-				return faculty.faculty_name;
-			},
+			// filterFaculty(major) {
+			// 	const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
+			// 	return faculty.faculty_name;
+			// },
 		}
 	};
 </script>

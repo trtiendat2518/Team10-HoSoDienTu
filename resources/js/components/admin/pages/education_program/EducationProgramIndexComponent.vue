@@ -81,7 +81,7 @@
                                     <td>
                                         <router-link tag="a" :to="{ name: 'educationprogramdetail', params: {idProgram: program.education_program_id} }">{{ program.education_program_code }}</router-link>
                                     </td>
-                                    <td>{{ nameProgram(program) }}</td>
+                                    <td>{{ program.course_code }} - {{ program.faculty_name }}</td>
                                     <td class="text-center">
                                         {{ program.education_program_year }}
                                     </td>
@@ -127,9 +127,7 @@
     export default {
         data() {
             return {
-                faculties: [],
                 majors: [],
-                courses: [],
                 lecturers: [],
                 lecturer_id: this.$facultyId,
                 lecturer_faculty: "",
@@ -159,45 +157,12 @@
             },
         },
         mounted() {
-            this.fetchFaculties();
-            this.fetchMajors();
-            this.fetchCourses();
             this.fetchPrograms();
             this.fetchLecturers();
         },
         methods: {
             empty() {
                 return this.programs.length < 1;
-            },
-            fetchFaculties(page_url) {
-                let vm = this;
-                page_url = "../../api/admin/edu-faculty/khoa/faculty";
-                fetch(page_url)
-                .then(res => res.json())
-                .then(res => {
-                    this.faculties = res.data;
-                })
-                .catch(err => console.log(err));
-            },
-            fetchMajors(page_url) {
-                let vm = this;
-                page_url = "../../api/admin/edu-major/chuyen-nganh/major";
-                fetch(page_url)
-                .then(res => res.json())
-                .then(res => {
-                    this.majors = res.data;
-                })
-                .catch(err => console.log(err));
-            },
-            fetchCourses(page_url) {
-                let vm = this;
-                page_url = "../../api/admin/edu-course/khoa-hoc/course";
-                fetch(page_url)
-                .then(res => res.json())
-                .then(res => {
-                    this.courses = res.data;
-                })
-                .catch(err => console.log(err));
             },
             fetchLecturers(page_url) {
                 let vm = this;
@@ -224,16 +189,6 @@
                     this.pagination = res.meta;
                 })
                 .catch(err => console.log(err));
-            },
-            nameProgram(program) {
-                const faculty = this.faculties.find(
-                    fct => fct.faculty_code === program.education_program_faculty
-                    );
-                const course = this.courses.find(
-                    crs => crs.course_code === program.education_program_course
-                    );
-
-                return course.course_code + " - " + faculty.faculty_name;
             },
             change(education_program_id) {
                 axios

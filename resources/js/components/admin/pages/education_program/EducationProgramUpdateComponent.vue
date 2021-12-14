@@ -47,7 +47,7 @@
 										Chọn khóa học
 									</option>
 									<option value="" disabled>-------</option>
-									<option v-for="course in courses" :key="course.course_code" :value="course.course_code">{{ course.course_name }}</option>
+									<option v-for="course in courses" :key="course.course_id" :value="course.course_id">{{ course.course_code }} - {{ course.course_name }}</option>
 								</select>
 								<div class="text-danger" v-if="form.errors.has('education_program_course')" v-html="form.errors.get('education_program_course')"></div>
 							</div>
@@ -61,7 +61,7 @@
 								<select class="form-control" name="education_program_type" v-model="form.education_program_type" :class="{'is-invalid': form.errors.has('education_program_type')}">
 									<option value="" disabled selected="">Chọn hệ đào tạo</option>
 									<option value="" disabled>-------</option>
-									<option v-for="type in types" :key="type.program_type_code" :value="type.program_type_code">{{ type.program_type_name }}</option>
+									<option v-for="type in types" :key="type.program_type_id" :value="type.program_type_id">{{ type.program_type_code }} - {{ type.program_type_name }}</option>
 								</select>
 								<div class="text-danger" v-if="form.errors.has('education_program_type')" v-html="form.errors.get('education_program_type')"></div>
 							</div>
@@ -80,7 +80,7 @@
 							<div class="card">
 								<div class="col-md-12">
 									<h2 class="text-center mt-3">
-										<strong>Chương trình đào tạo {{ this.form.education_program_course }}</strong>
+										<strong>Chương trình đào tạo {{ this.form.course_name }}</strong>
 									</h2>
 								</div>
 
@@ -344,6 +344,8 @@
 					education_program_year: "",
 					education_program_credit: "",
 					education_program_status: "",
+					faculty_name:'',
+					course_name:'',
 					file_data:'',
 				}),
 				updatedata: {
@@ -492,7 +494,7 @@
 					}
 				});
 				const faculty = this.faculties.find(
-					(fac) => fac.faculty_code === this.subject_faculty
+					(fac) => fac.faculty_id === this.subject_faculty
 					);
 				this.subject_faculty = faculty.faculty_name;
 			},
@@ -503,13 +505,14 @@
 				}
 			},
 			facultySubject(subject) {
-				const faculty = this.faculties.find((fac) => fac.faculty_code === subject.subject_faculty);
+				const faculty = this.faculties.find((fac) => fac.faculty_id === subject.subject_faculty);
 				return faculty.faculty_name;
 			},
 			update() {
 				this.form.put(`../../api/admin/program/chuong-trinh-dao-tao/${this.education_program_id}`)
 				.then(res => {
 					if(this.form.successful){
+						this.fetchPrograms();
 						this.$snotify.success('Cập nhật Khoa thành công!');
 						this.$snotify.confirm('Bạn có muốn đi đến danh sách không?', {
 							timeout: 5000,
@@ -553,6 +556,8 @@
 				formData.append('subject_major', this.updatedata.subject_major);
 				axios.post(`../../api/admin/program/chuong-trinh-dao-tao/update-subject-program/${this.updatedata.subject_id}`, formData)
 				.then(res => {
+					this.fetchEducation();
+					this.fetchPrograms();
 					this.$snotify.success('Cập nhật Khoa thành công!');
 					$('#UpdateModal').modal('hide');
 				})
@@ -624,9 +629,9 @@
 				})
 				.then(res => {
 					if(res.status === 200) {
-						$('#SubjectModal').modal('hide');
-						this.fetchEducation();
 						this.$snotify.success('Import thành công');
+						$('#ImportModal').modal('hide');
+						this.fetchEducation();
 					}
 				})
 				.catch(err => {

@@ -24,8 +24,8 @@ class MajorImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'ma_chuyen_nganh' => 'required|notspecial_spaces|unique:tbl_major,major_code', 
-            'ten_chuyen_nganh' => 'required|unique:tbl_major,major_name',
+            'ma_chuyen_nganh' => 'required|notspecial_spaces|unique:tbl_major,major_code|max:10|min:2', 
+            'ten_chuyen_nganh' => 'required|unique:tbl_major,major_name|max:50|min:5|notspecial_spaces',
             'ma_khoa' =>'required',
         ];
     }
@@ -36,8 +36,15 @@ class MajorImport implements ToModel, WithHeadingRow, WithValidation
             'ma_chuyen_nganh.required' => 'Mã chuyên ngành không được để trống',
             'ma_chuyen_nganh.notspecial_spaces' => 'Mã chuyên ngành không được ký tự đặc biệt',
             'ma_chuyen_nganh.unique' => 'Mã chuyên ngành tại hàng :row đã tồn tại',
+            'ma_chuyen_nganh.max' => 'Mã Chuyên Ngành tại hàng :row không nhập quá 10 ký tự chữ!',
+            'ma_chuyen_nganh.min' => 'Mã Chuyên Ngành tại hàng :row phải có 2 ký tự chữ trở lên!',
+
             'ten_chuyen_nganh.required' => 'Tên chuyên ngành không được để trống',
             'ten_chuyen_nganh.unique' => 'Tên chuyên ngành tại hàng :row đã tồn tại',
+            'ten_chuyen_nganh.max' => 'Tên Chuyên Ngành tại hàng :row không nhập quá 50 ký tự chữ!',
+            'ten_chuyen_nganh.min' => 'Tên Chuyên Ngành tại hàng :row phải có 5 ký tự chữ trở lên!',
+            'ten_chuyen_nganh.notspecial_spaces' => 'Tên Chuyên Ngành tại hàng :row không được chứa ký tự đặc biệt!',
+
             'ma_khoa.required' => 'Không được để trống Mã Khoa tại hàng :row'
         ];
     }
