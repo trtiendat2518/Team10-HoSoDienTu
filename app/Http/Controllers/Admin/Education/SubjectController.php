@@ -117,13 +117,13 @@ class SubjectController extends Controller
 
     public function showdata($lecturer_id, $currentEntries)
     {
-        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_code',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
+        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_id',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
         return SubjectResource::collection($subject_faculty);
     }
 
     public function showother($lecturer_id, $currentEntries)
     {
-        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','!=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_code',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
+        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','!=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_id',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
         return SubjectResource::collection($subject_faculty);
     }
 
@@ -252,7 +252,8 @@ class SubjectController extends Controller
 
     public function detail($subject)
     {
-        return SubjectResource::collection(Subject::where('subject_id',$subject)->get());
+        $joins = Subject::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_subject.subject_faculty')->where('subject_id',$subject)->get();
+        return SubjectResource::collection($joins);
     }
 
     public function filter($faculty, $currentEntries)

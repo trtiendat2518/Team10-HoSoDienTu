@@ -330,7 +330,7 @@
 			},
 			fetchFormTeachers(page_url) {
 				let vm = this;
-				page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/${this.currentEntries}?page=${this.pagination.current_page}`;
+				page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/showdata/${this.lecturer_id}/${this.currentEntries}?page=${this.pagination.current_page}`;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {

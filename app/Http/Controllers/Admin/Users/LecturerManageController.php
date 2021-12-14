@@ -111,7 +111,7 @@ class LecturerManageController extends Controller
     public function change(Request $request, $lecturer)
     {
         $lec = Lecturer::find($lecturer);
-        $formteacher = FormTeacher::where('form_teacher_code', $lec->lecturer_code)->get();
+        $formteacher = FormTeacher::where('form_teacher_lecturer', $lec->lecturer_id)->get();
         if($lec->lecturer_status==0){
             $lec->lecturer_status=1;
             foreach ($formteacher as $key => $value) {
@@ -131,7 +131,8 @@ class LecturerManageController extends Controller
 
     public function detail($lecturer)
     {
-        return LectureInfoResource::collection(LecturerInfo::where('lecturer_code',$lecturer)->paginate(1));
+        $joins = Lecturer::join('tbl_lecturer_info', 'tbl_lecturer_info.lecturer_id_ref', '=', 'tbl_lecturer.lecturer_id')->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')->where('tbl_lecturer.lecturer_id', $lecturer)->orderby('tbl_lecturer.lecturer_id','DESC')->get();
+        return LecturerManageResource::collection($joins);
     }
 
     public function lecturer()
@@ -157,10 +158,10 @@ class LecturerManageController extends Controller
         } else if ($request->lecturer_role == 2) {
             $lec->lecturer_role = $request->lecturer_role;
             $lec->lecturer_level = 0;
-            $find = FormTeacher::where('form_teacher_code', $lec->lecturer_code)->first();
+            $find = FormTeacher::where('form_teacher_lecturer', $lec->lecturer_id)->first();
             if ($find === null) {
                 $new = new FormTeacher();
-                $new->form_teacher_code = $lec->lecturer_code;
+                $new->form_teacher_lecturer = $lecturer;
                 $new->form_teacher_status = $lec->lecturer_status;
                 $new->save();
             }

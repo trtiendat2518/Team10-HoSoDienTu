@@ -36,19 +36,19 @@ import ProcedureRequire from "./components/admin/pages/procedures/ProcedureRequi
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
-if (document.querySelector("meta[name='admin-fullname']")) {
-    Vue.prototype.$adminId = document
-        .querySelector("meta[name='admin-fullname']")
-        .getAttribute("content");
-} else if (document.querySelector("meta[name='deanfaculty-id']")) {
-    Vue.prototype.$facultyId = document
-        .querySelector("meta[name='deanfaculty-id']")
-        .getAttribute("content");
-} else if (document.querySelector("meta[name='formteacher-id']")) {
-    Vue.prototype.$teacherId = document
-        .querySelector("meta[name='formteacher-id']")
-        .getAttribute("content");
-}
+// if (document.querySelector("meta[name='admin-fullname']")) {
+//     Vue.prototype.$adminId = document
+//         .querySelector("meta[name='admin-fullname']")
+//         .getAttribute("content");
+// } else if (document.querySelector("meta[name='deanfaculty-id']")) {
+//     Vue.prototype.$facultyId = document
+//         .querySelector("meta[name='deanfaculty-id']")
+//         .getAttribute("content");
+// } else if (document.querySelector("meta[name='formteacher-id']")) {
+//     Vue.prototype.$teacherId = document
+//         .querySelector("meta[name='formteacher-id']")
+//         .getAttribute("content");
+// }
 
 if (document.querySelector("meta[name='admin-fullname']")) {
     Vue.prototype.$adminId = document.querySelector("meta[name='admin-fullname']").getAttribute('content');

@@ -79,7 +79,8 @@ class MajorController extends Controller
      */
     public function show($currentEntries)
     {
-        return MajorResource::collection(Major::orderby('major_id','DESC')->paginate($currentEntries));
+        $joins = Major::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')->orderby('major_id','DESC')->paginate($currentEntries);
+        return MajorResource::collection($joins);
     }
 
     /**
@@ -167,12 +168,13 @@ class MajorController extends Controller
 
     public function filter($faculty, $currentEntries)
     {
-        return MajorResource::collection(Major::where('major_faculty','LIKE','%'.$faculty.'%')->orderby('major_name','DESC')->paginate($currentEntries));
+        return MajorResource::collection(Major::where('major_faculty','=', $faculty)->orderby('major_name','DESC')->paginate($currentEntries));
     }
 
     public function detail($major)
     {
-        return MajorResource::collection(Major::where('major_id', $major)->get());
+        $joins = Major::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')->where('tbl_major.major_id', $major)->orderby('major_id','DESC')->get();
+        return MajorResource::collection($joins);
     }
 
     public function export(Request $request)

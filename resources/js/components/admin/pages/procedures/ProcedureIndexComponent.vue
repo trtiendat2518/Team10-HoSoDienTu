@@ -232,8 +232,8 @@
 			change(procedure_id) {
 				axios.patch(`../../api/admin/procedure/thu-tuc/change/${procedure_id}`)
 				.then(res => {
-					this.fetchProcedures();
 					this.$snotify.warning('Đã thay đổi trạng thái');
+					this.fetchProcedures();
 				})
 				.catch(err => console.log(err));
 			},

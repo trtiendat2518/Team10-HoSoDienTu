@@ -27,7 +27,10 @@ class EducationProgramController extends Controller
 
     public function showdata($lecturer_id, $currentEntries)
     {
-        $edu_program = EducationProgram::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','=','tbl_education_program.education_program_faculty')->where('tbl_lecturer.lecturer_code',$lecturer_id)->orderby('education_program_id', 'DESC')->paginate($currentEntries);
+        $edu_program = EducationProgram::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','=','tbl_education_program.education_program_faculty')
+        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_education_program.education_program_course')
+        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_education_program.education_program_faculty')
+        ->where('tbl_lecturer.lecturer_id',$lecturer_id)->orderby('education_program_id', 'DESC')->paginate($currentEntries);
         return EducationProgramResource::collection($edu_program);
     }
 
@@ -186,13 +189,20 @@ class EducationProgramController extends Controller
 
     public function program_one(Request $request, $education_program_id)
     {
-        $join = EducationProgram::join('tbl_program_type', 'tbl_program_type.program_type_code','=','tbl_education_program.education_program_type')->join('tbl_faculty', 'tbl_faculty.faculty_code','=','tbl_education_program.education_program_faculty')->where('education_program_id', $education_program_id)->orderby('education_program_id','DESC')->get();
+        $join = EducationProgram::join('tbl_program_type', 'tbl_program_type.program_type_id','=','tbl_education_program.education_program_type')
+        ->join('tbl_faculty', 'tbl_faculty.faculty_id','=','tbl_education_program.education_program_faculty')
+        ->join('tbl_course', 'tbl_course.course_id','=','tbl_education_program.education_program_course')
+        ->where('education_program_id', $education_program_id)->orderby('education_program_id','DESC')->get();
         return EducationProgramResource::collection($join);
     }
 
     public function show_subject_program($education_program_id)
     {
-        $program = ProgramDetail::join('tbl_education_program','tbl_education_program.education_program_code','=','tbl_program_detail.program_detail_code')->join('tbl_subject','tbl_subject.subject_code','=','tbl_program_detail.program_detail_subject')->join('tbl_faculty', 'tbl_faculty.faculty_code','=','subject_faculty')->where('tbl_education_program.education_program_id',$education_program_id)->orderby('tbl_program_detail.program_detail_semester', 'ASC')->get();
+        $program = ProgramDetail::join('tbl_education_program','tbl_education_program.education_program_code','=','tbl_program_detail.program_detail_code')
+        ->join('tbl_subject','tbl_subject.subject_code','=','tbl_program_detail.program_detail_subject')
+        ->join('tbl_faculty', 'tbl_faculty.faculty_id','=','subject_faculty')
+        ->where('tbl_education_program.education_program_id',$education_program_id)
+        ->orderby('tbl_program_detail.program_detail_semester', 'ASC')->get();
         return ProgramDetailResource::collection($program);
     }
 

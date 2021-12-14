@@ -47,10 +47,9 @@ class FormTeacherController extends Controller
      * @param  \App\Models\FormTeacher  $formTeacher
      * @return \Illuminate\Http\Response
      */
-    public function show($currentEntries)
+    public function show($id)
     {
-        $joins = FormTeacher::join('tbl_lecturer', 'tbl_lecturer.lecturer_code', '=', 'tbl_form_teacher.form_teacher_code')->join('tbl_faculty', 'tbl_faculty.faculty_code', '=', 'tbl_lecturer.lecturer_faculty')->orderby('tbl_form_teacher.form_teacher_id','DESC')->paginate($currentEntries);
-        return FormTeacherResource::collection($joins);
+        
     }
 
     /**
@@ -87,10 +86,12 @@ class FormTeacherController extends Controller
         //
     }
 
-    // public function showdata($lecturer_id, $currentEntries)
-    // {
-    //     $lec = Lecturer::where('lecturer_code', $lecturer_id)->first();
-    //     $joins = FormTeacher::join('tbl_lecturer', 'tbl_lecturer.lecturer_code', '=', 'tbl_lecturer.lecturer_code')->join('tbl_faculty', 'tbl_faculty.faculty_code', '=', 'tbl_lecturer.lecturer_faculty')->where('tbl_lecturer.lecturer_faculty', $lec->lecturer_faculty)->paginate($currentEntries);
-    //     return FormTeacherResource::collection($joins);
-    // }
+    public function showdata($lecturer_id, $currentEntries)
+    {
+        $find = Lecturer::find($lecturer_id);
+        $joins = FormTeacher::join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_form_teacher.form_teacher_lecturer')
+        ->join('tbl_faculty', '.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
+        ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)->paginate($currentEntries);
+        return FormTeacherResource::collection($joins);
+    }
 }
