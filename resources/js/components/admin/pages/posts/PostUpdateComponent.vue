@@ -21,14 +21,14 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label class="form-label">Tiêu đề</label>
+								<label class="form-label">Tiêu đề <span class="text-danger">(*)</span></label>
 								<input v-model="form.post_title" type="text" class="form-control">
 							</div>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">Nội dung</label>
+						<label class="form-label">Nội dung <span class="text-danger">(*)</span></label>
 						<vue-editor v-model="form.post_content" :editorToolbar="customToolbar"></vue-editor>
 					</div>
 					<div class="card-footer text-right">
@@ -95,7 +95,7 @@
 				.catch(err => console.log(err));
 			},
 			update(){
-				this.form.put('../../api/admin/post-news/bai-viet/'+this.form.post_id)
+				this.form.put(`../../api/admin/post-news/bai-viet/${this.form.post_id}`)
 				.then(res => {
 					if(this.form.successful){
 						this.$snotify.success('Cập nhật thành công!');
@@ -140,33 +140,33 @@
 				this.$router.push( '/bai-viet' );
 			},
 		},
-		beforeRouteLeave(to, from, next) {
-			if (this.form.post_content == '' && this.form.post_title == '') {
-				next();
-			}else{
-				this.$snotify.confirm('Bạn có chắc muốn quay lại? Nội dung chưa lưu sẽ bị mất.', {
-					timeout: 5000,
-					showProgressBar: true,
-					closeOnClick: false,
-					pauseOnHover: true,
-					buttons: [{
-						text: 'Có', 
-						action: toast =>{
-							this.$snotify.remove(toast.id);
-							next();
-						}, 
-						bold: false
-					},{
-						text: 'Không', 
-						action: toast => { 
-							this.$snotify.remove(toast.id); 
-							next(false);
-						}, 
-						bold: true
-					}]
-				});
-			}
-		}
+		// beforeRouteLeave(to, from, next) {
+		// 	if (this.form.post_content == '' && this.form.post_title == '') {
+		// 		next();
+		// 	}else{
+		// 		this.$snotify.confirm('Bạn có chắc muốn quay lại? Nội dung chưa lưu sẽ bị mất.', {
+		// 			timeout: 5000,
+		// 			showProgressBar: true,
+		// 			closeOnClick: false,
+		// 			pauseOnHover: true,
+		// 			buttons: [{
+		// 				text: 'Có', 
+		// 				action: toast =>{
+		// 					this.$snotify.remove(toast.id);
+		// 					next();
+		// 				}, 
+		// 				bold: false
+		// 			},{
+		// 				text: 'Không', 
+		// 				action: toast => { 
+		// 					this.$snotify.remove(toast.id); 
+		// 					next(false);
+		// 				}, 
+		// 				bold: true
+		// 			}]
+		// 		});
+		// 	}
+		// }
 	};
 </script>
 

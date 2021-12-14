@@ -29,8 +29,8 @@ class ProgramDetailUpdateImport implements ToModel, WithHeadingRow, WithValidati
     public function rules(): array
     {
         return [
-            'ma_mon_hoc' => 'required|notspecial_spaces|unique:tbl_program_detail,program_detail_subject',
-            'hoc_ky' => 'required|numeric',
+            'ma_mon_hoc' => 'required|notspecial_spaces', //|unique:tbl_program_detail,program_detail_subject
+            'hoc_ky' => 'required|numeric|max:11',
             'ghi_chu' => 'max:100',
         ];
     }
@@ -40,10 +40,11 @@ class ProgramDetailUpdateImport implements ToModel, WithHeadingRow, WithValidati
         return [
             'ma_mon_hoc.required' => 'Mã Môn học tại hàng :row không được để trống',
             'ma_mon_hoc.notspecial_spaces' => 'Mã Môn học tại hàng :row không chứa ký tự đặc biệt',
-            'ma_mon_hoc.unique' => 'Mã Môn học tại hàng :row đã có trong chương trình đào tạo',
+            //'ma_mon_hoc.unique' => 'Mã Môn học tại hàng :row đã có trong chương trình đào tạo',
 
             'hoc_ky.required' => 'Số học kỳ tại hàng :row không được để trống',
             'hoc_ky.numeric' => 'Số học kỳ tại hàng :row phải là ký tự số',
+            'hoc_ky.max' => 'Số học kỳ tại hàng :row tối đa 11 số',
 
             'ghi_chu.max' => 'Ghi chú tại hàng :row vượt quá 100 ký tự',
         ];

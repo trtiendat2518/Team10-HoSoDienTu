@@ -17,7 +17,7 @@ class CreateMajorTable extends Migration
             $table->increments('major_id');
             $table->string('major_code', 10);
             $table->string('major_name', 50);
-            $table->string('major_faculty', 3);
+            $table->integer('major_faculty');
             $table->integer('major_status')->default(0);
         });
     }

@@ -213,8 +213,8 @@
 			change(post_id) {
 				axios.patch(`../../api/admin/post-news/bai-viet/change/${post_id}`)
 				.then(res => {
-					this.fetchPosts();
 					this.$snotify.warning('Đã thay đổi trạng thái');
+					this.fetchPosts();
 				})
 				.catch(err => console.log(err));
 			},

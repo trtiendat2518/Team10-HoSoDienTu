@@ -15,6 +15,7 @@ class CreateProcedureTable extends Migration
     {
         Schema::create('tbl_procedure', function (Blueprint $table) {
             $table->increments('procedure_id');
+            $table->string('procedure_code', 10);
             $table->string('procedure_title', 200);
             $table->string('procedure_content');
             $table->int('procedure_time');

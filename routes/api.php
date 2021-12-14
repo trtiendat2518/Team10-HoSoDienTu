@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function(){
     Route::prefix('user-gv')->group(function(){
-            //Giang Vien
+        Route::post('giang-vien/role/{lecturer}', 'Admin\Users\LecturerManageController@role');
         Route::get('giang-vien/admin/','Admin\Users\LecturerManageController@admin');
         Route::get('giang-vien/lecturer/','Admin\Users\LecturerManageController@lecturer');
         Route::get('giang-vien/detail/{lecturer}','Admin\Users\LecturerManageController@detail');   
@@ -32,7 +32,6 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('user-sv')->group(function(){
-            //Sinh vien
         Route::get('sinh-vien/studentinfo/','Admin\Users\StudentManageController@studentinfo');
         Route::get('sinh-vien/detail/{student}','Admin\Users\StudentManageController@detail');
         Route::get('sinh-vien/search/{query}/{currentEntries}','Admin\Users\StudentManageController@search');
@@ -124,6 +123,25 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('procedure')->group(function() {
+        Route::get('thu-tuc/get-all', 'Admin\Posts\ProcedureController@procedure_all');
+        Route::get('thu-tuc/filter/{value}/{currentEntries}', 'Admin\Posts\ProcedureController@filter');
+        Route::get('thu-tuc/search/{query}/{currentEntries}','Admin\Posts\ProcedureController@search');
+        Route::post('thu-tuc/destroyall/', 'Admin\Posts\ProcedureController@destroyall');
+        Route::patch('thu-tuc/change/{procedure_id}', 'Admin\Posts\ProcedureController@change');
+        Route::get('thu-tuc/procedure-one/{procedure_id}','Admin\Posts\ProcedureController@procedure');
         Route::resource('thu-tuc', 'Admin\Posts\ProcedureController');
+    });
+
+    Route::prefix('procedure-require')->group(function() {
+        Route::get('yeu-cau-thu-tuc/filter/{value}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@filter');
+        Route::get('yeu-cau-thu-tuc/search/{query}/{currentEntries}','Admin\Posts\ProcedureRequireController@search');
+        Route::patch('yeu-cau-thu-tuc/change/{procedure_require_id}', 'Admin\Posts\ProcedureRequireController@change');
+        Route::resource('yeu-cau-thu-tuc', 'Admin\Posts\ProcedureRequireController');
+    });
+
+    Route::prefix('user-cn')->group(function() {
+        Route::get('chu-nhiem-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}','Admin\Users\FormTeacherController@search');
+        Route::get('chu-nhiem-sinh-vien/showdata/{lecturer_id}/{currentEntries}','Admin\Users\FormTeacherController@showdata');
+        Route::resource('chu-nhiem-sinh-vien', 'Admin\Users\FormTeacherController');
     });
 });

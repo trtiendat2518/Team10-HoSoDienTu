@@ -42,12 +42,12 @@ class ProgramTypeController extends Controller
             'program_type_name' => ['required', 'max:100', 'min:10', 'unique:tbl_program_type'],
             'program_type_status' => ['required'],
         ],[
-            'program_type_code.required' => 'Mã hệ thống đào tạo không dược để trống!',
+            'program_type_code.required' => 'Mã hệ thống đào tạo không được để trống!',
             'program_type_code.max' => 'Mã hệ thống đào tạo không nhập quá 10 ký tự!',
             'program_type_code.min' => 'Mã hệ thống đào tạo phải có 2 ký tự trở lên!',
             'program_type_code.unique' => 'Mã hệ thống đào tạo đã tồn tại!',
 
-            'program_type_name.required' => 'Tên hệ thống đào tạo không dược để trống!',
+            'program_type_name.required' => 'Tên hệ thống đào tạo không được để trống!',
             'program_type_name.max' => 'Tên hệ thống đào tạo không nhập quá 100 ký tự!',
             'program_type_name.min' => 'Tên hệ thống đào tạo phải có 10 ký tự trở lên!',
             'program_type_name.unique' => 'Tên hệ thống đào tạo đã tồn tại!',            
@@ -97,11 +97,11 @@ class ProgramTypeController extends Controller
             'program_type_code' => ['required', 'max:10', 'min:2'],
             'program_type_name' => ['required', 'max:100', 'min:10'],
         ],[
-            'program_type_code.required' => 'Mã hệ thống đào tạo không dược để trống!',
+            'program_type_code.required' => 'Mã hệ thống đào tạo không được để trống!',
             'program_type_code.max' => 'Mã hệ thống đào tạo không nhập quá 10 ký tự!',
             'program_type_code.min' => 'Mã hệ thống đào tạo phải có 2 ký tự trở lên!',
 
-            'program_type_name.required' => 'Tên hệ thống đào tạo không dược để trống!',
+            'program_type_name.required' => 'Tên hệ thống đào tạo không được để trống!',
             'program_type_name.max' => 'Tên hệ thống đào tạo không nhập quá 100 ký tự!',
             'program_type_name.min' => 'Tên hệ thống đào tạo phải có 10 ký tự trở lên!',
         ]);

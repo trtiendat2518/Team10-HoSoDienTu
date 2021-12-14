@@ -32,24 +32,24 @@
 					<div class="row">
 						<div class="col-md-8">
 							<div class="form-group">
-								<label class="form-label">Hệ đào tạo</label>
+								<label class="form-label">Hệ đào tạo <span class="text-danger">(*)</span></label>
 								<select class="form-control" name="education_program_type" v-model="form.education_program_type" :class="{'is-invalid': form.errors.has('education_program_type')}">
 									<option value="" disabled selected="">Chọn hệ đào tạo</option>
 									<option value="" disabled>-------</option>
-									<option v-for="type in types" :key="type.program_type_code" :value="type.program_type_code" :hidden="type.program_type_status>0">{{ type.program_type_name }}</option>
+									<option v-for="type in types" :key="type.program_type_id" :value="type.program_type_id" :hidden="type.program_type_status>0">{{ type.program_type_code }} - {{ type.program_type_name }}</option>
 								</select>
 								<div class="text-danger" v-if="form.errors.has('education_program_type')" v-html="form.errors.get('education_program_type')"></div>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
-								<label class="form-label">Khóa học</label>
+								<label class="form-label">Khóa học <span class="text-danger">(*)</span></label>
 								<select class="form-control" name="education_program_course" v-model="form.education_program_course" :class="{'is-invalid': form.errors.has('education_program_course')}">
 									<option value="" disabled selected="">
 										Chọn khóa học
 									</option>
 									<option value="" disabled>-------</option>
-									<option v-for="course in courses" :key="course.course_code" :value="course.course_code">{{ course.course_name }}</option>
+									<option v-for="course in courses" :key="course.course_id" :value="course.course_id">{{ course.course_code }} - {{ course.course_name }}</option>
 								</select>
 								<div class="text-danger" v-if="form.errors.has('education_program_course')" v-html="form.errors.get('education_program_course')"></div>
 							</div>
@@ -59,23 +59,21 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label class="form-label">
-									Mã chương trình đào tạo
-								</label>
+								<label class="form-label">Mã chương trình đào tạo <span class="text-danger">(*)</span></label>
 								<input type="text" name="education_program_code" class="form-control" v-model="form.education_program_code" :class="{'is-invalid': form.errors.has('education_program_code')}" placeholder="Nhập mã cho CTĐT"/>
 								<div class="text-danger" v-if="form.errors.has('education_program_code')" v-html="form.errors.get('education_program_code')"></div>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-								<label class="form-label"> Tổng năm đào tạo </label>
+								<label class="form-label"> Tổng năm đào tạo <span class="text-danger">(*)</span></label>
 								<input type="number" name="education_program_year" class="form-control" v-model="form.education_program_year" :class="{'is-invalid': form.errors.has('education_program_year')}" placeholder="Nhập số năm"/>
 								<div class="text-danger" v-if="form.errors.has('education_program_year')" v-html="form.errors.get('education_program_year')"></div>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-								<label class="form-label">Trạng thái</label> 
+								<label class="form-label">Trạng thái <span class="text-danger">(*)</span></label> 
 								<select class="form-control" name="education_program_status" v-model="form.education_program_status" :class="{'is-invalid': form.errors.has('education_program_status')}">
 									<option value="" disabled selected="">
 										Chọn Trạng thái
@@ -90,7 +88,7 @@
 					</div>
 					
 					<div class="form-group">
-						<label class="form-label">Tệp Excel</label>
+						<label class="form-label">Tệp Excel <span class="text-danger">(*)</span></label>
 						<input type="file" class="form-control" id="file_data" name="file_data" ref="fileupload" @change="onFileChange">
 					</div>
 
@@ -176,7 +174,6 @@
 				majors: [],
 				courses: [],
 				types: [],
-				//file_data: "",
 				form: new Form({
 					education_program_code: "",
 					education_program_type: "",
@@ -269,7 +266,7 @@
 				.then(res => {
 					this.lecturers = res.data;
 					this.lecturers.forEach((el) => {
-						if(el.lecturer_code===this.lecturer_id){
+						if(el.lecturer_id==this.lecturer_id){
 							this.lecturer_faculty= el.lecturer_faculty;
 						}
 					});
@@ -309,7 +306,7 @@
 					}
 				});
 				const faculty = this.faculties.find(
-					(fac) => fac.faculty_code === this.subject_faculty
+					(fac) => fac.faculty_id === this.subject_faculty
 					);
 				this.subject_faculty = faculty.faculty_name;
 			},
@@ -329,6 +326,26 @@
 				.then(res => {
 					if(this.form.successful){
 						this.$snotify.success('Thêm mới thành công!');
+						this.$snotify.confirm('Bạn có muốn đi đến danh sách không?', {
+							timeout: 5000,
+							showProgressBar: true,
+							closeOnClick: false,
+							pauseOnHover: true,
+							buttons: [{
+								text: 'Có', 
+								action: toast =>{
+									this.$snotify.remove(toast.id);
+									this.$router.push( { name: 'educationprogramindex' } );
+								}, 
+								bold: false
+							},{
+								text: 'Không', 
+								action: toast => { 
+									this.$snotify.remove(toast.id); 
+								}, 
+								bold: true
+							}]
+						});
 						this.form.clear();
 						this.form.reset();
 						this.displayData=[];

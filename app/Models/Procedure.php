@@ -9,6 +9,7 @@ class Procedure extends Model
 {
     public $timestamps = false;
     protected $fillable = [
+        'procedure_code', 
         'procedure_title', 
         'procedure_content', 
         'procedure_time', 
