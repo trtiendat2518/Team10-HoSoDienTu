@@ -140,6 +140,7 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('user-cn')->group(function() {
+        Route::get('chu-nhiem-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}','Admin\Users\FormTeacherController@search');
         Route::get('chu-nhiem-sinh-vien/showdata/{lecturer_id}/{currentEntries}','Admin\Users\FormTeacherController@showdata');
         Route::resource('chu-nhiem-sinh-vien', 'Admin\Users\FormTeacherController');
     });

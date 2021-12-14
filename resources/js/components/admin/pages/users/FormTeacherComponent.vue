@@ -25,9 +25,9 @@
 						<!-- <div class="col-md-1">
 							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div> -->
-						<!-- <div class="col-md-6">
+						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div> -->
+						</div>
 						<!-- <div class="col-md-3">
 							<select class="form-control mt-2" v-model="value_role">
 								<option value="" disabled selected>Lọc thông tin</option>
@@ -306,15 +306,15 @@
 					this.fetchFormTeachers();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchFormTeachers();
-			// 	}else{
-			// 		this.value_role='';
-			// 		this.pagination.current_page=1;
-			// 		this.search();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchFormTeachers();
+				}else{
+					this.value_role='';
+					this.pagination.current_page=1;
+					this.search();
+				}
+			},
 			// value_role(value){
 			// 	if(value === ''){
 			// 		this.fetchFormTeachers();
@@ -364,17 +364,17 @@
 				})
 				.catch(err => console.log(this.lecturer_faculty));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/user-gv/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page=1';
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.formteachers = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			search(page_url) {
+				let vm = this;
+				page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/search/${this.lecturer_id}/${this.query}/${this.currentEntries}?page=${this.pagination.current_page}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.formteachers = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			// show(lecturer) {
 			// 	this.editMode = true;
 			// 	this.form.reset();
