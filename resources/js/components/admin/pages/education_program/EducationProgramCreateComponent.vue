@@ -36,7 +36,7 @@
 								<select class="form-control" name="education_program_type" v-model="form.education_program_type" :class="{'is-invalid': form.errors.has('education_program_type')}">
 									<option value="" disabled selected="">Chọn hệ đào tạo</option>
 									<option value="" disabled>-------</option>
-									<option v-for="type in types" :key="type.program_type_code" :value="type.program_type_code" :hidden="type.program_type_status>0">{{ type.program_type_name }}</option>
+									<option v-for="type in types" :key="type.program_type_id" :value="type.program_type_id" :hidden="type.program_type_status>0">{{ type.program_type_code }} - {{ type.program_type_name }}</option>
 								</select>
 								<div class="text-danger" v-if="form.errors.has('education_program_type')" v-html="form.errors.get('education_program_type')"></div>
 							</div>
@@ -49,7 +49,7 @@
 										Chọn khóa học
 									</option>
 									<option value="" disabled>-------</option>
-									<option v-for="course in courses" :key="course.course_code" :value="course.course_code">{{ course.course_name }}</option>
+									<option v-for="course in courses" :key="course.course_id" :value="course.course_id">{{ course.course_code }} - {{ course.course_name }}</option>
 								</select>
 								<div class="text-danger" v-if="form.errors.has('education_program_course')" v-html="form.errors.get('education_program_course')"></div>
 							</div>
@@ -174,7 +174,6 @@
 				majors: [],
 				courses: [],
 				types: [],
-				//file_data: "",
 				form: new Form({
 					education_program_code: "",
 					education_program_type: "",
@@ -267,7 +266,7 @@
 				.then(res => {
 					this.lecturers = res.data;
 					this.lecturers.forEach((el) => {
-						if(el.lecturer_code===this.lecturer_id){
+						if(el.lecturer_id==this.lecturer_id){
 							this.lecturer_faculty= el.lecturer_faculty;
 						}
 					});
@@ -307,7 +306,7 @@
 					}
 				});
 				const faculty = this.faculties.find(
-					(fac) => fac.faculty_code === this.subject_faculty
+					(fac) => fac.faculty_id === this.subject_faculty
 					);
 				this.subject_faculty = faculty.faculty_name;
 			},
@@ -327,6 +326,26 @@
 				.then(res => {
 					if(this.form.successful){
 						this.$snotify.success('Thêm mới thành công!');
+						this.$snotify.confirm('Bạn có muốn đi đến danh sách không?', {
+							timeout: 5000,
+							showProgressBar: true,
+							closeOnClick: false,
+							pauseOnHover: true,
+							buttons: [{
+								text: 'Có', 
+								action: toast =>{
+									this.$snotify.remove(toast.id);
+									this.$router.push( { name: 'educationprogramindex' } );
+								}, 
+								bold: false
+							},{
+								text: 'Không', 
+								action: toast => { 
+									this.$snotify.remove(toast.id); 
+								}, 
+								bold: true
+							}]
+						});
 						this.form.clear();
 						this.form.reset();
 						this.displayData=[];

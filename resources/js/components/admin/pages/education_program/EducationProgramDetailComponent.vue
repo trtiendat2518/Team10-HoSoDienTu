@@ -57,9 +57,8 @@
 						<div class="col-9">
 							<div class="card-body p-3 d-flex">
 								<div>
-									<div hidden>{{ nameType(type) }}</div>
 									<p class="text-primary mb-1">Hệ đào tạo:</p>
-									<h4 class="mb-0 text-dark">{{ educa.type_name }}</h4>
+									<h4 class="mb-0 text-dark">{{ educa.program_type_name }}</h4>
 								</div>
 							</div>
 						</div>
@@ -99,8 +98,7 @@
 						</div>
 						<div class="col-9">
 							<div class="card-body p-3 d-flex">
-								<div v-for="faculty in faculties.slice(0, 1)" :key="faculty.faculty_code">
-									<div hidden>{{ nameFaculty(faculty) }}</div>
+								<div>
 									<p class="text-primary mb-1">Chương trình đào tạo:</p>
 									<h4 class="mb-0 text-dark">{{ educa.education_program_course }} - {{ educa.faculty_name }}</h4>
 								</div>
@@ -189,20 +187,19 @@
 							<tbody>
 								<tr v-show="education.length" v-for="(edu, index) in education" :key="edu.program_detail_id">
 									<td class="td-table">{{ index += 1 }}</td>
-									<td hidden>{{ getCode(edu) }}</td>
-									<td class="text-center td-table">{{ educa.subject_code }}</td>
-									<td class="text-center td-table">{{ educa.subject_name }}</td>
-									<td class="text-center td-table">{{ educa.subject_credit }}</td>
-									<td class="text-center td-table">{{ educa.subject_theory_period }}</td>
-									<td class="text-center td-table">{{ educa.subject_practice_period }}</td>
-									<td class="text-center td-table">{{ educa.subject_score_exercise }}</td>
-									<td class="text-center td-table">{{ educa.subject_score_exam }}</td>
-									<td class="text-center td-table">{{ educa.subject_score_final }}</td>
+									<td class="text-center td-table">{{ edu.subject_code }}</td>
+									<td class="text-center td-table">{{ edu.subject_name }}</td>
+									<td class="text-center td-table">{{ edu.subject_credit }}</td>
+									<td class="text-center td-table">{{ edu.subject_theory_period }}</td>
+									<td class="text-center td-table">{{ edu.subject_practice_period }}</td>
+									<td class="text-center td-table">{{ edu.subject_score_exercise }}</td>
+									<td class="text-center td-table">{{ edu.subject_score_exam }}</td>
+									<td class="text-center td-table">{{ edu.subject_score_final }}</td>
 									<td class="text-center td-table">
-										<p v-if="educa.subject_type == 0">x</p>
+										<p v-if="edu.subject_type == 0">x</p>
 										<p v-else></p>
 									</td>
-									<td class="text-center td-table">{{ educa.subject_faculty }}</td>
+									<td class="text-center td-table">{{ edu.faculty_name }}</td>
 									<td class="text-center td-table">{{ edu.program_detail_semester }}</td>
 									<td class="text-center td-table">{{ nameMajor(edu) }}</td>
 								</tr>
@@ -233,9 +230,6 @@
 			return {
 				education_program_id: this.$route.params.idProgram,
 				education:[],
-				subjects:[],
-				faculties:[],
-				types:[],
 				majors:[],
 				educa: {
 					subject_code: "",
@@ -255,9 +249,8 @@
 					education_program_faculty: "",
 					education_program_year: "",
 					education_program_credit: "",
-					type_name: "",
+					program_type_name: "",
 					faculty_name:"",
-					program_note:""
 				}
 			};
 		},
@@ -267,11 +260,8 @@
 			}
 		},
 		mounted() {
-			this.fetchFaculties();
-			this.fetchSubjects();
 			this.fetchEducation();
 			this.fetchPrograms();
-			this.fetchTypes();
 			this.fetchMajors();
 		},
 		methods: {
@@ -290,6 +280,8 @@
 					this.educa.education_program_year = this.programs[0].education_program_year;
 					this.educa.education_program_credit = this.programs[0].education_program_credit;
 					this.educa.education_program_faculty = this.programs[0].education_program_faculty;
+					this.educa.program_type_name = this.programs[0].program_type_name;
+					this.educa.faculty_name = this.programs[0].faculty_name;
 				})
 				.catch(err => console.log(err));
 			},
@@ -304,36 +296,6 @@
 				})
 				.catch(err => console.log(err));
 			},
-			fetchSubjects(page_url) {
-				let vm = this;
-				page_url = "../../api/admin/manage/mon-hoc/subject";
-				fetch(page_url)
-				.then((res) => res.json())
-				.then((res) => {
-					this.subjects = res.data;
-				})
-				.catch((err) => console.log(err));
-			},
-			fetchFaculties(page_url) {
-				let vm = this;
-				page_url = "../../api/admin/edu-faculty/khoa/faculty";
-				fetch(page_url)
-				.then((res) => res.json())
-				.then((res) => {
-					this.faculties = res.data;
-				})
-				.catch((err) => console.log(err));
-			},
-			fetchTypes(page_url) {
-				let vm = this;
-				page_url = "../../api/admin/type/he-dao-tao/program-type";
-				fetch(page_url)
-				.then((res) => res.json())
-				.then((res) => {
-					this.types = res.data;
-				})
-				.catch((err) => console.log(err));
-			},
 			fetchMajors(page_url) {
 				let vm = this;
 				page_url = "../../api/admin/edu-major/chuyen-nganh/major";
@@ -343,46 +305,6 @@
 					this.majors = res.data;
 				})
 				.catch((err) => console.log(err));
-			},
-			getCode(edu) {
-				this.subjects.forEach((sbj) => {
-					if (sbj.subject_code === edu.program_detail_subject) {
-						this.educa.subject_code = sbj.subject_code;
-						this.educa.subject_name = sbj.subject_name;
-						this.educa.subject_credit = sbj.subject_credit;
-						this.educa.subject_practice_period = sbj.subject_practice_period;
-						this.educa.subject_theory_period = sbj.subject_theory_period;
-						this.educa.subject_score_exercise = sbj.subject_score_exercise;
-						this.educa.subject_score_exam = sbj.subject_score_exam;
-						this.educa.subject_score_final = sbj.subject_score_final;
-						this.educa.subject_type = sbj.subject_type;
-						this.educa.subject_faculty = sbj.subject_faculty;
-					}
-				});
-				const faculty = this.faculties.find((fac) => fac.faculty_code === this.educa.subject_faculty);
-				this.educa.subject_faculty = faculty.faculty_name;
-			},
-			nameType(type) {
-				this.programs.forEach((pro) => {
-					if(pro.education_program_id == this.education_program_id) {
-						this.types.forEach((typ) => {
-							if (typ.program_type_code==pro.education_program_type) {
-								this.educa.type_name = typ.program_type_name;
-							}
-						})
-					}
-				})
-			},
-			nameFaculty(faculty) {
-				this.programs.forEach((pro) => {
-					if(pro.education_program_id == this.education_program_id) {
-						this.faculties.forEach((fac) => {
-							if (fac.faculty_code==pro.education_program_faculty) {
-								this.educa.faculty_name = fac.faculty_name;
-							}
-						})
-					}
-				})
 			},
 			nameMajor(edu) {
 				if (edu.program_detail_note!=null) {

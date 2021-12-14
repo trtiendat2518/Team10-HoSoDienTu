@@ -12,7 +12,7 @@
 		<div class="row">
 			<div class="col-md-9">
 				<button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
-				<router-link class="btn btn-outline-dark btn-lg mb-3 btn-3d" tag="button" :to="{ name: 'subjectother' }"><li class="fa fa-info"></li> Xem môn học của khoa khác</router-link>
+				<router-link class="btn btn-indigo btn-lg mb-3 btn-3d" tag="button" :to="{ name: 'subjectother' }"><li class="fa fa-info"></li> Xem môn học của khoa khác</router-link>
 			</div>
 			<div class="col-md-3">
 				<button class="btn btn-import btn-lg mb-3 btn-3d" @click="openImport()"><li class="fa fa-upload"></li> Import</button>
@@ -215,22 +215,22 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<table class="table row table-borderless w-100 m-0 border">
+						<table class="table row table-borderless w-100 m-0 border" v-for="detail in details" :key="detail.subject_id">
 							<tbody class="col-lg-6 p-0">
 								<tr>
 									<td class="h3-strong"><h3><strong><u> Thông tin chi tiết</u></strong></h3></td>
 								</tr>
 								<tr>
-									<td>Mã Môn học: <strong> {{ form.subject_code }}</strong></td>
+									<td>Mã Môn học: <strong> {{ detail.subject_code }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Môn học: <strong> {{ form.subject_name }}</strong></td>
+									<td>Tên Môn học: <strong> {{ detail.subject_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Số tín chỉ: <strong> {{ form.subject_credit }}</strong></td>
+									<td>Số tín chỉ: <strong> {{ detail.subject_credit }}</strong></td>
 								</tr>
 								<tr>
-									<td>Khoa: <strong> {{ subject_faculty }}</strong></td>
+									<td>Khoa: <strong> {{ detail.faculty_name }}</strong></td>
 								</tr>
 								<tr>
 									<td>Loại môn học: 
@@ -245,12 +245,12 @@
 								</tr>
 								<tr>
 									<td>Lý thuyết: 
-										<strong>{{ form.subject_theory_period }} giờ</strong>
+										<strong>{{ detail.subject_theory_period }} giờ</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Thực hành: 
-										<strong>{{ form.subject_practice_period }} giờ</strong>
+										<strong>{{ detail.subject_practice_period }} giờ</strong>
 									</td>
 								</tr>
 							</tbody>
@@ -260,17 +260,17 @@
 								</tr>
 								<tr>
 									<td>Điểm bài tập: 
-										<strong>{{ form.subject_score_exercise }}%</strong>
+										<strong>{{ detail.subject_score_exercise }}%</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Điểm kiểm tra: 
-										<strong>{{ form.subject_score_exam }}%</strong>
+										<strong>{{ detail.subject_score_exam }}%</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Điểm thi: 
-										<strong>{{ form.subject_score_final }}%</strong>
+										<strong>{{ detail.subject_score_final }}%</strong>
 									</td>
 								</tr>
 							</tbody>
@@ -398,8 +398,8 @@
 				.then(res => {
 					this.lecturers = res.data;
 					this.lecturers.forEach((el) => {
-						if(el.lecturer_code===this.lecturer_id){
-							this.lecturer_faculty= el.lecturer_faculty;
+						if(el.lecturer_id==this.lecturer_id){
+							this.lecturer_faculty = el.lecturer_faculty;
 						}
 					});
 				})
@@ -545,11 +545,6 @@
 				.then(res => res.json())
 				.then(res => {
 					this.details = res.data;
-					this.form.fill(subject);
-					let faculty = this.faculties.filter(function(fct){
-						return fct.faculty_code===subject.subject_faculty
-					})
-					this.subject_faculty = faculty[0].faculty_name;
 					$('#DetailModal').modal('show');
 				})
 				.catch(err => console.log(err));

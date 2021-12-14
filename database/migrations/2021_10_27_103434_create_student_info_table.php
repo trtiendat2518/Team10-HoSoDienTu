@@ -15,10 +15,10 @@ class CreateStudentInfoTable extends Migration
     {
         Schema::create('tbl_student_info', function (Blueprint $table) {
             $table->increments('student_info_id');
-            $table->string('student_code',50);
-            $table->string('student_course',10);
-            $table->string('student_faculty',10);
-            $table->string('student_major',10);
+            $table->integer('student_id_ref');
+            $table->integer('student_course');
+            $table->integer('student_faculty');
+            $table->integer('student_major');
             $table->string('student_avatar',255);
             $table->timestamp('student_birthday');
             $table->integer('student_gender');
