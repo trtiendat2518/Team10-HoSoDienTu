@@ -106,4 +106,14 @@ class FormTeacherController extends Controller
         ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)->paginate($currentEntries);
         return FormTeacherResource::collection($joins);
     }
+
+    // public function filter($lecturer_id, $value, $currentEntries)
+    // {
+    //     $find = Lecturer::find($lecturer_id);
+    //     $joins = FormTeacher::join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_form_teacher.form_teacher_lecturer')
+    //     ->join('tbl_faculty', '.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
+    //     ->where('tbl_lecturer.lecturer_fullname', 'LIKE','%'.$value.'%')
+    //     ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)->paginate($currentEntries);
+    //     return FormTeacherResource::collection($joins);
+    // }
 }

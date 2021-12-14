@@ -22,10 +22,7 @@
 					</div>
 
 					<div class="row">
-						<!-- <div class="col-md-1">
-							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div> -->
-						<div class="col-md-6">
+						<div class="col-md-7">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
 						<!-- <div class="col-md-3">
@@ -52,22 +49,14 @@
 						<table class="table card-table table-vcenter text-nowrap table-nowrap">
 							<thead  class="blue-background text-white">
 								<tr>
-									<th class="w-5">
-										<input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll">
-									</th>
-									<th class="text-white w-30">Họ tên</th>
-									<th class="text-white w-30">Địa chỉ Email</th>
+									<th class="text-white w-40">Họ tên</th>
+									<th class="text-white w-35">Địa chỉ Email</th>
 									<th class="text-white w-20">Đảm nhiệm lớp</th>
-									<th class="text-white w-5">Trạng thái</th>
-									<th class="w-5"></th>
 									<th class="w-5"></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-show="formteachers.length" v-for="formteacher in formteachers" :key="formteacher.form_teacher_id">
-									<td>
-										<center><input type="checkbox" :value="formteacher.form_teacher_id" v-model="selected"></center>
-									</td>
 									<td @click="detail(formteacher)"><a href="javascript:void(0)">{{ formteacher.lecturer_fullname }}</a></td>
 									<td>{{ formteacher.lecturer_email }}</td>
 									<td>
@@ -78,19 +67,8 @@
 											{{ formteacher.form_teacher_class }}
 										</div>
 									</td>
-									<td class="td-styling">
-										<div v-if="formteacher.form_teacher_status==0">
-											<button class="fa fa-eye btn-eye" @click="change(formteacher.form_teacher_id)"></button>
-										</div>
-										<div v-else>
-											<button class="fa fa-eye-slash btn-eye-slash" @click="change(formteacher.form_teacher_id)"></button>
-										</div>
-									</td>
 									<td style="text-align: center">
 										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(formteacher)"></button>
-									</td>
-									<td>
-										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(formteacher.form_teacher_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!formteachers.length">
@@ -268,7 +246,6 @@
 		data() {
 			return {
 				formteachers:[],
-				faculties: [],
 				lecturers:[],
 				lecturer_id: this.$facultyId,
 				lecturer_faculty:'',
@@ -293,7 +270,6 @@
 		},
 		mounted() {
 			this.fetchFormTeachers();
-			this.fetchFaculties();
 			this.fetchLecturers();
 		},
 		watch: {
@@ -336,16 +312,6 @@
 				.then(res => {
 					this.formteachers = res.data;
 					this.pagination = res.meta;
-				})
-				.catch(err => console.log(err));
-			},
-			fetchFaculties(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/edu-faculty/khoa/faculty';
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.faculties = res.data;
 				})
 				.catch(err => console.log(err));
 			},
@@ -395,78 +361,6 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// change(lecturer_id) {
-			// 	axios.patch(`../../api/admin/user-gv/giang-vien/change/${lecturer_id}`)
-			// 	.then(res => {
-			// 		this.fetchFormTeachers();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// destroy(lecturer_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/user-gv/giang-vien/${lecturer_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchFormTeachers();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/user-gv/giang-vien/destroyall', { lecturer: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchFormTeachers();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.formteachers){
-			// 			this.selected.push(this.formteachers[i].lecturer_id);
-			// 		}
-			// 	}
-			// },
 			// detail(lecturer, page_url) {
 			// 	let vm = this;
 			// 	page_url = `../../api/admin/user-gv/giang-vien/detail/${lecturer.lecturer_id}`;
@@ -475,8 +369,6 @@
 			// 	.then(res => {
 			// 		this.details = res.data;
 			// 		this.form.fill(lecturer);
-			// 		const faculty = this.faculties.find((fac) => fac.faculty_code === lecturer.lecturer_faculty );
-			// 		this.lecturer_faculty = faculty.faculty_name;
 			// 		$('#DetailModal').modal('show');
 			// 	})
 			// 	.catch(err => this.$snotify.error('Giảng viên chưa cập nhật thông tin'));
@@ -497,17 +389,6 @@
 				this.query='';
 				this.value_role='';
 			},
-			// fetchFaculties(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/edu-faculty/khoa/1000?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.faculties = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 		}
 	};
 </script>
