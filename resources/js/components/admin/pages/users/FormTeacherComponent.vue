@@ -132,7 +132,8 @@
 		</div> -->
 		<!-- Modal end-->
 
-		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+		<!-- Modal -->
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header styling-modal-header-info">
@@ -152,7 +153,7 @@
 									<td class="h3-strong td-borderight"><h3><strong> Thông tin chi tiết Giảng viên</strong></h3></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Họ và tên: <strong> {{ form.lecturer_fullname }}</strong></td>
+									<td>Họ và tên: <strong> {{ info.lecturer_fullname }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
 									<td>Dân tộc: <strong> {{ info.lecturer_ethnic }}</strong></td>
@@ -187,20 +188,20 @@
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Khoa: <strong> {{ lecturer_faculty }}</strong></td>
+									<td>Khoa: <strong> {{ info.faculty_name }}</strong></td>
 								</tr>
 								<tr>
 									<td>Chức vụ: 
-										<strong v-if="form.lecturer_role==2"> Chủ nhiệm sinh viên</strong>
-										<strong v-else-if="form.lecturer_role==1"> Ban chủ nhiệm khoa</strong>
+										<strong v-if="info.lecturer_role==2"> Chủ nhiệm sinh viên</strong>
+										<strong v-else-if="info.lecturer_role==1"> Ban chủ nhiệm khoa</strong>
 										<strong v-else> Giảng viên</strong>
 									</td>
 								</tr>
 
 								<tr class="td-borderbottom">
 									<td>Cấp bậc: 
-										<strong v-if="form.lecturer_level==2"> Phó Khoa</strong>
-										<strong v-else-if="form.lecturer_level==1"> Trưởng khoa</strong>
+										<strong v-if="info.lecturer_level==2"> Phó Khoa</strong>
+										<strong v-else-if="info.lecturer_level==1"> Trưởng khoa</strong>
 										<strong v-else> Không có</strong>
 									</td>
 								</tr>
@@ -218,7 +219,7 @@
 									<td>Điện thoại bàn: <strong> {{ info.lecturer_deskphone }}</strong></td>
 								</tr>
 								<tr>
-									<td>Email trường: <strong> {{ form.lecturer_email }}</strong></td>
+									<td>Email trường: <strong> {{ info.lecturer_email }}</strong></td>
 								</tr>
 								<tr>
 									<td>Email cá nhân: <strong> {{ info.lecturer_other_email }}</strong></td>
@@ -226,17 +227,13 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="modal-body" v-show="!details.length">
-						<div class="alert alert-danger">
-							Giảng viên này chưa cập nhật đủ thông tin!
-						</div>
-					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
+		<!-- Modal end-->
 	</div>
 </template>
 
@@ -361,18 +358,21 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
-			// detail(lecturer, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/user-gv/giang-vien/detail/${lecturer.lecturer_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(lecturer);
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => this.$snotify.error('Giảng viên chưa cập nhật thông tin'));
-			// },
+			detail(formteacher, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/detail/${formteacher.form_teacher_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					if (res.data.length===0) {
+						this.$snotify.error('Chủ nhiệm sinh viên này chưa có thông tin!');
+					}else {
+						$('#DetailModal').modal('show');
+					}
+				})
+				.catch(err => this.$snotify.error('Giảng viên chưa cập nhật thông tin'));
+			},
 			// filter(page_url) {
 			// 	let vm = this;
 			// 	page_url = '../../api/admin/user-gv/giang-vien/filter/'+this.value_role+'/'+this.currentEntries+'?page='+this.pagination.current_page;
