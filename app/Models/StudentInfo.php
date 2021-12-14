@@ -10,7 +10,7 @@ class StudentInfo extends Model
     public $timestamps = false;
     protected $fillable = [
         'student_faculty', 
-        'student_code', 
+        'student_id_ref', 
         'student_avatar', 
         'student_birthday', 
         'student_gender', 

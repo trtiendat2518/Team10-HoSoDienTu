@@ -16,7 +16,7 @@ class CreateProgramDetailTable extends Migration
         Schema::create('tbl_program_detail', function (Blueprint $table) {
             $table->increments('program_detail_id');
             $table->string('program_detail_code', 10);
-            $table->string('program_detail_subject', 10);
+            $table->integer('program_detail_subject');
             $table->integer('program_detail_semester');
             $table->string('program_detail_note', 10);
         });
