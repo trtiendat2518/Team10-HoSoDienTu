@@ -15,7 +15,7 @@ class CreateAdminLecturerTable extends Migration
     {
         Schema::create('tbl_lecturer_info', function (Blueprint $table) {
             $table->increments('lecturer_info_id');
-            $table->string('lecturer_code',50);
+            $table->integer('lecturer_id_ref');
             $table->string('lecturer_avatar',255);
             $table->timestamp('lecturer_birthday');
             $table->integer('lecturer_gender');

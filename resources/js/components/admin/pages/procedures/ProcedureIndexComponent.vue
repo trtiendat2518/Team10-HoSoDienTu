@@ -9,10 +9,20 @@
 				<li class="breadcrumb-item active" aria-current="page">Danh sách thủ tục</li>
 			</ol><!-- End breadcrumb -->
 		</div>
-		<router-link tag="button" class="btn btn-info btn-lg mb-3 btn-3d" :to="{ name: 'procedurecreate' }">
-            <li class="fa fa-plus"></li>
-            Tạo mới
-        </router-link>
+		<div class="row">
+			<div class="col-md-6">
+				<router-link tag="button" class="btn btn-info btn-lg mb-3 btn-3d" :to="{ name: 'procedurecreate' }">
+					<li class="fa fa-plus"></li>
+					Tạo mới
+				</router-link>
+			</div>
+			<div class="col-md-6">
+				<router-link tag="button" class="btn btn-indigo float-right btn-lg mb-3 btn-3d" :to="{ name: 'procedurerequire' }">
+					<li class="fa fa-window-maximize"></li>
+					Danh sách yêu cầu
+				</router-link>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
 				<div class="card">
@@ -29,16 +39,18 @@
 						<div class="col-md-1">
 							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div>
-						<!-- <div class="col-md-6">
+						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
 						<div class="col-md-3">
 							<select class="form-control mt-2" v-model="value_category">
-								<option value="" disabled selected>Lọc theo tác giả</option>
+								<option value="" disabled selected>Lọc theo danh mục</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="admin in admins" :key="admin.admin_id" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
+								<option value="0">Phòng đào tạo</option>
+								<option value="1">Phòng hành chính</option>
+								<option value="2">Trung tâm hỗ trợ sinh viên</option>
 							</select>
-						</div> -->
+						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -74,9 +86,13 @@
 										<center><input type="checkbox" :value="procedure.procedure_id" v-model="selected"></center>
 									</td>
 									<td>
-										<router-link tag="a" :to="{ name: 'procedureupdate', params: {idPost: procedure.procedure_id} }">
-											<div v-if="procedure.procedure_title<40">{{ procedure.procedure_title }}</div>
-											<div v-else>{{ procedure.procedure_title.substring(0,30)+"..." }}</div>
+										<router-link tag="a" :to="{ name: 'procedureupdate', params: {idProcedure: procedure.procedure_id} }">
+											<div v-if="procedure.procedure_title<40">
+												{{ procedure.procedure_title }}
+											</div>
+											<div v-else>
+												{{ procedure.procedure_title.substring(0,30)+"..." }}
+											</div>
 										</router-link>
 									</td>
 									<td class="text-center">
@@ -102,7 +118,7 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<router-link class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'postupdate', params: {idPost: procedure.procedure_id} }"></router-link>
+										<router-link class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" tag="button" :to="{ name: 'procedureupdate', params: {idProcedure: procedure.procedure_id} }"></router-link>
 									</td>
 									<td>
 										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(procedure.procedure_id)"></button>
@@ -117,8 +133,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<!-- <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchProcedures() : search() "></pagination> -->
-						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchProcedures()"></pagination>
+						<pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? fetchProcedures() : search() "></pagination>
 					</div>
 					<!-- table-responsive -->
 				</div>
@@ -166,43 +181,32 @@
 					this.fetchProcedures();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchProcedures();
-			// 	}else{
-			// 		this.value_author='';
-			// 		this.pagination.current_page=1;
-			// 		this.search();
-			// 	}
-			// },
-			// value_author(admin){
-			// 	if(admin === ''){
-			// 		this.fetchProcedures();
-			// 	}else{
-			// 		this.query='';
-			// 		this.pagination.current_page=1;
-			// 		this.filter();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchProcedures();
+				}else{
+					this.value_category='';
+					this.pagination.current_page=1;
+					this.search();
+				}
+			},
+			value_category(value){
+				if(value === ''){
+					this.fetchProcedures();
+				}else{
+					this.query='';
+					this.pagination.current_page=1;
+					this.filter();
+				}
+			},
 		},
 		mounted() {
-			// this.fetchAdmins();
 			this.fetchProcedures();
 		},
 		methods: {
 			empty() {
 				return (this.procedures.length < 1);
 			},
-			// fetchAdmins(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/user-gv/giang-vien/admin';
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.admins = res.data;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 			fetchProcedures(page_url) {
 				let vm = this;
 				page_url = '../../api/admin/procedure/thu-tuc/'+this.currentEntries+'?page='+this.pagination.current_page;
@@ -214,105 +218,105 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.procedures = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// change(procedure_id) {
-			// 	axios.patch(`../../api/admin/post-news/bai-viet/change/${procedure_id}`)
-			// 	.then(res => {
-			// 		this.fetchProcedures();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// destroy(procedure_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/post-news/bai-viet/${procedure_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchProcedures();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/post-news/bai-viet/destroyall', { post: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchProcedures();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.procedures){
-			// 			this.selected.push(this.procedures[i].procedure_id);
-			// 		}
-			// 	}
-			// },
+			search(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/procedure/thu-tuc/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.procedures = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
+			change(procedure_id) {
+				axios.patch(`../../api/admin/procedure/thu-tuc/change/${procedure_id}`)
+				.then(res => {
+					this.$snotify.warning('Đã thay đổi trạng thái');
+					this.fetchProcedures();
+				})
+				.catch(err => console.log(err));
+			},
+			destroy(procedure_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/procedure/thu-tuc/${procedure_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchProcedures();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/procedure/thu-tuc/destroyall', { procedure_id: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchProcedures();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			select() {
+				this.selected = [];
+				if(!this.selectAll){
+					for(let i in this.procedures){
+						this.selected.push(this.procedures[i].procedure_id);
+					}
+				}
+			},
 			reload(){
 				this.fetchProcedures();
 				this.query='';
 				this.value_category='';
 			},
-			// filter(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/post-news/bai-viet/filter/'+this.value_author+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.procedures = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			filter(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/procedure/thu-tuc/filter/'+this.value_category+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.procedures = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 		}
 	};
 </script>

@@ -18,7 +18,7 @@ class CreateSubjectTable extends Migration
             $table->string('subject_code', 10);
             $table->string('subject_name', 100);
             $table->integer('subject_credit');
-            $table->string('subject_faculty',10);
+            $table->integer('subject_faculty');
             $table->integer('subject_practice_period');
             $table->integer('subject_theory_period');
             $table->integer('subject_score_exercise');

@@ -169,7 +169,7 @@
 									<td class="h3-strong td-borderight"><h3><strong>Thông tin chi tiết Sinh viên</strong></h3></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Họ và tên: <strong> {{ form.student_fullname }}</strong></td>
+									<td>Họ và tên: <strong> {{ info.student_fullname }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
 									<td>Dân tộc: <strong> {{ info.student_ethnic }}</strong></td>
@@ -205,23 +205,23 @@
 								</tr>
 								<tr>
 									<td>Khóa học: 
-										<strong>{{ studentCourse(info) }}</strong>
+										<strong>{{ info.course_name }}</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Khoa: 
-										<strong>{{ studentFaculty(info) }}</strong>
+										<strong>{{ info.faculty_name }}</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Chuyên ngành: 
-										<strong>{{ studentMajor(info) }}</strong>
+										<strong>{{ info.major_name }}</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Chức vụ: 
-										<strong v-if="form.student_role==1"> Đã ra trường</strong>
-										<strong v-else> Còn đang học</strong>
+										<strong v-if="info.student_role==1"> Đã ra trường</strong>
+										<strong v-else-if="info.student_role==0"> Còn đang học</strong>
 									</td>
 								</tr>
 								
@@ -238,18 +238,13 @@
 									<td>Điện thoại bàn: <strong> {{ info.student_deskphone }}</strong></td>
 								</tr>
 								<tr>
-									<td>Email trường: <strong> {{ form.student_email }}</strong></td>
+									<td>Email trường: <strong> {{ info.student_email }}</strong></td>
 								</tr>
 								<tr>
 									<td>Email cá nhân: <strong> {{ info.student_other_email }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
-					</div>
-					<div class="modal-body" v-show="!details.length">
-						<div class="alert alert-danger">
-							Giảng viên này chưa cập nhật thông tin!
-						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
@@ -321,43 +316,10 @@
 		},
 		mounted() {
 			this.fetchStudents();
-			this.fetchCourses();
-			this.fetchFaculties();
-			this.fetchMajors();
 		},
 		methods: {
 			empty() {
 				return (this.students.length < 1);
-			},
-			fetchCourses(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/edu-course/khoa-hoc/course';
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.courses = res.data;
-				})
-				.catch(err => console.log(err));
-			},
-			fetchFaculties(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/edu-faculty/khoa/faculty';
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.faculties = res.data;
-				})
-				.catch(err => console.log(err));
-			},
-			fetchMajors(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/edu-major/chuyen-nganh/major';
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.majors = res.data;
-				})
-				.catch(err => console.log(err));
 			},
 			fetchStudents(page_url) {
 				let vm = this;
@@ -480,8 +442,11 @@
 				.then(res => res.json())
 				.then(res => {
 					this.details = res.data;
-					this.form.fill(student);
-					$('#DetailModal').modal('show');
+					if (res.data.length===0) {
+						this.$snotify.error('Sinh viên chưa cập nhật thông tin');
+					}else{
+						$('#DetailModal').modal('show');
+					}
 				})
 				.catch(err => console.log(err));
 			},
@@ -500,18 +465,6 @@
 				this.fetchStudents();
 				this.query='';
 				this.value_role='';
-			},
-			studentCourse(info) {
-				const course = this.courses.find((crs) => crs.course_code === info.student_course);
-				return course.course_code;
-			},
-			studentFaculty(info) {
-				const faculty = this.faculties.find((fac) => fac.faculty_code === info.student_faculty);
-				return faculty.faculty_name;
-			},
-			studentMajor(info) {
-				const major = this.majors.find((mjr) => mjr.major_code === info.student_major);
-				return major.major_name;
 			},
 		}
 	};

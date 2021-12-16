@@ -17,11 +17,22 @@
 					<h3 class="card-title">Tạo mới thủ tục</h3>
 				</div>
 				<div class="card-body">
-					<form @submit.prevent="store()" @keydown="form.onKeydown($event)">
-						<div class="form-group">
-							<label class="form-label">Tiêu đề <span class="text-danger">(*)</span></label>
-							<input v-model="form.procedure_title" :class="{'is-invalid': form.errors.has('procedure_title')}" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết">
-							<div class="text-danger" v-if="form.errors.has('procedure_title')" v-html="form.errors.get('procedure_title')"></div>
+					<form @submit.prevent="store()" @keydown="form.onKeydown($event)">	
+						<div class="row">
+							<div class="col-md-9">
+								<div class="form-group">
+									<label class="form-label">Tiêu đề <span class="text-danger">(*)</span></label>
+									<input v-model="form.procedure_title" :class="{'is-invalid': form.errors.has('procedure_title')}" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết">
+									<div class="text-danger" v-if="form.errors.has('procedure_title')" v-html="form.errors.get('procedure_title')"></div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="form-label">Mã thủ tục<span class="text-danger">(*)</span></label>
+									<input type="text" name="education_program_code" class="form-control" v-model="form.procedure_code" :class="{'is-invalid': form.errors.has('procedure_code')}" placeholder="Nhập mã thủ tục"/>
+									<div class="text-danger" v-if="form.errors.has('procedure_code')" v-html="form.errors.get('procedure_code')"></div>
+								</div>
+							</div>
 						</div>
 
 						<div class="row">
@@ -113,6 +124,7 @@
 				procedures:[],
 				form: new Form({
 					procedure_id:'',
+					procedure_code:'',
 					procedure_title:'',
 					procedure_content:'',
 					procedure_time:'',

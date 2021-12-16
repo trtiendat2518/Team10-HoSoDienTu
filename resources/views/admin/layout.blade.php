@@ -14,9 +14,9 @@
     @elseif (Session::get('lecturer_id'))
         @foreach ($check_role as $check)
             @if ($check->lecturer_role == 1)
-                <meta name="deanfaculty-id" content="{{ Session::get('lecturer_id') }}">
+                <meta name="deanfaculty-id" content="{{ Session::get('lecturer_code') }}">
             @elseif ($check->lecturer_role==2)
-                <meta name="formteacher-id" content="{{ Session::get('lecturer_id') }}">
+                <meta name="formteacher-id" content="{{ Session::get('lecturer_code') }}">
             @endif
         @endforeach
     @endif
