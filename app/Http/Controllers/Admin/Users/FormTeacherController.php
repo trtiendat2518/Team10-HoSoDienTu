@@ -70,9 +70,11 @@ class FormTeacherController extends Controller
      * @param  \App\Models\FormTeacher  $formTeacher
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, FormTeacher $formTeacher)
+    public function update(Request $request, $formTeacher)
     {
-        //
+        $frt = FormTeacher::find($formTeacher);
+        $frt->form_teacher_class = $request->form_teacher_class;
+        $frt->save();
     }
 
     /**
@@ -90,7 +92,7 @@ class FormTeacherController extends Controller
     {
         $find = Lecturer::find($lecturer_id);
         $joins = FormTeacher::join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_form_teacher.form_teacher_lecturer')
-        ->join('tbl_faculty', '.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
+        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
         ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)->paginate($currentEntries);
         return FormTeacherResource::collection($joins);
     }
@@ -99,7 +101,7 @@ class FormTeacherController extends Controller
     {
         $find = Lecturer::find($lecturer_id);
         $joins = FormTeacher::join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_form_teacher.form_teacher_lecturer')
-        ->join('tbl_faculty', '.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
+        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
         ->where('tbl_lecturer.lecturer_fullname', 'LIKE','%'.$query.'%')
         ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)
         ->orwhere('tbl_lecturer.lecturer_email', 'LIKE','%'.$query.'%')
@@ -111,8 +113,8 @@ class FormTeacherController extends Controller
     // {
     //     $find = Lecturer::find($lecturer_id);
     //     $joins = FormTeacher::join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_form_teacher.form_teacher_lecturer')
-    //     ->join('tbl_faculty', '.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
-    //     ->where('tbl_lecturer.lecturer_fullname', 'LIKE','%'.$value.'%')
+    //     ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
+    //     ->where('tbl_form_teacher.form_teacher_class', '=', $value)
     //     ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)->paginate($currentEntries);
     //     return FormTeacherResource::collection($joins);
     // }
@@ -121,7 +123,7 @@ class FormTeacherController extends Controller
     {
         $joins = FormTeacher::join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_form_teacher.form_teacher_lecturer')
         ->join('tbl_lecturer_info', 'tbl_lecturer_info.lecturer_id_ref', '=', 'tbl_form_teacher.form_teacher_lecturer')
-        ->join('tbl_faculty', '.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
+        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
         ->where('tbl_form_teacher.form_teacher_id', $form_teacher_id)->get();
         return FormTeacherResource::collection($joins);
     }

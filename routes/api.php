@@ -146,4 +146,8 @@ Route::prefix('admin')->group(function(){
         Route::get('chu-nhiem-sinh-vien/showdata/{lecturer_id}/{currentEntries}','Admin\Users\FormTeacherController@showdata');
         Route::resource('chu-nhiem-sinh-vien', 'Admin\Users\FormTeacherController');
     });
+
+    Route::prefix('class-sv')->group(function() {
+        Route::get('lop/class-student/{lecturer_id}','Admin\Education\ClassStudentController@classstudent');
+    });
 });
