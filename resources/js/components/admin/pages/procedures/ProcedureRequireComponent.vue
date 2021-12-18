@@ -81,7 +81,7 @@
 									<td class="text-center">{{ prequire.procedure_require_student }}</td>
 									<td class="text-center">{{ prequire.procedure_require_datesend | formatDate}}</td>
 									<td class="text-center">
-										<select class="form-control" v-model="prequire.procedure_require_status" 
+										<select class="form-control" v-model="prequire.procedure_require_status"
 										:class="[{'btn-outline-success': prequire.procedure_require_status==2}, 
 										{'btn-outline-danger': prequire.procedure_require_status==3}, 
 										{'btn-outline-dark': prequire.procedure_require_status==1}]" 

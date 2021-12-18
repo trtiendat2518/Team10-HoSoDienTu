@@ -440,8 +440,6 @@
 				.then(res => {
 					this.details = res.data;
 					this.form.fill(major);
-					// const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
-					// this.major_faculty = faculty.faculty_name;
 					$('#DetailModal').modal('show');
 				})
 				.catch(err => console.log(err));
@@ -504,10 +502,6 @@
 					this.$snotify.error(this.error);
 				});
 			},
-			// filterFaculty(major) {
-			// 	const faculty = this.faculties.find((fac) => fac.faculty_code === major.major_faculty);
-			// 	return faculty.faculty_name;
-			// },
 		}
 	};
 </script>

@@ -21,22 +21,17 @@
 						</div>
 					</div>
 
-					<div class="row">
-						<!-- <div class="col-md-1">
-							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div> -->
-						<!-- <div class="col-md-6">
+					<div class="row ml-2">
+						<div class="col-md-10">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
-						</div> -->
+						</div>
 						<!-- <div class="col-md-3">
-							<select class="form-control mt-2" v-model="value_role">
-								<option value="" disabled selected>Lọc thông tin</option>
-								<option value="0">Giảng viên</option>
-								<option value="1">Ban chủ nhiệm khoa</option>
-								<option value="2">Chủ nhiệm sinh viên</option>
+							<select class="form-control mt-2" v-model="value_class">
+								<option value="" disabled selected>Lọc theo chuyên ngành</option>
+								<option :value="">Chưa có lớp</option>
 							</select>
 						</div> -->
-						<div class="col-md-2">
+						<div class="col-md-2 float-right">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
 									<span class="right:marign-1">Hiển thị</span>
@@ -52,22 +47,14 @@
 						<table class="table card-table table-vcenter text-nowrap table-nowrap">
 							<thead  class="blue-background text-white">
 								<tr>
-									<th class="w-5">
-										<input type="checkbox" class="form-control" :disabled="empty()" @click="select()" v-model="selectAll">
-									</th>
-									<th class="text-white w-30">Họ tên</th>
-									<th class="text-white w-30">Địa chỉ Email</th>
+									<th class="text-white w-40">Họ tên</th>
+									<th class="text-white w-35">Địa chỉ Email</th>
 									<th class="text-white w-20">Đảm nhiệm lớp</th>
-									<th class="text-white w-5">Trạng thái</th>
-									<th class="w-5"></th>
 									<th class="w-5"></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-show="formteachers.length" v-for="formteacher in formteachers" :key="formteacher.form_teacher_id">
-									<td>
-										<center><input type="checkbox" :value="formteacher.form_teacher_id" v-model="selected"></center>
-									</td>
 									<td @click="detail(formteacher)"><a href="javascript:void(0)">{{ formteacher.lecturer_fullname }}</a></td>
 									<td>{{ formteacher.lecturer_email }}</td>
 									<td>
@@ -75,22 +62,11 @@
 											Chưa có
 										</div>
 										<div v-else>
-											{{ formteacher.form_teacher_class }}
-										</div>
-									</td>
-									<td class="td-styling">
-										<div v-if="formteacher.form_teacher_status==0">
-											<button class="fa fa-eye btn-eye" @click="change(formteacher.form_teacher_id)"></button>
-										</div>
-										<div v-else>
-											<button class="fa fa-eye-slash btn-eye-slash" @click="change(formteacher.form_teacher_id)"></button>
+											{{ nameClass(formteacher) }}
 										</div>
 									</td>
 									<td style="text-align: center">
 										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(formteacher)"></button>
-									</td>
-									<td>
-										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(formteacher.form_teacher_id)"></button>
 									</td>
 								</tr>
 								<tr v-show="!formteachers.length">
@@ -110,7 +86,7 @@
 		</div>
 
 		<!-- Modal -->
-		<!-- <div class="modal fade" id="LecturerModal" tabindex="-1" role="dialog" aria-labelledby="LecturerModalTitle" aria-hidden="true">
+		<div class="modal fade" id="LecturerModal" tabindex="-1" role="dialog" aria-labelledby="LecturerModalTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
 					<div class="modal-content">
@@ -127,22 +103,11 @@
 							<label>Địa chỉ Email</label>
 							<input v-model="form.lecturer_email" type="text" name="lecturer_email" class="form-control not-allowed" disabled>
 
-							
-							<label class="mt-3">Vai trò</label>
-							<select v-model="form.lecturer_role" name="lecturer_role" class="form-control select-option">
-								<option value="0">Giảng viên</option>
-								<option value="1">Ban chủ nhiệm khoa</option>
-								<option value="2">Chủ nhiệm sinh viên</option>
+							<label class="mt-3">Lớp đảm nhiệm</label>
+							<select v-model="form.form_teacher_class" name="form_teacher_class" class="form-control select-option">
+								<option :value="null" disabled>Chưa có lớp đảm nhiệm</option>
+								<option v-for="classt in classes" :key="classt.class_id" :value="classt.class_id">{{ classt.course_name }} - Lớp {{ classt.class_name }}</option>
 							</select>
-
-							<div v-show="form.lecturer_role==1">
-								<label class="mt-3">Cấp bậc</label>
-								<select v-model="form.lecturer_level" name="lecturer_level" class="form-control select-option">
-									<option value="0">Không có</option>
-									<option value="1">Trưởng khoa</option>
-									<option value="2">Phó khoa</option>
-								</select>
-							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
@@ -151,10 +116,11 @@
 					</div>
 				</form>
 			</div>
-		</div> -->
+		</div>
 		<!-- Modal end-->
 
-		<!-- <div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+		<!-- Modal -->
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header styling-modal-header-info">
@@ -174,7 +140,7 @@
 									<td class="h3-strong td-borderight"><h3><strong> Thông tin chi tiết Giảng viên</strong></h3></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Họ và tên: <strong> {{ form.lecturer_fullname }}</strong></td>
+									<td>Họ và tên: <strong> {{ info.lecturer_fullname }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
 									<td>Dân tộc: <strong> {{ info.lecturer_ethnic }}</strong></td>
@@ -209,20 +175,20 @@
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Khoa: <strong> {{ lecturer_faculty }}</strong></td>
+									<td>Khoa: <strong> {{ info.faculty_name }}</strong></td>
 								</tr>
 								<tr>
 									<td>Chức vụ: 
-										<strong v-if="form.lecturer_role==2"> Chủ nhiệm sinh viên</strong>
-										<strong v-else-if="form.lecturer_role==1"> Ban chủ nhiệm khoa</strong>
+										<strong v-if="info.lecturer_role==2"> Chủ nhiệm sinh viên</strong>
+										<strong v-else-if="info.lecturer_role==1"> Ban chủ nhiệm khoa</strong>
 										<strong v-else> Giảng viên</strong>
 									</td>
 								</tr>
 
 								<tr class="td-borderbottom">
 									<td>Cấp bậc: 
-										<strong v-if="form.lecturer_level==2"> Phó Khoa</strong>
-										<strong v-else-if="form.lecturer_level==1"> Trưởng khoa</strong>
+										<strong v-if="info.lecturer_level==2"> Phó Khoa</strong>
+										<strong v-else-if="info.lecturer_level==1"> Trưởng khoa</strong>
 										<strong v-else> Không có</strong>
 									</td>
 								</tr>
@@ -240,7 +206,7 @@
 									<td>Điện thoại bàn: <strong> {{ info.lecturer_deskphone }}</strong></td>
 								</tr>
 								<tr>
-									<td>Email trường: <strong> {{ form.lecturer_email }}</strong></td>
+									<td>Email trường: <strong> {{ info.lecturer_email }}</strong></td>
 								</tr>
 								<tr>
 									<td>Email cá nhân: <strong> {{ info.lecturer_other_email }}</strong></td>
@@ -248,17 +214,13 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="modal-body" v-show="!details.length">
-						<div class="alert alert-danger">
-							Giảng viên này chưa cập nhật đủ thông tin!
-						</div>
-					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
+		<!-- Modal end-->
 	</div>
 </template>
 
@@ -267,8 +229,8 @@
 	export default {
 		data() {
 			return {
+				classes:[],
 				formteachers:[],
-				faculties: [],
 				lecturers:[],
 				lecturer_id: this.$facultyId,
 				lecturer_faculty:'',
@@ -280,6 +242,8 @@
 				query: '',
 				editMode: false,
 				form: new Form({
+					lecturer_fullname:'',
+					lecturer_email: '',
 					form_teacher_id:'',
 					form_teacher_code:'',
 					form_teacher_class:'',
@@ -288,13 +252,13 @@
 				selected: [],
 				selectAll: false,
 				details:[],
-				value_role:'',
+				value_class:'',
 			};
 		},
 		mounted() {
 			this.fetchFormTeachers();
-			this.fetchFaculties();
 			this.fetchLecturers();
+			this.fetchClasses();
 		},
 		watch: {
 			currentEntries(number) {
@@ -306,23 +270,23 @@
 					this.fetchFormTeachers();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchFormTeachers();
-			// 	}else{
-			// 		this.value_role='';
-			// 		this.pagination.current_page=1;
-			// 		this.search();
-			// 	}
-			// },
-			// value_role(value){
-			// 	if(value === ''){
-			// 		this.fetchFormTeachers();
-			// 	}else{
-			// 		this.pagination.current_page=1;
-			// 		this.filter();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchFormTeachers();
+				}else{
+					this.value_class='';
+					this.pagination.current_page=1;
+					this.search();
+				}
+			},
+			value_class(value){
+				if(value === ''){
+					this.fetchFormTeachers();
+				}else{
+					this.pagination.current_page=1;
+					this.filter();
+				}
+			},
 		},
 		methods: {
 			empty() {
@@ -339,16 +303,6 @@
 				})
 				.catch(err => console.log(err));
 			},
-			fetchFaculties(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/edu-faculty/khoa/faculty';
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.faculties = res.data;
-				})
-				.catch(err => console.log(err));
-			},
 			fetchLecturers(page_url) {
 				let vm = this;
 				page_url = '../../api/admin/user-gv/giang-vien/lecturer';
@@ -357,133 +311,72 @@
 				.then(res => {
 					this.lecturers = res.data;
 					this.lecturers.forEach((el) => {
-						if(el.lecturer_code===this.lecturer_id){
+						if(el.lecturer_id==this.lecturer_id){
 							this.lecturer_faculty= el.lecturer_faculty;
 						}
 					});
 				})
-				.catch(err => console.log(this.lecturer_faculty));
+				.catch(err => console.log(err));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/user-gv/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page=1';
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.formteachers = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// show(lecturer) {
-			// 	this.editMode = true;
-			// 	this.form.reset();
-			// 	this.form.clear();
-			// 	this.form.fill(lecturer);
-			// 	$('#LecturerModal').modal('show');
-			// },
-			// update() {
-			// 	this.form.post('../../api/admin/user-gv/giang-vien/role/'+this.form.lecturer_id)
-			// 	.then(res => {
-			// 		this.fetchFormTeachers();
-			// 		$('#LecturerModal').modal('hide');
-			// 		if(this.form.successful){
-			// 			this.$snotify.success('Vai trò của tài khoản đã thay đổi');
-			// 		}else{
-			// 			this.$snotify.error('Không thể chỉnh sửa');
-			// 		}
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// change(lecturer_id) {
-			// 	axios.patch(`../../api/admin/user-gv/giang-vien/change/${lecturer_id}`)
-			// 	.then(res => {
-			// 		this.fetchFormTeachers();
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// destroy(lecturer_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/user-gv/giang-vien/${lecturer_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchFormTeachers();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/user-gv/giang-vien/destroyall', { lecturer: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchFormTeachers();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.formteachers){
-			// 			this.selected.push(this.formteachers[i].lecturer_id);
-			// 		}
-			// 	}
-			// },
-			// detail(lecturer, page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/user-gv/giang-vien/detail/${lecturer.lecturer_id}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.details = res.data;
-			// 		this.form.fill(lecturer);
-			// 		const faculty = this.faculties.find((fac) => fac.faculty_code === lecturer.lecturer_faculty );
-			// 		this.lecturer_faculty = faculty.faculty_name;
-			// 		$('#DetailModal').modal('show');
-			// 	})
-			// 	.catch(err => this.$snotify.error('Giảng viên chưa cập nhật thông tin'));
-			// },
+			fetchClasses(page_url) {
+				let vm = this;
+				page_url = `../../api/admin/class-sv/lop/class-student/${this.lecturer_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.classes = res.data;
+				})
+				.catch(err => console.log(err));
+			},
+			search(page_url) {
+				let vm = this;
+				page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/search/${this.lecturer_id}/${this.query}/${this.currentEntries}?page=${this.pagination.current_page}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.formteachers = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
+			show(formteacher) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				this.form.fill(formteacher);
+				$('#LecturerModal').modal('show');
+			},
+			update() {
+				this.form.put(`../../api/admin/user-cn/chu-nhiem-sinh-vien/${this.form.form_teacher_id}`)
+				.then(res => {
+					this.fetchFormTeachers();
+					$('#LecturerModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Cập nhật thành công');
+					}else{
+						this.$snotify.error('Không thể chỉnh sửa');
+					}
+				})
+				.catch(err => console.log(err));
+			},
+			detail(formteacher, page_url) {
+				let vm = this;
+				page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/detail/${formteacher.form_teacher_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.details = res.data;
+					if (res.data.length===0) {
+						this.$snotify.error('Chủ nhiệm sinh viên này chưa có thông tin!');
+					}else {
+						$('#DetailModal').modal('show');
+					}
+				})
+				.catch(err => this.$snotify.error('Giảng viên chưa cập nhật thông tin'));
+			},
 			// filter(page_url) {
 			// 	let vm = this;
-			// 	page_url = '../../api/admin/user-gv/giang-vien/filter/'+this.value_role+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+			// 	page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/filter/${this.lecturer_id}/${this.value_class}/${this.currentEntries}?page=${this.pagination.current_page}`;
 			// 	fetch(page_url)
 			// 	.then(res => res.json())
 			// 	.then(res => {
@@ -492,22 +385,15 @@
 			// 	})
 			// 	.catch(err => console.log(err));
 			// },
+			nameClass(formteacher) {
+				const name = this.classes.find((cls) => cls.class_id === formteacher.form_teacher_class);
+			    return name.course_code + ' - ' + name.class_name;
+			},
 			reload(){
 				this.fetchFormTeachers();
 				this.query='';
-				this.value_role='';
+				this.value_class='';
 			},
-			// fetchFaculties(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/edu-faculty/khoa/1000?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.faculties = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
 		}
 	};
 </script>
