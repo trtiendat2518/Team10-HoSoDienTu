@@ -321,7 +321,6 @@
 				this.form.end = datetime_end;
 				e.guide.clearGuideElement();
 			},
->>>>>>> phanphungvotin
 			onBeforeDeleteSchedule(e) {
 				//console.log('delete modal');
 			},
