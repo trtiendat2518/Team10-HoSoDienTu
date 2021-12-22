@@ -467,6 +467,35 @@
 
 				$('#DetailModal').modal('show');
 			},
+			destroy(id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/calendar-schedule/lich-bieu/${id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								$('#DetailModal').modal('hide');
+								this.fetchCalendars();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			}
 		}
 	};
 </script>
