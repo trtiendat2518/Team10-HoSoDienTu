@@ -25,6 +25,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@toast-ui/vue-calendar": "^1.1.1",
         "alga-js": "^0.0.9",
         "animate.css": "^4.1.1",
         "cross-env": "^7.0.3",

@@ -6,6 +6,7 @@
 
 require('./bootstrap');
 
+import Vue from 'vue'
 import Form from 'vform'
 import notify from './notify.js'
 import formatDatetime from './format-datetime.js'
