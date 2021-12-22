@@ -19,6 +19,7 @@ class CreateStudentInfoTable extends Migration
             $table->integer('student_course');
             $table->integer('student_faculty');
             $table->integer('student_major');
+            $table->integer('student_class');
             $table->string('student_avatar',255);
             $table->timestamp('student_birthday');
             $table->integer('student_gender');

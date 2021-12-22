@@ -140,8 +140,18 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('user-cn')->group(function() {
+        Route::get('chu-nhiem-sinh-vien/detail/{form_teacher_id}','Admin\Users\FormTeacherController@detail');
+        // Route::get('chu-nhiem-sinh-vien/filter/{lecturer_id}/{value}/{currentEntries}','Admin\Users\FormTeacherController@filter');
         Route::get('chu-nhiem-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}','Admin\Users\FormTeacherController@search');
         Route::get('chu-nhiem-sinh-vien/showdata/{lecturer_id}/{currentEntries}','Admin\Users\FormTeacherController@showdata');
         Route::resource('chu-nhiem-sinh-vien', 'Admin\Users\FormTeacherController');
+    });
+
+    Route::prefix('class-sv')->group(function() {
+        Route::get('lop/class-student/{lecturer_id}','Admin\Education\ClassStudentController@classstudent');
+    });
+
+    Route::prefix('calendar-schedule')->group(function() {
+        Route::resource('lich-bieu','Admin\Calendar\CalendarController');
     });
 });
