@@ -46,9 +46,6 @@
 					:useCreationPopup="false"
 					:useDetailPopup="false"
 					@beforeCreateSchedule="onBeforeCreateSchedule"
-					@beforeDeleteSchedule="onBeforeDeleteSchedule"
-					@beforeUpdateSchedule="onBeforeUpdateSchedule"
-					@clickDayname="onClickDayname"
 					@clickSchedule="onClickSchedule"></calendar>
 				</div>
 			</div><!-- col end -->
@@ -116,6 +113,63 @@
 						</div>
 					</div>
 				</form>
+			</div>
+		</div>
+		<!-- Modal end-->
+
+		<!-- Modal -->
+		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header styling-modal-header-info">
+						<h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết sự kiện</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true" style="color: white;">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<table class="table table-borderless w-100 m-0 border">
+							<tbody class="p-0">
+								<tr>
+									<td class="h3-strong text-center"><h3><strong> Thông tin chi tiết</strong></h3></td>
+								</tr>
+								<tr>
+									<td>Tiêu đề: <strong> {{ form.title }}</strong></td>
+								</tr>
+								<tr>
+									<td>Nội dung: <strong style="word-break:break-word;"> {{ form.body }}</strong></td>
+								</tr>
+								<tr>
+									<td>Loại sự kiện: 
+										<strong v-if="form.calendarId==0"> Đăng ký kế hoạch học tập</strong>
+										<strong v-else-if="form.calendarId==1"> Đăng ký môn học</strong>
+										<strong v-else-if="form.calendarId==2"> Lịch thi học kỳ lần 1</strong>
+										<strong v-else-if="form.calendarId==3"> Lịch thi học kỳ lần 2</strong>
+										<strong v-else-if="form.calendarId==4"> Đánh giá điểm rèn luyện</strong>
+									</td>
+								</tr>
+								<tr>
+									<td class="row">
+										<div class="col-md-6">Thời gian bắt đầu: 
+											<strong>{{ form.start }}</strong>
+										</div>
+										<div class="col-md-6">Thời gian kết thúc: 
+											<strong>{{ form.end }}</strong>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="row mt-2">
+							<div class="col-md-6">
+								<button type="button" class="btn-3d btn btn-lg btn-block btn-success fa fa-pencil-square-o" @click="show(form.id)"> Cập nhật</button>
+							</div>
+							<div class="col-md-6">
+								<button type="button" class="btn-3d btn btn-lg btn-block btn-danger fa fa-trash" @click="destroy(form.id)"> Xóa</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!-- Modal end-->
@@ -269,7 +323,7 @@
 				this.form.clear();
 				$('#CalendarModal').modal('show');
 			},
-			store(){
+			store() {
 				this.form.busy = true;
 				this.form.post('../../api/admin/calendar-schedule/lich-bieu')
 				.then(res => {
@@ -321,19 +375,97 @@
 				this.form.end = datetime_end;
 				e.guide.clearGuideElement();
 			},
->>>>>>> phanphungvotin
-			onBeforeDeleteSchedule(e) {
-				//console.log('delete modal');
+			show(id, page_url) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				$('#DetailModal').modal('hide');
+				let vm = this;
+				page_url = `../../api/admin/calendar-schedule/lich-bieu/${id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.form.fill(res.data[0]);
+					var time_start = new Date(res.data[0].start);
+					var time_end = new Date(res.data[0].end);
+
+					var month_start = time_start.getMonth()+1;
+					var date_start = time_start.getDate();
+					var hour_start = time_start.getHours();
+					var minute_start = time_start.getMinutes();
+
+					var month_end = time_end.getMonth()+1;
+					var date_end = time_end.getDate();
+					var hour_end = time_end.getHours();
+					var minute_end = time_end.getMinutes();
+
+					month_start = month_start<10 ? `0` + month_start : month_start;
+					date_start = date_start<10 ? `0` + date_start : date_start;
+					hour_start = hour_start<10 ? `0` + hour_start : hour_start;
+					minute_start = minute_start<10 ? `0` + minute_start : minute_start;
+
+					month_end = month_end<10 ? `0` + month_end : month_end;
+					date_end = date_end<10 ? `0` + date_end : date_end;
+					hour_end = hour_end<10 ? `0` + hour_end : hour_end;
+					minute_end = minute_end<10 ? `0` + minute_end : minute_end;
+
+					var datetime_start = time_start.getFullYear() + '-' + month_start + '-' + date_start + 'T' + hour_start + ':' + minute_start;
+					var datetime_end = time_end.getFullYear() + '-' + month_end + '-' + date_end + 'T' + hour_end + ':' + minute_end;
+
+					this.form.start = datetime_start;
+					this.form.end = datetime_end;
+					$('#CalendarModal').modal('show');
+				})
+				.catch(err => console.log(err));
 			},
-			onBeforeUpdateSchedule(e) {
-				//console.log('update modal');
-			},
-			onClickDayname(e) {
-				//console.log('view date in weekly');
+			update() {
+				this.form.put('../../api/admin/calendar-schedule/lich-bieu/'+this.form.id)
+				.then(res => {
+					this.fetchCalendars();
+					$('#CalendarModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Cập nhật thành công!');
+					}else{
+						this.$snotify.error('Không thể cập nhật');
+					}
+				})
+				.catch(err => console.log(err));
 			},
 			onClickSchedule(e) {
-				//console.log('view detail schedule');
-				//console.log(e);
+				var time_start = new Date(e.schedule.start._date);
+				var time_end = new Date(e.schedule.end._date);
+
+				var month_start = time_start.getMonth()+1;
+				var date_start = time_start.getDate();
+				var hour_start = time_start.getHours();
+				var minute_start = time_start.getMinutes();
+
+				var month_end = time_end.getMonth()+1;
+				var date_end = time_end.getDate();
+				var hour_end = time_end.getHours();
+				var minute_end = time_end.getMinutes();
+
+				month_start = month_start<10 ? `0` + month_start : month_start;
+				date_start = date_start<10 ? `0` + date_start : date_start;
+				hour_start = hour_start<10 ? `0` + hour_start : hour_start;
+				minute_start = minute_start<10 ? `0` + minute_start : minute_start;
+
+				month_end = month_end<10 ? `0` + month_end : month_end;
+				date_end = date_end<10 ? `0` + date_end : date_end;
+				hour_end = hour_end<10 ? `0` + hour_end : hour_end;
+				minute_end = minute_end<10 ? `0` + minute_end : minute_end;
+
+				var datetime_start = date_start + '/' + month_start + '/' + time_start.getFullYear() + ' ' + hour_start + ':' + minute_start;
+				var datetime_end = date_end + '/' + month_end + '/' + time_end.getFullYear() + ' ' + hour_end + ':' + minute_end;
+
+				this.form.id = e.schedule.id;
+				this.form.title = e.schedule.title;
+				this.form.body = e.schedule.body;
+				this.form.calendarId = e.schedule.calendarId;
+				this.form.start = datetime_start;
+				this.form.end = datetime_end;
+
+				$('#DetailModal').modal('show');
 			},
 		}
 	};

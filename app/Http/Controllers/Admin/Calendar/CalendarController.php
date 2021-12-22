@@ -78,9 +78,9 @@ class CalendarController extends Controller
      * @param  \App\Models\Calendar  $calendar
      * @return \Illuminate\Http\Response
      */
-    public function show(Calendar $calendar)
+    public function show($id)
     {
-        //
+        return CalendarResource::collection(Calendar::where('id', $id)->get());
     }
 
     /**
@@ -101,9 +101,38 @@ class CalendarController extends Controller
      * @param  \App\Models\Calendar  $calendar
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Calendar $calendar)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'title' => ['required', 'max:200', 'min:10', 'notspecial_spaces'],
+            'body' => ['required', 'min:10'],
+            'start' => ['required'],
+            'end' => ['required', 'after_or_equal:start'],
+            'calendarId' => ['required'],
+        ],[
+            'title.required' => 'Tiêu đề không được để trống!',
+            'title.max' => 'Tiêu đề không nhập quá 200 ký tự chữ!',
+            'title.min' => 'Tiêu đề phải có 10 ký tự chữ trở lên!',
+            'title.notspecial_spaces' => 'Tiêu đề không được chứa ký tự đặc biệt!',
+
+            'body.required' => 'Nội dung không được để trống!',
+            'body.min' => 'Nội dung phải có 10 ký tự chữ trở lên!',
+
+            'start.required' => 'Vui lòng chọn thời gian bắt đầu!',
+
+            'end.required' => 'Vui lòng chọn thời gian kết thúc!',
+            'end.after_or_equal' => 'Thời gian kết thúc buộc phải bằng ngày bắt đầu hoặc sau ngày bắt đầu!',
+
+            'calendarId.required' => 'Vui lòng chọn sự kiện!',
+        ]);
+
+        $calendar = Calendar::find($id);
+        $calendar->title = $data['title'];
+        $calendar->body = $data['body'];
+        $calendar->start = $data['start'];
+        $calendar->end = $data['end'];
+        $calendar->calendarId = $data['calendarId'];
+        $calendar->save();
     }
 
     /**
