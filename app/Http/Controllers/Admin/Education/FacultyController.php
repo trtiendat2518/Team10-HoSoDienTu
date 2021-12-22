@@ -56,13 +56,13 @@ class FacultyController extends Controller
             'faculty_name' => ['required', 'max:50', 'min:7', 'unique:tbl_faculty', 'notspecial_spaces'],
             'faculty_status' => ['required'],
         ],[
-            'faculty_code.required' => 'Mã Khoa không dược để trống!',
+            'faculty_code.required' => 'Mã Khoa không được để trống!',
             'faculty_code.max' => 'Mã Khoa không nhập quá 3 ký tự chữ!',
             'faculty_code.min' => 'Mã Khoa phải có 2 ký tự chữ trở lên!',
             'faculty_code.unique' => 'Mã Khoa đã tồn tại!',
             'faculty_code.notspecial_spaces' => 'Mã Khoa không được chứa ký tự đặc biệt!',
 
-            'faculty_name.required' => 'Tên Khoa không dược để trống!',
+            'faculty_name.required' => 'Tên Khoa không được để trống!',
             'faculty_name.max' => 'Tên Khoa không nhập quá 50 ký tự chữ!',
             'faculty_name.min' => 'Tên Khoa phải có 7 ký tự chữ trở lên!',
             'faculty_name.unique' => 'Tên Khoa đã tồn tại!',
@@ -114,7 +114,7 @@ class FacultyController extends Controller
         $data = $request->validate([
             'faculty_name' => ['required', 'max:50', 'min:7', 'notspecial_spaces'],
         ],[
-            'faculty_name.required' => 'Tên Khoa không dược để trống!',
+            'faculty_name.required' => 'Tên Khoa không được để trống!',
             'faculty_name.max' => 'Tên Khoa không nhập quá 50 ký tự chữ!',
             'faculty_name.min' => 'Tên Khoa phải có 7 ký tự chữ trở lên!',
             'faculty_name.notspecial_spaces' => 'Tên Khoa không được chứa ký tự đặc biệt!',

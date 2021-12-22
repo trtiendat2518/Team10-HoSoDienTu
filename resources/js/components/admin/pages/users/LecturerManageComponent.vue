@@ -157,6 +157,7 @@
 		</div>
 		<!-- Modal end-->
 
+		<!-- Modal -->
 		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -166,10 +167,10 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body" v-show="details.length" v-for="info in details" :key="info.lecturer_info_id">
+					<div class="modal-body" v-show="details.length" v-for="detail in details" :key="detail.lecturer_id">
 						<center>
 							<img src="('public/lecturer/images/vlu.ico')" class="avatar-xxl rounded-circle" alt="profile">
-							{{ info.lecturer_avatar }}
+							{{ detail.lecturer_avatar }}
 						</center>
 						<table class="table row table-borderless w-100 m-0 border">
 							<tbody class="col-lg-6 p-0">
@@ -177,34 +178,34 @@
 									<td class="h3-strong td-borderight"><h3><strong> Thông tin chi tiết Giảng viên</strong></h3></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Họ và tên: <strong> {{ form.lecturer_fullname }}</strong></td>
+									<td>Họ và tên: <strong> {{ detail.lecturer_fullname }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Dân tộc: <strong> {{ info.lecturer_ethnic }}</strong></td>
+									<td>Dân tộc: <strong> {{ detail.lecturer_ethnic }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Tôn giáo: <strong> {{ info.lecturer_religion }}</strong></td>
+									<td>Tôn giáo: <strong> {{ detail.lecturer_religion }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
 									<td >Giới tính: 
-										<strong v-if="info.lecturer_gender==0"> Nam</strong>
+										<strong v-if="detail.lecturer_gender==0"> Nam</strong>
 										<strong v-else> Nữ</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Ngày sinh: <strong> {{ info.lecturer_birthday | formatDate }}</strong></td>
+									<td>Ngày sinh: <strong> {{ detail.lecturer_birthday | formatDate }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Nơi sinh: <strong> {{ info.lecturer_birth_place }}</strong></td>
+									<td>Nơi sinh: <strong> {{ detail.lecturer_birth_place }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Quốc gia: <strong> {{ info.lecturer_country }}</strong></td>
+									<td>Quốc gia: <strong> {{ detail.lecturer_country }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>CMND/CCCD: <strong> {{ info.lecturer_identify_card }}</strong></td>
+									<td>CMND/CCCD: <strong> {{ detail.lecturer_identify_card }}</strong></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Địa chỉ: <strong> {{ info.lecturer_address }}</strong></td>
+									<td>Địa chỉ: <strong> {{ detail.lecturer_address }}</strong></td>
 								</tr>
 							</tbody>
 							<tbody class="col-lg-6 p-0">
@@ -212,20 +213,20 @@
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Khoa: <strong> {{ lecturer_faculty }}</strong></td>
+									<td>Khoa: <strong> {{ detail.faculty_name }}</strong></td>
 								</tr>
 								<tr>
 									<td>Chức vụ: 
-										<strong v-if="form.lecturer_role==2"> Chủ nhiệm sinh viên</strong>
-										<strong v-else-if="form.lecturer_role==1"> Ban chủ nhiệm khoa</strong>
+										<strong v-if="detail.lecturer_role==2"> Chủ nhiệm sinh viên</strong>
+										<strong v-else-if="detail.lecturer_role==1"> Ban chủ nhiệm khoa</strong>
 										<strong v-else> Giảng viên</strong>
 									</td>
 								</tr>
 
 								<tr class="td-borderbottom">
 									<td>Cấp bậc: 
-										<strong v-if="form.lecturer_level==2"> Phó Khoa</strong>
-										<strong v-else-if="form.lecturer_level==1"> Trưởng khoa</strong>
+										<strong v-if="detail.lecturer_level==2"> Phó Khoa</strong>
+										<strong v-else-if="detail.lecturer_level==1"> Trưởng khoa</strong>
 										<strong v-else> Không có</strong>
 									</td>
 								</tr>
@@ -237,24 +238,19 @@
 									</td>
 								</tr>
 								<tr>
-									<td>Số điện thoại: <strong> {{ info.lecturer_phone }}</strong></td>
+									<td>Số điện thoại: <strong> {{ detail.lecturer_phone }}</strong></td>
 								</tr>
 								<tr>
-									<td>Điện thoại bàn: <strong> {{ info.lecturer_deskphone }}</strong></td>
+									<td>Điện thoại bàn: <strong> {{ detail.lecturer_deskphone }}</strong></td>
 								</tr>
 								<tr>
-									<td>Email trường: <strong> {{ form.lecturer_email }}</strong></td>
+									<td>Email trường: <strong> {{ detail.lecturer_email }}</strong></td>
 								</tr>
 								<tr>
-									<td>Email cá nhân: <strong> {{ info.lecturer_other_email }}</strong></td>
+									<td>Email cá nhân: <strong> {{ detail.lecturer_other_email }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
-					</div>
-					<div class="modal-body" v-show="!details.length">
-						<div class="alert alert-danger">
-							Giảng viên này chưa cập nhật đủ thông tin!
-						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
@@ -262,6 +258,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- Modal end-->
 	</div>
 </template>
 
@@ -310,7 +307,6 @@
 				if(keyword === ''){
 					this.fetchLecturers();
 				}else{
-					this.value_role='';
 					this.pagination.current_page=1;
 					this.search();
 				}
@@ -326,7 +322,6 @@
 		},
 		mounted() {
 			this.fetchLecturers();
-			this.fetchFaculties();
 		},
 		methods: {
 			empty() {
@@ -334,7 +329,7 @@
 			},
 			fetchLecturers(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-gv/giang-vien/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = `../../api/admin/user-gv/giang-vien/${this.currentEntries}?page=${this.pagination.current_page}`;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -345,7 +340,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-gv/giang-vien/search/'+this.query+'/'+this.currentEntries+'?page=1';
+				page_url = `../../api/admin/user-gv/giang-vien/search/${this.query}/${this.currentEntries}?page=${this.pagination.current_page}`;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -362,7 +357,7 @@
 				$('#LecturerModal').modal('show');
 			},
 			update() {
-				this.form.put('../../api/admin/user-gv/giang-vien/'+this.form.lecturer_id)
+				this.form.post(`../../api/admin/user-gv/giang-vien/role/${this.form.lecturer_id}`)
 				.then(res => {
 					this.fetchLecturers();
 					$('#LecturerModal').modal('hide');
@@ -453,16 +448,18 @@
 				.then(res => res.json())
 				.then(res => {
 					this.details = res.data;
-					this.form.fill(lecturer);
-					const faculty = this.faculties.find((fac) => fac.faculty_code === lecturer.lecturer_faculty );
-					this.lecturer_faculty = faculty.faculty_name;
-					$('#DetailModal').modal('show');
+					console.log(res.data.length);
+					if (res.data.length===0) {
+						this.$snotify.error('Giảng viên chưa cập nhật thông tin');
+					}else {
+						$('#DetailModal').modal('show');
+					}
 				})
 				.catch(err => this.$snotify.error('Giảng viên chưa cập nhật thông tin'));
 			},
 			filter(page_url) {
 				let vm = this;
-				page_url = '../../api/admin/user-gv/giang-vien/filter/'+this.value_role+'/'+this.currentEntries+'?page='+this.pagination.current_page;
+				page_url = `../../api/admin/user-gv/giang-vien/filter/${this.value_role}/${this.currentEntries}?page=${this.pagination.current_page}`;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -476,22 +473,11 @@
 				this.query='';
 				this.value_role='';
 			},
-			fetchFaculties(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/edu-faculty/khoa/1000?page='+this.pagination.current_page;
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.faculties = res.data;
-					this.pagination = res.meta;
-				})
-				.catch(err => console.log(err));
-			},
 		}
 	};
 </script>
 
-<style scoped>
+<style lang="css" scoped>
 	.btn-eye {
 		font-size: 18px;
 		cursor: pointer;
@@ -538,6 +524,38 @@
 	.background-update {
 		background-color: darkblue;
 		border-color: darkblue;
+	}
+	.btn-import {
+		background-color: green;
+		color: white;
+	}
+	.btn-import:hover {
+		background-color: forestgreen;
+		color: white;
+	}
+	.btn-export {
+		background-color: darkgreen;
+		color: white;
+	}
+	.btn-export:hover {
+		background-color: seagreen;
+		color: white;
+	}
+	.btn-import {
+		background-color: green;
+		color: white;
+	}
+	.btn-import:hover {
+		background-color: forestgreen;
+		color: white;
+	}
+	.btn-export {
+		background-color: darkgreen;
+		color: white;
+	}
+	.btn-export:hover {
+		background-color: seagreen;
+		color: white;
 	}
 	.btn-3d {
 		border-bottom: 3px solid #6c757db0;

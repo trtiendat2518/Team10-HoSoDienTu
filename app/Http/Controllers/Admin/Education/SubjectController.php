@@ -53,40 +53,40 @@ class SubjectController extends Controller
             'subject_type' => ['required'],
             'subject_status' => ['required'],
         ],[
-            'subject_code.required' => 'Mã Môn học không dược để trống!',
+            'subject_code.required' => 'Mã Môn học không được để trống!',
             'subject_code.max' => 'Mã Môn học không nhập quá 10 ký tự chữ!',
             'subject_code.min' => 'Mã Môn học phải có 2 ký tự chữ trở lên!',
             'subject_code.unique' => 'Mã Môn học đã tồn tại!',
             'subject_code.notspecial_spaces' => 'Mã Môn học không được chứa ký tự đặc biệt!',
 
-            'subject_name.required' => 'Tên Môn học không dược để trống!',
+            'subject_name.required' => 'Tên Môn học không được để trống!',
             'subject_name.max' => 'Tên Môn học không nhập quá 100 ký tự chữ!',
             'subject_name.min' => 'Tên Môn học phải có 6 ký tự chữ trở lên!',
             'subject_name.unique' => 'Tên Môn học đã tồn tại!',
 
-            'subject_credit.required' => 'Số tín chỉ không dược để trống!',
+            'subject_credit.required' => 'Số tín chỉ không được để trống!',
             'subject_credit.max' => 'Số tín chỉ không nhập quá 11 ký tự số!',
 
-            'subject_practice_period.required' => 'Số giờ thực hành không dược để trống!',
+            'subject_practice_period.required' => 'Số giờ thực hành không được để trống!',
             'subject_practice_period.max' => 'Số giờ thực hành không nhập quá 11 ký tự số!',
 
-            'subject_theory_period.required' => 'Số giờ lý thuyết không dược để trống!',
+            'subject_theory_period.required' => 'Số giờ lý thuyết không được để trống!',
             'subject_theory_period.max' => 'Số giờ lý thuyết không nhập quá 11 ký tự số!',
 
-            'subject_score_exercise.required' => 'Trọng số bài tập không dược để trống!',
+            'subject_score_exercise.required' => 'Trọng số bài tập không được để trống!',
             'subject_score_exercise.max' => 'Trọng số bài tập không nhập quá 11 ký tự số!',
             'subject_score_exercise.sum' => 'Tổng trọng số phải bằng 100!',
 
-            'subject_score_exam.required' => 'Trọng số kiểm tra không dược để trống!',
+            'subject_score_exam.required' => 'Trọng số kiểm tra không được để trống!',
             'subject_score_exam.max' => 'Trọng số kiểm tra không nhập quá 11 ký tự số!',
             'subject_score_exam.sum' => 'Tổng trọng số phải bằng 100!',
 
-            'subject_score_final.required' => 'Trọng số thi không dược để trống!',
+            'subject_score_final.required' => 'Trọng số thi không được để trống!',
             'subject_score_final.max' => 'Trọng số thi không nhập quá 11 ký tự số!',
             'subject_score_final.sum' => 'Tổng trọng số phải bằng 100!',
 
-            'subject_type.required' => 'Loại Môn học không dược để trống!',
-            'subject_status.required' => 'Trạng thái Môn học không dược để trống!',
+            'subject_type.required' => 'Loại Môn học không được để trống!',
+            'subject_status.required' => 'Trạng thái Môn học không được để trống!',
         ]);
 
         $subject = new Subject();
@@ -117,13 +117,13 @@ class SubjectController extends Controller
 
     public function showdata($lecturer_id, $currentEntries)
     {
-        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_code',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
+        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_id',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
         return SubjectResource::collection($subject_faculty);
     }
 
     public function showother($lecturer_id, $currentEntries)
     {
-        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','!=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_code',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
+        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','!=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_id',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
         return SubjectResource::collection($subject_faculty);
     }
 
@@ -158,38 +158,38 @@ class SubjectController extends Controller
             'subject_score_final' => ['required', 'max:11', 'sum:100,subject_score_exercise,subject_score_exam'],
             'subject_type' => ['required'],
         ],[
-            'subject_code.required' => 'Mã Môn học không dược để trống!',
+            'subject_code.required' => 'Mã Môn học không được để trống!',
             'subject_code.max' => 'Mã Môn học không nhập quá 10 ký tự chữ!',
             'subject_code.min' => 'Mã Môn học phải có 2 ký tự chữ trở lên!',
             'subject_code.notspecial_spaces' => 'Mã Môn học không được chứa ký tự đặc biệt!',
 
-            'subject_name.required' => 'Tên Môn học không dược để trống!',
+            'subject_name.required' => 'Tên Môn học không được để trống!',
             'subject_name.max' => 'Tên Môn học không nhập quá 100 ký tự chữ!',
             'subject_name.min' => 'Tên Môn học phải có 6 ký tự chữ trở lên!',
 
-            'subject_credit.required' => 'Số tín chỉ không dược để trống!',
+            'subject_credit.required' => 'Số tín chỉ không được để trống!',
             'subject_credit.max' => 'Số tín chỉ không nhập quá 11 ký tự số!',
 
-            'subject_practice_period.required' => 'Số giờ thực hành không dược để trống!',
+            'subject_practice_period.required' => 'Số giờ thực hành không được để trống!',
             'subject_practice_period.max' => 'Số giờ thực hành không nhập quá 11 ký tự số!',
 
-            'subject_theory_period.required' => 'Số giờ lý thuyết không dược để trống!',
+            'subject_theory_period.required' => 'Số giờ lý thuyết không được để trống!',
             'subject_theory_period.max' => 'Số giờ lý thuyết không nhập quá 11 ký tự số!',
 
-            'subject_score_exercise.required' => 'Trọng số bài tập không dược để trống!',
+            'subject_score_exercise.required' => 'Trọng số bài tập không được để trống!',
             'subject_score_exercise.max' => 'Trọng số bài tập không nhập quá 11 ký tự số!',
             'subject_score_exercise.sum' => 'Tổng trọng số phải bằng 100!',
 
-            'subject_score_exam.required' => 'Trọng số kiểm tra không dược để trống!',
+            'subject_score_exam.required' => 'Trọng số kiểm tra không được để trống!',
             'subject_score_exam.max' => 'Trọng số kiểm tra không nhập quá 11 ký tự số!',
             'subject_score_exam.sum' => 'Tổng trọng số phải bằng 100!',
 
-            'subject_score_final.required' => 'Trọng số thi không dược để trống!',
+            'subject_score_final.required' => 'Trọng số thi không được để trống!',
             'subject_score_final.max' => 'Trọng số thi không nhập quá 11 ký tự số!',
             'subject_score_final.sum' => 'Tổng trọng số phải bằng 100!',
 
-            'subject_type.required' => 'Loại Môn học không dược để trống!',
-            'subject_status.required' => 'Trạng thái Môn học không dược để trống!',
+            'subject_type.required' => 'Loại Môn học không được để trống!',
+            'subject_status.required' => 'Trạng thái Môn học không được để trống!',
         ]);
 
         $sj = Subject::find($subject);
@@ -252,7 +252,8 @@ class SubjectController extends Controller
 
     public function detail($subject)
     {
-        return SubjectResource::collection(Subject::where('subject_id',$subject)->get());
+        $joins = Subject::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_subject.subject_faculty')->where('subject_id',$subject)->get();
+        return SubjectResource::collection($joins);
     }
 
     public function filter($faculty, $currentEntries)

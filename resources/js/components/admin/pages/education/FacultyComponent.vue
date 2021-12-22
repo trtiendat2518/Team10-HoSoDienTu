@@ -271,7 +271,7 @@
 		},
 		computed: {
 			countMajor() {
-				return this.majors.filter(major => major.major_faculty==this.form.faculty_code);
+				return this.majors.filter(major => major.major_faculty==this.form.faculty_id);
 			}
 		},
 		mounted() {
@@ -446,16 +446,17 @@
 					this.details = res.data;
 					this.form.fill(faculty);
 					let head = this.lecturers.filter(function(lec){
-						return lec.lecturer_faculty===faculty.faculty_code && lec.lecturer_level===1
+						return lec.lecturer_faculty===faculty.faculty_id && lec.lecturer_level===1
 					})
 					this.head_lecturer = head[0].lecturer_fullname;
 
 					let vice = this.lecturers.filter(function(lec){
-						return lec.lecturer_faculty===faculty.faculty_code && lec.lecturer_level===2
+						return lec.lecturer_faculty===faculty.faculty_id && lec.lecturer_level===2
 					})
 					this.vice_lecturer = vice[0].lecturer_fullname;
 
 					$('#DetailModal').modal('show');
+					console.log(res.data.length);
 				})
 				.catch(err => this.$snotify.error('Khoa này chưa có thông tin chi tiết'));
 			},
@@ -592,5 +593,8 @@
 	.btn-3d {
 		border-bottom: 3px solid #6c757db0;
 		border-right: 3px solid #6c757db0;
+	}
+	.modal-lg {
+		width: 600px;
 	}
 </style>

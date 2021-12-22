@@ -33,7 +33,7 @@
 							<select class="form-control mt-2" v-model="value_faculty">
 								<option value="" disabled selected>Lọc theo khoa</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="faculty in faculties" :key="faculty.faculty_code" :value="faculty.faculty_code" :hidden="faculty.faculty_code==lecturer_faculty">{{ faculty.faculty_name }}</option>
+								<option v-for="faculty in faculties" :key="faculty.faculty_id" :value="faculty.faculty_id" :hidden="faculty.faculty_id==lecturer_faculty">{{ faculty.faculty_code }} - {{ faculty.faculty_name }}</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -67,7 +67,7 @@
 									</td>
 									<td>{{ subject.subject_name }}</td>
 									<td class="text-center">{{ subject.subject_credit}}</td>
-									<td>{{ getFacultyName(subject) }}</td>
+									<td>{{ subject.faculty_name}}</td>
 								</tr>
 								<tr v-show="!subjects.length">
 									<td colspan="8">
@@ -96,26 +96,26 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<table class="table row table-borderless w-100 m-0 border">
+						<table class="table row table-borderless w-100 m-0 border" v-for="detail in details" :key="detail.subject_id">
 							<tbody class="col-lg-6 p-0">
 								<tr>
 									<td class="h3-strong"><h3><strong><u> Thông tin chi tiết</u></strong></h3></td>
 								</tr>
 								<tr>
-									<td>Mã Môn học: <strong> {{ form.subject_code }}</strong></td>
+									<td>Mã Môn học: <strong> {{ detail.subject_code }}</strong></td>
 								</tr>
 								<tr>
-									<td>Tên Môn học: <strong> {{ form.subject_name }}</strong></td>
+									<td>Tên Môn học: <strong> {{ detail.subject_name }}</strong></td>
 								</tr>
 								<tr>
-									<td>Số tín chỉ: <strong> {{ form.subject_credit }}</strong></td>
+									<td>Số tín chỉ: <strong> {{ detail.subject_credit }}</strong></td>
 								</tr>
 								<tr>
-									<td>Khoa: <strong> {{ subject_faculty }}</strong></td>
+									<td>Khoa: <strong> {{ detail.faculty_name }}</strong></td>
 								</tr>
 								<tr>
 									<td>Loại môn học: 
-										<strong v-if="form.subject_type==0"> Bắt buộc</strong>
+										<strong v-if="detail.subject_type==0"> Bắt buộc</strong>
 										<strong v-else> Tự chọn</strong>
 									</td>
 								</tr>
@@ -126,12 +126,12 @@
 								</tr>
 								<tr>
 									<td>Lý thuyết: 
-										<strong>{{ form.subject_theory_period }} giờ</strong>
+										<strong>{{ detail.subject_theory_period }} giờ</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Thực hành: 
-										<strong>{{ form.subject_practice_period }} giờ</strong>
+										<strong>{{ detail.subject_practice_period }} giờ</strong>
 									</td>
 								</tr>
 							</tbody>
@@ -141,17 +141,17 @@
 								</tr>
 								<tr>
 									<td>Điểm bài tập: 
-										<strong>{{ form.subject_score_exercise }}%</strong>
+										<strong>{{ detail.subject_score_exercise }}%</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Điểm kiểm tra: 
-										<strong>{{ form.subject_score_exam }}%</strong>
+										<strong>{{ detail.subject_score_exam }}%</strong>
 									</td>
 								</tr>
 								<tr>
 									<td>Điểm thi: 
-										<strong>{{ form.subject_score_final }}%</strong>
+										<strong>{{ detail.subject_score_final }}%</strong>
 									</td>
 								</tr>
 							</tbody>
@@ -258,7 +258,7 @@
 				.then(res => {
 					this.lecturers = res.data;
 					this.lecturers.forEach((el) => {
-						if(el.lecturer_code===this.lecturer_id){
+						if(el.lecturer_id==this.lecturer_id){
 							this.lecturer_faculty= el.lecturer_faculty;
 						}
 					});
@@ -294,11 +294,6 @@
 				.then(res => res.json())
 				.then(res => {
 					this.details = res.data;
-					this.form.fill(subject);
-					let faculty = this.faculties.filter(function(fct){
-						return fct.faculty_code===subject.subject_faculty
-					})
-					this.subject_faculty = faculty[0].faculty_name;
 					$('#DetailModal').modal('show');
 				})
 				.catch(err => console.log(err));
@@ -307,10 +302,6 @@
 				this.fetchSubjects();
 				this.query='';
 				this.value_faculty='';
-			},
-			getFacultyName(subject) {
-				const faculty = this.faculties.find((fac) => fac.faculty_code === subject.subject_faculty);
-				return faculty.faculty_name;
 			},
 			filter(page_url) {
 				let vm = this;

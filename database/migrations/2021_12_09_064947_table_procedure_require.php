@@ -16,7 +16,7 @@ class TableProcedureRequire extends Migration
         Schema::create('tbl_procedure_require', function (Blueprint $table) {
             $table->increments('procedure_require_id');
             $table->string('procedure_require_code', 10);
-            $table->string('procedure_require_detail', 10);
+            $table->integer('procedure_require_detail');
             $table->dateTime('procedure_require_datesend');
             $table->dateTime('procedure_require_dateget');
             $table->int('procedure_require_status');

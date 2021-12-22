@@ -58,6 +58,7 @@ class AuthController extends Controller
         $request->session()->put('admin_id', null);
         $request->session()->put('admin_fullname', null);
         $request->session()->put('admin_email', null);
+        $request->session()->put('lecturer_code', null);
         return redirect()->intended('admin/login');
     }
 
@@ -77,10 +78,12 @@ class AuthController extends Controller
                 $request->session()->put('lecturer_fullname',$authUser->lecturer_fullname);
                 $request->session()->put('lecturer_email',$authUser->lecturer_email);
                 $request->session()->put('lecturer_id',$authUser->lecturer_code);
+                $request->session()->put('lecturer_code',$authUser->lecturer_id);
             }else {
                 $request->session()->put('lecturer_fullname',$authUser->lecturer_fullname);
                 $request->session()->put('lecturer_email',$authUser->lecturer_email);
                 $request->session()->put('lecturer_id',$authUser->lecturer_code);
+                $request->session()->put('lecturer_code',$authUser->lecturer_id);
             }
             //dd($users);
             return redirect()->intended('admin');

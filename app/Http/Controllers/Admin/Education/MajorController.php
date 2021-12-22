@@ -47,13 +47,13 @@ class MajorController extends Controller
             'major_faculty' => ['required'],
             'major_status' => ['required'],
         ],[
-            'major_code.required' => 'Mã Chuyên Ngành không dược để trống!',
+            'major_code.required' => 'Mã Chuyên Ngành không được để trống!',
             'major_code.max' => 'Mã Chuyên Ngành không nhập quá 10 ký tự chữ!',
             'major_code.min' => 'Mã Chuyên Ngành phải có 2 ký tự chữ trở lên!',
             'major_code.unique' => 'Mã Chuyên Ngành đã tồn tại!',
             'major_code.notspecial_spaces' => 'Mã Chuyên Ngành không được chứa ký tự đặc biệt!',
 
-            'major_name.required' => 'Tên Chuyên Ngành không dược để trống!',
+            'major_name.required' => 'Tên Chuyên Ngành không được để trống!',
             'major_name.max' => 'Tên Chuyên Ngành không nhập quá 50 ký tự chữ!',
             'major_name.min' => 'Tên Chuyên Ngành phải có 5 ký tự chữ trở lên!',
             'major_name.unique' => 'Tên Chuyên Ngành đã tồn tại!',
@@ -79,7 +79,8 @@ class MajorController extends Controller
      */
     public function show($currentEntries)
     {
-        return MajorResource::collection(Major::orderby('major_id','DESC')->paginate($currentEntries));
+        $joins = Major::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')->orderby('major_id','DESC')->paginate($currentEntries);
+        return MajorResource::collection($joins);
     }
 
     /**
@@ -108,7 +109,7 @@ class MajorController extends Controller
             'major_name' => ['required', 'max:50', 'min:5', 'notspecial_spaces'],
             'major_faculty' => ['required'],
         ],[
-            'major_name.required' => 'Tên Chuyên Ngành không dược để trống!',
+            'major_name.required' => 'Tên Chuyên Ngành không được để trống!',
             'major_name.max' => 'Tên Chuyên Ngành không nhập quá 50 ký tự chữ!',
             'major_name.min' => 'Tên Chuyên Ngành phải có 5 ký tự chữ trở lên!',
             'major_name.unique' => 'Tên Chuyên Ngành đã tồn tại!',
@@ -167,12 +168,13 @@ class MajorController extends Controller
 
     public function filter($faculty, $currentEntries)
     {
-        return MajorResource::collection(Major::where('major_faculty','LIKE','%'.$faculty.'%')->orderby('major_name','DESC')->paginate($currentEntries));
+        return MajorResource::collection(Major::where('major_faculty','=', $faculty)->orderby('major_name','DESC')->paginate($currentEntries));
     }
 
     public function detail($major)
     {
-        return MajorResource::collection(Major::where('major_id', $major)->get());
+        $joins = Major::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')->where('tbl_major.major_id', $major)->orderby('major_id','DESC')->get();
+        return MajorResource::collection($joins);
     }
 
     public function export(Request $request)

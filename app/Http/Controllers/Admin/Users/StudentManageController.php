@@ -141,7 +141,12 @@ class StudentManageController extends Controller
 
     public function detail($student)
     {
-        return StudentInfoResource::collection(StudentInfo::where('student_code',$student)->paginate(1));
+        $joins = Student::join('tbl_student_info', 'tbl_student_info.student_id_ref', '=', 'tbl_student.student_id')
+        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_student_info.student_course')
+        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_student_info.student_faculty')
+        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_student_info.student_major')
+        ->where('tbl_student.student_id', $student)->get();
+        return StudentResource::collection($joins);
     }
 
     public function studentinfo()
