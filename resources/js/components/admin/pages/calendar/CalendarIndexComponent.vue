@@ -285,42 +285,43 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// onBeforeCreateSchedule(e) {
-			// 	this.editMode = false;
-			// 	this.form.clear();
-			// 	this.form.reset();
-			// 	$('#CalendarModal').modal('show');
+			onBeforeCreateSchedule(e) {
+				this.editMode = false;
+				this.form.clear();
+				this.form.reset();
+				$('#CalendarModal').modal('show');
 
-			// 	var time_start = new Date(e.start._date);
-			// 	var time_end = new Date(e.end._date);
+				var time_start = new Date(e.start._date);
+				var time_end = new Date(e.end._date);
 
-			// 	var month_start = time_start.getMonth()+1;
-			// 	var date_start = time_start.getDate();
-			// 	var hour_start = time_start.getHours();
-			// 	var minute_start = time_start.getMinutes();
+				var month_start = time_start.getMonth()+1;
+				var date_start = time_start.getDate();
+				var hour_start = time_start.getHours();
+				var minute_start = time_start.getMinutes();
 
-			// 	var month_end = time_end.getMonth()+1;
-			// 	var date_end = time_end.getDate();
-			// 	var hour_end = time_end.getHours();
-			// 	var minute_end = time_end.getMinutes();
+				var month_end = time_end.getMonth()+1;
+				var date_end = time_end.getDate();
+				var hour_end = time_end.getHours();
+				var minute_end = time_end.getMinutes();
 
-			// 	month_start = month_start<10 ? `0` + month_start : month_start;
-			// 	date_start = date_start<10 ? `0` + date_start : date_start;
-			// 	hour_start = hour_start<10 ? `0` + hour_start : hour_start;
-			// 	minute_start = minute_start<10 ? `0` + minute_start : minute_start;
+				month_start = month_start<10 ? `0` + month_start : month_start;
+				date_start = date_start<10 ? `0` + date_start : date_start;
+				hour_start = hour_start<10 ? `0` + hour_start : hour_start;
+				minute_start = minute_start<10 ? `0` + minute_start : minute_start;
 
-			// 	month_end = month_end<10 ? `0` + month_end : month_end;
-			// 	date_end = date_end<10 ? `0` + date_end : date_end;
-			// 	hour_end = hour_end<10 ? `0` + hour_end : hour_end;
-			// 	minute_end = minute_end<10 ? `0` + minute_end : minute_end;
+				month_end = month_end<10 ? `0` + month_end : month_end;
+				date_end = date_end<10 ? `0` + date_end : date_end;
+				hour_end = hour_end<10 ? `0` + hour_end : hour_end;
+				minute_end = minute_end<10 ? `0` + minute_end : minute_end;
 
-			// 	var datetime_start = time_start.getFullYear() + '-' + month_start + '-' + date_start + 'T' + hour_start + ':' + minute_start;
-			// 	var datetime_end = time_end.getFullYear() + '-' + month_end + '-' + date_end + 'T' + hour_end + ':' + minute_end;
+				var datetime_start = time_start.getFullYear() + '-' + month_start + '-' + date_start + 'T' + hour_start + ':' + minute_start;
+				var datetime_end = time_end.getFullYear() + '-' + month_end + '-' + date_end + 'T' + hour_end + ':' + minute_end;
 
-			// 	this.form.start = datetime_start;
-			// 	this.form.end = datetime_end;
-			// 	e.guide.clearGuideElement();
-			// },
+				this.form.start = datetime_start;
+				this.form.end = datetime_end;
+				e.guide.clearGuideElement();
+			},
+>>>>>>> phanphungvotin
 			onBeforeDeleteSchedule(e) {
 				//console.log('delete modal');
 			},
