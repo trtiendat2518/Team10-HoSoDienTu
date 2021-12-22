@@ -150,4 +150,8 @@ Route::prefix('admin')->group(function(){
     Route::prefix('class-sv')->group(function() {
         Route::get('lop/class-student/{lecturer_id}','Admin\Education\ClassStudentController@classstudent');
     });
+
+    Route::prefix('calendar-schedule')->group(function() {
+        Route::resource('lich-bieu','Admin\Calendar\CalendarController');
+    });
 });
