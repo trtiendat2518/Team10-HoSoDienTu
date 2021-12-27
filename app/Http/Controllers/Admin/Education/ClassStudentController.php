@@ -95,4 +95,9 @@ class ClassStudentController extends Controller
         ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)->orderBy('class_name', 'ASC')->get();
         return ClassResource::collection($joins);
     }
+
+    public function allclass()
+    {
+        return ClassResource::collection(ClassStudent::orderby('class_id', 'DESC')->get());
+    }
 }

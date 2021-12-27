@@ -8,7 +8,6 @@
 				</li>
 				<li class="breadcrumb-item active" aria-current="page">
 					<router-link tag="a" :to="{ name: 'procedureindex' }">Danh sách thủ tục</router-link></li>
-				</li>
 				<li class="breadcrumb-item active" aria-current="page">Danh sách yêu cầu</li>
 			</ol><!-- End breadcrumb -->
 		</div>
@@ -55,7 +54,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="table-responsive">
 						<table class="table card-table table-vcenter text-nowrap table-nowrap">
 							<thead  class="blue-background text-white">
@@ -82,9 +81,9 @@
 									<td class="text-center">{{ prequire.procedure_require_datesend | formatDate}}</td>
 									<td class="text-center">
 										<select class="form-control" v-model="prequire.procedure_require_status"
-										:class="[{'btn-outline-success': prequire.procedure_require_status==2}, 
-										{'btn-outline-danger': prequire.procedure_require_status==3}, 
-										{'btn-outline-dark': prequire.procedure_require_status==1}]" 
+										:class="[{'btn-outline-success': prequire.procedure_require_status==2},
+										{'btn-outline-danger': prequire.procedure_require_status==3},
+										{'btn-outline-dark': prequire.procedure_require_status==1}]"
 										@change="change($event, prequire.procedure_require_id)" name="procedure_require_status">
 										<option value="0" :hidden="prequire.procedure_require_status!=0">Chờ xác nhận</option>
 										<option value="1" :hidden="prequire.procedure_require_status>1">Đang xử lý</option>
@@ -233,7 +232,7 @@
 	}
 	.btn-eye-slash {
 		font-size: 18px;
-		cursor: pointer; 
+		cursor: pointer;
 		background: none;
 		border: none;
 		color: #868e96de;

@@ -141,8 +141,14 @@ class CalendarController extends Controller
      * @param  \App\Models\Calendar  $calendar
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Calendar $calendar)
+    public function destroy($id)
     {
-        //
+        $del = Calendar::find($id);
+        $del->delete();
+    }
+
+    public function schedule()
+    {
+        return CalendarResource::collection(Calendar::orderby('start', 'ASC')->get());
     }
 }
