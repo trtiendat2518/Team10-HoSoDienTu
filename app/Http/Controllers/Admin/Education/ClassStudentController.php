@@ -47,9 +47,21 @@ class ClassStudentController extends Controller
      * @param  \App\Models\Class  $class
      * @return \Illuminate\Http\Response
      */
-    public function show(ClassStudent $class)
+    public function show($currentEntries)
     {
         //
+    }
+
+    public function showdata($lecturer_id, $currentEntries)
+    {
+        $find = Lecturer::find($lecturer_id);
+        $joins = ClassStudent::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','=','tbl_class.class_faculty')
+        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
+        ->where('tbl_lecturer.lecturer_id',$lecturer_id)
+        ->orderby('tbl_class.class_id','DESC')->paginate($currentEntries);
+        return ClassResource::collection($joins);
     }
 
     /**
@@ -93,6 +105,26 @@ class ClassStudentController extends Controller
         ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
         ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
         ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)->orderBy('class_name', 'ASC')->get();
+        return ClassResource::collection($joins);
+    }
+
+    public function search($faculty, $query, $currentEntries)
+    {
+        $joins= ClassStudent::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
+        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+        ->where('tbl_class.class_name','LIKE','%'.$query.'%')->where('tbl_class.class_faculty', $faculty)
+        ->orderby('tbl_faculty.faculty_id','DESC')->paginate($currentEntries);
+        return ClassResource::collection($joins);
+    }
+
+    public function filter($faculty, $value, $currentEntries)
+    {
+        $joins= ClassStudent::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
+        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+        ->where('tbl_class.class_state', $value)->where('tbl_class.class_faculty', $faculty)
+        ->orderby('tbl_faculty.faculty_id','DESC')->paginate($currentEntries);
         return ClassResource::collection($joins);
     }
 

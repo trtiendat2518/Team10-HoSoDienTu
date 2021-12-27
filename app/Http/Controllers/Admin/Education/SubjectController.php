@@ -123,7 +123,10 @@ class SubjectController extends Controller
 
     public function showother($lecturer_id, $currentEntries)
     {
-        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','!=','tbl_subject.subject_faculty')->where('tbl_lecturer.lecturer_id',$lecturer_id)->orderby('subject_id', 'DESC')->paginate($currentEntries);
+        $subject_faculty = Subject::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','!=','tbl_subject.subject_faculty')
+        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_subject.subject_faculty')
+        ->where('tbl_lecturer.lecturer_id',$lecturer_id)
+        ->orderby('subject_id', 'DESC')->paginate($currentEntries);
         return SubjectResource::collection($subject_faculty);
     }
 
