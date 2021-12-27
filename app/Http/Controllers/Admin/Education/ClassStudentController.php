@@ -108,6 +108,26 @@ class ClassStudentController extends Controller
         return ClassResource::collection($joins);
     }
 
+    public function search($faculty, $query, $currentEntries)
+    {
+        $joins= ClassStudent::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
+        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+        ->where('tbl_class.class_name','LIKE','%'.$query.'%')->where('tbl_class.class_faculty', $faculty)
+        ->orderby('tbl_faculty.faculty_id','DESC')->paginate($currentEntries);
+        return ClassResource::collection($joins);
+    }
+
+    public function filter($faculty, $value, $currentEntries)
+    {
+        $joins= ClassStudent::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
+        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+        ->where('tbl_class.class_state', $value)->where('tbl_class.class_faculty', $faculty)
+        ->orderby('tbl_faculty.faculty_id','DESC')->paginate($currentEntries);
+        return ClassResource::collection($joins);
+    }
+
     public function allclass()
     {
         return ClassResource::collection(ClassStudent::orderby('class_id', 'DESC')->get());
