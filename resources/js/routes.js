@@ -38,6 +38,9 @@ import Calendar from "./components/admin/pages/calendar/CalendarComponent.vue";
 import CalendarIndex from "./components/admin/pages/calendar/CalendarIndexComponent.vue";
 import CalendarReference from "./components/admin/pages/calendar/CalendarReferenceComponent.vue";
 
+import ClassStudent from "./components/admin/pages/class/ClassStudentComponent.vue";
+import ClassStudentIndex from "./components/admin/pages/class/ClassStudentIndexComponent.vue";
+
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
 if (document.querySelector("meta[name='admin-fullname']")) {
@@ -311,6 +314,26 @@ export default new VueRouter({
                     path: "rang-buoc-lich-bieu",
                     name: "calendarreference",
                     component: CalendarReference
+                },
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/lop-hoc",
+            name: "classstudent",
+            component: ClassStudent,
+            children: [
+                {
+                    path: "",
+                    name: "classstudentindex",
+                    component: ClassStudentIndex
                 },
             ],
             beforeEnter: (to, from, next) => {

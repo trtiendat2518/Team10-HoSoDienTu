@@ -153,6 +153,8 @@ Route::prefix('admin')->group(function(){
     Route::prefix('class-sv')->group(function() {
         Route::get('lop/class-student/{lecturer_id}','Admin\Education\ClassStudentController@classstudent');
         Route::get('lop/all-class','Admin\Education\ClassStudentController@allclass');
+        Route::get('lop/showdata/{lecturer_id}/{currentEntries}','Admin\Education\ClassStudentController@showdata');
+        Route::resource('lop', 'Admin\Education\ClassStudentController');
     });
 
     Route::prefix('calendar-schedule')->group(function() {
