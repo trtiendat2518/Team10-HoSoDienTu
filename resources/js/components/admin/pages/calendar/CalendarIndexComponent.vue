@@ -11,7 +11,7 @@
 		</div>
 		<div class="form-group">
 			<button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
-			<router-link class="btn btn-indigo btn-lg mb-3 btn-3d float-right" tag="button" :to="{ name: 'calendarreference' }"><li class="fa fa-info"></li> Ràng buộc lịch biểu</router-link>
+			<router-link class="btn btn-indigo btn-lg mb-3 btn-3d float-right" tag="button" :to="{ name: 'calendarreference' }"><li class="fa fa-info"></li> Sự kiện</router-link>
 		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">

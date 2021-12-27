@@ -152,9 +152,17 @@ Route::prefix('admin')->group(function(){
 
     Route::prefix('class-sv')->group(function() {
         Route::get('lop/class-student/{lecturer_id}','Admin\Education\ClassStudentController@classstudent');
+        Route::get('lop/all-class','Admin\Education\ClassStudentController@allclass');
     });
 
     Route::prefix('calendar-schedule')->group(function() {
+        Route::get('lich-bieu/schedule','Admin\Calendar\CalendarController@schedule');
         Route::resource('lich-bieu','Admin\Calendar\CalendarController');
+    });
+
+    Route::prefix('calendar-exam')->group(function() {
+        Route::get('lich-thi/detail/{calendar_exam_id}','Admin\Calendar\CalendarExamController@detail');
+        Route::get('lich-thi/search/{query}/{currentEntries}','Admin\Calendar\CalendarExamController@search');
+        Route::resource('lich-thi','Admin\Calendar\CalendarExamController');
     });
 });

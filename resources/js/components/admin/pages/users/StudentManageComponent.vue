@@ -223,7 +223,7 @@
 										<label class="mt-3">Khóa học <span class="text-danger">(*)</span></label>
 										<select v-model="form.student_course" name="student_course" class="form-control select-option" :class="{'is-invalid': form.errors.has('student_course')}">
 											<option value="null" disabled selected>Chọn khóa học</option>
-											<option v-for="course in courses" :value="course.course_id">{{ course.course_code }} - {{ course.course_name }}</option>
+											<option v-for="course in courses" :value="course.course_id" :hidden="course.course_status>0">{{ course.course_code }} - {{ course.course_name }}</option>
 										</select>
 										<div class="text-danger" v-if="form.errors.has('student_course')" v-html="form.errors.get('student_course')"></div>
 									</div>
@@ -233,7 +233,7 @@
 										<label class="mt-3">Khoa <span class="text-danger">(*)</span></label>
 										<select v-model="form.student_faculty" name="student_faculty" class="form-control select-option" :class="{'is-invalid': form.errors.has('student_faculty')}">
 											<option value="null" disabled selected>Chọn khoa</option>
-											<option v-for="faculty in faculties" :value="faculty.faculty_id">{{ faculty.faculty_name }}</option>
+											<option v-for="faculty in faculties" :value="faculty.faculty_id" :hidden="faculty.facultystatus>0">{{ faculty.faculty_name }}</option>
 										</select>
 										<div class="text-danger" v-if="form.errors.has('student_faculty')" v-html="form.errors.get('student_faculty')"></div>
 									</div>
@@ -246,7 +246,7 @@
 										<label class="mt-3">Chuyên ngành <span class="text-danger">(*)</span></label>
 										<select v-model="form.student_major" name="student_major" class="form-control select-option" :class="{'is-invalid': form.errors.has('student_major')}">
 											<option value="null" disabled selected>Chọn chuyên ngành</option>
-											<option v-for="major in majors" :value="major.major_id">{{ major.major_name }}</option>
+											<option v-for="major in majors" :value="major.major_id" :hidden="major.major_status>0">{{ major.major_name }}</option>
 										</select>
 										<div class="text-danger" v-if="form.errors.has('student_major')" v-html="form.errors.get('student_major')"></div>
 									</div>
@@ -256,7 +256,7 @@
 										<label class="mt-3">Lớp học <span class="text-danger">(*)</span></label>
 										<select v-model="form.student_class" name="student_class" class="form-control select-option" :class="{'is-invalid': form.errors.has('student_class')}">
 											<option value="null" disabled selected>Chọn lớp học</option>
-											<option value="0">Còn đang học</option>
+											<option v-for="clas in classes" :value="clas.class_id" :hidden="clas.class_status>0">{{ clas.class_name }}</option>
 										</select>
 										<div class="text-danger" v-if="form.errors.has('student_class')" v-html="form.errors.get('student_class')"></div>
 									</div>
@@ -480,6 +480,7 @@
 				courses:[],
 				faculties:[],
 				majors:[],
+				classes:[],
 				students:[],
 				student_id:'',
 				pagination:{
@@ -554,6 +555,7 @@
 			this.fetchFaculties();
 			this.fetchCourses();
 			this.fetchMajors();
+			this.fetchClasses();
 		},
 		methods: {
 			empty() {
@@ -597,6 +599,16 @@
 				.then(res => res.json())
 				.then(res => {
 					this.majors = res.data;
+				})
+				.catch(err => console.log(err));
+			},
+			fetchClasses(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/class-sv/lop/all-class';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.classes = res.data;
 				})
 				.catch(err => console.log(err));
 			},
