@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassStudent;
 use App\Models\Lecturer;
 use Illuminate\Http\Request;
+use Validator;
 
 class ClassStudentController extends Controller
 {
@@ -38,7 +39,26 @@ class ClassStudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'class_name' => ['required', 'max:50', 'unique:tbl_class', 'notspecial_spaces'],
+            'class_course' => ['required'],
+            'class_major' => ['required'],
+        ],[
+            'class_name.required' => 'Tên lớp học không được để trống!',
+            'class_name.max' => 'Tên lớp học không nhập quá 50 ký tự chữ!',
+            'class_name.unique' => 'Tên lớp học đã tồn tại!',
+            'class_name.notspecial_spaces' => 'Tên lớp học không được chứa ký tự đặc biệt!',
+
+            'class_course.required' => 'Khóa học không được để trống!',
+            'class_major.required' => 'Chuyên ngành không được để trống!'
+        ]);
+
+        $cls = new ClassStudent();
+        $cls->class_name = $data['class_name'];
+        $cls->class_course = $data['class_course'];
+        $cls->class_faculty = $request->class_faculty;
+        $cls->class_major = $data['class_major'];
+        $cls->save();
     }
 
     /**
