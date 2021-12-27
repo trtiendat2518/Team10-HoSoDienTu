@@ -26,16 +26,17 @@
 						<!-- <div class="col-md-1">
 							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
 						</div> -->
-						<!-- <div class="col-md-6">
+						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
 						<div class="col-md-3">
 							<select class="form-control mt-2" v-model="value_state">
-								<option value="" disabled selected>Lọc theo tác giả</option>
+								<option value="" disabled selected>Lọc theo tình trạng</option>
 								<option disabled>----------------------------------------</option>
-								<option v-for="admin in admins" :key="admin.admin_id" :value="admin.admin_fullname">{{ admin.admin_fullname }}</option>
+								<option value="0">Chưa có chủ nhiệm</option>
+								<option value="1">Đã có chủ nhiệm</option>
 							</select>
-						</div> -->
+						</div>
 						<div class="col-md-2">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -152,24 +153,24 @@
 					this.fetchClasses();
 				}
 			},
-			// query(keyword){
-			// 	if(keyword === ''){
-			// 		this.fetchClasses();
-			// 	}else{
-			// 		this.value_state='';
-			// 		this.pagination.current_page=1;
-			// 		this.search();
-			// 	}
-			// },
-			// value_state(admin){
-			// 	if(admin === ''){
-			// 		this.fetchClasses();
-			// 	}else{
-			// 		this.query='';
-			// 		this.pagination.current_page=1;
-			// 		this.filter();
-			// 	}
-			// },
+			query(keyword){
+				if(keyword === ''){
+					this.fetchClasses();
+				}else{
+					this.value_state='';
+					this.pagination.current_page=1;
+					this.search();
+				}
+			},
+			value_state(state){
+				if(state === ''){
+					this.fetchClasses();
+				}else{
+					this.query='';
+					this.pagination.current_page=1;
+					this.filter();
+				}
+			},
 		},
 		mounted() {
 			this.fetchClasses();
@@ -205,17 +206,17 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// search(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/post-news/bai-viet/search/'+this.query+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.posts = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			search(page_url) {
+				let vm = this;
+				page_url = `../../api/admin/class-sv/lop/search/${this.lecturer_faculty}/${this.query}/${this.currentEntries}?page=${this.pagination.current_page}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.classes = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 			// create(){
 			// 	this.$router.push( {name: 'postcreate'} );
 			// },
@@ -296,17 +297,17 @@
 				this.query='';
 				this.value_state='';
 			},
-			// filter(page_url) {
-			// 	let vm = this;
-			// 	page_url = '../../api/admin/post-news/bai-viet/filter/'+this.value_state+'/'+this.currentEntries+'?page='+this.pagination.current_page;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.posts = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
+			filter(page_url) {
+				let vm = this;
+				page_url = `../../api/admin/class-sv/lop/filter/${this.lecturer_faculty}/${this.value_state}/${this.currentEntries}?page=${this.pagination.current_page}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.classes = res.data;
+					this.pagination = res.meta;
+				})
+				.catch(err => console.log(err));
+			},
 		}
 	};
 </script>

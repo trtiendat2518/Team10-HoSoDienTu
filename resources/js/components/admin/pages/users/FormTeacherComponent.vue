@@ -106,7 +106,7 @@
 							<label class="mt-3">Lớp đảm nhiệm</label>
 							<select v-model="form.form_teacher_class" name="form_teacher_class" class="form-control select-option">
 								<option :value="null" disabled>Chưa có lớp đảm nhiệm</option>
-								<option v-for="classt in classes" :key="classt.class_id" :value="classt.class_id">{{ classt.course_name }} - Lớp {{ classt.class_name }}</option>
+								<option v-for="classt in classes" :key="classt.class_id" :value="classt.class_id" :hidden="classt.class_state>0">{{ classt.course_name }} - Lớp {{ classt.class_name }}</option>
 							</select>
 						</div>
 						<div class="modal-footer">
@@ -350,6 +350,7 @@
 				this.form.put(`../../api/admin/user-cn/chu-nhiem-sinh-vien/${this.form.form_teacher_id}`)
 				.then(res => {
 					this.fetchFormTeachers();
+					this.fetchClasses();
 					$('#LecturerModal').modal('hide');
 					if(this.form.successful){
 						this.$snotify.success('Cập nhật thành công');
