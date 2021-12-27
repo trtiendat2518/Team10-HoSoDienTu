@@ -146,4 +146,9 @@ class CalendarController extends Controller
         $del = Calendar::find($id);
         $del->delete();
     }
+
+    public function schedule()
+    {
+        return CalendarResource::collection(Calendar::orderby('start', 'ASC')->get());
+    }
 }

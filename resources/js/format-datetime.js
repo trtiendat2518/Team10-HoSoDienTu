@@ -11,3 +11,8 @@ Vue.filter('formatTime', function(value) {
         return moment(String(value)).format('hh:mm')
     }
 });
+Vue.filter('formatFullTime', function(value) {
+    if (value) {
+        return moment(String(value)).format('DD/MM/YYYY hh:mm')
+    }
+});
