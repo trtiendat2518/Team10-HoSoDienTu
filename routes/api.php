@@ -151,6 +151,8 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('class-sv')->group(function() {
+        Route::post('lop/destroyall/', 'Admin\Education\ClassStudentController@destroyall');
+        Route::patch('lop/change/{class}', 'Admin\Education\ClassStudentController@change');
         Route::get('lop/filter/{faculty}/{value}/{currentEntries}','Admin\Education\ClassStudentController@filter');
         Route::get('lop/search/{faculty}/{query}/{currentEntries}','Admin\Education\ClassStudentController@search');
         Route::get('lop/class-student/{lecturer_id}','Admin\Education\ClassStudentController@classstudent');

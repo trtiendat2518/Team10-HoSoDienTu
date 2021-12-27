@@ -130,9 +130,10 @@ class ClassStudentController extends Controller
      * @param  \App\Models\Class  $class
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ClassStudent $class)
+    public function destroy($class)
     {
-        //
+        $del = ClassStudent::find($class);
+        $del->delete();
     }
 
     public function classstudent($lecturer_id)
@@ -163,6 +164,27 @@ class ClassStudentController extends Controller
         ->where('tbl_class.class_state', $value)->where('tbl_class.class_faculty', $faculty)
         ->orderby('tbl_faculty.faculty_id','DESC')->paginate($currentEntries);
         return ClassResource::collection($joins);
+    }
+
+    public function change(Request $request, $class)
+    {
+        $cls = ClassStudent::find($class);
+        if($cls->class_status==0){
+            $cls->class_status=1;
+            $cls->save();
+        }else{
+            $cls->class_status=0;
+            $cls->save();
+        }
+    }
+
+    public function destroyall(Request $request, $class = null)
+    {
+        if ($request->class) {
+            foreach ($request->class as $id) {
+                ClassStudent::where('class_id', $id)->delete();
+            }
+        }
     }
 
     public function allclass()

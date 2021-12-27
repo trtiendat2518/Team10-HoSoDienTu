@@ -23,9 +23,9 @@
 					</div>
 
 					<div class="row">
-						<!-- <div class="col-md-1">
+						<div class="col-md-1">
 							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div> -->
+						</div>
 						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
@@ -327,78 +327,78 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// change(class_id) {
-			// 	axios.patch(`../../api/admin/post-news/bai-viet/change/${class_id}`)
-			// 	.then(res => {
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 		this.fetchClasses();
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// destroy(class_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/post-news/bai-viet/${class_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchClasses();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/post-news/bai-viet/destroyall', { post: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchClasses();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.posts){
-			// 			this.selected.push(this.posts[i].class_id);
-			// 		}
-			// 	}
-			// },
+			change(class_id) {
+				axios.patch(`../../api/admin/class-sv/lop/change/${class_id}`)
+				.then(res => {
+					this.$snotify.warning('Đã thay đổi trạng thái');
+					this.fetchClasses();
+				})
+				.catch(err => console.log(err));
+			},
+			destroy(class_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/class-sv/lop/${class_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchClasses();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa', 
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/class-sv/lop/destroyall', { class: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchClasses();
+							})
+							.catch(err => console.log(err));
+						}, 
+						bold: false
+					},{
+						text: 'Đóng', 
+						action: toast => { 
+							this.$snotify.remove(toast.id); 
+						}, 
+						bold: true
+					}]
+				});
+			},
+			select() {
+				this.selected = [];
+				if(!this.selectAll){
+					for(let i in this.classes){
+						this.selected.push(this.classes[i].class_id);
+					}
+				}
+			},
 			reload(){
 				this.fetchClasses();
 				this.query='';
