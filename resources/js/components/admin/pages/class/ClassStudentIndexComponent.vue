@@ -109,6 +109,51 @@
 				</div>
 			</div><!-- col end -->
 		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="ClassModal" tabindex="-1" role="dialog" aria-labelledby="ClassModalTitle" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<form @submit.prevent="editMode?update():store()" @keydown="form.onKeydown($event)">
+					<span class="alert-danger" :form="form"></span>
+					<div class="modal-content">
+						<div class="modal-header styling-modal-header-update">
+							<h5 class="modal-title" id="ClassModalTitle">{{ editMode ? "Cập nhật" : "Thêm mới" }} Lớp học</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<label>Tên lớp <span class="text-danger">(*)</span></label>
+							<input v-model="form.class_name" type="text" name="class_name" class="form-control" placeholder="Nhập tên lớp học" :class="[{'is-invalid': form.errors.has('class_name')}]">
+							<div class="text-danger" v-if="form.errors.has('class_name')" v-html="form.errors.get('class_name')"></div>
+
+							<label class="mt-3">Khóa học <span class="text-danger">(*)</span></label>
+							<select v-model="form.class_course" name="class_course" class="form-control select-option" :class="{'is-invalid': form.errors.has('class_course')}">
+								<option value="" selected disabled>Chọn khóa học</option>
+								<option disabled>---------------</option>
+								<option v-for="course in courses" :key="course.course_id" :value="course.course_id" :hidden="course.course_status>0">
+									{{ course.course_code }} - {{ course.course_name }}
+								</option>
+							</select>
+							<div class="text-danger" v-if="form.errors.has('class_course')" v-html="form.errors.get('class_course')"></div>
+
+							<label class="mt-3">Chuyên ngành <span class="text-danger">(*)</span></label>
+							<select v-model="form.class_major" name="class_major" class="form-control select-option" :class="{'is-invalid': form.errors.has('class_major')}">
+								<option value="" selected disabled>Chọn chuyên ngành</option>
+								<option disabled>---------------</option>
+								<option v-for="major in majors" :key="major.major_id" :value="major.major_id" :hidden="major.major_faculty!=lecturer_faculty">{{ major.major_name }}</option>
+							</select>
+							<div class="text-danger" v-if="form.errors.has('class_major')" v-html="form.errors.get('class_major')"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn-3d btn btn-secondary" data-dismiss="modal">Đóng</button>
+							<button :disabled="form.busy" type="submit" class="btn-3d btn btn-primary background-update">{{ editMode ? "Cập nhật" : "Thêm mới" }}</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Modal end-->
 	</div>
 </template>
 
@@ -118,6 +163,8 @@
 		data() {
 			return {
 				classes:[],
+				courses:[],
+				majors:[],
 				lecturers:[],
 				lecturer_faculty:'',
 				lecturer_id: this.$facultyId,
@@ -173,12 +220,34 @@
 			},
 		},
 		mounted() {
+			this.fetchCourses();
+			this.fetchMajors();
 			this.fetchClasses();
 			this.fetchLecturers();
 		},
 		methods: {
 			empty() {
 				return (this.classes.length < 1);
+			},
+			fetchCourses(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-course/khoa-hoc/course';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.courses = res.data;
+				})
+				.catch(err => console.log(err));
+			},
+			fetchMajors(page_url) {
+				let vm = this;
+				page_url = '../../api/admin/edu-major/chuyen-nganh/major';
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.majors = res.data;
+				})
+				.catch(err => console.log(err));
 			},
 			fetchLecturers(page_url) {
 				let vm = this;
@@ -217,9 +286,27 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// create(){
-			// 	this.$router.push( {name: 'postcreate'} );
-			// },
+			create(){
+				this.editMode = false;
+				this.form.reset();
+				this.form.clear();
+				$('#ClassModal').modal('show');
+			},
+			store(){
+				this.form.busy = true;
+				this.form.class_faculty = this.lecturer_faculty;
+				this.form.post('../../api/admin/class-sv/lop')
+				.then(res => {
+					this.fetchClasses();
+					$('#ClassModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Thêm mới thành công!');
+					}else{
+						this.$snotify.error('Không thể thêm mới', 'Lỗi');
+					}
+				})
+				.catch(err => console.log(err));
+			},
 			// change(class_id) {
 			// 	axios.patch(`../../api/admin/post-news/bai-viet/change/${class_id}`)
 			// 	.then(res => {
