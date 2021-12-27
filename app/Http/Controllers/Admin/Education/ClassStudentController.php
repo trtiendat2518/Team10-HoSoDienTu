@@ -102,9 +102,26 @@ class ClassStudentController extends Controller
      * @param  \App\Models\Class  $class
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ClassStudent $class)
+    public function update(Request $request, $class)
     {
-        //
+        $data = $request->validate([
+            'class_name' => ['required', 'max:50', 'notspecial_spaces'],
+            'class_course' => ['required'],
+            'class_major' => ['required'],
+        ],[
+            'class_name.required' => 'Tên lớp học không được để trống!',
+            'class_name.max' => 'Tên lớp học không nhập quá 50 ký tự chữ!',
+            'class_name.notspecial_spaces' => 'Tên lớp học không được chứa ký tự đặc biệt!',
+
+            'class_course.required' => 'Khóa học không được để trống!',
+            'class_major.required' => 'Chuyên ngành không được để trống!'
+        ]);
+
+        $cls = ClassStudent::find($class);
+        $cls->class_name = $data['class_name'];
+        $cls->class_course = $data['class_course'];
+        $cls->class_major = $data['class_major'];
+        $cls->save();
     }
 
     /**
