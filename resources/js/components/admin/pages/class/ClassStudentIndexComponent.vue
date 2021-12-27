@@ -88,7 +88,7 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="destroy(clas.class_id)"></button>
+										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(clas)"></button>
 									</td>
 									<td>
 										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(clas.class_id)"></button>
@@ -303,6 +303,26 @@
 						this.$snotify.success('Thêm mới thành công!');
 					}else{
 						this.$snotify.error('Không thể thêm mới', 'Lỗi');
+					}
+				})
+				.catch(err => console.log(err));
+			},
+			show(clas) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				this.form.fill(clas);
+				$('#ClassModal').modal('show');
+			},
+			update() {
+				this.form.put(`../../api/admin/class-sv/lop/${this.form.class_id}`)
+				.then(res => {
+					this.fetchClasses();
+					$('#ClassModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Cập nhật Khoa thành công!');
+					}else{
+						this.$snotify.error('Không thể chỉnh sửa');
 					}
 				})
 				.catch(err => console.log(err));
