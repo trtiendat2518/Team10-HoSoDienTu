@@ -36,6 +36,10 @@ import ProcedureRequire from "./components/admin/pages/procedures/ProcedureRequi
 
 import Calendar from "./components/admin/pages/calendar/CalendarComponent.vue";
 import CalendarIndex from "./components/admin/pages/calendar/CalendarIndexComponent.vue";
+import CalendarReference from "./components/admin/pages/calendar/CalendarReferenceComponent.vue";
+
+import ClassStudent from "./components/admin/pages/class/ClassStudentComponent.vue";
+import ClassStudentIndex from "./components/admin/pages/class/ClassStudentIndexComponent.vue";
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
@@ -305,6 +309,31 @@ export default new VueRouter({
                     path: "",
                     name: "calendarindex",
                     component: CalendarIndex
+                },
+                {
+                    path: "rang-buoc-lich-bieu",
+                    name: "calendarreference",
+                    component: CalendarReference
+                },
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/lop-hoc",
+            name: "classstudent",
+            component: ClassStudent,
+            children: [
+                {
+                    path: "",
+                    name: "classstudentindex",
+                    component: ClassStudentIndex
                 },
             ],
             beforeEnter: (to, from, next) => {

@@ -11,6 +11,7 @@
 		</div>
 		<div class="form-group">
 			<button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()"><li class="fa fa-plus"></li> Tạo mới</button>
+			<router-link class="btn btn-indigo btn-lg mb-3 btn-3d float-right" tag="button" :to="{ name: 'calendarreference' }"><li class="fa fa-info"></li> Sự kiện</router-link>
 		</div>
 		<div class="row">
 			<div class="col-md-12 col-lg-12">
@@ -35,7 +36,7 @@
 					</span>
 
 					<calendar
-					ref="tuiCal" 
+					ref="tuiCal"
 					:taskView="false"
 					:schedules="calendars"
 					:timezones="timezones"
@@ -140,7 +141,7 @@
 									<td>Nội dung: <strong style="word-break:break-word;"> {{ form.body }}</strong></td>
 								</tr>
 								<tr>
-									<td>Loại sự kiện: 
+									<td>Loại sự kiện:
 										<strong v-if="form.calendarId==0"> Đăng ký kế hoạch học tập</strong>
 										<strong v-else-if="form.calendarId==1"> Đăng ký môn học</strong>
 										<strong v-else-if="form.calendarId==2"> Lịch thi học kỳ lần 1</strong>
@@ -150,10 +151,10 @@
 								</tr>
 								<tr>
 									<td class="row">
-										<div class="col-md-6">Thời gian bắt đầu: 
+										<div class="col-md-6">Thời gian bắt đầu:
 											<strong>{{ form.start }}</strong>
 										</div>
-										<div class="col-md-6">Thời gian kết thúc: 
+										<div class="col-md-6">Thời gian kết thúc:
 											<strong>{{ form.end }}</strong>
 										</div>
 									</td>
@@ -475,7 +476,7 @@
 					closeOnClick: false,
 					pauseOnHover: true,
 					buttons: [{
-						text: 'Xóa', 
+						text: 'Xóa',
 						action: toast =>{
 							this.$snotify.remove(toast.id);
 							axios.delete(`../../api/admin/calendar-schedule/lich-bieu/${id}`)
@@ -485,13 +486,13 @@
 								this.fetchCalendars();
 							})
 							.catch(err => console.log(err));
-						}, 
+						},
 						bold: false
 					},{
-						text: 'Đóng', 
-						action: toast => { 
-							this.$snotify.remove(toast.id); 
-						}, 
+						text: 'Đóng',
+						action: toast => {
+							this.$snotify.remove(toast.id);
+						},
 						bold: true
 					}]
 				});
