@@ -40,6 +40,7 @@ import CalendarReference from "./components/admin/pages/calendar/CalendarReferen
 
 import ClassStudent from "./components/admin/pages/class/ClassStudentComponent.vue";
 import ClassStudentIndex from "./components/admin/pages/class/ClassStudentIndexComponent.vue";
+import ClassStudentDetail from "./components/admin/pages/class/ClassStudentDetailComponent.vue";
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
@@ -334,6 +335,11 @@ export default new VueRouter({
                     path: "",
                     name: "classstudentindex",
                     component: ClassStudentIndex
+                },
+                {
+                    path: "sinh-vien/:idClass",
+                    name: "classstudentdetail",
+                    component: ClassStudentDetail
                 },
             ],
             beforeEnter: (to, from, next) => {
