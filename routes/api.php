@@ -32,6 +32,9 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('user-sv')->group(function(){
+        Route::post('sinh-vien/import', 'Admin\Users\StudentManageController@import');
+        Route::post('sinh-vien/upgrade/{student}', 'Admin\Users\StudentManageController@upgrade');
+        Route::patch('sinh-vien/patch/{student}', 'Admin\Users\StudentManageController@patch');
         Route::get('sinh-vien/studentinfo/','Admin\Users\StudentManageController@studentinfo');
         Route::get('sinh-vien/detail/{student}','Admin\Users\StudentManageController@detail');
         Route::get('sinh-vien/search/{query}/{currentEntries}','Admin\Users\StudentManageController@search');
@@ -145,5 +148,27 @@ Route::prefix('admin')->group(function(){
         Route::get('chu-nhiem-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}','Admin\Users\FormTeacherController@search');
         Route::get('chu-nhiem-sinh-vien/showdata/{lecturer_id}/{currentEntries}','Admin\Users\FormTeacherController@showdata');
         Route::resource('chu-nhiem-sinh-vien', 'Admin\Users\FormTeacherController');
+    });
+
+    Route::prefix('class-sv')->group(function() {
+        Route::post('lop/destroyall/', 'Admin\Education\ClassStudentController@destroyall');
+        Route::patch('lop/change/{class}', 'Admin\Education\ClassStudentController@change');
+        Route::get('lop/filter/{faculty}/{value}/{currentEntries}','Admin\Education\ClassStudentController@filter');
+        Route::get('lop/search/{faculty}/{query}/{currentEntries}','Admin\Education\ClassStudentController@search');
+        Route::get('lop/class-student/{lecturer_id}','Admin\Education\ClassStudentController@classstudent');
+        Route::get('lop/all-class','Admin\Education\ClassStudentController@allclass');
+        Route::get('lop/showdata/{lecturer_id}/{currentEntries}','Admin\Education\ClassStudentController@showdata');
+        Route::resource('lop', 'Admin\Education\ClassStudentController');
+    });
+
+    Route::prefix('calendar-schedule')->group(function() {
+        Route::get('lich-bieu/schedule','Admin\Calendar\CalendarController@schedule');
+        Route::resource('lich-bieu','Admin\Calendar\CalendarController');
+    });
+
+    Route::prefix('calendar-exam')->group(function() {
+        Route::get('lich-thi/detail/{calendar_exam_id}','Admin\Calendar\CalendarExamController@detail');
+        Route::get('lich-thi/search/{query}/{currentEntries}','Admin\Calendar\CalendarExamController@search');
+        Route::resource('lich-thi','Admin\Calendar\CalendarExamController');
     });
 });
