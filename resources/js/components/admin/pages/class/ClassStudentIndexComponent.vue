@@ -48,7 +48,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="table-responsive">
 						<table class="table card-table table-vcenter text-nowrap table-nowrap">
 							<thead  class="blue-background text-white">
@@ -66,13 +66,13 @@
 							</thead>
 							<tbody>
 								<tr v-show="classes.length" v-for="clas in classes" :key="clas.class_id">
-									<td>
-										<center><input type="checkbox" :value="clas.class_id" v-model="selected"></center>
+									<td class="text-center">
+										<input type="checkbox" :value="clas.class_id" v-model="selected">
 									</td>
-									<td @click="detail(clas)">
-										<a href="javascript:void(0)">
-											{{ clas.course_code }}-{{ clas.class_name }}
-										</a>
+									<td>
+                                        <router-link tag="a" :to="{ name: 'classstudentdetail', params: {idClass: clas.class_id} }">
+                                            {{ clas.course_code }}-{{ clas.class_name }}
+                                        </router-link>
 									</td>
 									<td>{{ clas.major_name }}</td>
 									<td>
@@ -343,7 +343,7 @@
 					closeOnClick: false,
 					pauseOnHover: true,
 					buttons: [{
-						text: 'Xóa', 
+						text: 'Xóa',
 						action: toast =>{
 							this.$snotify.remove(toast.id);
 							axios.delete(`../../api/admin/class-sv/lop/${class_id}`)
@@ -352,13 +352,13 @@
 								this.fetchClasses();
 							})
 							.catch(err => console.log(err));
-						}, 
+						},
 						bold: false
 					},{
-						text: 'Đóng', 
-						action: toast => { 
-							this.$snotify.remove(toast.id); 
-						}, 
+						text: 'Đóng',
+						action: toast => {
+							this.$snotify.remove(toast.id);
+						},
 						bold: true
 					}]
 				});
@@ -371,7 +371,7 @@
 					closeOnClick: false,
 					pauseOnHover: true,
 					buttons: [{
-						text: 'Xóa', 
+						text: 'Xóa',
 						action: toast =>{
 							this.$snotify.remove(toast.id);
 							axios.post('../../api/admin/class-sv/lop/destroyall', { class: this.selected })
@@ -380,13 +380,13 @@
 								this.fetchClasses();
 							})
 							.catch(err => console.log(err));
-						}, 
+						},
 						bold: false
 					},{
-						text: 'Đóng', 
-						action: toast => { 
-							this.$snotify.remove(toast.id); 
-						}, 
+						text: 'Đóng',
+						action: toast => {
+							this.$snotify.remove(toast.id);
+						},
 						bold: true
 					}]
 				});
@@ -428,7 +428,7 @@
 	}
 	.btn-eye-slash {
 		font-size: 18px;
-		cursor: pointer; 
+		cursor: pointer;
 		background: none;
 		border: none;
 		color: #868e96de;

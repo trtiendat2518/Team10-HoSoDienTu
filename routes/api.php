@@ -23,7 +23,7 @@ Route::prefix('admin')->group(function(){
         Route::post('giang-vien/role/{lecturer}', 'Admin\Users\LecturerManageController@role');
         Route::get('giang-vien/admin/','Admin\Users\LecturerManageController@admin');
         Route::get('giang-vien/lecturer/','Admin\Users\LecturerManageController@lecturer');
-        Route::get('giang-vien/detail/{lecturer}','Admin\Users\LecturerManageController@detail');   
+        Route::get('giang-vien/detail/{lecturer}','Admin\Users\LecturerManageController@detail');
         Route::get('giang-vien/search/{query}/{currentEntries}','Admin\Users\LecturerManageController@search');
         Route::get('giang-vien/filter/{value}/{currentEntries}','Admin\Users\LecturerManageController@filter');
         Route::patch('giang-vien/change/{lecturer}', 'Admin\Users\LecturerManageController@change');
@@ -151,6 +151,9 @@ Route::prefix('admin')->group(function(){
     });
 
     Route::prefix('class-sv')->group(function() {
+        Route::get('lop/teacher-student-class/{class}','Admin\Education\ClassStudentController@teacher_student_class');
+        Route::get('lop/search-student-class/{class}/{query}','Admin\Education\ClassStudentController@search_student_class');
+        Route::get('lop/student-class/{class}','Admin\Education\ClassStudentController@student_class');
         Route::post('lop/destroyall/', 'Admin\Education\ClassStudentController@destroyall');
         Route::patch('lop/change/{class}', 'Admin\Education\ClassStudentController@change');
         Route::get('lop/filter/{faculty}/{value}/{currentEntries}','Admin\Education\ClassStudentController@filter');
