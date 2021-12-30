@@ -176,6 +176,8 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('edu-program-sv')->group(function () {
+        Route::get('chuong-trinh-dao-tao-sinh-vien/select/{faculty}', 'Admin\Education\EducationProgramStudentController@select');
+        Route::get('chuong-trinh-dao-tao-sinh-vien/filter/{value}', 'Admin\Education\EducationProgramStudentController@filter');
         Route::resource('chuong-trinh-dao-tao-sinh-vien', 'Admin\Education\EducationProgramStudentController');
     });
 });

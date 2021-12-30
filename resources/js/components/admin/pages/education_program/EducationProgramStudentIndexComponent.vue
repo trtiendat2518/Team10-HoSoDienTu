@@ -24,8 +24,18 @@
                             <h3 class="card-title">Chương trình đào tạo</h3>
                         </div>
                         <div class="col-md-6">
-                            <select>
-                                <option value=""> </option>
+                            <select class="form-control" v-model="value">
+                                <option value="" disabled selected>
+                                    Xem CTĐT của khóa học khác
+                                </option>
+                                <option
+                                    v-for="course in courses"
+                                    :key="course.course_id"
+                                    :value="course.course_id"
+                                >
+                                    {{ course.course_code }} -
+                                    {{ course.course_name }}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -167,7 +177,7 @@
                                     </td>
                                 </tr>
                                 <tr v-show="!programs.length">
-                                    <td colspan="8">
+                                    <td colspan="13">
                                         <div class="alert alert-danger">
                                             Không tìm thấy kết quả phù hợp!
                                         </div>
@@ -188,16 +198,31 @@
 export default {
     data() {
         return {
+            value: "",
             programs: [],
             majors: [],
+            courses: [],
+            course_id: "",
+            faculty_id: "",
             lecturer_id: this.$teacherId
         };
     },
     mounted() {
         this.fetchPrograms();
         this.fetchMajors();
+        this.fetchCourse();
     },
-    watch: {},
+    watch: {
+        value(course) {
+            if (course != this.course_id) {
+                this.value = course;
+                this.filter();
+            } else {
+                this.value = course;
+                this.fetchPrograms();
+            }
+        }
+    },
     methods: {
         fetchPrograms(teacher, page_url) {
             teacher = this.lecturer_id;
@@ -207,11 +232,18 @@ export default {
                 .then(res => res.json())
                 .then(res => {
                     this.programs = res.data;
-                    //let a = res.data.find(e => e.subject_type == 0);
-                    let rqr = res.data.map(dt => {
-                        res.data.find(e => e.subject_type == 0);
-                    });
-                    console.log(rqr);
+                    this.course_id = this.programs[0].course_id;
+                    this.faculty_id = this.programs[0].faculty_id;
+                })
+                .catch(err => console.log(err));
+        },
+        fetchCourse(page_url) {
+            let vm = this;
+            page_url = `../../api/admin/edu-course/khoa-hoc/course`;
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.courses = res.data;
                 })
                 .catch(err => console.log(err));
         },
@@ -234,6 +266,16 @@ export default {
             } else {
                 return "";
             }
+        },
+        filter(page_url) {
+            let vm = this;
+            page_url = `../../api/admin/edu-program-sv/chuong-trinh-dao-tao-sinh-vien/filter/${this.value}`;
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.programs = res.data;
+                })
+                .catch(err => console.log(err));
         }
     }
 };

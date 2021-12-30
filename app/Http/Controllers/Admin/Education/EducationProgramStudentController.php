@@ -74,4 +74,17 @@ class EducationProgramStudentController extends Controller
     {
         //
     }
+
+    public function filter($value)
+    {
+        $joins = EducationProgram::join('tbl_program_type', 'tbl_program_type.program_type_id', '=', 'tbl_education_program.education_program_type')
+            ->join('tbl_program_detail', 'tbl_program_detail.program_detail_code', '=', 'tbl_education_program.education_program_code')
+            ->join('tbl_subject', 'tbl_subject.subject_code', '=', 'tbl_program_detail.program_detail_subject')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_education_program.education_program_course')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_education_program.education_program_faculty')
+            ->where('tbl_course.course_id', $value)
+            ->orderBy('tbl_program_detail.program_detail_semester', 'ASC')
+            ->get();
+        return EducationProgramResource::collection($joins);
+    }
 }
