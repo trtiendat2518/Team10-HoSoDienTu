@@ -53,6 +53,7 @@
  	@if ($check->lecturer_role==1)
  	<slidebar-lecturer-component></slidebar-lecturer-component>
  	@elseif ($check->lecturer_role==2)
+    <slidebar-teacher-component></slidebar-teacher-component>
  	@endif
  	@endforeach
  	@endif

@@ -275,8 +275,8 @@
 					this.programs = res.data;
 
 					this.educa.education_program_code = this.programs[0].education_program_code;
-					this.educa.education_program_type = this.programs[0].education_program_type;
-					this.educa.education_program_course = this.programs[0].education_program_course;
+					this.educa.education_program_type = this.programs[0].program_type_code;
+					this.educa.education_program_course = this.programs[0].course_code;
 					this.educa.education_program_year = this.programs[0].education_program_year;
 					this.educa.education_program_credit = this.programs[0].education_program_credit;
 					this.educa.education_program_faculty = this.programs[0].education_program_faculty;

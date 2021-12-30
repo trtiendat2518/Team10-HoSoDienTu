@@ -42,14 +42,23 @@ import ClassStudent from "./components/admin/pages/class/ClassStudentComponent.v
 import ClassStudentIndex from "./components/admin/pages/class/ClassStudentIndexComponent.vue";
 import ClassStudentDetail from "./components/admin/pages/class/ClassStudentDetailComponent.vue";
 
+import EducationProgramStudent from "./components/admin/pages/education_program/EducationProgramStudentComponent.vue";
+import EducationProgramStudentIndex from "./components/admin/pages/education_program/EducationProgramStudentIndexComponent.vue";
+
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
 if (document.querySelector("meta[name='admin-fullname']")) {
-    Vue.prototype.$adminId = document.querySelector("meta[name='admin-fullname']").getAttribute('content');
+    Vue.prototype.$adminId = document
+        .querySelector("meta[name='admin-fullname']")
+        .getAttribute("content");
 } else if (document.querySelector("meta[name='deanfaculty-id']")) {
-    Vue.prototype.$facultyId = document.querySelector("meta[name='deanfaculty-id']").getAttribute('content');
+    Vue.prototype.$facultyId = document
+        .querySelector("meta[name='deanfaculty-id']")
+        .getAttribute("content");
 } else if (document.querySelector("meta[name='formteacher-id']")) {
-    Vue.prototype.$teacherId = document.querySelector("meta[name='formteacher-id']").getAttribute('content');
+    Vue.prototype.$teacherId = document
+        .querySelector("meta[name='formteacher-id']")
+        .getAttribute("content");
 }
 
 export default new VueRouter({
@@ -315,7 +324,7 @@ export default new VueRouter({
                     path: "rang-buoc-lich-bieu",
                     name: "calendarreference",
                     component: CalendarReference
-                },
+                }
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$facultyId != null) {
@@ -340,10 +349,30 @@ export default new VueRouter({
                     path: "sinh-vien/:idClass",
                     name: "classstudentdetail",
                     component: ClassStudentDetail
-                },
+                }
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$facultyId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/chuong-trinh-dao-tao-sinh-vien",
+            name: "educationprogramstudent",
+            component: EducationProgramStudent,
+            children: [
+                {
+                    path: "",
+                    name: "educationprogramstudentindex",
+                    component: EducationProgramStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$teacherId != null) {
                     next();
                 } else {
                     next(false);
