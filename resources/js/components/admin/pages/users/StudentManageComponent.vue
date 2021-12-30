@@ -401,7 +401,7 @@
 								<tr>
 									<td>Lớp học: 
 										<strong v-if="info.student_class==null"> -</strong>
-										<strong v-else>{{ info.student_class }}</strong>
+										<strong v-else> {{ info.course_code }}-{{ info.class_name }}</strong>
 									</td>
 								</tr>
 								<tr>

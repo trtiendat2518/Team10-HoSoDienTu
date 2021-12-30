@@ -309,6 +309,7 @@ class StudentManageController extends Controller
         $joins = Student::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_student.student_course')
         ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_student.student_faculty')
         ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_student.student_major')
+        ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
         ->where('tbl_student.student_id', $student)->get();
         return StudentResource::collection($joins);
     }
