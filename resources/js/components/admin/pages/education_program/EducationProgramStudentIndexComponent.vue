@@ -50,14 +50,14 @@
                                         STT
                                     </th>
                                     <th
-                                        class="text-center w-10"
+                                        class="text-center w-15"
                                         scope="col"
                                         rowspan="2"
                                     >
                                         Mã môn học
                                     </th>
                                     <th
-                                        class="text-center w-15"
+                                        class="text-center w-30"
                                         scope="col"
                                         rowspan="2"
                                     >
@@ -68,7 +68,7 @@
                                         scope="col"
                                         rowspan="2"
                                     >
-                                        Số tín chỉ
+                                        Số TC
                                     </th>
                                     <th
                                         class="text-center"
@@ -78,13 +78,6 @@
                                         Số tiết (giờ)
                                     </th>
                                     <th
-                                        class="text-center"
-                                        scope="col"
-                                        colspan="3"
-                                    >
-                                        Trọng số (%)
-                                    </th>
-                                    <th
                                         class="text-center w-5"
                                         scope="col"
                                         rowspan="2"
@@ -92,21 +85,14 @@
                                         Bắt buộc
                                     </th>
                                     <th
-                                        class="text-center w-10"
+                                        class="text-center w-15"
                                         scope="col"
                                         rowspan="2"
                                     >
                                         Khoa/Bộ môn
                                     </th>
                                     <th
-                                        class="text-center w-5"
-                                        scope="col"
-                                        rowspan="2"
-                                    >
-                                        Học kỳ
-                                    </th>
-                                    <th
-                                        class="text-center w-10"
+                                        class="text-center w-15"
                                         scope="col"
                                         rowspan="2"
                                     >
@@ -115,82 +101,173 @@
                                 </tr>
                                 <tr>
                                     <th class="text-center w-5" scope="col">
-                                        Lý thuyết
+                                        LT
                                     </th>
                                     <th class="text-center w-5" scope="col">
-                                        Thực hành
-                                    </th>
-                                    <th class="text-center w-5" scope="col">
-                                        Bài tập
-                                    </th>
-                                    <th class="text-center w-5" scope="col">
-                                        Kiểm tra
-                                    </th>
-                                    <th class="text-center w-5" scope="col">
-                                        Cuối kỳ
+                                        TH
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody v-for="i in semesters" :key="i">
+                                <tr>
+                                    <td colspan="13">
+                                        <b> Học kỳ {{ i }} </b>
+                                    </td>
+                                </tr>
                                 <tr
-                                    v-show="programs.length"
-                                    v-for="(edu, index) in programs"
-                                    :key="edu.subject_id"
+                                    v-for="(value, index) in value_programs[i]"
+                                    :key="value.subject_id"
                                 >
-                                    <td class="td-table">{{ (index += 1) }}</td>
-                                    <td class="text-center td-table">
-                                        {{ edu.subject_code }}
+                                    <td class="td-table">
+                                        {{ (index += 1) }}
                                     </td>
                                     <td class="text-center td-table">
-                                        {{ edu.subject_name }}
+                                        <a
+                                            href="javscript:void(0)"
+                                            @click="detail(value.subject_id)"
+                                        >
+                                            {{ value.subject_code }}
+                                        </a>
+                                    </td>
+                                    <td class="td-table">
+                                        {{ value.subject_name }}
                                     </td>
                                     <td class="text-center td-table">
-                                        {{ edu.subject_credit }}
+                                        {{ value.subject_credit }}
                                     </td>
                                     <td class="text-center td-table">
-                                        {{ edu.subject_theory_period }}
+                                        {{ value.subject_theory_period }}
                                     </td>
                                     <td class="text-center td-table">
-                                        {{ edu.subject_practice_period }}
+                                        {{ value.subject_practice_period }}
                                     </td>
                                     <td class="text-center td-table">
-                                        {{ edu.subject_score_exercise }}
-                                    </td>
-                                    <td class="text-center td-table">
-                                        {{ edu.subject_score_exam }}
-                                    </td>
-                                    <td class="text-center td-table">
-                                        {{ edu.subject_score_final }}
-                                    </td>
-                                    <td class="text-center td-table">
-                                        <p v-if="edu.subject_type == 0">x</p>
+                                        <p v-if="value.subject_type == 0">
+                                            x
+                                        </p>
                                         <p v-else></p>
                                     </td>
                                     <td class="text-center td-table">
-                                        {{ edu.faculty_name }}
+                                        {{ value.faculty_name }}
                                     </td>
                                     <td class="text-center td-table">
-                                        {{ edu.program_detail_semester }}
-                                    </td>
-                                    <td class="text-center td-table">
-                                        {{ nameMajor(edu) }}
+                                        {{ nameMajor(value) }}
                                     </td>
                                 </tr>
-                                <tr v-show="!programs.length">
+                                <!-- <tr>
+                                    <td colspan="3" class="text-right">
+                                        <b>Tổng học phần Bắt buộc:</b>
+                                    </td>
+                                    <td class="text-center">
+                                        {{ sum_credit(i) }}
+                                    </td>
+                                    <td colspan="9"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-right">
+                                        <b>Tổng học phần Tự chọn:</b>
+                                    </td>
+                                    <td class="text-center">
+                                        a
+                                    </td>
+                                    <td colspan="9"></td>
+                                </tr> -->
+                            </tbody>
+                            <tfoot>
+                                <tr v-show="!semesters.length">
                                     <td colspan="13">
                                         <div class="alert alert-danger">
                                             Không tìm thấy kết quả phù hợp!
                                         </div>
                                     </td>
                                 </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div
+            class="modal fade bd-example-modal-lg"
+            id="DetailModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="DetailModalTitle"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header styling-modal-header-info">
+                        <h5
+                            class="modal-title styling-font-modal-header"
+                            id="DetailModalTitle"
+                        >
+                            Chi tiết môn học
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table
+                            class="table card-table table-vcenter text-nowrap table-nowrap"
+                            v-for="detail in details"
+                            :key="detail.subject_id"
+                        >
+                            <thead class="detail-background text-white">
+                                <tr>
+                                    <th class="text-center">Tên thành phần</th>
+                                    <th class="text-center">Trọng số</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">
+                                        Điểm bài tập
+                                    </td>
+                                    <td class="text-center">
+                                        {{ detail.subject_score_exercise }}%
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        Điểm kiểm tra
+                                    </td>
+                                    <td class="text-center">
+                                        {{ detail.subject_score_exam }}%
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        Điểm thi
+                                    </td>
+                                    <td class="text-center">
+                                        {{ detail.subject_score_final }}%
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                    <!-- table-responsive -->
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary btn-3d"
+                            data-dismiss="modal"
+                        >
+                            Đóng
+                        </button>
+                    </div>
                 </div>
             </div>
-            <!-- col end -->
         </div>
+        <!-- Modal end-->
     </div>
 </template>
 
@@ -202,8 +279,13 @@ export default {
             programs: [],
             majors: [],
             courses: [],
+            semesters: [],
+            value_programs: [],
+            details: [],
             course_id: "",
             faculty_id: "",
+            current_semester: "",
+            render_data: {},
             lecturer_id: this.$teacherId
         };
     },
@@ -223,7 +305,34 @@ export default {
             }
         }
     },
+    // computed: {
+    //     sum_credit() {
+    //         let key = Object.keys(this.value_programs);
+    //         console.log(this.value_programs[1]);
+    //         for (let index = 1; index < key.length + 1; index++) {
+    //             this.value_programs[index].forEach(e => {
+    //                 if (e.subject_type == 0) {
+    //                     let sum = 0;
+    //                     return (sum += e.subject_credit);
+    //                     console.log(sum);
+    //                 }
+    //             });
+    //         }
+    //     }
+    // },
     methods: {
+        // sum_credit(i) {
+        //     let sum = 0;
+        //     this.value_programs[i].forEach(e => {
+        //         if (e.subject_type == 0) {
+        //             console.log(sum);
+        //             return (sum += e.subject_credit);
+        //             console.log(sum);
+        //         } else {
+        //             return sum;
+        //         }
+        //     });
+        // },
         fetchPrograms(teacher, page_url) {
             teacher = this.lecturer_id;
             let vm = this;
@@ -232,8 +341,28 @@ export default {
                 .then(res => res.json())
                 .then(res => {
                     this.programs = res.data;
-                    this.course_id = this.programs[0].course_id;
-                    this.faculty_id = this.programs[0].faculty_id;
+                    if (res.data.length > 0) {
+                        this.course_id = this.programs[0].course_id;
+                        this.faculty_id = this.programs[0].faculty_id;
+
+                        const semesters = this.programs.reduce(
+                            (semesters, item) => {
+                                const semester =
+                                    semesters[item.program_detail_semester] ||
+                                    [];
+                                semester.push(item);
+                                semesters[
+                                    item.program_detail_semester
+                                ] = semester;
+                                return semesters;
+                            },
+                            {}
+                        );
+
+                        let key = Object.keys(semesters);
+                        this.value_programs = semesters;
+                        this.semesters = key;
+                    }
                 })
                 .catch(err => console.log(err));
         },
@@ -257,10 +386,10 @@ export default {
                 })
                 .catch(err => console.log(err));
         },
-        nameMajor(edu) {
-            if (edu.program_detail_note != null) {
+        nameMajor(value) {
+            if (value.program_detail_note != null) {
                 const major = this.majors.find(
-                    mjr => mjr.major_code === edu.program_detail_note
+                    mjr => mjr.major_code === value.program_detail_note
                 );
                 return major.major_name;
             } else {
@@ -274,6 +403,32 @@ export default {
                 .then(res => res.json())
                 .then(res => {
                     this.programs = res.data;
+
+                    const semesters = this.programs.reduce(
+                        (semesters, item) => {
+                            const semester =
+                                semesters[item.program_detail_semester] || [];
+                            semester.push(item);
+                            semesters[item.program_detail_semester] = semester;
+                            return semesters;
+                        },
+                        {}
+                    );
+                    let key = Object.keys(semesters);
+                    //const value = Object.values(semesters);
+                    this.value_programs = semesters;
+                    this.semesters = key;
+                })
+                .catch(err => console.log(err));
+        },
+        detail(subject_id, page_url) {
+            let vm = this;
+            page_url = `../../api/admin/manage/mon-hoc/detail/${subject_id}`;
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.details = res.data;
+                    $("#DetailModal").modal("show");
                 })
                 .catch(err => console.log(err));
         }
@@ -281,4 +436,50 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.td-styling {
+    text-align: center;
+}
+.not-allowed {
+    cursor: not-allowed;
+}
+.select-option {
+    cursor: pointer;
+}
+.h3-strong {
+    color: #1753fc;
+}
+.styling-modal-header-info {
+    background-color: darkblue;
+    color: white;
+}
+.styling-font-modal-header {
+    font-size: 20px;
+    font-weight: bold;
+}
+.styling-modal-header-update {
+    background-color: darkblue;
+    color: white;
+}
+.td-borderight {
+    border-right: 2px solid black;
+}
+.td-borderbottom {
+    border-bottom: 2px solid black;
+}
+.background-update {
+    background-color: darkblue;
+    border-color: darkblue;
+}
+.styling-strong {
+    word-wrap: break-word;
+    white-space: pre-line;
+}
+.btn-3d {
+    border-bottom: 3px solid #6c757d;
+    border-right: 3px solid #6c757d;
+}
+.detail-background {
+    background-color: #2e384d;
+}
+</style>
