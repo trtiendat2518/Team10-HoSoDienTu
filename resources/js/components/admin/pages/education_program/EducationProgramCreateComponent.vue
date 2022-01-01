@@ -73,7 +73,7 @@
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-								<label class="form-label">Trạng thái <span class="text-danger">(*)</span></label> 
+								<label class="form-label">Trạng thái <span class="text-danger">(*)</span></label>
 								<select class="form-control" name="education_program_status" v-model="form.education_program_status" :class="{'is-invalid': form.errors.has('education_program_status')}">
 									<option value="" disabled selected="">
 										Chọn Trạng thái
@@ -86,7 +86,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="form-group">
 						<label class="form-label">Tệp Excel <span class="text-danger">(*)</span></label>
 						<input type="file" class="form-control" id="file_data" name="file_data" ref="fileupload" @change="onFileChange">
@@ -116,7 +116,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(data, index) in displayData" :key="data.ma_mon_hoc">
+								<tr v-for="(data, index) in displayData" :key="data.program_detail_subject">
 									<td hidden>{{ getCode(data) }}</td>
 									<td class="text-center" scope="row">
 										{{ index += 1 }}
@@ -292,7 +292,7 @@
 			},
 			getCode(data) {
 				this.subjects.forEach((sbj) => {
-					if (sbj.subject_code === data.ma_mon_hoc) {
+					if (sbj.subject_code === data.program_detail_subject) {
 						this.subject_code = sbj.subject_code;
 						this.subject_name = sbj.subject_name;
 						this.subject_credit = sbj.subject_credit;
@@ -332,17 +332,17 @@
 							closeOnClick: false,
 							pauseOnHover: true,
 							buttons: [{
-								text: 'Có', 
+								text: 'Có',
 								action: toast =>{
 									this.$snotify.remove(toast.id);
 									this.$router.push( { name: 'educationprogramindex' } );
-								}, 
+								},
 								bold: false
 							},{
-								text: 'Không', 
-								action: toast => { 
-									this.$snotify.remove(toast.id); 
-								}, 
+								text: 'Không',
+								action: toast => {
+									this.$snotify.remove(toast.id);
+								},
 								bold: true
 							}]
 						});
@@ -361,6 +361,9 @@
 						const  stringSplit = stringError.split(".");
 						this.error = stringSplit[1];
 					}
+                    this.form.file_data ='';
+                    this.$refs.fileupload.value='';
+					this.form.file_data='';
 					this.$snotify.error(this.error);
 				});
 			},

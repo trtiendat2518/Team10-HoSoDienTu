@@ -110,7 +110,7 @@
                             </thead>
                             <tbody v-for="i in semesters" :key="i">
                                 <tr>
-                                    <td colspan="13">
+                                    <td colspan="9">
                                         <b> Học kỳ {{ i }} </b>
                                     </td>
                                 </tr>
@@ -154,12 +154,15 @@
                                         {{ nameMajor(value) }}
                                     </td>
                                 </tr>
-                                <!-- <tr>
-                                    <td colspan="3" class="text-right">
-                                        <b>Tổng học phần Bắt buộc:</b>
+                                <tr>
+                                    <td
+                                        colspan="3"
+                                        class="text-right text-require"
+                                    >
+                                        Tổng học phần Bắt buộc:
                                     </td>
-                                    <td class="text-center">
-                                        {{ sum_credit(i) }}
+                                    <td class="text-center text-require">
+                                        {{ sum_credit_require(i) }}
                                     </td>
                                     <td colspan="9"></td>
                                 </tr>
@@ -168,14 +171,14 @@
                                         <b>Tổng học phần Tự chọn:</b>
                                     </td>
                                     <td class="text-center">
-                                        a
+                                        <b>{{ sum_credit_option(i) }}</b>
                                     </td>
                                     <td colspan="9"></td>
-                                </tr> -->
+                                </tr>
                             </tbody>
                             <tfoot>
                                 <tr v-show="!semesters.length">
-                                    <td colspan="13">
+                                    <td colspan="9">
                                         <div class="alert alert-danger">
                                             Không tìm thấy kết quả phù hợp!
                                         </div>
@@ -305,34 +308,7 @@ export default {
             }
         }
     },
-    // computed: {
-    //     sum_credit() {
-    //         let key = Object.keys(this.value_programs);
-    //         console.log(this.value_programs[1]);
-    //         for (let index = 1; index < key.length + 1; index++) {
-    //             this.value_programs[index].forEach(e => {
-    //                 if (e.subject_type == 0) {
-    //                     let sum = 0;
-    //                     return (sum += e.subject_credit);
-    //                     console.log(sum);
-    //                 }
-    //             });
-    //         }
-    //     }
-    // },
     methods: {
-        // sum_credit(i) {
-        //     let sum = 0;
-        //     this.value_programs[i].forEach(e => {
-        //         if (e.subject_type == 0) {
-        //             console.log(sum);
-        //             return (sum += e.subject_credit);
-        //             console.log(sum);
-        //         } else {
-        //             return sum;
-        //         }
-        //     });
-        // },
         fetchPrograms(teacher, page_url) {
             teacher = this.lecturer_id;
             let vm = this;
@@ -431,6 +407,24 @@ export default {
                     $("#DetailModal").modal("show");
                 })
                 .catch(err => console.log(err));
+        },
+        sum_credit_require(i) {
+            let sum = 0;
+            for (let j = 0; j < this.value_programs[i].length; j++) {
+                if (this.value_programs[i][j].subject_type == 0) {
+                    sum += parseFloat(this.value_programs[i][j].subject_credit);
+                }
+            }
+            return sum;
+        },
+        sum_credit_option(i) {
+            let sum = 0;
+            for (let j = 0; j < this.value_programs[i].length; j++) {
+                if (this.value_programs[i][j].subject_type > 0) {
+                    sum += parseFloat(this.value_programs[i][j].subject_credit);
+                }
+            }
+            return sum;
         }
     }
 };
@@ -481,5 +475,9 @@ export default {
 }
 .detail-background {
     background-color: #2e384d;
+}
+.text-require {
+    color: red;
+    font-weight: bold;
 }
 </style>
