@@ -106,6 +106,8 @@
 									<th class="text-center w-5" scope="col" rowspan="2">Bắt buộc</th>
 									<th class="text-center w-20" scope="col" rowspan="2">Khoa/Bộ môn</th>
 									<th class="text-center w-15" scope="col" rowspan="2">Ghi chú</th>
+									<th class="text-center w-15" scope="col" rowspan="2">Lịch học</th>
+									<th class="text-center w-15" scope="col" rowspan="2">Giảng viên</th>
 								</tr>
 								<tr>
 									<th class="text-center w-5" scope="col">Lý thuyết</th>
@@ -147,6 +149,8 @@
 									<td class="text-center">
 										{{ majorSubject(data) }}
 									</td>
+									<td class="text-center">{{ data.lich_hoc }}</td>
+									<td class="text-center">{{ data.ten_giang_vien }}</td>
 								</tr>
 							</tbody>
 						</table>

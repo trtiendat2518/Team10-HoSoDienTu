@@ -146,6 +146,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('class-sv')->group(function () {
+        Route::get('lop/class-formteacher/{lecturer_id}', 'Admin\Education\ClassStudentController@formteacher_class');
         Route::get('lop/teacher-student-class/{class}', 'Admin\Education\ClassStudentController@teacher_student_class');
         Route::get('lop/search-student-class/{class}/{query}', 'Admin\Education\ClassStudentController@search_student_class');
         Route::get('lop/student-class/{class}', 'Admin\Education\ClassStudentController@student_class');

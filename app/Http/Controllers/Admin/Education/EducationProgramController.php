@@ -278,14 +278,31 @@ class EducationProgramController extends Controller
     {
         $data = $request->validate([
             'subject_semester' => ['required', 'max:10'],
+            'program_detail_lecturer' => 'required|max:100',
+            'program_detail_calendar' => 'required|max:255',
+            'program_detail_start' => 'required',
+            'program_detail_end' => 'required',
         ], [
             'subject_semester.required' => 'Học kỳ không dược để trống!',
             'subject_semester.max' => 'Học kỳ không nhập quá 10 ký tự!',
+
+            'program_detail_lecturer.required' => 'Tên giảng viên không dược để trống!',
+            'program_detail_lecturer.max' => 'Tên giảng viên không nhập quá 100 ký tự!',
+
+            'program_detail_calendar.required' => 'Lịch học không dược để trống!',
+            'program_detail_calendar.max' => 'Lịch học không nhập quá 255 ký tự!',
+
+            'program_detail_start.required' => 'Ngày bắt đầu không dược để trống!',
+            'program_detail_end.required' => 'Ngày kết thúc không dược để trống!',
         ]);
 
         $program = ProgramDetail::find($program_detail_id);
         $program->program_detail_semester = $data['subject_semester'];
         $program->program_detail_note = $request->subject_major;
+        $program->program_detail_calendar = $data['program_detail_calendar'];
+        $program->program_detail_lecturer = $data['program_detail_lecturer'];
+        $program->program_detail_start = $data['program_detail_start'];
+        $program->program_detail_end = $data['program_detail_end'];
         $program->save();
     }
 

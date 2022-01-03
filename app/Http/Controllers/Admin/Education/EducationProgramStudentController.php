@@ -36,7 +36,7 @@ class EducationProgramStudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($form_teacher_id)
+    public function show($class_id)
     {
         $joins = EducationProgram::join('tbl_program_type', 'tbl_program_type.program_type_id', '=', 'tbl_education_program.education_program_type')
             ->join('tbl_program_detail', 'tbl_program_detail.program_detail_code', '=', 'tbl_education_program.education_program_code')
@@ -44,9 +44,7 @@ class EducationProgramStudentController extends Controller
             ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_education_program.education_program_course')
             ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_education_program.education_program_faculty')
             ->join('tbl_class', 'tbl_class.class_course', '=', 'tbl_education_program.education_program_course')
-            ->join('tbl_form_teacher', 'tbl_form_teacher.form_teacher_class', '=', 'tbl_class.class_id')
-            ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_form_teacher.form_teacher_lecturer')
-            ->where('tbl_lecturer.lecturer_id', $form_teacher_id)
+            ->where('tbl_class.class_id', $class_id)
             ->orderBy('tbl_program_detail.program_detail_semester', 'ASC')
             ->get();
         return EducationProgramResource::collection($joins);

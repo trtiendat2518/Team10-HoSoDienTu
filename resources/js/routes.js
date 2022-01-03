@@ -42,8 +42,9 @@ import ClassStudent from "./components/admin/pages/class/ClassStudentComponent.v
 import ClassStudentIndex from "./components/admin/pages/class/ClassStudentIndexComponent.vue";
 import ClassStudentDetail from "./components/admin/pages/class/ClassStudentDetailComponent.vue";
 
-import EducationProgramStudent from "./components/admin/pages/education_program/EducationProgramStudentComponent.vue";
-import EducationProgramStudentIndex from "./components/admin/pages/education_program/EducationProgramStudentIndexComponent.vue";
+import EducationProgramStudent from "./components/admin/pages/education_program_student/EducationProgramStudentComponent.vue";
+import EducationProgramStudentIndex from "./components/admin/pages/education_program_student/EducationProgramStudentIndexComponent.vue";
+import EducationProgramStudentDetail from "./components/admin/pages/education_program_student/EducationProgramStudentDetailComponent.vue";
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
@@ -369,6 +370,11 @@ export default new VueRouter({
                     path: "",
                     name: "educationprogramstudentindex",
                     component: EducationProgramStudentIndex
+                },
+                {
+                    path: "/:idEPStudent",
+                    name: "educationprogramstudentdetail",
+                    component: EducationProgramStudentDetail
                 }
             ],
             beforeEnter: (to, from, next) => {

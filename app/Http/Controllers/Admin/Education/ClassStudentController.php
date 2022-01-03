@@ -216,4 +216,15 @@ class ClassStudentController extends Controller
             ->orderby('tbl_student.student_fullname', 'ASC')->get();
         return ClassResource::collection($joins);
     }
+
+    public function formteacher_class($lecturer_id)
+    {
+        $find = Lecturer::find($lecturer_id);
+        $joins = ClassStudent::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+            ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)
+            ->where('tbl_class.class_form_teacher', $lecturer_id)->orderBy('class_name', 'ASC')->get();
+        return ClassResource::collection($joins);
+    }
 }
