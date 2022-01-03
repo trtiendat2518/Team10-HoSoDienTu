@@ -20,7 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function () {
     Route::prefix('user-gv')->group(function () {
-        Route::post('giang-vien/role/{lecturer}', 'Admin\Users\LecturerManageController@role');
+        Route::get('giang-vien/search-formteacher/{lecturer_id}/{query}/{currentEntries}', 'Admin\Users\LecturerManageController@search_formteacher');
+        Route::get('giang-vien/show-formteacher/{lecturer_id}/{currentEntries}', 'Admin\Users\LecturerManageController@show_formteacher');
+        Route::get('giang-vien/formteacher/{lecturer_id}', 'Admin\Users\LecturerManageController@formteacher');
+
         Route::get('giang-vien/admin/', 'Admin\Users\LecturerManageController@admin');
         Route::get('giang-vien/lecturer/', 'Admin\Users\LecturerManageController@lecturer');
         Route::get('giang-vien/detail/{lecturer}', 'Admin\Users\LecturerManageController@detail');
@@ -140,14 +143,6 @@ Route::prefix('admin')->group(function () {
         Route::get('yeu-cau-thu-tuc/search/{query}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@search');
         Route::patch('yeu-cau-thu-tuc/change/{procedure_require_id}', 'Admin\Posts\ProcedureRequireController@change');
         Route::resource('yeu-cau-thu-tuc', 'Admin\Posts\ProcedureRequireController');
-    });
-
-    Route::prefix('user-cn')->group(function () {
-        Route::get('chu-nhiem-sinh-vien/detail/{form_teacher_id}', 'Admin\Users\FormTeacherController@detail');
-        // Route::get('chu-nhiem-sinh-vien/filter/{lecturer_id}/{value}/{currentEntries}','Admin\Users\FormTeacherController@filter');
-        Route::get('chu-nhiem-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Users\FormTeacherController@search');
-        Route::get('chu-nhiem-sinh-vien/showdata/{lecturer_id}/{currentEntries}', 'Admin\Users\FormTeacherController@showdata');
-        Route::resource('chu-nhiem-sinh-vien', 'Admin\Users\FormTeacherController');
     });
 
     Route::prefix('class-sv')->group(function () {

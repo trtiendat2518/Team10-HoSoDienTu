@@ -777,11 +777,16 @@
 				this.student_avatar = URL.createObjectURL(file);
 			},
 			openImport() {
-				this.$refs.fileupload.value='';
+				this.$refs.fileimport.value='';
 				$('#ImportModal').modal('show');
 			},
 			onFileChange(e) {
-				this.fileImport = e.target.files[0];
+				if (e.target.files[0].name != 'list_of_student.xlsx') {
+					this.$refs.fileimport.value='';
+					this.$snotify.error('Tên tệp Excel không đúng!');
+				} else {
+					this.fileImport = e.target.files[0]
+				}
 			},
 			reloadFile() {
 				this.$refs.fileimport.value='';

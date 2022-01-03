@@ -274,20 +274,26 @@
 				.catch(err => console.log(err));
 			},
 			onFileChange(e) {
-				this.form.file_data = e.target.files[0];
-				if (this.form.file_data) {
-					let fileReader = new FileReader();
-					fileReader.readAsBinaryString(this.form.file_data);
-					fileReader.onload = (e) => {
-						let data = e.target.result;
-						let workbook = XLSX.read(data, { type: "binary" });
-						workbook.SheetNames.forEach((sheet) => {
-							let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-            				//this.displayData = JSON.stringify(rowObject, undefined, 4);
-            				this.displayData = rowObject;
-            				//console.log(this.displayData);
-            			});
-					};
+				if (e.target.files[0].name != 'education_program.xlsx') {
+					this.$refs.fileupload.value='';
+					this.displayData=[];
+					this.$snotify.error('Tên tệp Excel không đúng!');
+				} else {
+					this.form.file_data = e.target.files[0];
+					if (this.form.file_data) {
+						let fileReader = new FileReader();
+						fileReader.readAsBinaryString(this.form.file_data);
+						fileReader.onload = (e) => {
+							let data = e.target.result;
+							let workbook = XLSX.read(data, { type: "binary" });
+							workbook.SheetNames.forEach((sheet) => {
+								let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+            					//this.displayData = JSON.stringify(rowObject, undefined, 4);
+            					this.displayData = rowObject;
+            					//console.log(this.displayData);
+            				});
+						};
+					}
 				}
 			},
 			getCode(data) {
@@ -361,8 +367,8 @@
 						const  stringSplit = stringError.split(".");
 						this.error = stringSplit[1];
 					}
-                    this.form.file_data ='';
-                    this.$refs.fileupload.value='';
+					this.form.file_data ='';
+					this.$refs.fileupload.value='';
 					this.form.file_data='';
 					this.$snotify.error(this.error);
 				});
