@@ -56,6 +56,11 @@ import InfoLecturerIndex from "./components/admin/pages/info/InfoLecturerIndexCo
 import InfoLecturerUpdate from "./components/admin/pages/info/InfoLecturerUpdateComponent.vue";
 import InfoLecturerCreate from "./components/admin/pages/info/InfoLecturerCreateComponent.vue";
 
+import InfoFormTeacher from "./components/admin/pages/info/InfoFormTeacherComponent.vue";
+import InfoFormTeacherIndex from "./components/admin/pages/info/InfoFormTeacherIndexComponent.vue";
+import InfoFormTeacherUpdate from "./components/admin/pages/info/InfoFormTeacherUpdateComponent.vue";
+import InfoFormTeacherCreate from "./components/admin/pages/info/InfoFormTeacherCreateComponent.vue";
+
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
 if (
@@ -455,10 +460,37 @@ export default new VueRouter({
                 }
             ],
             beforeEnter: (to, from, next) => {
-                if (
-                    Vue.prototype.$facultyId != null ||
-                    Vue.prototype.$teacherId != null
-                ) {
+                if (Vue.prototype.$facultyId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/thong-tin-ca-nhan-cua-chu-nhiem-sinh-vien",
+            name: "infoformteacher",
+            component: InfoFormTeacher,
+            children: [
+                {
+                    path: "",
+                    name: "infoformteacherindex",
+                    component: InfoFormTeacherIndex
+                },
+                {
+                    path: "nhap-thong-tin",
+                    name: "infoformteachercreate",
+                    component: InfoFormTeacherCreate
+                },
+                {
+                    path: "cap-nhat/:idLecturer",
+                    name: "infoformteacherupdate",
+                    component: InfoFormTeacherUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$teacherId != null) {
                     next();
                 } else {
                     next(false);

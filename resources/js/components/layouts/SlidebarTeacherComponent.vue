@@ -8,7 +8,7 @@
                         <router-link
                             tag="a"
                             class="side-menu__item"
-                            to="/thong-tin-ca-nhan-cua-ban-chu-nhiem-khoa"
+                            to="/thong-tin-ca-nhan-cua-chu-nhiem-sinh-vien"
                             active-class="active"
                             exact
                         >
