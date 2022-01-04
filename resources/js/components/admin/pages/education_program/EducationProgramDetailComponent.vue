@@ -162,7 +162,7 @@
 					</div>
 
 					<div class="table-responsive">
-						<table class="table table-striped">
+						<table class="table table-striped table-bordered">
 							<thead class="blue-background text-white">
 								<tr>
 									<th class="w-5" scope="col" rowspan="2">STT</th>
@@ -229,7 +229,7 @@
 							</tbody>
 							<tfoot>
 								<tr v-show="!semesters.length">
-									<td colspan="9">
+									<td colspan="11">
 										<div class="alert alert-danger">
 											Không tìm thấy kết quả phù hợp!
 										</div>
@@ -425,7 +425,7 @@
 					return major.major_name;
 				} else {
 					return '';
-				}    
+				}
 			},
 			detail(subject_id, page_url) {
 				let vm = this;

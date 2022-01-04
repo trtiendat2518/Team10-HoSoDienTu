@@ -37,7 +37,7 @@ class ProgramDetailUpdateImport implements ToModel, WithHeadingRow, WithValidati
     {
         return [
             'program_detail_subject' => [
-                'required', 'notspecial_spaces',
+                'required', 'notspecial_spaces', 'exists:tbl_subject,subject_code',
                 Rule::unique('tbl_program_detail')->where(function ($query) {
                     $query->where('program_detail_code', $this->program_code);
                 })
@@ -57,6 +57,7 @@ class ProgramDetailUpdateImport implements ToModel, WithHeadingRow, WithValidati
             'program_detail_subject.required' => 'Trường thông tin :attribute không được để trống',
             'program_detail_subject.notspecial_spaces' => 'Trường thông tin :attribute không chứa ký tự đặc biệt',
             'program_detail_subject.unique' => 'Trường thông tin :attribute có dữ liệu đã tồn tại',
+            'program_detail_subject.exists' => 'Trường thông tin :attribute có dữ liệu không tồn tại',
 
             'hoc_ky.required' => 'Trường thông tin :attribute không được để trống',
             'hoc_ky.integer' => 'Trường thông tin :attribute phải là ký tự số',
