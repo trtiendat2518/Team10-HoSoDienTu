@@ -20,6 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function () {
     Route::prefix('user-gv')->group(function () {
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_admin_noimg');
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan/{info_id}', 'Admin\Users\LecturerManageController@update_info_admin');
+        Route::post('giang-vien/tao-thong-tin-ca-nhan', 'Admin\Users\LecturerManageController@create_info_admin');
+        Route::get('giang-vien/thong-tin-ca-nhan/{admin_id}', 'Admin\Users\LecturerManageController@info_admin');
+
         Route::get('giang-vien/search-formteacher/{lecturer_id}/{query}/{currentEntries}', 'Admin\Users\LecturerManageController@search_formteacher');
         Route::get('giang-vien/show-formteacher/{lecturer_id}/{currentEntries}', 'Admin\Users\LecturerManageController@show_formteacher');
         Route::get('giang-vien/formteacher/{lecturer_id}', 'Admin\Users\LecturerManageController@formteacher');

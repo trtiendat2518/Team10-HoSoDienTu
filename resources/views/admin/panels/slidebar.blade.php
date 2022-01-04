@@ -35,15 +35,6 @@
  		</div>
  	</div>
 
- 	<div class="tab-menu-heading siderbar-tabs border-0  p-0">
- 		<div class="tabs-menu ">
- 			<!-- Tabs -->
- 			<ul class="nav panel-tabs">
- 				<li class=""><a href="#index1" class="active" data-toggle="tab"><i class="fa fa-home fs-17"></i></a></li>
- 				<li><a href="#index3" data-toggle="tab"><i class="fa fa-user fs-17"></i></a></li>
- 			</ul>
- 		</div>
- 	</div>
  	@if (Session::get('admin_id'))
  	<slidebar-admin-component></slidebar-admin-component>
  	@endif

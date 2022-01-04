@@ -46,11 +46,23 @@ import EducationProgramStudent from "./components/admin/pages/education_program_
 import EducationProgramStudentIndex from "./components/admin/pages/education_program_student/EducationProgramStudentIndexComponent.vue";
 import EducationProgramStudentDetail from "./components/admin/pages/education_program_student/EducationProgramStudentDetailComponent.vue";
 
+import Info from "./components/admin/pages/info/InfoComponent.vue";
+import InfoIndex from "./components/admin/pages/info/InfoIndexComponent.vue";
+import InfoUpdate from "./components/admin/pages/info/InfoUpdateComponent.vue";
+import InfoCreate from "./components/admin/pages/info/InfoCreateComponent.vue";
+
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
-if (document.querySelector("meta[name='admin-fullname']")) {
+if (
+    document.querySelector("meta[name='admin-fullname']") &&
+    document.querySelector("meta[name='admin-id']")
+) {
     Vue.prototype.$adminId = document
         .querySelector("meta[name='admin-fullname']")
+        .getAttribute("content");
+
+    Vue.prototype.$adminCode = document
+        .querySelector("meta[name='admin-id']")
         .getAttribute("content");
 } else if (document.querySelector("meta[name='deanfaculty-id']")) {
     Vue.prototype.$facultyId = document
@@ -372,13 +384,43 @@ export default new VueRouter({
                     component: EducationProgramStudentIndex
                 },
                 {
-                    path: "/:idEPStudent",
+                    path: ":idEPStudent",
                     name: "educationprogramstudentdetail",
                     component: EducationProgramStudentDetail
                 }
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$teacherId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/thong-tin-ca-nhan",
+            name: "info",
+            component: Info,
+            children: [
+                {
+                    path: "",
+                    name: "infoindex",
+                    component: InfoIndex
+                },
+                {
+                    path: "nhap-thong-tin",
+                    name: "infocreate",
+                    component: InfoCreate
+                },
+                {
+                    path: "cap-nhat/:idAdmin",
+                    name: "infoupdate",
+                    component: InfoUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminId != null) {
                     next();
                 } else {
                     next(false);

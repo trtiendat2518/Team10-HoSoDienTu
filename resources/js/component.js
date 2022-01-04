@@ -30,12 +30,6 @@ Vue.component(
     require("./components/pagination/PaginationComponent.vue").default
 );
 
-//Information
-Vue.component(
-    "update-info-component",
-    require("./components/admin/pages/info/UpdateInfoComponent.vue").default
-);
-
 //Users
 Vue.component(
     "lecturer-manage-component",

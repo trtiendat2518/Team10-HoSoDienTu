@@ -1,5 +1,24 @@
 <template>
     <div>
+        <div class="tab-menu-heading siderbar-tabs border-0  p-0">
+            <div class="tabs-menu ">
+                <!-- Tabs -->
+                <ul class="nav panel-tabs">
+                    <li class="slide">
+                        <router-link
+                            tag="a"
+                            class="side-menu__item"
+                            to="/thong-tin-ca-nhan"
+                            active-class="active"
+                            exact
+                        >
+                            <i class="fa fa-user fs-17 styling"></i>
+                        </router-link>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <div
             class="panel-body tabs-menu-body side-tab-body p-0 border-0"
             id="style-1"
