@@ -31,10 +31,11 @@
 						</div>
 						<div class="col-md-3">
 							<select class="form-control mt-2" v-model="value_state">
-								<option value="" disabled selected>Lọc theo tình trạng</option>
+								<option value="" disabled selected>Lọc theo khóa học</option>
 								<option disabled>----------------------------------------</option>
-								<option value="0">Chưa có chủ nhiệm</option>
-								<option value="1">Đã có chủ nhiệm</option>
+								<option v-for="course in courses" :key="course.course_id" :value="course.course_id">
+									{{ course.course_code }} - {{ course.course_name }}
+								</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -58,7 +59,7 @@
 									</th>
 									<th class="text-white w-25">Tên lớp học</th>
 									<th class="text-white w-30">Chuyên ngành</th>
-									<th class="text-white w-30">Tình trạng</th>
+									<th class="text-white w-30">Chủ nhiệm</th>
 									<th class="text-white w-5">Trạng thái</th>
 									<th class="w-5"></th>
 									<th class="w-5"></th>
@@ -76,8 +77,8 @@
 									</td>
 									<td>{{ clas.major_name }}</td>
 									<td>
-										<div v-if="clas.class_state==0">Chưa có chủ nhiệm</div>
-										<div v-else-if="clas.class_state==1">Đã có chủ nhiệm</div>
+										<div v-if="clas.class_form_teacher==0">Chưa có chủ nhiệm</div>
+										<div v-else>Đã có chủ nhiệm</div>
 									</td>
 									<td class="td-styling">
 										<div v-if="clas.class_status==0">
@@ -144,6 +145,14 @@
 								<option v-for="major in majors" :key="major.major_id" :value="major.major_id" :hidden="major.major_faculty!=lecturer_faculty">{{ major.major_name }}</option>
 							</select>
 							<div class="text-danger" v-if="form.errors.has('class_major')" v-html="form.errors.get('class_major')"></div>
+
+							<label class="mt-3">Chủ nhiệm sinh viên <span class="text-danger">(*)</span></label>
+							<select v-model="form.class_form_teacher" name="class_form_teacher" class="form-control select-option" :class="{'is-invalid': form.errors.has('class_form_teacher')}">
+								<option value="0" selected disabled>Chọn chủ nhiệm lớp</option>
+								<option disabled>---------------</option>
+								<option v-for="lecturer in formteachers" :key="lecturer.lecturer_id" :value="lecturer.lecturer_id" :hidden="lecturer.lecturer_role!=2">{{ lecturer.lecturer_fullname }}</option>
+							</select>
+							<div class="text-danger" v-if="form.errors.has('class_form_teacher')" v-html="form.errors.get('class_form_teacher')"></div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn-3d btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -166,6 +175,7 @@
 				courses:[],
 				majors:[],
 				lecturers:[],
+				formteachers:[],
 				lecturer_faculty:'',
 				lecturer_id: this.$facultyId,
 				pagination:{
@@ -182,7 +192,7 @@
 					class_faculty:'',
 					class_major:'',
 					class_status:'',
-					class_state:'',
+					class_form_teacher:'',
 				}),
 				selected: [],
 				selectAll: false,
@@ -224,6 +234,7 @@
 			this.fetchMajors();
 			this.fetchClasses();
 			this.fetchLecturers();
+			this.fetchFormTeachers();
 		},
 		methods: {
 			empty() {
@@ -261,6 +272,16 @@
 							this.lecturer_faculty = el.lecturer_faculty;
 						}
 					});
+				})
+				.catch(err => console.log(err));
+			},
+			fetchFormTeachers(page_url) {
+				let vm = this;
+				page_url = `../../api/admin/user-gv/giang-vien/formteacher/${this.lecturer_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.formteachers = res.data;
 				})
 				.catch(err => console.log(err));
 			},

@@ -76,11 +76,11 @@ class ClassStudentController extends Controller
     {
         $find = Lecturer::find($lecturer_id);
         $joins = ClassStudent::join('tbl_lecturer', 'tbl_lecturer.lecturer_faculty', '=', 'tbl_class.class_faculty')
-        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
-        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
-        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
-        ->where('tbl_lecturer.lecturer_id', $lecturer_id)
-        ->orderby('tbl_class.class_id', 'DESC')->paginate($currentEntries);
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
+            ->where('tbl_lecturer.lecturer_id', $lecturer_id)
+            ->orderby('tbl_class.class_id', 'DESC')->paginate($currentEntries);
         return ClassResource::collection($joins);
     }
 
@@ -108,19 +108,22 @@ class ClassStudentController extends Controller
             'class_name' => ['required', 'max:50', 'notspecial_spaces'],
             'class_course' => ['required'],
             'class_major' => ['required'],
+            'class_form_teacher' => ['required']
         ], [
             'class_name.required' => 'Tên lớp học không được để trống!',
             'class_name.max' => 'Tên lớp học không nhập quá 50 ký tự chữ!',
             'class_name.notspecial_spaces' => 'Tên lớp học không được chứa ký tự đặc biệt!',
 
             'class_course.required' => 'Khóa học không được để trống!',
-            'class_major.required' => 'Chuyên ngành không được để trống!'
+            'class_major.required' => 'Chuyên ngành không được để trống!',
+            'class_form_teacher.required' => 'Cần chọn chủ nhiệm cho lớp học!'
         ]);
 
         $cls = ClassStudent::find($class);
         $cls->class_name = $data['class_name'];
         $cls->class_course = $data['class_course'];
         $cls->class_major = $data['class_major'];
+        $cls->class_form_teacher = $data['class_form_teacher'];
         $cls->save();
     }
 
@@ -140,29 +143,29 @@ class ClassStudentController extends Controller
     {
         $find = Lecturer::find($lecturer_id);
         $joins = ClassStudent::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
-        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
-        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
-        ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)->orderBy('class_name', 'ASC')->get();
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+            ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)->orderBy('class_name', 'ASC')->get();
         return ClassResource::collection($joins);
     }
 
     public function search($faculty, $query, $currentEntries)
     {
         $joins = ClassStudent::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
-        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
-        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
-        ->where('tbl_class.class_name', 'LIKE', '%' . $query . '%')->where('tbl_class.class_faculty', $faculty)
-        ->orderby('tbl_faculty.faculty_id', 'DESC')->paginate($currentEntries);
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+            ->where('tbl_class.class_name', 'LIKE', '%' . $query . '%')->where('tbl_class.class_faculty', $faculty)
+            ->orderby('tbl_faculty.faculty_id', 'DESC')->paginate($currentEntries);
         return ClassResource::collection($joins);
     }
 
     public function filter($faculty, $value, $currentEntries)
     {
         $joins = ClassStudent::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
-        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
-        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
-        ->where('tbl_class.class_state', $value)->where('tbl_class.class_faculty', $faculty)
-        ->orderby('tbl_faculty.faculty_id', 'DESC')->paginate($currentEntries);
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+            ->where('tbl_class.class_course', '=', $value)->where('tbl_class.class_faculty', $faculty)
+            ->orderby('tbl_faculty.faculty_id', 'DESC')->paginate($currentEntries);
         return ClassResource::collection($joins);
     }
 
@@ -195,29 +198,33 @@ class ClassStudentController extends Controller
     public function student_class($class)
     {
         $joins = ClassStudent::join('tbl_student', 'tbl_student.student_class', '=', 'tbl_class.class_id')
-        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
-        ->where('tbl_class.class_id', $class)
-        ->orderby('tbl_student.student_fullname', 'ASC')->get();
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+            ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_class.class_form_teacher')
+            ->where('tbl_class.class_id', $class)
+            ->orderby('tbl_student.student_fullname', 'ASC')->get();
         return ClassResource::collection($joins);
     }
 
     public function search_student_class($class, $query)
     {
         $joins = ClassStudent::join('tbl_student', 'tbl_student.student_class', '=', 'tbl_class.class_id')
-        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
-        ->where('tbl_student.student_fullname', 'LIKE', '%' . $query . '%')
-        ->where('tbl_class.class_id', $class)
-        ->orwhere('tbl_student.student_code', 'LIKE', '%' . $query . '%')
-        ->where('tbl_class.class_id', $class)
-        ->orderby('tbl_student.student_fullname', 'ASC')->get();
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+            ->where('tbl_student.student_fullname', 'LIKE', '%' . $query . '%')
+            ->where('tbl_class.class_id', $class)
+            ->orwhere('tbl_student.student_code', 'LIKE', '%' . $query . '%')
+            ->where('tbl_class.class_id', $class)
+            ->orderby('tbl_student.student_fullname', 'ASC')->get();
         return ClassResource::collection($joins);
     }
 
-    public function teacher_student_class($class)
+    public function formteacher_class($lecturer_id)
     {
-        $joins = ClassStudent::join('tbl_form_teacher', 'tbl_form_teacher.form_teacher_class', '=', 'tbl_class.class_id')
-        ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_form_teacher.form_teacher_lecturer')
-        ->where('tbl_class.class_id', $class)->get();
+        $find = Lecturer::find($lecturer_id);
+        $joins = ClassStudent::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_class.class_faculty')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_class.class_major')
+            ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)
+            ->where('tbl_class.class_form_teacher', $lecturer_id)->orderBy('class_name', 'ASC')->get();
         return ClassResource::collection($joins);
     }
 }

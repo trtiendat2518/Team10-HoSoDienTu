@@ -357,7 +357,7 @@
 				$('#LecturerModal').modal('show');
 			},
 			update() {
-				this.form.post(`../../api/admin/user-gv/giang-vien/role/${this.form.lecturer_id}`)
+				this.form.put(`../../api/admin/user-gv/giang-vien/${this.form.lecturer_id}`)
 				.then(res => {
 					this.fetchLecturers();
 					$('#LecturerModal').modal('hide');
