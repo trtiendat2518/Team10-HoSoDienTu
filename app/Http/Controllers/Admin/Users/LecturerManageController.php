@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Lecturer;
 use App\Models\LecturerInfo;
-use App\Models\FormTeacher;
 use Validator;
 use Session;
 
@@ -72,7 +71,15 @@ class LecturerManageController extends Controller
      */
     public function update(Request $request, $lecturer)
     {
-        //
+        $lec = Lecturer::find($lecturer);
+        if ($request->lecturer_role === 1) {
+            $lec->lecturer_level = $request->lecturer_level;
+            $lec->lecturer_role = $request->lecturer_role;
+            $lec->save();
+        } else {
+            $lec->lecturer_role = $request->lecturer_role;
+            $lec->save();
+        }
     }
 
     /**
@@ -111,20 +118,11 @@ class LecturerManageController extends Controller
     public function change(Request $request, $lecturer)
     {
         $lec = Lecturer::find($lecturer);
-        $formteacher = FormTeacher::where('form_teacher_lecturer', $lec->lecturer_id)->get();
         if($lec->lecturer_status==0){
             $lec->lecturer_status=1;
-            foreach ($formteacher as $key => $value) {
-                $value->form_teacher_status = 1;
-                $value->save();
-            }
             $lec->save();
         }else{
             $lec->lecturer_status=0;
-            foreach ($formteacher as $key => $value) {
-                $value->form_teacher_status = 0;
-                $value->save();
-            }
             $lec->save();
         }
     }
@@ -145,27 +143,37 @@ class LecturerManageController extends Controller
         return AdminResource::collection(Admin::orderby('admin_fullname','ASC')->get());
     }
 
-    public function role(Request $request, $lecturer)
+    public function formteacher($lecturer_id)
     {
-        $lec = Lecturer::find($lecturer);
-        
-        if ($request->lecturer_role == 0) {
-            $lec->lecturer_role = $request->lecturer_role;
-            $lec->lecturer_level = 0;
-        } else if ($request->lecturer_role == 1) {
-            $lec->lecturer_role = $request->lecturer_role;
-            $lec->lecturer_level = $request->lecturer_level;
-        } else if ($request->lecturer_role == 2) {
-            $lec->lecturer_role = $request->lecturer_role;
-            $lec->lecturer_level = 0;
-            $find = FormTeacher::where('form_teacher_lecturer', $lec->lecturer_id)->first();
-            if ($find === null) {
-                $new = new FormTeacher();
-                $new->form_teacher_lecturer = $lecturer;
-                $new->form_teacher_status = $lec->lecturer_status;
-                $new->save();
-            }
-        }
-        $lec->save();
+        $find = Lecturer::find($lecturer_id);
+        $joins = Lecturer::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
+        ->where('tbl_lecturer.lecturer_role', 2)
+        ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)
+        ->orderby('tbl_lecturer.lecturer_id', 'DESC')->get();
+        return LecturerManageResource::collection($joins);
+    }
+
+    public function show_formteacher($lecturer_id, $currentEntries)
+    {
+        $find = Lecturer::find($lecturer_id);
+        $joins = Lecturer::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
+        ->where('tbl_lecturer.lecturer_role', 2)
+        ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)
+        ->orderby('tbl_lecturer.lecturer_id', 'DESC')->paginate($currentEntries);
+        return LecturerManageResource::collection($joins);
+    }
+
+    public function search_formteacher($lecturer_id, $query, $currentEntries)
+    {
+        $find = Lecturer::find($lecturer_id);
+        $joins = Lecturer::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_lecturer.lecturer_faculty')
+        ->where('tbl_lecturer.lecturer_fullname','LIKE','%'.$query.'%')
+        ->where('tbl_lecturer.lecturer_role', 2)
+        ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)
+        ->orwhere('tbl_lecturer.lecturer_email','LIKE','%'.$query.'%')
+        ->where('tbl_lecturer.lecturer_role', 2)
+        ->where('tbl_faculty.faculty_id', $find->lecturer_faculty)
+        ->orderby('tbl_lecturer.lecturer_id', 'DESC')->paginate($currentEntries);
+        return LecturerManageResource::collection($joins);
     }
 }

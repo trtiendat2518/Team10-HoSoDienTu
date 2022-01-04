@@ -43,7 +43,7 @@ class PostController extends Controller
             'post_title' => ['required', 'max:200', 'min:10', 'unique:tbl_post'],
             'post_content' => ['required', 'min:20'],
             'post_status' => ['required'],
-        ],[
+        ], [
             'post_title.required' => 'Tiêu đề bài viết không được để trống!',
             'post_title.max' => 'Tiêu đề bài viết không nhập quá 200 ký tự!',
             'post_title.min' => 'Tiêu đề bài viết phải có 10 ký tự trở lên!',
@@ -73,7 +73,7 @@ class PostController extends Controller
      */
     public function show($currentEntries)
     {
-        return PostNewsResource::collection(Post::orderby('post_date','DESC')->paginate($currentEntries));
+        return PostNewsResource::collection(Post::orderby('post_date', 'DESC')->paginate($currentEntries));
     }
 
     /**
@@ -97,12 +97,13 @@ class PostController extends Controller
     public function update(Request $request, $post)
     {
         $data = $request->validate([
-            'post_title' => ['required', 'max:200', 'min:10'],
+            'post_title' => ['required', 'max:200', 'min:10', "unique:tbl_post,post_title,$post,post_id"],
             'post_content' => ['required', 'min:20'],
-        ],[
+        ], [
             'post_title.required' => 'Tiêu đề bài viết không được để trống!',
             'post_title.max' => 'Tiêu đề bài viết không nhập quá 200 ký tự!',
             'post_title.min' => 'Tiêu đề bài viết phải có 10 ký tự trở lên!',
+            'post_title.unique' => 'Tiêu đề bài viết đã tồn tại!',
 
             'post_content.required' => 'Nội dung bài viết không được để trống!',
             'post_content.min' => 'Nội dung bài viết phải có 20 ký tự trở lên!',
@@ -132,23 +133,23 @@ class PostController extends Controller
     public function change(Request $request, $post)
     {
         $pst = Post::find($post);
-        if($pst->post_status==0){
-            $pst->post_status=1;
+        if ($pst->post_status == 0) {
+            $pst->post_status = 1;
             $pst->save();
-        }else{
-            $pst->post_status=0;
+        } else {
+            $pst->post_status = 0;
             $pst->save();
         }
     }
 
     public function search($query, $currentEntries)
     {
-        return PostNewsResource::collection(Post::where('post_title','LIKE','%'.$query.'%')->orderby('post_id','DESC')->paginate($currentEntries));
+        return PostNewsResource::collection(Post::where('post_title', 'LIKE', '%' . $query . '%')->orderby('post_id', 'DESC')->paginate($currentEntries));
     }
 
     public function filter($admin, $currentEntries)
     {
-        return PostNewsResource::collection(Post::where('post_author','LIKE','%'.$admin.'%')->orderby('post_author','ASC')->paginate($currentEntries));
+        return PostNewsResource::collection(Post::where('post_author', 'LIKE', '%' . $admin . '%')->orderby('post_author', 'ASC')->paginate($currentEntries));
     }
 
     public function destroyall(Request $request, $post = null)
@@ -162,7 +163,7 @@ class PostController extends Controller
 
     public function post(Request $request, $post_id)
     {
-        return PostNewsResource::collection(Post::where('post_id', $post_id)->orderby('post_id','DESC')->get());
+        return PostNewsResource::collection(Post::where('post_id', $post_id)->orderby('post_id', 'DESC')->get());
     }
 
     // public function detail($post)

@@ -36,7 +36,7 @@ class ProcedureController extends Controller
             'procedure_fee' => ['required', 'max:10'],
             'procedure_category' => ['required'],
             'procedure_status' => ['required'],
-        ],[
+        ], [
             'procedure_code.required' => 'Mã thủ tục không được để trống!',
             'procedure_code.max' => 'Mã thủ tục không nhập quá 10 ký tự!',
             'procedure_code.unique' => 'Mã thủ tục đã tồn tại!',
@@ -80,7 +80,7 @@ class ProcedureController extends Controller
      */
     public function show($currentEntries)
     {
-        return ProcedureResource::collection(Procedure::orderby('procedure_id','DESC')->paginate($currentEntries));
+        return ProcedureResource::collection(Procedure::orderby('procedure_id', 'DESC')->paginate($currentEntries));
     }
 
     /**
@@ -93,13 +93,13 @@ class ProcedureController extends Controller
     public function update(Request $request, $procedure_id)
     {
         $data = $request->validate([
-            'procedure_title' => ['required', 'max:200', 'min:10', 'unique:tbl_procedure'],
+            'procedure_title' => ['required', 'max:200', 'min:10', "unique:tbl_procedure,procedure_title,$procedure_id,procedure_id"],
             'procedure_content' => ['required', 'min:20'],
             'procedure_time' => ['required', 'max:10'],
             'procedure_method' => ['required'],
             'procedure_fee' => ['required', 'max:10'],
             'procedure_category' => ['required'],
-        ],[
+        ], [
             'procedure_title.required' => 'Tiêu đề thủ tục không được để trống!',
             'procedure_title.max' => 'Tiêu đề thủ tục không nhập quá 200 ký tự!',
             'procedure_title.min' => 'Tiêu đề thủ tục phải có 10 ký tự trở lên!',
@@ -142,17 +142,17 @@ class ProcedureController extends Controller
 
     public function procedure(Request $request, $procedure_id)
     {
-        return ProcedureResource::collection(Procedure::where('procedure_id', $procedure_id)->orderby('procedure_id','DESC')->get());
+        return ProcedureResource::collection(Procedure::where('procedure_id', $procedure_id)->orderby('procedure_id', 'DESC')->get());
     }
 
     public function change(Request $request, $procedure_id)
     {
         $pst = Procedure::find($procedure_id);
-        if($pst->procedure_status==0){
-            $pst->procedure_status=1;
+        if ($pst->procedure_status == 0) {
+            $pst->procedure_status = 1;
             $pst->save();
-        }else{
-            $pst->procedure_status=0;
+        } else {
+            $pst->procedure_status = 0;
             $pst->save();
         }
     }
@@ -168,16 +168,16 @@ class ProcedureController extends Controller
 
     public function search($query, $currentEntries)
     {
-        return ProcedureResource::collection(Procedure::where('procedure_title','LIKE','%'.$query.'%')->orderby('procedure_id','DESC')->paginate($currentEntries));
+        return ProcedureResource::collection(Procedure::where('procedure_title', 'LIKE', '%' . $query . '%')->orderby('procedure_id', 'DESC')->paginate($currentEntries));
     }
 
     public function filter($value, $currentEntries)
     {
-        return ProcedureResource::collection(Procedure::where('procedure_category','LIKE','%'.$value.'%')->orderby('procedure_id','DESC')->paginate($currentEntries));
+        return ProcedureResource::collection(Procedure::where('procedure_category', 'LIKE', '%' . $value . '%')->orderby('procedure_id', 'DESC')->paginate($currentEntries));
     }
 
     public function procedure_all()
     {
-        return ProcedureResource::collection(Procedure::orderby('procedure_id','DESC')->get());
+        return ProcedureResource::collection(Procedure::orderby('procedure_id', 'DESC')->get());
     }
 }

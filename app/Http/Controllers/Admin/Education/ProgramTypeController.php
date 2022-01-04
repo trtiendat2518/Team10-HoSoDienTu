@@ -41,7 +41,7 @@ class ProgramTypeController extends Controller
             'program_type_code' => ['required', 'max:10', 'min:2', 'unique:tbl_program_type'],
             'program_type_name' => ['required', 'max:100', 'min:10', 'unique:tbl_program_type'],
             'program_type_status' => ['required'],
-        ],[
+        ], [
             'program_type_code.required' => 'Mã hệ thống đào tạo không được để trống!',
             'program_type_code.max' => 'Mã hệ thống đào tạo không nhập quá 10 ký tự!',
             'program_type_code.min' => 'Mã hệ thống đào tạo phải có 2 ký tự trở lên!',
@@ -50,7 +50,7 @@ class ProgramTypeController extends Controller
             'program_type_name.required' => 'Tên hệ thống đào tạo không được để trống!',
             'program_type_name.max' => 'Tên hệ thống đào tạo không nhập quá 100 ký tự!',
             'program_type_name.min' => 'Tên hệ thống đào tạo phải có 10 ký tự trở lên!',
-            'program_type_name.unique' => 'Tên hệ thống đào tạo đã tồn tại!',            
+            'program_type_name.unique' => 'Tên hệ thống đào tạo đã tồn tại!',
 
             'program_type_status.required' => 'Vui lòng chọn trạng thái cho hệ thống đào tạo này!'
         ]);
@@ -70,7 +70,7 @@ class ProgramTypeController extends Controller
      */
     public function show($currentEntries)
     {
-        return ProgramTypeResource::collection(ProgramType::orderby('program_type_id','DESC')->paginate($currentEntries));
+        return ProgramTypeResource::collection(ProgramType::orderby('program_type_id', 'DESC')->paginate($currentEntries));
     }
 
     /**
@@ -95,8 +95,8 @@ class ProgramTypeController extends Controller
     {
         $data = $request->validate([
             'program_type_code' => ['required', 'max:10', 'min:2'],
-            'program_type_name' => ['required', 'max:100', 'min:10'],
-        ],[
+            'program_type_name' => ['required', 'max:100', 'min:10', "unique:tbl_program_type,program_type_name,$programType,program_type_id"],
+        ], [
             'program_type_code.required' => 'Mã hệ thống đào tạo không được để trống!',
             'program_type_code.max' => 'Mã hệ thống đào tạo không nhập quá 10 ký tự!',
             'program_type_code.min' => 'Mã hệ thống đào tạo phải có 2 ký tự trở lên!',
@@ -104,6 +104,7 @@ class ProgramTypeController extends Controller
             'program_type_name.required' => 'Tên hệ thống đào tạo không được để trống!',
             'program_type_name.max' => 'Tên hệ thống đào tạo không nhập quá 100 ký tự!',
             'program_type_name.min' => 'Tên hệ thống đào tạo phải có 10 ký tự trở lên!',
+            'program_type_name.unique' => 'Tên hệ thống đào tạo đã tồn tại!!',
         ]);
 
         $proType = ProgramType::find($programType);
@@ -127,18 +128,18 @@ class ProgramTypeController extends Controller
     public function change(Request $request, $programType)
     {
         $proType = ProgramType::find($programType);
-        if($proType->program_type_status==0){
-            $proType->program_type_status=1;
+        if ($proType->program_type_status == 0) {
+            $proType->program_type_status = 1;
             $proType->save();
-        }else{
-            $proType->program_type_status=0;
+        } else {
+            $proType->program_type_status = 0;
             $proType->save();
         }
     }
 
     public function search($query, $currentEntries)
     {
-        return ProgramTypeResource::collection(ProgramType::where('program_type_name','LIKE','%'.$query.'%')->orderby('program_type_name','ASC')->paginate($currentEntries));
+        return ProgramTypeResource::collection(ProgramType::where('program_type_name', 'LIKE', '%' . $query . '%')->orderby('program_type_name', 'ASC')->paginate($currentEntries));
     }
 
     public function destroyall(Request $request, $programType = null)
@@ -152,6 +153,6 @@ class ProgramTypeController extends Controller
 
     public function program_type(Request $request)
     {
-        return ProgramTypeResource::collection(ProgramType::orderby('program_type_name','ASC')->get());
+        return ProgramTypeResource::collection(ProgramType::orderby('program_type_name', 'ASC')->get());
     }
 }
