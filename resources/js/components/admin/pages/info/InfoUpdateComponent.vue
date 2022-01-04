@@ -436,12 +436,6 @@
                             >
                                 Lưu
                             </button>
-                            <a
-                                href="#"
-                                class="btn btn-secondary btn-block mt-1"
-                            >
-                                Làm mới
-                            </a>
                         </div>
                     </div>
                 </div>

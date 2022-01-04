@@ -8,7 +8,7 @@
                         <router-link
                             tag="a"
                             class="side-menu__item"
-                            to="/thong-tin-ca-nhan"
+                            to="/thong-tin-ca-nhan-cua-ban-chu-nhiem-khoa"
                             active-class="active"
                             exact
                         >
@@ -166,5 +166,11 @@ export default {};
 <style scoped>
 .color-text {
     color: darkblue;
+}
+.styling {
+    color: darkblue;
+}
+.styling:hover {
+    color: black;
 }
 </style>

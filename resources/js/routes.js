@@ -51,6 +51,11 @@ import InfoIndex from "./components/admin/pages/info/InfoIndexComponent.vue";
 import InfoUpdate from "./components/admin/pages/info/InfoUpdateComponent.vue";
 import InfoCreate from "./components/admin/pages/info/InfoCreateComponent.vue";
 
+import InfoLecturer from "./components/admin/pages/info/InfoLecturerComponent.vue";
+import InfoLecturerIndex from "./components/admin/pages/info/InfoLecturerIndexComponent.vue";
+import InfoLecturerUpdate from "./components/admin/pages/info/InfoLecturerUpdateComponent.vue";
+import InfoLecturerCreate from "./components/admin/pages/info/InfoLecturerCreateComponent.vue";
+
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
 if (
@@ -421,6 +426,39 @@ export default new VueRouter({
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$adminId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/thong-tin-ca-nhan-cua-ban-chu-nhiem-khoa",
+            name: "infolecturer",
+            component: InfoLecturer,
+            children: [
+                {
+                    path: "",
+                    name: "infolecturerindex",
+                    component: InfoLecturerIndex
+                },
+                {
+                    path: "nhap-thong-tin",
+                    name: "infolecturercreate",
+                    component: InfoLecturerCreate
+                },
+                {
+                    path: "cap-nhat/:idLecturer",
+                    name: "infolecturerupdate",
+                    component: InfoLecturerUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (
+                    Vue.prototype.$facultyId != null ||
+                    Vue.prototype.$teacherId != null
+                ) {
                     next();
                 } else {
                     next(false);

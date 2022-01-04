@@ -20,6 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function () {
     Route::prefix('user-gv')->group(function () {
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty_noimg');
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty');
+        Route::post('giang-vien/tao-thong-tin-ca-nhan-bcnk', 'Admin\Users\LecturerManageController@create_info_deanfaculty');
+        Route::get('giang-vien/thong-tin-ca-nhan-bcnk/{lecturer_id}', 'Admin\Users\LecturerManageController@info_deanfaculty');
+        Route::get('giang-vien/bcnk/{lecturer_id}', 'Admin\Users\LecturerManageController@deanfaculty');
+
         Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_admin_noimg');
         Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan/{info_id}', 'Admin\Users\LecturerManageController@update_info_admin');
         Route::post('giang-vien/tao-thong-tin-ca-nhan', 'Admin\Users\LecturerManageController@create_info_admin');

@@ -314,7 +314,7 @@ class LecturerManageController extends Controller
         $info->updated_at = now();
 
         $image = $data['admin_avatar'];
-        $name = $request->admin_id_ref . '_avatar_' . time() . '.png';
+        $name = $info->admin_id_ref . '_avatar_' . time() . '.png';
         Storage::disk('publicadmin')->delete($info->admin_avatar);
         Storage::disk('publicadmin')->put($name, File::get($image));
         $info->admin_avatar = $name;
@@ -374,6 +374,211 @@ class LecturerManageController extends Controller
         $info->admin_identify_card = $data['admin_identify_card'];
         $info->admin_birth_place = $data['admin_birth_place'];
         $info->admin_other_email = $data['admin_other_email'];
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $info->updated_at = now();
+
+        $info->save();
+    }
+
+    public function deanfaculty($lecturer_id)
+    {
+        return LecturerManageResource::collection(Lecturer::where('lecturer_id', $lecturer_id)->get());
+    }
+
+    public function info_deanfaculty($lecturer_id)
+    {
+        $joins = Lecturer::join('tbl_lecturer_info', 'tbl_lecturer_info.lecturer_id_ref', '=', 'tbl_lecturer.lecturer_id')
+            ->where('tbl_lecturer.lecturer_id', $lecturer_id)->get();
+        return LecturerManageResource::collection($joins);
+    }
+
+    public function create_info_deanfaculty(Request $request)
+    {
+        $data = $request->validate([
+            'lecturer_avatar' => ['required', 'mimes:jpeg,jpg,png,gif'],
+            'lecturer_birthday' => ['required'],
+            'lecturer_gender' => ['required'],
+            'lecturer_ethnic' => ['max:50'],
+            'lecturer_religion' => ['max:50'],
+            'lecturer_phone' => ['required', 'max:11', 'min:10'],
+            'lecturer_address' => ['required', 'max:255'],
+            'lecturer_country' => ['required', 'max:50'],
+            'lecturer_identify_card' => ['required', 'max:12', 'min:9'],
+            'lecturer_birth_place' => ['required', 'max:100'],
+            'lecturer_other_email' => ['email', 'max:250'],
+        ], [
+            'lecturer_avatar.required' => 'Ảnh đại diện không được để trống!',
+            'lecturer_avatar.mimes' => 'Tệp nhập vào phải có đuôi jpeg,jpg,png,gif!',
+
+            'lecturer_birthday.required' => 'Ngày sinh không được để trống!',
+            'lecturer_gender.required' => 'Giới tính không được để trống!',
+
+            'lecturer_ethnic.max' => 'Dân tộc không nhập quá 50 ký tự!',
+            'lecturer_religion.max' => 'Tôn giáo không nhập quá 50 ký tự!',
+
+            'lecturer_phone.required' => 'Số điện thoại không được để trống!',
+            'lecturer_phone.max' => 'Số điện thoại không nhập quá 11 ký tự số!',
+            'lecturer_phone.min' => 'Số điện thoại cần nhập 10 hoặc 11 số!',
+
+            'lecturer_address.required' => 'Địa chỉ không được để trống!',
+            'lecturer_address.max' => 'Địa chỉ không nhập quá 255 ký tự chữ!',
+
+            'lecturer_country.required' => 'Quốc gia không được để trống!',
+            'lecturer_country.max' => 'Quốc gia không nhập quá 50 ký tự chữ!',
+
+            'lecturer_identify_card.required' => 'CMND/CCCD không được để trống!',
+            'lecturer_identify_card.max' => 'CMND/CCCD không nhập quá 12 ký tự!',
+            'lecturer_identify_card.min' => 'CMND/CCCD phải có 9 ký tự trở lên!',
+
+            'lecturer_birth_place.required' => 'Nơi sinh không được để trống!',
+            'lecturer_birth_place.max' => 'Nơi sinh không nhập quá 100 ký tự chữ!',
+
+            'lecturer_other_email.max' => 'Email không nhập quá 250 ký tự!',
+            'lecturer_other_email.email' => 'Sai định dạng email!',
+        ]);
+
+        $info = new LecturerInfo();
+        $info->lecturer_id_ref = $request->lecturer_id_ref;
+        $info->lecturer_birthday = $data['lecturer_birthday'];
+        $info->lecturer_gender = $data['lecturer_gender'];
+        $info->lecturer_ethnic = $data['lecturer_ethnic'];
+        $info->lecturer_religion = $data['lecturer_religion'];
+        $info->lecturer_phone = $data['lecturer_phone'];
+        $info->lecturer_address = $data['lecturer_address'];
+        $info->lecturer_country = $data['lecturer_country'];
+        $info->lecturer_identify_card = $data['lecturer_identify_card'];
+        $info->lecturer_birth_place = $data['lecturer_birth_place'];
+        $info->lecturer_other_email = $data['lecturer_other_email'];
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $info->created_at = now();
+
+        $image = $data['lecturer_avatar'];
+        $name = $request->lecturer_id_ref . '_avatar.png';
+        Storage::disk('publiclecturer')->put($name, File::get($image));
+        $info->lecturer_avatar = $name;
+
+        $info->save();
+    }
+
+    public function update_info_deanfaculty(Request $request, $info_id)
+    {
+        $data = $request->validate([
+            'lecturer_avatar' => ['mimes:jpeg,jpg,png,gif'],
+            'lecturer_birthday' => ['required'],
+            'lecturer_gender' => ['required'],
+            'lecturer_ethnic' => ['max:50'],
+            'lecturer_religion' => ['max:50'],
+            'lecturer_phone' => ['required', 'max:11', 'min:10'],
+            'lecturer_address' => ['required', 'max:255'],
+            'lecturer_country' => ['required', 'max:50'],
+            'lecturer_identify_card' => ['required', 'max:12', 'min:9'],
+            'lecturer_birth_place' => ['required', 'max:100'],
+            'lecturer_other_email' => ['email', 'max:250'],
+        ], [
+            'lecturer_avatar.mimes' => 'Tệp nhập vào phải có đuôi jpeg,jpg,png,gif!',
+
+            'lecturer_birthday.required' => 'Ngày sinh không được để trống!',
+            'lecturer_gender.required' => 'Giới tính không được để trống!',
+
+            'lecturer_ethnic.max' => 'Dân tộc không nhập quá 50 ký tự!',
+            'lecturer_religion.max' => 'Tôn giáo không nhập quá 50 ký tự!',
+
+            'lecturer_phone.required' => 'Số điện thoại không được để trống!',
+            'lecturer_phone.max' => 'Số điện thoại không nhập quá 11 ký tự số!',
+            'lecturer_phone.min' => 'Số điện thoại cần nhập 10 hoặc 11 số!',
+
+            'lecturer_address.required' => 'Địa chỉ không được để trống!',
+            'lecturer_address.max' => 'Địa chỉ không nhập quá 255 ký tự chữ!',
+
+            'lecturer_country.required' => 'Quốc gia không được để trống!',
+            'lecturer_country.max' => 'Quốc gia không nhập quá 50 ký tự chữ!',
+
+            'lecturer_identify_card.required' => 'CMND/CCCD không được để trống!',
+            'lecturer_identify_card.max' => 'CMND/CCCD không nhập quá 12 ký tự!',
+            'lecturer_identify_card.min' => 'CMND/CCCD phải có 9 ký tự trở lên!',
+
+            'lecturer_birth_place.required' => 'Nơi sinh không được để trống!',
+            'lecturer_birth_place.max' => 'Nơi sinh không nhập quá 100 ký tự chữ!',
+
+            'lecturer_other_email.max' => 'Email không nhập quá 250 ký tự!',
+            'lecturer_other_email.email' => 'Sai định dạng email!',
+        ]);
+
+        $info = LecturerInfo::find($info_id);
+        $info->lecturer_birthday = $data['lecturer_birthday'];
+        $info->lecturer_gender = $data['lecturer_gender'];
+        $info->lecturer_ethnic = $data['lecturer_ethnic'];
+        $info->lecturer_religion = $data['lecturer_religion'];
+        $info->lecturer_phone = $data['lecturer_phone'];
+        $info->lecturer_address = $data['lecturer_address'];
+        $info->lecturer_country = $data['lecturer_country'];
+        $info->lecturer_identify_card = $data['lecturer_identify_card'];
+        $info->lecturer_birth_place = $data['lecturer_birth_place'];
+        $info->lecturer_other_email = $data['lecturer_other_email'];
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $info->updated_at = now();
+
+        $image = $data['lecturer_avatar'];
+        $name = $info->lecturer_id_ref . '_avatar_' . time() . '.png';
+        Storage::disk('publiclecturer')->delete($info->lecturer_avatar);
+        Storage::disk('publiclecturer')->put($name, File::get($image));
+        $info->lecturer_avatar = $name;
+
+        $info->save();
+    }
+
+    public function update_info_deanfaculty_noimg(Request $request, $info_id)
+    {
+        $data = $request->validate([
+            'lecturer_birthday' => ['required'],
+            'lecturer_gender' => ['required'],
+            'lecturer_ethnic' => ['max:50'],
+            'lecturer_religion' => ['max:50'],
+            'lecturer_phone' => ['required', 'max:11', 'min:10'],
+            'lecturer_address' => ['required', 'max:255'],
+            'lecturer_country' => ['required', 'max:50'],
+            'lecturer_identify_card' => ['required', 'max:12', 'min:9'],
+            'lecturer_birth_place' => ['required', 'max:100'],
+            'lecturer_other_email' => ['email', 'max:250'],
+        ], [
+            'lecturer_birthday.required' => 'Ngày sinh không được để trống!',
+            'lecturer_gender.required' => 'Giới tính không được để trống!',
+
+            'lecturer_ethnic.max' => 'Dân tộc không nhập quá 50 ký tự!',
+            'lecturer_religion.max' => 'Tôn giáo không nhập quá 50 ký tự!',
+
+            'lecturer_phone.required' => 'Số điện thoại không được để trống!',
+            'lecturer_phone.max' => 'Số điện thoại không nhập quá 11 ký tự số!',
+            'lecturer_phone.min' => 'Số điện thoại cần nhập 10 hoặc 11 số!',
+
+            'lecturer_address.required' => 'Địa chỉ không được để trống!',
+            'lecturer_address.max' => 'Địa chỉ không nhập quá 255 ký tự chữ!',
+
+            'lecturer_country.required' => 'Quốc gia không được để trống!',
+            'lecturer_country.max' => 'Quốc gia không nhập quá 50 ký tự chữ!',
+
+            'lecturer_identify_card.required' => 'CMND/CCCD không được để trống!',
+            'lecturer_identify_card.max' => 'CMND/CCCD không nhập quá 12 ký tự!',
+            'lecturer_identify_card.min' => 'CMND/CCCD phải có 9 ký tự trở lên!',
+
+            'lecturer_birth_place.required' => 'Nơi sinh không được để trống!',
+            'lecturer_birth_place.max' => 'Nơi sinh không nhập quá 100 ký tự chữ!',
+
+            'lecturer_other_email.max' => 'Email không nhập quá 250 ký tự!',
+            'lecturer_other_email.email' => 'Sai định dạng email!',
+        ]);
+
+        $info = LecturerInfo::find($info_id);
+        $info->lecturer_birthday = $data['lecturer_birthday'];
+        $info->lecturer_gender = $data['lecturer_gender'];
+        $info->lecturer_ethnic = $data['lecturer_ethnic'];
+        $info->lecturer_religion = $data['lecturer_religion'];
+        $info->lecturer_phone = $data['lecturer_phone'];
+        $info->lecturer_address = $data['lecturer_address'];
+        $info->lecturer_country = $data['lecturer_country'];
+        $info->lecturer_identify_card = $data['lecturer_identify_card'];
+        $info->lecturer_birth_place = $data['lecturer_birth_place'];
+        $info->lecturer_other_email = $data['lecturer_other_email'];
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $info->updated_at = now();
 
