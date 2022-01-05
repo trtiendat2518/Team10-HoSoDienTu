@@ -40,15 +40,48 @@ import CalendarReference from "./components/admin/pages/calendar/CalendarReferen
 
 import ClassStudent from "./components/admin/pages/class/ClassStudentComponent.vue";
 import ClassStudentIndex from "./components/admin/pages/class/ClassStudentIndexComponent.vue";
+import ClassStudentDetail from "./components/admin/pages/class/ClassStudentDetailComponent.vue";
+
+import EducationProgramStudent from "./components/admin/pages/education_program_student/EducationProgramStudentComponent.vue";
+import EducationProgramStudentIndex from "./components/admin/pages/education_program_student/EducationProgramStudentIndexComponent.vue";
+import EducationProgramStudentDetail from "./components/admin/pages/education_program_student/EducationProgramStudentDetailComponent.vue";
+
+import Info from "./components/admin/pages/info/InfoComponent.vue";
+import InfoIndex from "./components/admin/pages/info/InfoIndexComponent.vue";
+import InfoUpdate from "./components/admin/pages/info/InfoUpdateComponent.vue";
+import InfoCreate from "./components/admin/pages/info/InfoCreateComponent.vue";
+
+import InfoLecturer from "./components/admin/pages/info/InfoLecturerComponent.vue";
+import InfoLecturerIndex from "./components/admin/pages/info/InfoLecturerIndexComponent.vue";
+import InfoLecturerUpdate from "./components/admin/pages/info/InfoLecturerUpdateComponent.vue";
+import InfoLecturerCreate from "./components/admin/pages/info/InfoLecturerCreateComponent.vue";
+
+import InfoFormTeacher from "./components/admin/pages/info/InfoFormTeacherComponent.vue";
+import InfoFormTeacherIndex from "./components/admin/pages/info/InfoFormTeacherIndexComponent.vue";
+import InfoFormTeacherUpdate from "./components/admin/pages/info/InfoFormTeacherUpdateComponent.vue";
+import InfoFormTeacherCreate from "./components/admin/pages/info/InfoFormTeacherCreateComponent.vue";
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
-if (document.querySelector("meta[name='admin-fullname']")) {
-    Vue.prototype.$adminId = document.querySelector("meta[name='admin-fullname']").getAttribute('content');
+if (
+    document.querySelector("meta[name='admin-fullname']") &&
+    document.querySelector("meta[name='admin-id']")
+) {
+    Vue.prototype.$adminId = document
+        .querySelector("meta[name='admin-fullname']")
+        .getAttribute("content");
+
+    Vue.prototype.$adminCode = document
+        .querySelector("meta[name='admin-id']")
+        .getAttribute("content");
 } else if (document.querySelector("meta[name='deanfaculty-id']")) {
-    Vue.prototype.$facultyId = document.querySelector("meta[name='deanfaculty-id']").getAttribute('content');
+    Vue.prototype.$facultyId = document
+        .querySelector("meta[name='deanfaculty-id']")
+        .getAttribute("content");
 } else if (document.querySelector("meta[name='formteacher-id']")) {
-    Vue.prototype.$teacherId = document.querySelector("meta[name='formteacher-id']").getAttribute('content');
+    Vue.prototype.$teacherId = document
+        .querySelector("meta[name='formteacher-id']")
+        .getAttribute("content");
 }
 
 export default new VueRouter({
@@ -314,7 +347,7 @@ export default new VueRouter({
                     path: "rang-buoc-lich-bieu",
                     name: "calendarreference",
                     component: CalendarReference
-                },
+                }
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$facultyId != null) {
@@ -335,9 +368,129 @@ export default new VueRouter({
                     name: "classstudentindex",
                     component: ClassStudentIndex
                 },
+                {
+                    path: "sinh-vien/:idClass",
+                    name: "classstudentdetail",
+                    component: ClassStudentDetail
+                }
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$facultyId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/chuong-trinh-dao-tao-sinh-vien",
+            name: "educationprogramstudent",
+            component: EducationProgramStudent,
+            children: [
+                {
+                    path: "",
+                    name: "educationprogramstudentindex",
+                    component: EducationProgramStudentIndex
+                },
+                {
+                    path: ":idEPStudent",
+                    name: "educationprogramstudentdetail",
+                    component: EducationProgramStudentDetail
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$teacherId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/thong-tin-ca-nhan",
+            name: "info",
+            component: Info,
+            children: [
+                {
+                    path: "",
+                    name: "infoindex",
+                    component: InfoIndex
+                },
+                {
+                    path: "nhap-thong-tin",
+                    name: "infocreate",
+                    component: InfoCreate
+                },
+                {
+                    path: "cap-nhat/:idAdmin",
+                    name: "infoupdate",
+                    component: InfoUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/thong-tin-ca-nhan-cua-ban-chu-nhiem-khoa",
+            name: "infolecturer",
+            component: InfoLecturer,
+            children: [
+                {
+                    path: "",
+                    name: "infolecturerindex",
+                    component: InfoLecturerIndex
+                },
+                {
+                    path: "nhap-thong-tin",
+                    name: "infolecturercreate",
+                    component: InfoLecturerCreate
+                },
+                {
+                    path: "cap-nhat/:idLecturer",
+                    name: "infolecturerupdate",
+                    component: InfoLecturerUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/thong-tin-ca-nhan-cua-chu-nhiem-sinh-vien",
+            name: "infoformteacher",
+            component: InfoFormTeacher,
+            children: [
+                {
+                    path: "",
+                    name: "infoformteacherindex",
+                    component: InfoFormTeacherIndex
+                },
+                {
+                    path: "nhap-thong-tin",
+                    name: "infoformteachercreate",
+                    component: InfoFormTeacherCreate
+                },
+                {
+                    path: "cap-nhat/:idLecturer",
+                    name: "infoformteacherupdate",
+                    component: InfoFormTeacherUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$teacherId != null) {
                     next();
                 } else {
                     next(false);

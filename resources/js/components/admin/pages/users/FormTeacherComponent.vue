@@ -25,12 +25,6 @@
 						<div class="col-md-10">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
-						<!-- <div class="col-md-3">
-							<select class="form-control mt-2" v-model="value_class">
-								<option value="" disabled selected>Lọc theo chuyên ngành</option>
-								<option :value="">Chưa có lớp</option>
-							</select>
-						</div> -->
 						<div class="col-md-2 float-right">
 							<div class="between:flex bottom:margin-3 ml-2">
 								<div class="center:flex-items">
@@ -49,24 +43,22 @@
 								<tr>
 									<th class="text-white w-40">Họ tên</th>
 									<th class="text-white w-35">Địa chỉ Email</th>
-									<th class="text-white w-20">Đảm nhiệm lớp</th>
-									<th class="w-5"></th>
+									<th class="text-white w-25">Đảm nhiệm lớp học</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-show="formteachers.length" v-for="formteacher in formteachers" :key="formteacher.form_teacher_id">
+								<tr v-show="formteachers.length" v-for="formteacher in formteachers" :key="formteacher.lecturer_id">
 									<td @click="detail(formteacher)"><a href="javascript:void(0)">{{ formteacher.lecturer_fullname }}</a></td>
 									<td>{{ formteacher.lecturer_email }}</td>
 									<td>
-										<div v-if="formteacher.form_teacher_class==null ">
-											Chưa có
+										<div v-if="classCount(formteacher).length == 0">
+											Chưa đảm nhiệm lớp nào
 										</div>
 										<div v-else>
-											{{ nameClass(formteacher) }}
+											<span v-for="cls in classCount(formteacher)" :key="cls.class_id">
+												{{ cls.course_code }}-{{ cls.class_name }};
+											</span>
 										</div>
-									</td>
-									<td style="text-align: center">
-										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(formteacher)"></button>
 									</td>
 								</tr>
 								<tr v-show="!formteachers.length">
@@ -84,40 +76,6 @@
 				</div>
 			</div><!-- col end -->
 		</div>
-
-		<!-- Modal -->
-		<div class="modal fade" id="LecturerModal" tabindex="-1" role="dialog" aria-labelledby="LecturerModalTitle" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<form @submit.prevent="update()" @keydown="form.onKeydown($event)">
-					<div class="modal-content">
-						<div class="modal-header styling-modal-header-update">
-							<h5 class="modal-title" id="LecturerModalTitle">Cập nhật tài khoản</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<label>Họ và tên</label>
-							<input v-model="form.lecturer_fullname" type="text" name="lecturer_fullname" class="form-control not-allowed mb-3" disabled>
-
-							<label>Địa chỉ Email</label>
-							<input v-model="form.lecturer_email" type="text" name="lecturer_email" class="form-control not-allowed" disabled>
-
-							<label class="mt-3">Lớp đảm nhiệm</label>
-							<select v-model="form.form_teacher_class" name="form_teacher_class" class="form-control select-option">
-								<option :value="null" disabled>Chưa có lớp đảm nhiệm</option>
-								<option v-for="classt in classes" :key="classt.class_id" :value="classt.class_id">{{ classt.course_name }} - Lớp {{ classt.class_name }}</option>
-							</select>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
-							<button type="submit" class="btn btn-primary background-update btn-3d">Cập nhật</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-		<!-- Modal end-->
 
 		<!-- Modal -->
 		<div class="modal fade bd-example-modal-lg" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalTitle" aria-hidden="true">
@@ -231,33 +189,20 @@
 			return {
 				classes:[],
 				formteachers:[],
-				lecturers:[],
 				lecturer_id: this.$facultyId,
-				lecturer_faculty:'',
 				pagination:{
 					current_page: 1,
 				},
 				currentEntries: 5,
 				showEntries: [5, 10, 25, 50],
 				query: '',
-				editMode: false,
-				form: new Form({
-					lecturer_fullname:'',
-					lecturer_email: '',
-					form_teacher_id:'',
-					form_teacher_code:'',
-					form_teacher_class:'',
-					form_teacher_status: '',
-				}),
 				selected: [],
 				selectAll: false,
 				details:[],
-				value_class:'',
 			};
 		},
 		mounted() {
 			this.fetchFormTeachers();
-			this.fetchLecturers();
 			this.fetchClasses();
 		},
 		watch: {
@@ -279,14 +224,6 @@
 					this.search();
 				}
 			},
-			value_class(value){
-				if(value === ''){
-					this.fetchFormTeachers();
-				}else{
-					this.pagination.current_page=1;
-					this.filter();
-				}
-			},
 		},
 		methods: {
 			empty() {
@@ -294,27 +231,12 @@
 			},
 			fetchFormTeachers(page_url) {
 				let vm = this;
-				page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/showdata/${this.lecturer_id}/${this.currentEntries}?page=${this.pagination.current_page}`;
+				page_url = `../../api/admin/user-gv/giang-vien/show-formteacher/${this.lecturer_id}/${this.currentEntries}?page=${this.pagination.current_page}`;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
 					this.formteachers = res.data;
 					this.pagination = res.meta;
-				})
-				.catch(err => console.log(err));
-			},
-			fetchLecturers(page_url) {
-				let vm = this;
-				page_url = '../../api/admin/user-gv/giang-vien/lecturer';
-				fetch(page_url)
-				.then(res => res.json())
-				.then(res => {
-					this.lecturers = res.data;
-					this.lecturers.forEach((el) => {
-						if(el.lecturer_id==this.lecturer_id){
-							this.lecturer_faculty= el.lecturer_faculty;
-						}
-					});
 				})
 				.catch(err => console.log(err));
 			},
@@ -330,7 +252,7 @@
 			},
 			search(page_url) {
 				let vm = this;
-				page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/search/${this.lecturer_id}/${this.query}/${this.currentEntries}?page=${this.pagination.current_page}`;
+				page_url = `../../api/admin/user-gv/giang-vien/search-formteacher/${this.lecturer_id}/${this.query}/${this.currentEntries}?page=${this.pagination.current_page}`;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
@@ -339,60 +261,28 @@
 				})
 				.catch(err => console.log(err));
 			},
-			show(formteacher) {
-				this.editMode = true;
-				this.form.reset();
-				this.form.clear();
-				this.form.fill(formteacher);
-				$('#LecturerModal').modal('show');
-			},
-			update() {
-				this.form.put(`../../api/admin/user-cn/chu-nhiem-sinh-vien/${this.form.form_teacher_id}`)
-				.then(res => {
-					this.fetchFormTeachers();
-					$('#LecturerModal').modal('hide');
-					if(this.form.successful){
-						this.$snotify.success('Cập nhật thành công');
-					}else{
-						this.$snotify.error('Không thể chỉnh sửa');
-					}
-				})
-				.catch(err => console.log(err));
-			},
 			detail(formteacher, page_url) {
 				let vm = this;
-				page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/detail/${formteacher.form_teacher_id}`;
+				page_url = `../../api/admin/user-gv/giang-vien/detail/${formteacher.lecturer_id}`;
 				fetch(page_url)
 				.then(res => res.json())
 				.then(res => {
 					this.details = res.data;
 					if (res.data.length===0) {
-						this.$snotify.error('Chủ nhiệm sinh viên này chưa có thông tin!');
+						this.$snotify.error('Giảng viên chưa cập nhật thông tin');
 					}else {
 						$('#DetailModal').modal('show');
 					}
 				})
 				.catch(err => this.$snotify.error('Giảng viên chưa cập nhật thông tin'));
 			},
-			// filter(page_url) {
-			// 	let vm = this;
-			// 	page_url = `../../api/admin/user-cn/chu-nhiem-sinh-vien/filter/${this.lecturer_id}/${this.value_class}/${this.currentEntries}?page=${this.pagination.current_page}`;
-			// 	fetch(page_url)
-			// 	.then(res => res.json())
-			// 	.then(res => {
-			// 		this.formteachers = res.data;
-			// 		this.pagination = res.meta;
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			nameClass(formteacher) {
-				const name = this.classes.find((cls) => cls.class_id === formteacher.form_teacher_class);
-			    return name.course_code + ' - ' + name.class_name;
+			classCount(formteacher) {
+			    const count = this.classes.filter(cls => cls.class_form_teacher==formteacher.lecturer_id);
+			    return count;
 			},
 			reload(){
 				this.fetchFormTeachers();
 				this.query='';
-				this.value_class='';
 			},
 		}
 	};

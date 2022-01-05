@@ -45,7 +45,7 @@ class CourseController extends Controller
             'course_code' => ['required', 'max:3', 'min:2', 'unique:tbl_course', 'notspecial_spaces'],
             'course_name' => ['required', 'max:50', 'min:5', 'unique:tbl_course', 'notspecial_spaces'],
             'course_status' => ['required'],
-        ],[
+        ], [
             'course_code.required' => 'Mã Khóa Học không được để trống!',
             'course_code.max' => 'Mã Khóa Học không nhập quá 3 ký tự chữ!',
             'course_code.min' => 'Mã Khóa Học phải có 2 ký tự chữ trở lên!',
@@ -102,8 +102,14 @@ class CourseController extends Controller
         $crs = Course::find($course);
 
         $data = $request->validate([
-            'course_name' => ['required', 'max:50', 'min:5', 'notspecial_spaces'],
-        ],[
+            'course_name' => [
+                'required',
+                'max:50',
+                'min:5',
+                'notspecial_spaces',
+                "unique:tbl_course,course_name,$course,course_id"
+            ],
+        ], [
             'course_name.required' => 'Tên Khóa Học không được để trống!',
             'course_name.max' => 'Tên Khóa Học không nhập quá 50 ký tự chữ!',
             'course_name.min' => 'Tên Khóa Học phải có 5 ký tự chữ trở lên!',
@@ -129,7 +135,7 @@ class CourseController extends Controller
 
     public function search($query, $currentEntries)
     {
-        return CourseResource::collection(Course::where('course_code','LIKE','%'.$query.'%')->orwhere('course_name','LIKE','%'.$query.'%')->orderby('course_id','DESC')->paginate($currentEntries));
+        return CourseResource::collection(Course::where('course_code', 'LIKE', '%' . $query . '%')->orwhere('course_name', 'LIKE', '%' . $query . '%')->orderby('course_id', 'DESC')->paginate($currentEntries));
     }
 
     public function destroyall(Request $request, $course = null)
@@ -144,11 +150,11 @@ class CourseController extends Controller
     public function change(Request $request, $course)
     {
         $crs = Course::find($course);
-        if($crs->course_status==0){
-            $crs->course_status=1;
+        if ($crs->course_status == 0) {
+            $crs->course_status = 1;
             $crs->save();
-        }else{
-            $crs->course_status=0;
+        } else {
+            $crs->course_status = 0;
             $crs->save();
         }
     }
@@ -160,14 +166,14 @@ class CourseController extends Controller
 
     public function export(Request $request)
     {
-        return Excel::download(new CourseExport , 'list_of_course.xlsx');
+        return Excel::download(new CourseExport, 'list_of_course.xlsx');
     }
 
     public function import(Request $request)
     {
         $request->validate([
             'fileImport' => 'required|file|mimes:xls,xlsx'
-        ],[
+        ], [
             'fileImport.required' => 'Vui lòng không để trống!',
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
@@ -179,6 +185,6 @@ class CourseController extends Controller
 
     public function course()
     {
-        return CourseResource::collection(Course::orderby('course_code','DESC')->get());
+        return CourseResource::collection(Course::orderby('course_code', 'DESC')->get());
     }
 }
