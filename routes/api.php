@@ -188,6 +188,10 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('request-sv')->group(function () {
+        Route::get('yeu-cau-sinh-vien/filter/{lecturer_id}/{value}/{currentEntries}', 'Admin\Posts\RequestStudentController@filter');
+        Route::get('yeu-cau-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Posts\RequestStudentController@search');
+        Route::put('yeu-cau-sinh-vien/reject/{lecturer_id}', 'Admin\Posts\RequestStudentController@reject');
+        Route::patch('yeu-cau-sinh-vien/accept/{lecturer_id}', 'Admin\Posts\RequestStudentController@accept');
         Route::get('yeu-cau-sinh-vien/showdata/{lecturer_id}/{currentEntries}', 'Admin\Posts\RequestStudentController@showdata');
         Route::resource('yeu-cau-sinh-vien', 'Admin\Posts\RequestStudentController');
     });

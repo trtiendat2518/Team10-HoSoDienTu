@@ -60,6 +60,18 @@ class RequestStudentController extends Controller
         return RequestResource::collection($joins);
     }
 
+    public function search($lecturer_id, $query, $currentEntries)
+    {
+        $joins = RequestSudent::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_request.request_student')
+            ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->where('tbl_student.student_fullname', 'LIKE', '%' . $query . '%')
+            ->where('tbl_class.class_form_teacher', $lecturer_id)
+            ->orwhere('tbl_student.student_code', 'LIKE', '%' . $query . '%')
+            ->where('tbl_class.class_form_teacher', $lecturer_id)
+            ->paginate($currentEntries);
+        return RequestResource::collection($joins);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -92,5 +104,30 @@ class RequestStudentController extends Controller
     public function destroy(RequestSudent $requestSudent)
     {
         //
+    }
+
+    public function accept(Request $request, $requestSudent)
+    {
+        $req = RequestSudent::find($requestSudent);
+        $req->request_status = $request->request_status;
+        $req->save();
+    }
+
+    public function reject(Request $request, $requestSudent)
+    {
+        $req = RequestSudent::find($requestSudent);
+        $req->request_reply = $request->request_reply;
+        $req->request_status = $request->request_status;
+        $req->save();
+    }
+
+    public function filter($lecturer_id, $value, $currentEntries)
+    {
+        $joins = RequestSudent::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_request.request_student')
+            ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->where('tbl_request.request_status', $value)
+            ->where('tbl_class.class_form_teacher', $lecturer_id)
+            ->paginate($currentEntries);
+        return RequestResource::collection($joins);
     }
 }

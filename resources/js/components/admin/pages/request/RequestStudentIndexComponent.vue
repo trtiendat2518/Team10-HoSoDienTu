@@ -42,33 +42,36 @@
                                 :disabled="!selected.length"
                             ></button>
                         </div> -->
-                        <!-- <div class="col-md-6">
+                        <div class="col-md-6">
                             <input
                                 type="text"
                                 class="form-control mt-2"
                                 v-model="query"
                                 placeholder="Tìm kiếm..."
                             />
-                        </div> -->
-                        <!-- <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
                             <select
                                 class="form-control mt-2"
-                                v-model="value_author"
+                                v-model="value_status"
                             >
-                                <option value="" disabled selected
-                                    >Lọc theo tác giả</option
-                                >
-                                <option disabled
-                                    >----------------------------------------</option
-                                >
-                                <option
-                                    v-for="admin in admins"
-                                    :key="admin.admin_id"
-                                    :value="admin.admin_fullname"
-                                    >{{ admin.admin_fullname }}</option
-                                >
+                                <option value="" disabled selected>
+                                    Lọc theo trạng thái
+                                </option>
+                                <option disabled>
+                                    ----------------------------------------
+                                </option>
+                                <option :value="0">
+                                    Chờ xác nhận
+                                </option>
+                                <option :value="1">
+                                    Đã chấp nhận
+                                </option>
+                                <option :value="2">
+                                    Đã bị hủy
+                                </option>
                             </select>
-                        </div> -->
+                        </div>
                         <div class="col-md-2">
                             <div class="between:flex bottom:margin-3 ml-2">
                                 <div class="center:flex-items">
@@ -177,12 +180,7 @@
                                                         req.request_status == 2
                                                 }
                                             ]"
-                                            @change="
-                                                change(
-                                                    $event,
-                                                    req.request_status
-                                                )
-                                            "
+                                            @change="change($event, req)"
                                             name="procedure_require_status"
                                         >
                                             <option
@@ -253,6 +251,67 @@
             </div>
             <!-- col end -->
         </div>
+
+        <!-- Modal -->
+        <div
+            class="modal fade"
+            id="ReasonModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="ReasonModalTitle"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <form
+                    @submit.prevent="reject()"
+                    @keydown="form.onKeydown($event)"
+                >
+                    <div class="modal-content">
+                        <div class="modal-header styling-modal-header-update">
+                            <h5 class="modal-title" id="ReasonModalTitle">
+                                Lý do từ chối
+                            </h5>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label>
+                                Câu trả lời
+                            </label>
+                            <textarea
+                                rows="5"
+                                class="form-control resizenone"
+                                name="request_reply"
+                                v-model="form.request_reply"
+                            ></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                class="btn-3d btn btn-secondary"
+                                data-dismiss="modal"
+                            >
+                                Đóng
+                            </button>
+                            <button
+                                :disabled="form.busy"
+                                type="submit"
+                                class="btn btn-primary btn-3d"
+                            >
+                                Gửi
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Modal end-->
     </div>
 </template>
 
@@ -283,7 +342,7 @@ export default {
             selected: [],
             selectAll: false,
             error: {},
-            value_author: ""
+            value_status: ""
         };
     },
     watch: {
@@ -295,25 +354,24 @@ export default {
                 this.pagination = 1;
                 this.fetchRequests();
             }
+        },
+        query(keyword) {
+            if (keyword === "") {
+                this.fetchRequests();
+            } else {
+                this.pagination.current_page = 1;
+                this.search();
+            }
+        },
+        value_status(value) {
+            if (value === "") {
+                this.fetchRequests();
+            } else {
+                this.query = "";
+                this.pagination.current_page = 1;
+                this.filter();
+            }
         }
-        // query(keyword) {
-        //     if (keyword === "") {
-        //         this.fetchRequests();
-        //     } else {
-        //         this.value_author = "";
-        //         this.pagination.current_page = 1;
-        //         this.search();
-        //     }
-        // },
-        // value_author(admin) {
-        //     if (admin === "") {
-        //         this.fetchRequests();
-        //     } else {
-        //         this.query = "";
-        //         this.pagination.current_page = 1;
-        //         this.filter();
-        //     }
-        // }
     },
     mounted() {
         this.fetchRequests();
@@ -333,35 +391,50 @@ export default {
                 })
                 .catch(err => console.log(err));
         },
-        // search(page_url) {
-        //     let vm = this;
-        //     page_url =
-        //         "../../api/admin/post-news/bai-viet/search/" +
-        //         this.query +
-        //         "/" +
-        //         this.currentEntries +
-        //         "?page=" +
-        //         this.pagination.current_page;
-        //     fetch(page_url)
-        //         .then(res => res.json())
-        //         .then(res => {
-        //             this.requests = res.data;
-        //             this.pagination = res.meta;
-        //         })
-        //         .catch(err => console.log(err));
-        // },
-        // create() {
-        //     this.$router.push({ name: "postcreate" });
-        // },
-        // change(event, procedure_require_id) {
-        // 		this.form.procedure_require_status = event.target.value;
-        // 		this.form.patch(`../../api/admin/procedure-require/yeu-cau-thu-tuc/change/${procedure_require_id}`)
-        // 		.then(res => {
-        // 			this.fetchRequires();
-        // 			this.$snotify.warning('Đã thay đổi trạng thái');
-        // 		})
-        // 		.catch(err => console.log(err));
-        // 	},
+        search(page_url) {
+            let vm = this;
+            page_url = `../../api/admin/request-sv/yeu-cau-sinh-vien/search/${this.lecturer_id}/${this.query}/${this.currentEntries}?page=${this.pagination.current_page}`;
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.requests = res.data;
+                    this.pagination = res.meta;
+                })
+                .catch(err => console.log(err));
+        },
+        change(event, req) {
+            if (event.target.value == 1) {
+                this.form.request_status = event.target.value;
+                this.form
+                    .patch(
+                        `../../api/admin/request-sv/yeu-cau-sinh-vien/accept/${req.request_id}`
+                    )
+                    .then(res => {
+                        this.fetchRequests();
+                        this.$snotify.success("Đã thay đổi trạng thái");
+                    })
+                    .catch(err => console.log(err));
+            } else if (event.target.value == 2) {
+                this.form.request_status = event.target.value;
+                this.form.reset();
+                this.form.clear();
+                this.form.fill(req);
+                $("#ReasonModal").modal("show");
+            }
+        },
+        reject() {
+            console.log(this.form.request_id);
+            this.form
+                .put(
+                    `../../api/admin/request-sv/yeu-cau-sinh-vien/reject/${this.form.request_id}`
+                )
+                .then(res => {
+                    $("#ReasonModal").modal("hide");
+                    this.fetchRequests();
+                    this.$snotify.success("Đã thay đổi trạng thái");
+                })
+                .catch(err => console.log(err));
+        },
         // destroy(request_id) {
         //     this.$snotify.clear();
         //     this.$snotify.confirm("Xác nhận xóa", {
@@ -442,24 +515,20 @@ export default {
         reload() {
             this.fetchRequests();
             this.query = "";
+            this.value_status = "";
+            this.form.request_status = "";
+        },
+        filter(page_url) {
+            let vm = this;
+            page_url = `../../api/admin/request-sv/yeu-cau-sinh-vien/filter/${this.lecturer_id}/${this.value_status}/${this.currentEntries}?page=${this.pagination.current_page}`;
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.requests = res.data;
+                    this.pagination = res.meta;
+                })
+                .catch(err => console.log(err));
         }
-        // filter(page_url) {
-        //     let vm = this;
-        //     page_url =
-        //         "../../api/admin/post-news/bai-viet/filter/" +
-        //         this.value_author +
-        //         "/" +
-        //         this.currentEntries +
-        //         "?page=" +
-        //         this.pagination.current_page;
-        //     fetch(page_url)
-        //         .then(res => res.json())
-        //         .then(res => {
-        //             this.requests = res.data;
-        //             this.pagination = res.meta;
-        //         })
-        //         .catch(err => console.log(err));
-        // }
     }
 };
 </script>
@@ -535,5 +604,8 @@ export default {
 .btn-3d {
     border-bottom: 3px solid #6c757db0;
     border-right: 3px solid #6c757db0;
+}
+.resizenone {
+    resize: none;
 }
 </style>
