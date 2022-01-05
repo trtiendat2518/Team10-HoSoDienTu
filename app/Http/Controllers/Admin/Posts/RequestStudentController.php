@@ -94,9 +94,13 @@ class RequestStudentController extends Controller
      * @param  \App\Models\RequestSudent  $requestSudent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RequestSudent $requestSudent)
+    public function update(Request $request, $requestSudent)
     {
-        //
+        $find = RequestSudent::find($requestSudent);
+        $find->request_reply = $request->request_reply;
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $find->updated_at = now();
+        $find->save();
     }
 
     /**
