@@ -8,9 +8,8 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use Validator;
-use Session;
-use Storage;
-use File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Excel;
 
 class StudentManageController extends Controller
@@ -32,12 +31,12 @@ class StudentManageController extends Controller
      */
     public function search($query, $currentEntries)
     {
-        return StudentResource::collection(Student::where('student_fullname','LIKE','%'.$query.'%')->orwhere('student_email','LIKE','%'.$query.'%')->orderby('student_id','DESC')->paginate($currentEntries));
+        return StudentResource::collection(Student::where('student_fullname', 'LIKE', '%' . $query . '%')->orwhere('student_email', 'LIKE', '%' . $query . '%')->orderby('student_id', 'DESC')->paginate($currentEntries));
     }
 
     public function filter($value, $currentEntries)
     {
-        return StudentResource::collection(Student::where('student_role','LIKE','%'.$value.'%')->paginate($currentEntries));
+        return StudentResource::collection(Student::where('student_role', 'LIKE', '%' . $value . '%')->paginate($currentEntries));
     }
 
     /**
@@ -69,7 +68,7 @@ class StudentManageController extends Controller
      */
     public function show($currentEntries)
     {
-        return StudentResource::collection(Student::orderby('student_id','DESC')->paginate($currentEntries));
+        return StudentResource::collection(Student::orderby('student_id', 'DESC')->paginate($currentEntries));
     }
 
     /**
@@ -110,7 +109,7 @@ class StudentManageController extends Controller
             'student_birth_place' => ['required', 'max:100', 'notspecial_spaces'],
             'student_other_email' => ['max:250', 'email'],
 
-        ],[
+        ], [
             'student_course.required' => 'Khóa học không được để trống!',
             'student_faculty.required' => 'Khoa không được để trống!',
             'student_major.required' => 'Chuyên ngành không được để trống!',
@@ -166,7 +165,7 @@ class StudentManageController extends Controller
         $stu->save();
     }
 
-     public function upgrade(Request $request, $student)
+    public function upgrade(Request $request, $student)
     {
         $stu = Student::find($student);
 
@@ -187,7 +186,7 @@ class StudentManageController extends Controller
             'student_birth_place' => ['required', 'max:100', 'notspecial_spaces'],
             'student_other_email' => ['max:250', 'email'],
 
-        ],[
+        ], [
             'student_course.required' => 'Khóa học không được để trống!',
             'student_faculty.required' => 'Khoa không được để trống!',
             'student_major.required' => 'Chuyên ngành không được để trống!',
@@ -243,10 +242,9 @@ class StudentManageController extends Controller
         $stu->student_class = $request->student_class;
 
         $image = $request->student_avatar;
-        $ext = $image->getClientOriginalExtension();
-        //$name = time().'_'.$image->getClientOriginalName();
-        $name = $stu->student_code . '_avatar.png';
-        Storage::disk('public')->put($name, File::get($image));
+        $name = $stu->student_code . '_avatar_' . time() . '.png';
+        Storage::disk('publicstudent')->delete($stu->student_avatar);
+        Storage::disk('publicstudent')->put($name, File::get($image));
         $stu->student_avatar = $name;
 
         $stu->save();
@@ -288,11 +286,11 @@ class StudentManageController extends Controller
     public function change(Request $request, $student)
     {
         $stu = Student::find($student);
-        if($stu->student_status==0){
-            $stu->student_status=1;
+        if ($stu->student_status == 0) {
+            $stu->student_status = 1;
             $stu->save();
-        }else{
-            $stu->student_status=0;
+        } else {
+            $stu->student_status = 0;
             $stu->save();
         }
     }
@@ -307,10 +305,10 @@ class StudentManageController extends Controller
     public function detail($student)
     {
         $joins = Student::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_student.student_course')
-        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_student.student_faculty')
-        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_student.student_major')
-        ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
-        ->where('tbl_student.student_id', $student)->get();
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_student.student_faculty')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_student.student_major')
+            ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->where('tbl_student.student_id', $student)->get();
         return StudentResource::collection($joins);
     }
 
@@ -318,7 +316,7 @@ class StudentManageController extends Controller
     {
         $request->validate([
             'fileImport' => 'required|file|mimes:xls,xlsx'
-        ],[
+        ], [
             'fileImport.required' => 'Vui lòng không để trống!',
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',

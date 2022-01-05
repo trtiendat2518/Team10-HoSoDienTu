@@ -1,5 +1,24 @@
 <template>
     <div>
+        <div class="tab-menu-heading siderbar-tabs border-0  p-0">
+            <div class="tabs-menu ">
+                <!-- Tabs -->
+                <ul class="nav panel-tabs">
+                    <li class="slide">
+                        <router-link
+                            tag="a"
+                            class="side-menu__item"
+                            to="/thong-tin-ca-nhan-cua-chu-nhiem-sinh-vien"
+                            active-class="active"
+                            exact
+                        >
+                            <i class="fa fa-user fs-17 styling"></i>
+                        </router-link>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <div
             class="panel-body tabs-menu-body side-tab-body p-0 border-0"
             id="style-1"
@@ -66,7 +85,7 @@
                             <router-link
                                 tag="a"
                                 class="side-menu__item"
-                                to="/lop-hoc"
+                                to="/yeu-cau-sinh-vien"
                                 active-class="active"
                             >
                                 <i class="side-menu__icon fa fa-sitemap"></i>
@@ -80,7 +99,7 @@
                             <router-link
                                 tag="a"
                                 class="side-menu__item"
-                                to="/chu-nhiem-sinh-vien"
+                                to="/goi-y-ke-hoach-hoc-tap-sinh-vien"
                                 active-class="active"
                             >
                                 <i class="side-menu__icon fa fa-black-tie"></i>
@@ -103,5 +122,11 @@ export default {};
 <style scoped>
 .color-text {
     color: darkblue;
+}
+.styling {
+    color: darkblue;
+}
+.styling:hover {
+    color: black;
 }
 </style>

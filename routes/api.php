@@ -20,6 +20,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function () {
     Route::prefix('user-gv')->group(function () {
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty_noimg');
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty');
+        Route::post('giang-vien/tao-thong-tin-ca-nhan-bcnk', 'Admin\Users\LecturerManageController@create_info_deanfaculty');
+        Route::get('giang-vien/thong-tin-ca-nhan-bcnk/{lecturer_id}', 'Admin\Users\LecturerManageController@info_deanfaculty');
+        Route::get('giang-vien/bcnk/{lecturer_id}', 'Admin\Users\LecturerManageController@deanfaculty');
+
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_admin_noimg');
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan/{info_id}', 'Admin\Users\LecturerManageController@update_info_admin');
+        Route::post('giang-vien/tao-thong-tin-ca-nhan', 'Admin\Users\LecturerManageController@create_info_admin');
+        Route::get('giang-vien/thong-tin-ca-nhan/{admin_id}', 'Admin\Users\LecturerManageController@info_admin');
+
         Route::get('giang-vien/search-formteacher/{lecturer_id}/{query}/{currentEntries}', 'Admin\Users\LecturerManageController@search_formteacher');
         Route::get('giang-vien/show-formteacher/{lecturer_id}/{currentEntries}', 'Admin\Users\LecturerManageController@show_formteacher');
         Route::get('giang-vien/formteacher/{lecturer_id}', 'Admin\Users\LecturerManageController@formteacher');
@@ -174,5 +185,16 @@ Route::prefix('admin')->group(function () {
     Route::prefix('edu-program-sv')->group(function () {
         Route::get('chuong-trinh-dao-tao-sinh-vien/filter/{value}', 'Admin\Education\EducationProgramStudentController@filter');
         Route::resource('chuong-trinh-dao-tao-sinh-vien', 'Admin\Education\EducationProgramStudentController');
+    });
+
+    Route::prefix('request-sv')->group(function () {
+        Route::get('yeu-cau-sinh-vien/detail/{request_id}', 'Admin\Posts\RequestStudentController@detail');
+        Route::post('yeu-cau-sinh-vien/destroyall/', 'Admin\Posts\RequestStudentController@destroyall');
+        Route::get('yeu-cau-sinh-vien/filter/{lecturer_id}/{value}/{currentEntries}', 'Admin\Posts\RequestStudentController@filter');
+        Route::get('yeu-cau-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Posts\RequestStudentController@search');
+        Route::put('yeu-cau-sinh-vien/reject/{lecturer_id}', 'Admin\Posts\RequestStudentController@reject');
+        Route::patch('yeu-cau-sinh-vien/accept/{lecturer_id}', 'Admin\Posts\RequestStudentController@accept');
+        Route::get('yeu-cau-sinh-vien/showdata/{lecturer_id}/{currentEntries}', 'Admin\Posts\RequestStudentController@showdata');
+        Route::resource('yeu-cau-sinh-vien', 'Admin\Posts\RequestStudentController');
     });
 });

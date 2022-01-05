@@ -11,6 +11,7 @@
     <meta name="keywords" content="" />
     @if (Session::get('admin_fullname'))
         <meta name="admin-fullname" content="{{ Session::get('admin_fullname') }}">
+        <meta name="admin-id" content="{{ Session::get('admin_id') }}">
     @elseif (Session::get('lecturer_id'))
         @foreach ($check_role as $check)
             @if ($check->lecturer_role == 1)
