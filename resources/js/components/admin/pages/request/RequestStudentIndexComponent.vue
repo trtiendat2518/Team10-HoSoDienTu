@@ -35,13 +35,13 @@
                     </div>
 
                     <div class="row">
-                        <!-- <div class="col-md-1">
+                        <div class="col-md-1">
                             <button
                                 class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash"
                                 @click="destroyall()"
                                 :disabled="!selected.length"
                             ></button>
-                        </div> -->
+                        </div>
                         <div class="col-md-6">
                             <input
                                 type="text"
@@ -435,83 +435,83 @@ export default {
                 })
                 .catch(err => console.log(err));
         },
-        // destroy(request_id) {
-        //     this.$snotify.clear();
-        //     this.$snotify.confirm("Xác nhận xóa", {
-        //         timeout: 5000,
-        //         showProgressBar: true,
-        //         closeOnClick: false,
-        //         pauseOnHover: true,
-        //         buttons: [
-        //             {
-        //                 text: "Xóa",
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id);
-        //                     axios
-        //                         .delete(
-        //                             `../../api/admin/post-news/bai-viet/${request_id}`
-        //                         )
-        //                         .then(res => {
-        //                             this.$snotify.success("Đã xóa!");
-        //                             this.fetchRequests();
-        //                         })
-        //                         .catch(err => console.log(err));
-        //                 },
-        //                 bold: false
-        //             },
-        //             {
-        //                 text: "Đóng",
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id);
-        //                 },
-        //                 bold: true
-        //             }
-        //         ]
-        //     });
-        // },
-        // destroyall() {
-        //     this.$snotify.clear();
-        //     this.$snotify.confirm("Xác nhận xóa", {
-        //         timeout: 5000,
-        //         showProgressBar: true,
-        //         closeOnClick: false,
-        //         pauseOnHover: true,
-        //         buttons: [
-        //             {
-        //                 text: "Xóa",
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id);
-        //                     axios
-        //                         .post(
-        //                             "../../api/admin/post-news/bai-viet/destroyall",
-        //                             { post: this.selected }
-        //                         )
-        //                         .then(res => {
-        //                             this.$snotify.success("Đã xóa!");
-        //                             this.fetchRequests();
-        //                         })
-        //                         .catch(err => console.log(err));
-        //                 },
-        //                 bold: false
-        //             },
-        //             {
-        //                 text: "Đóng",
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id);
-        //                 },
-        //                 bold: true
-        //             }
-        //         ]
-        //     });
-        // },
-        // select() {
-        //     this.selected = [];
-        //     if (!this.selectAll) {
-        //         for (let i in this.requests) {
-        //             this.selected.push(this.requests[i].request_id);
-        //         }
-        //     }
-        // },
+        destroy(request_id) {
+            this.$snotify.clear();
+            this.$snotify.confirm("Xác nhận xóa", {
+                timeout: 5000,
+                showProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: true,
+                buttons: [
+                    {
+                        text: "Xóa",
+                        action: toast => {
+                            this.$snotify.remove(toast.id);
+                            axios
+                                .delete(
+                                    `../../api/admin/request-sv/yeu-cau-sinh-vien/${request_id}`
+                                )
+                                .then(res => {
+                                    this.$snotify.success("Đã xóa!");
+                                    this.fetchRequests();
+                                })
+                                .catch(err => console.log(err));
+                        },
+                        bold: false
+                    },
+                    {
+                        text: "Đóng",
+                        action: toast => {
+                            this.$snotify.remove(toast.id);
+                        },
+                        bold: true
+                    }
+                ]
+            });
+        },
+        destroyall() {
+            this.$snotify.clear();
+            this.$snotify.confirm("Xác nhận xóa", {
+                timeout: 5000,
+                showProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: true,
+                buttons: [
+                    {
+                        text: "Xóa",
+                        action: toast => {
+                            this.$snotify.remove(toast.id);
+                            axios
+                                .post(
+                                    "../../api/admin/request-sv/yeu-cau-sinh-vien/destroyall",
+                                    { req: this.selected }
+                                )
+                                .then(res => {
+                                    this.$snotify.success("Đã xóa!");
+                                    this.fetchRequests();
+                                })
+                                .catch(err => console.log(err));
+                        },
+                        bold: false
+                    },
+                    {
+                        text: "Đóng",
+                        action: toast => {
+                            this.$snotify.remove(toast.id);
+                        },
+                        bold: true
+                    }
+                ]
+            });
+        },
+        select() {
+            this.selected = [];
+            if (!this.selectAll) {
+                for (let i in this.requests) {
+                    this.selected.push(this.requests[i].request_id);
+                }
+            }
+        },
         reload() {
             this.fetchRequests();
             this.query = "";

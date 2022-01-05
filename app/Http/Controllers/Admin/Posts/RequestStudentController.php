@@ -56,6 +56,7 @@ class RequestStudentController extends Controller
         $joins = RequestSudent::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_request.request_student')
             ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
             ->where('tbl_class.class_form_teacher', $lecturer_id)
+            ->orderby('tbl_request.request_id', 'DESC')
             ->paginate($currentEntries);
         return RequestResource::collection($joins);
     }
@@ -68,6 +69,7 @@ class RequestStudentController extends Controller
             ->where('tbl_class.class_form_teacher', $lecturer_id)
             ->orwhere('tbl_student.student_code', 'LIKE', '%' . $query . '%')
             ->where('tbl_class.class_form_teacher', $lecturer_id)
+            ->orderby('tbl_request.request_id', 'DESC')
             ->paginate($currentEntries);
         return RequestResource::collection($joins);
     }
@@ -101,15 +103,18 @@ class RequestStudentController extends Controller
      * @param  \App\Models\RequestSudent  $requestSudent
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RequestSudent $requestSudent)
+    public function destroy($requestSudent)
     {
-        //
+        $find = RequestSudent::find($requestSudent);
+        $find->delete();
     }
 
     public function accept(Request $request, $requestSudent)
     {
         $req = RequestSudent::find($requestSudent);
         $req->request_status = $request->request_status;
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $req->updated_at = now();
         $req->save();
     }
 
@@ -118,6 +123,8 @@ class RequestStudentController extends Controller
         $req = RequestSudent::find($requestSudent);
         $req->request_reply = $request->request_reply;
         $req->request_status = $request->request_status;
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $req->updated_at = now();
         $req->save();
     }
 
@@ -127,7 +134,17 @@ class RequestStudentController extends Controller
             ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
             ->where('tbl_request.request_status', $value)
             ->where('tbl_class.class_form_teacher', $lecturer_id)
+            ->orderby('tbl_request.request_id', 'DESC')
             ->paginate($currentEntries);
         return RequestResource::collection($joins);
+    }
+
+    public function destroyall(Request $request, $req = null)
+    {
+        if ($request->req) {
+            foreach ($request->req as $id) {
+                RequestSudent::where('request_id', $id)->delete();
+            }
+        }
     }
 }
