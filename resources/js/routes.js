@@ -61,6 +61,9 @@ import InfoFormTeacherIndex from "./components/admin/pages/info/InfoFormTeacherI
 import InfoFormTeacherUpdate from "./components/admin/pages/info/InfoFormTeacherUpdateComponent.vue";
 import InfoFormTeacherCreate from "./components/admin/pages/info/InfoFormTeacherCreateComponent.vue";
 
+import RequestStudent from "./components/admin/pages/request/RequestStudentComponent.vue";
+import RequestStudentIndex from "./components/admin/pages/request/RequestStudentIndexComponent.vue";
+
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
 if (
@@ -487,6 +490,26 @@ export default new VueRouter({
                     path: "cap-nhat/:idLecturer",
                     name: "infoformteacherupdate",
                     component: InfoFormTeacherUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$teacherId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/yeu-cau-sinh-vien",
+            name: "requeststudent",
+            component: RequestStudent,
+            children: [
+                {
+                    path: "",
+                    name: "requeststudentindex",
+                    component: RequestStudentIndex
                 }
             ],
             beforeEnter: (to, from, next) => {

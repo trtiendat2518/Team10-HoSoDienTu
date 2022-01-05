@@ -85,7 +85,7 @@
                             <router-link
                                 tag="a"
                                 class="side-menu__item"
-                                to="/lop-hoc"
+                                to="/yeu-cau-sinh-vien"
                                 active-class="active"
                             >
                                 <i class="side-menu__icon fa fa-sitemap"></i>
@@ -99,7 +99,7 @@
                             <router-link
                                 tag="a"
                                 class="side-menu__item"
-                                to="/chu-nhiem-sinh-vien"
+                                to="/goi-y-ke-hoach-hoc-tap-sinh-vien"
                                 active-class="active"
                             >
                                 <i class="side-menu__icon fa fa-black-tie"></i>

@@ -186,4 +186,9 @@ Route::prefix('admin')->group(function () {
         Route::get('chuong-trinh-dao-tao-sinh-vien/filter/{value}', 'Admin\Education\EducationProgramStudentController@filter');
         Route::resource('chuong-trinh-dao-tao-sinh-vien', 'Admin\Education\EducationProgramStudentController');
     });
+
+    Route::prefix('request-sv')->group(function () {
+        Route::get('yeu-cau-sinh-vien/showdata/{lecturer_id}/{currentEntries}', 'Admin\Posts\RequestStudentController@showdata');
+        Route::resource('yeu-cau-sinh-vien', 'Admin\Posts\RequestStudentController');
+    });
 });
