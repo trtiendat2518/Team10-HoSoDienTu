@@ -51,7 +51,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="table-responsive">
 						<table class="table card-table table-vcenter text-nowrap table-nowrap">
 							<thead  class="blue-background text-white">
@@ -89,7 +89,7 @@
 										</div>
 									</td>
 									<td class="text-center">
-										<select class="form-control" v-model="student.student_role":class="[{'btn-outline-success': student.student_role==0}, {'btn-outline-danger': student.student_role==1}]" @change="patch($event, student.student_id)" name="student_role">
+										<select class="form-control" v-model="student.student_role" :class="[{'btn-outline-success': student.student_role==0}, {'btn-outline-danger': student.student_role==1}]" @change="patch($event, student.student_id)" name="student_role">
 											<option value="0">Đang học</option>
 											<option value="1">Đã ra trường</option>
 										</select>
@@ -130,7 +130,7 @@
 						</div>
 						<div class="modal-body">
 							<div class="text-center mb-2">
-								<img class="avatar-xxl" v-if="student_avatar" :src="student_avatar" alt="profile">
+                                <img class="avatar-xxl" v-if="student_avatar" :src="student_avatar" alt="profile">
 							</div>
 
 							<h3>Thông tin cá nhân</h3>
@@ -223,7 +223,7 @@
 										<label class="mt-3">Khóa học <span class="text-danger">(*)</span></label>
 										<select v-model="form.student_course" name="student_course" class="form-control select-option" :class="{'is-invalid': form.errors.has('student_course')}">
 											<option value="null" disabled selected>Chọn khóa học</option>
-											<option v-for="course in courses" :value="course.course_id" :hidden="course.course_status>0">{{ course.course_code }} - {{ course.course_name }}</option>
+											<option v-for="course in courses" :key="course.course_id" :value="course.course_id" :hidden="course.course_status>0">{{ course.course_code }} - {{ course.course_name }}</option>
 										</select>
 										<div class="text-danger" v-if="form.errors.has('student_course')" v-html="form.errors.get('student_course')"></div>
 									</div>
@@ -233,7 +233,7 @@
 										<label class="mt-3">Khoa <span class="text-danger">(*)</span></label>
 										<select v-model="form.student_faculty" name="student_faculty" class="form-control select-option" :class="{'is-invalid': form.errors.has('student_faculty')}">
 											<option value="null" disabled selected>Chọn khoa</option>
-											<option v-for="faculty in faculties" :value="faculty.faculty_id" :hidden="faculty.facultystatus>0">{{ faculty.faculty_name }}</option>
+											<option v-for="faculty in faculties" :key="faculty.faculty_id" :value="faculty.faculty_id" :hidden="faculty.facultystatus>0">{{ faculty.faculty_name }}</option>
 										</select>
 										<div class="text-danger" v-if="form.errors.has('student_faculty')" v-html="form.errors.get('student_faculty')"></div>
 									</div>
@@ -246,7 +246,7 @@
 										<label class="mt-3">Chuyên ngành <span class="text-danger">(*)</span></label>
 										<select v-model="form.student_major" name="student_major" class="form-control select-option" :class="{'is-invalid': form.errors.has('student_major')}">
 											<option value="null" disabled selected>Chọn chuyên ngành</option>
-											<option v-for="major in majors" :value="major.major_id" :hidden="major.major_status>0">{{ major.major_name }}</option>
+											<option v-for="major in majors" :key="major.major_id" :value="major.major_id" :hidden="major.major_status>0">{{ major.major_name }}</option>
 										</select>
 										<div class="text-danger" v-if="form.errors.has('student_major')" v-html="form.errors.get('student_major')"></div>
 									</div>
@@ -256,7 +256,7 @@
 										<label class="mt-3">Lớp học <span class="text-danger">(*)</span></label>
 										<select v-model="form.student_class" name="student_class" class="form-control select-option" :class="{'is-invalid': form.errors.has('student_class')}">
 											<option value="null" disabled selected>Chọn lớp học</option>
-											<option v-for="clas in classes" :value="clas.class_id" :hidden="clas.class_status>0">{{ clas.class_name }}</option>
+											<option v-for="clas in classes" :key="clas.class_id" :value="clas.class_id" :hidden="clas.class_status>0">{{ clas.class_name }}</option>
 										</select>
 										<div class="text-danger" v-if="form.errors.has('student_class')" v-html="form.errors.get('student_class')"></div>
 									</div>
@@ -288,7 +288,7 @@
 							</div>
 							<div class="form-group">
 								<label>Địa chỉ <span class="text-danger">(*)</span></label>
-								<textarea rows="3" v-model="form.student_address" type="number" name="student_address" class="form-control" :class="{'is-invalid': form.errors.has('student_address')}"></textarea> 
+								<textarea rows="3" v-model="form.student_address" type="number" name="student_address" class="form-control" :class="{'is-invalid': form.errors.has('student_address')}"></textarea>
 								<div class="text-danger" v-if="form.errors.has('student_address')" v-html="form.errors.get('student_address')"></div>
 							</div>
 						</div>
@@ -314,7 +314,7 @@
 					</div>
 					<div class="modal-body" v-show="details.length" v-for="info in details" :key="info.student_id">
 						<center>
-							<img :src="(`../public/avatar/${info.student_avatar}`)" class="avatar-xxl" alt="profile">
+							<img :src="(`../public/avatar/student/${info.student_avatar}`)" class="avatar-xxl" alt="profile">
 						</center>
 						<table class="table row table-borderless w-100 m-0 border">
 							<tbody class="col-lg-6 p-0">
@@ -322,55 +322,55 @@
 									<td class="h3-strong td-borderight"><h3><strong>Thông tin chi tiết Sinh viên</strong></h3></td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Họ và tên: 
+									<td>Họ và tên:
 										<strong> {{ info.student_fullname }}</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Dân tộc: 
+									<td>Dân tộc:
 										<strong v-if="info.student_ethnic==null"> -</strong>
 										<strong v-else> {{ info.student_ethnic }}</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Tôn giáo: 
+									<td>Tôn giáo:
 										<strong v-if="info.student_religion==null"> -</strong>
 										<strong v-else> {{ info.student_religion }}</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td >Giới tính: 
+									<td >Giới tính:
 										<strong v-if="info.student_gender==null"> -</strong>
 										<strong v-else-if="info.student_gender==0"> Nam</strong>
 										<strong v-else> Nữ</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Ngày sinh: 
+									<td>Ngày sinh:
 										<strong v-if="info.student_birthday==null"> -</strong>
 										<strong v-else> {{ info.student_birthday | formatDate}}</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Nơi sinh: 
+									<td>Nơi sinh:
 										<strong v-if="info.student_birth_place==null"> -</strong>
 										<strong v-else> {{ info.student_birth_place }}</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Quốc gia: 
+									<td>Quốc gia:
 										<strong v-if="info.student_country==null"> -</strong>
 										<strong v-else> {{ info.student_country }}</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>CMND/CCCD: 
+									<td>CMND/CCCD:
 										<strong v-if="info.student_identify_card==null"> -</strong>
 										<strong v-else> {{ info.student_identify_card }}</strong>
 									</td>
 								</tr>
 								<tr class="td-borderight">
-									<td>Địa chỉ: 
+									<td>Địa chỉ:
 										<strong v-if="info.student_address==null"> -</strong>
 										<strong v-else> {{ info.student_address }}</strong>
 									</td>
@@ -381,36 +381,36 @@
 									<td class="h3-strong" colspan="2"><h3><strong>Thông tin Khoa</strong></h3></td>
 								</tr>
 								<tr>
-									<td>Khóa học: 
+									<td>Khóa học:
 										<strong v-if="info.student_course==null"> -</strong>
 										<strong v-else>{{ info.course_name }}</strong>
 									</td>
 								</tr>
 								<tr>
-									<td>Khoa: 
+									<td>Khoa:
 										<strong v-if="info.student_faculty==null"> -</strong>
 										<strong v-else>{{ info.faculty_name }}</strong>
 									</td>
 								</tr>
 								<tr>
-									<td>Chuyên ngành: 
+									<td>Chuyên ngành:
 										<strong v-if="info.student_major==null"> -</strong>
 										<strong v-else>{{ info.major_name }}</strong>
 									</td>
 								</tr>
 								<tr>
-									<td>Lớp học: 
+									<td>Lớp học:
 										<strong v-if="info.student_class==null"> -</strong>
-										<strong v-else>{{ info.student_class }}</strong>
+										<strong v-else> {{ info.course_code }}-{{ info.class_name }}</strong>
 									</td>
 								</tr>
 								<tr>
-									<td>Tình trạng học: 
+									<td>Tình trạng học:
 										<strong v-if="info.student_role==1"> Đã ra trường</strong>
 										<strong v-else-if="info.student_role==0"> Còn đang học</strong>
 									</td>
 								</tr>
-								
+
 								<br>
 								<tr>
 									<td class="h3-strong"><h3>
@@ -418,18 +418,18 @@
 									</td>
 								</tr>
 								<tr>
-									<td>Số điện thoại: 
+									<td>Số điện thoại:
 										<strong v-if="info.student_phone==null"> -</strong>
 										<strong v-else> {{ info.student_phone }}</strong>
 									</td>
 								</tr>
 								<tr>
-									<td>Email trường: 
+									<td>Email trường:
 										<strong> {{ info.student_email }}</strong>
 									</td>
 								</tr>
 								<tr>
-									<td>Email cá nhân: 
+									<td>Email cá nhân:
 										<strong v-if="info.student_other_email==null"> -</strong>
 										<strong v-else> {{ info.student_other_email }}</strong>
 									</td>
@@ -628,7 +628,7 @@
 				this.form.reset();
 				this.form.clear();
 				this.form.fill(student);
-				this.student_avatar=`../public/avatar/${student.student_avatar}`;
+				this.student_avatar=`../public/avatar/student/${student.student_avatar}`;
 				$('#StudentModal').modal('show');
 			},
 			update() {
@@ -685,7 +685,7 @@
 					closeOnClick: false,
 					pauseOnHover: true,
 					buttons: [{
-						text: 'Xóa', 
+						text: 'Xóa',
 						action: toast =>{
 							this.$snotify.remove(toast.id);
 							axios.delete(`../../api/admin/user-sv/sinh-vien/${student_id}`)
@@ -694,13 +694,13 @@
 								this.fetchStudents();
 							})
 							.catch(err => console.log(err));
-						}, 
+						},
 						bold: false
 					},{
-						text: 'Đóng', 
-						action: toast => { 
-							this.$snotify.remove(toast.id); 
-						}, 
+						text: 'Đóng',
+						action: toast => {
+							this.$snotify.remove(toast.id);
+						},
 						bold: true
 					}]
 				});
@@ -713,7 +713,7 @@
 					closeOnClick: false,
 					pauseOnHover: true,
 					buttons: [{
-						text: 'Xóa', 
+						text: 'Xóa',
 						action: toast =>{
 							this.$snotify.remove(toast.id);
 							axios.post('../../api/admin/user-sv/sinh-vien/destroyall', { student: this.selected })
@@ -722,13 +722,13 @@
 								this.fetchStudents();
 							})
 							.catch(err => console.log(err));
-						}, 
+						},
 						bold: false
 					},{
-						text: 'Đóng', 
-						action: toast => { 
-							this.$snotify.remove(toast.id); 
-						}, 
+						text: 'Đóng',
+						action: toast => {
+							this.$snotify.remove(toast.id);
+						},
 						bold: true
 					}]
 				});
@@ -777,11 +777,16 @@
 				this.student_avatar = URL.createObjectURL(file);
 			},
 			openImport() {
-				this.$refs.fileupload.value='';
+				this.$refs.fileimport.value='';
 				$('#ImportModal').modal('show');
 			},
 			onFileChange(e) {
-				this.fileImport = e.target.files[0];
+				if (e.target.files[0].name != 'list_of_student.xlsx') {
+					this.$refs.fileimport.value='';
+					this.$snotify.error('Tên tệp Excel không đúng!');
+				} else {
+					this.fileImport = e.target.files[0]
+				}
 			},
 			reloadFile() {
 				this.$refs.fileimport.value='';
@@ -809,7 +814,7 @@
 						const stringSplit = stringError.split(".");
 						this.error = stringSplit[1];
 					}
-					
+
 					this.fetchStudents();
 					this.$snotify.error(this.error);
 				});
@@ -827,7 +832,7 @@
 	}
 	.btn-eye-slash {
 		font-size: 18px;
-		cursor: pointer; 
+		cursor: pointer;
 		background: none;
 		border: none;
 		color: #868e96de;

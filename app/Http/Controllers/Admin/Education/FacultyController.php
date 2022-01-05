@@ -30,7 +30,7 @@ class FacultyController extends Controller
      */
     public function search($query, $currentEntries)
     {
-        return FacultyResource::collection(Faculty::where('faculty_code','LIKE','%'.$query.'%')->orwhere('faculty_name','LIKE','%'.$query.'%')->orderby('faculty_id','DESC')->paginate($currentEntries));
+        return FacultyResource::collection(Faculty::where('faculty_code', 'LIKE', '%' . $query . '%')->orwhere('faculty_name', 'LIKE', '%' . $query . '%')->orderby('faculty_id', 'DESC')->paginate($currentEntries));
     }
 
     /**
@@ -55,7 +55,7 @@ class FacultyController extends Controller
             'faculty_code' => ['required', 'max:3', 'min:2', 'unique:tbl_faculty', 'notspecial_spaces'],
             'faculty_name' => ['required', 'max:50', 'min:7', 'unique:tbl_faculty', 'notspecial_spaces'],
             'faculty_status' => ['required'],
-        ],[
+        ], [
             'faculty_code.required' => 'Mã Khoa không được để trống!',
             'faculty_code.max' => 'Mã Khoa không nhập quá 3 ký tự chữ!',
             'faculty_code.min' => 'Mã Khoa phải có 2 ký tự chữ trở lên!',
@@ -86,7 +86,7 @@ class FacultyController extends Controller
      */
     public function show($currentEntries)
     {
-        return FacultyResource::collection(Faculty::orderby('faculty_id','DESC')->paginate($currentEntries));
+        return FacultyResource::collection(Faculty::orderby('faculty_id', 'DESC')->paginate($currentEntries));
     }
 
     /**
@@ -112,12 +112,19 @@ class FacultyController extends Controller
         $fac = Faculty::find($faculty);
 
         $data = $request->validate([
-            'faculty_name' => ['required', 'max:50', 'min:7', 'notspecial_spaces'],
-        ],[
+            'faculty_name' => [
+                'required',
+                'max:50',
+                'min:7',
+                'notspecial_spaces',
+                "unique:tbl_faculty,faculty_name,$faculty,faculty_id"
+            ],
+        ], [
             'faculty_name.required' => 'Tên Khoa không được để trống!',
             'faculty_name.max' => 'Tên Khoa không nhập quá 50 ký tự chữ!',
             'faculty_name.min' => 'Tên Khoa phải có 7 ký tự chữ trở lên!',
             'faculty_name.notspecial_spaces' => 'Tên Khoa không được chứa ký tự đặc biệt!',
+            'faculty_name.unique' => 'Tên Khoa đã tồn tại!',
         ]);
 
         $fac->faculty_name = $data['faculty_name'];
@@ -154,30 +161,30 @@ class FacultyController extends Controller
     public function change(Request $request, $faculty)
     {
         $fac = Faculty::find($faculty);
-        if($fac->faculty_status==0){
-            $fac->faculty_status=1;
+        if ($fac->faculty_status == 0) {
+            $fac->faculty_status = 1;
             $fac->save();
-        }else{
-            $fac->faculty_status=0;
+        } else {
+            $fac->faculty_status = 0;
             $fac->save();
         }
     }
 
     public function detail($faculty)
     {
-        return FacultyResource::collection(Faculty::where('faculty_id',$faculty)->get());
+        return FacultyResource::collection(Faculty::where('faculty_id', $faculty)->get());
     }
 
     public function export(Request $request)
     {
-        return Excel::download(new FacultyExport , 'list_of_faculty.xlsx');
+        return Excel::download(new FacultyExport, 'list_of_faculty.xlsx');
     }
 
     public function import(Request $request)
     {
         $request->validate([
             'fileImport' => 'required|file|mimes:xls,xlsx'
-        ],[
+        ], [
             'fileImport.required' => 'Vui lòng không để trống!',
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
@@ -189,6 +196,6 @@ class FacultyController extends Controller
 
     public function faculty()
     {
-        return FacultyResource::collection(Faculty::orderby('faculty_name','DESC')->get());
+        return FacultyResource::collection(Faculty::orderby('faculty_name', 'DESC')->get());
     }
 }

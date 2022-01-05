@@ -470,7 +470,12 @@
 				$('#ImportModal').modal('show');
 			},
 			onFileChange(e) {
-				this.fileImport = e.target.files[0];
+				if (e.target.files[0].name != 'list_of_major.xlsx') {
+					this.$refs.fileupload.value='';
+					this.$snotify.error('Tên tệp Excel không đúng!');
+				} else {
+					this.fileImport = e.target.files[0]
+				}
 			},
 			reloadFile() {
 				this.$refs.fileupload.value='';

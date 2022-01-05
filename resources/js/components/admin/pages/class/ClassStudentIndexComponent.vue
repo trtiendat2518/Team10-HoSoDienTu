@@ -23,18 +23,19 @@
 					</div>
 
 					<div class="row">
-						<!-- <div class="col-md-1">
+						<div class="col-md-1">
 							<button class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash" @click="destroyall()" :disabled="!selected.length"></button>
-						</div> -->
+						</div>
 						<div class="col-md-6">
 							<input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm...">
 						</div>
 						<div class="col-md-3">
 							<select class="form-control mt-2" v-model="value_state">
-								<option value="" disabled selected>Lọc theo tình trạng</option>
+								<option value="" disabled selected>Lọc theo khóa học</option>
 								<option disabled>----------------------------------------</option>
-								<option value="0">Chưa có chủ nhiệm</option>
-								<option value="1">Đã có chủ nhiệm</option>
+								<option v-for="course in courses" :key="course.course_id" :value="course.course_id">
+									{{ course.course_code }} - {{ course.course_name }}
+								</option>
 							</select>
 						</div>
 						<div class="col-md-2">
@@ -48,7 +49,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="table-responsive">
 						<table class="table card-table table-vcenter text-nowrap table-nowrap">
 							<thead  class="blue-background text-white">
@@ -58,7 +59,7 @@
 									</th>
 									<th class="text-white w-25">Tên lớp học</th>
 									<th class="text-white w-30">Chuyên ngành</th>
-									<th class="text-white w-30">Tình trạng</th>
+									<th class="text-white w-30">Chủ nhiệm</th>
 									<th class="text-white w-5">Trạng thái</th>
 									<th class="w-5"></th>
 									<th class="w-5"></th>
@@ -66,18 +67,18 @@
 							</thead>
 							<tbody>
 								<tr v-show="classes.length" v-for="clas in classes" :key="clas.class_id">
-									<td>
-										<center><input type="checkbox" :value="clas.class_id" v-model="selected"></center>
+									<td class="text-center">
+										<input type="checkbox" :value="clas.class_id" v-model="selected">
 									</td>
-									<td @click="detail(clas)">
-										<a href="javascript:void(0)">
-											{{ clas.course_code }}-{{ clas.class_name }}
-										</a>
+									<td>
+                                        <router-link tag="a" :to="{ name: 'classstudentdetail', params: {idClass: clas.class_id} }">
+                                            {{ clas.course_code }}-{{ clas.class_name }}
+                                        </router-link>
 									</td>
 									<td>{{ clas.major_name }}</td>
 									<td>
-										<div v-if="clas.class_state==0">Chưa có chủ nhiệm</div>
-										<div v-else-if="clas.class_state==1">Đã có chủ nhiệm</div>
+										<div v-if="clas.class_form_teacher==0">Chưa có chủ nhiệm</div>
+										<div v-else>Đã có chủ nhiệm</div>
 									</td>
 									<td class="td-styling">
 										<div v-if="clas.class_status==0">
@@ -88,7 +89,7 @@
 										</div>
 									</td>
 									<td style="text-align: center">
-										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="destroy(clas.class_id)"></button>
+										<button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(clas)"></button>
 									</td>
 									<td>
 										<button class="btn-3d btn btn-danger btn-lg fa fa-trash" @click="destroy(clas.class_id)"></button>
@@ -144,6 +145,14 @@
 								<option v-for="major in majors" :key="major.major_id" :value="major.major_id" :hidden="major.major_faculty!=lecturer_faculty">{{ major.major_name }}</option>
 							</select>
 							<div class="text-danger" v-if="form.errors.has('class_major')" v-html="form.errors.get('class_major')"></div>
+
+							<label class="mt-3">Chủ nhiệm sinh viên <span class="text-danger">(*)</span></label>
+							<select v-model="form.class_form_teacher" name="class_form_teacher" class="form-control select-option" :class="{'is-invalid': form.errors.has('class_form_teacher')}">
+								<option value="0" selected disabled>Chọn chủ nhiệm lớp</option>
+								<option disabled>---------------</option>
+								<option v-for="lecturer in formteachers" :key="lecturer.lecturer_id" :value="lecturer.lecturer_id" :hidden="lecturer.lecturer_role!=2">{{ lecturer.lecturer_fullname }}</option>
+							</select>
+							<div class="text-danger" v-if="form.errors.has('class_form_teacher')" v-html="form.errors.get('class_form_teacher')"></div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn-3d btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -166,6 +175,7 @@
 				courses:[],
 				majors:[],
 				lecturers:[],
+				formteachers:[],
 				lecturer_faculty:'',
 				lecturer_id: this.$facultyId,
 				pagination:{
@@ -182,7 +192,7 @@
 					class_faculty:'',
 					class_major:'',
 					class_status:'',
-					class_state:'',
+					class_form_teacher:'',
 				}),
 				selected: [],
 				selectAll: false,
@@ -224,6 +234,7 @@
 			this.fetchMajors();
 			this.fetchClasses();
 			this.fetchLecturers();
+			this.fetchFormTeachers();
 		},
 		methods: {
 			empty() {
@@ -261,6 +272,16 @@
 							this.lecturer_faculty = el.lecturer_faculty;
 						}
 					});
+				})
+				.catch(err => console.log(err));
+			},
+			fetchFormTeachers(page_url) {
+				let vm = this;
+				page_url = `../../api/admin/user-gv/giang-vien/formteacher/${this.lecturer_id}`;
+				fetch(page_url)
+				.then(res => res.json())
+				.then(res => {
+					this.formteachers = res.data;
 				})
 				.catch(err => console.log(err));
 			},
@@ -307,78 +328,98 @@
 				})
 				.catch(err => console.log(err));
 			},
-			// change(class_id) {
-			// 	axios.patch(`../../api/admin/post-news/bai-viet/change/${class_id}`)
-			// 	.then(res => {
-			// 		this.$snotify.warning('Đã thay đổi trạng thái');
-			// 		this.fetchClasses();
-			// 	})
-			// 	.catch(err => console.log(err));
-			// },
-			// destroy(class_id) {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.delete(`../../api/admin/post-news/bai-viet/${class_id}`)
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchClasses();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// destroyall() {
-			// 	this.$snotify.clear();
-			// 	this.$snotify.confirm('Xác nhận xóa', {
-			// 		timeout: 5000,
-			// 		showProgressBar: true,
-			// 		closeOnClick: false,
-			// 		pauseOnHover: true,
-			// 		buttons: [{
-			// 			text: 'Xóa', 
-			// 			action: toast =>{
-			// 				this.$snotify.remove(toast.id);
-			// 				axios.post('../../api/admin/post-news/bai-viet/destroyall', { post: this.selected })
-			// 				.then(res => {
-			// 					this.$snotify.success('Đã xóa!');
-			// 					this.fetchClasses();
-			// 				})
-			// 				.catch(err => console.log(err));
-			// 			}, 
-			// 			bold: false
-			// 		},{
-			// 			text: 'Đóng', 
-			// 			action: toast => { 
-			// 				this.$snotify.remove(toast.id); 
-			// 			}, 
-			// 			bold: true
-			// 		}]
-			// 	});
-			// },
-			// select() {
-			// 	this.selected = [];
-			// 	if(!this.selectAll){
-			// 		for(let i in this.posts){
-			// 			this.selected.push(this.posts[i].class_id);
-			// 		}
-			// 	}
-			// },
+			show(clas) {
+				this.editMode = true;
+				this.form.reset();
+				this.form.clear();
+				this.form.fill(clas);
+				$('#ClassModal').modal('show');
+			},
+			update() {
+				this.form.put(`../../api/admin/class-sv/lop/${this.form.class_id}`)
+				.then(res => {
+					this.fetchClasses();
+					$('#ClassModal').modal('hide');
+					if(this.form.successful){
+						this.$snotify.success('Cập nhật Khoa thành công!');
+					}else{
+						this.$snotify.error('Không thể chỉnh sửa');
+					}
+				})
+				.catch(err => console.log(err));
+			},
+			change(class_id) {
+				axios.patch(`../../api/admin/class-sv/lop/change/${class_id}`)
+				.then(res => {
+					this.$snotify.warning('Đã thay đổi trạng thái');
+					this.fetchClasses();
+				})
+				.catch(err => console.log(err));
+			},
+			destroy(class_id) {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa',
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.delete(`../../api/admin/class-sv/lop/${class_id}`)
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchClasses();
+							})
+							.catch(err => console.log(err));
+						},
+						bold: false
+					},{
+						text: 'Đóng',
+						action: toast => {
+							this.$snotify.remove(toast.id);
+						},
+						bold: true
+					}]
+				});
+			},
+			destroyall() {
+				this.$snotify.clear();
+				this.$snotify.confirm('Xác nhận xóa', {
+					timeout: 5000,
+					showProgressBar: true,
+					closeOnClick: false,
+					pauseOnHover: true,
+					buttons: [{
+						text: 'Xóa',
+						action: toast =>{
+							this.$snotify.remove(toast.id);
+							axios.post('../../api/admin/class-sv/lop/destroyall', { class: this.selected })
+							.then(res => {
+								this.$snotify.success('Đã xóa!');
+								this.fetchClasses();
+							})
+							.catch(err => console.log(err));
+						},
+						bold: false
+					},{
+						text: 'Đóng',
+						action: toast => {
+							this.$snotify.remove(toast.id);
+						},
+						bold: true
+					}]
+				});
+			},
+			select() {
+				this.selected = [];
+				if(!this.selectAll){
+					for(let i in this.classes){
+						this.selected.push(this.classes[i].class_id);
+					}
+				}
+			},
 			reload(){
 				this.fetchClasses();
 				this.query='';
@@ -408,7 +449,7 @@
 	}
 	.btn-eye-slash {
 		font-size: 18px;
-		cursor: pointer; 
+		cursor: pointer;
 		background: none;
 		border: none;
 		color: #868e96de;

@@ -38,7 +38,28 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('../public/avatar'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'publicadmin' => [
+            'driver' => 'local',
+            'root' => storage_path('../public/avatar/admin'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'publiclecturer' => [
+            'driver' => 'local',
+            'root' => storage_path('../public/avatar/lecturer'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'publicstudent' => [
+            'driver' => 'local',
+            'root' => storage_path('../public/avatar/student'),
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
