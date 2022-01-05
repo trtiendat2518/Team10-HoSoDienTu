@@ -188,6 +188,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('request-sv')->group(function () {
+        Route::post('yeu-cau-sinh-vien/destroyall/', 'Admin\Posts\RequestStudentController@destroyall');
         Route::get('yeu-cau-sinh-vien/filter/{lecturer_id}/{value}/{currentEntries}', 'Admin\Posts\RequestStudentController@filter');
         Route::get('yeu-cau-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Posts\RequestStudentController@search');
         Route::put('yeu-cau-sinh-vien/reject/{lecturer_id}', 'Admin\Posts\RequestStudentController@reject');
