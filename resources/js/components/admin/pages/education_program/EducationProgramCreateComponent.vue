@@ -73,7 +73,7 @@
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-								<label class="form-label">Trạng thái <span class="text-danger">(*)</span></label> 
+								<label class="form-label">Trạng thái <span class="text-danger">(*)</span></label>
 								<select class="form-control" name="education_program_status" v-model="form.education_program_status" :class="{'is-invalid': form.errors.has('education_program_status')}">
 									<option value="" disabled selected="">
 										Chọn Trạng thái
@@ -86,7 +86,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="form-group">
 						<label class="form-label">Tệp Excel <span class="text-danger">(*)</span></label>
 						<input type="file" class="form-control" id="file_data" name="file_data" ref="fileupload" @change="onFileChange">
@@ -106,6 +106,8 @@
 									<th class="text-center w-5" scope="col" rowspan="2">Bắt buộc</th>
 									<th class="text-center w-20" scope="col" rowspan="2">Khoa/Bộ môn</th>
 									<th class="text-center w-15" scope="col" rowspan="2">Ghi chú</th>
+									<th class="text-center w-15" scope="col" rowspan="2">Lịch học</th>
+									<th class="text-center w-15" scope="col" rowspan="2">Giảng viên</th>
 								</tr>
 								<tr>
 									<th class="text-center w-5" scope="col">Lý thuyết</th>
@@ -116,7 +118,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(data, index) in displayData" :key="data.ma_mon_hoc">
+								<tr v-for="(data, index) in displayData" :key="data.program_detail_subject">
 									<td hidden>{{ getCode(data) }}</td>
 									<td class="text-center" scope="row">
 										{{ index += 1 }}
@@ -147,6 +149,8 @@
 									<td class="text-center">
 										{{ majorSubject(data) }}
 									</td>
+									<td class="text-center">{{ data.lich_hoc }}</td>
+									<td class="text-center">{{ data.ten_giang_vien }}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -274,25 +278,31 @@
 				.catch(err => console.log(err));
 			},
 			onFileChange(e) {
-				this.form.file_data = e.target.files[0];
-				if (this.form.file_data) {
-					let fileReader = new FileReader();
-					fileReader.readAsBinaryString(this.form.file_data);
-					fileReader.onload = (e) => {
-						let data = e.target.result;
-						let workbook = XLSX.read(data, { type: "binary" });
-						workbook.SheetNames.forEach((sheet) => {
-							let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-            				//this.displayData = JSON.stringify(rowObject, undefined, 4);
-            				this.displayData = rowObject;
-            				//console.log(this.displayData);
-            			});
-					};
+				if (e.target.files[0].name != 'education_program.xlsx') {
+					this.$refs.fileupload.value='';
+					this.displayData=[];
+					this.$snotify.error('Tên tệp Excel không đúng!');
+				} else {
+					this.form.file_data = e.target.files[0];
+					if (this.form.file_data) {
+						let fileReader = new FileReader();
+						fileReader.readAsBinaryString(this.form.file_data);
+						fileReader.onload = (e) => {
+							let data = e.target.result;
+							let workbook = XLSX.read(data, { type: "binary" });
+							workbook.SheetNames.forEach((sheet) => {
+								let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+            					//this.displayData = JSON.stringify(rowObject, undefined, 4);
+            					this.displayData = rowObject;
+            					//console.log(this.displayData);
+            				});
+						};
+					}
 				}
 			},
 			getCode(data) {
 				this.subjects.forEach((sbj) => {
-					if (sbj.subject_code === data.ma_mon_hoc) {
+					if (sbj.subject_code === data.program_detail_subject) {
 						this.subject_code = sbj.subject_code;
 						this.subject_name = sbj.subject_name;
 						this.subject_credit = sbj.subject_credit;
@@ -332,17 +342,17 @@
 							closeOnClick: false,
 							pauseOnHover: true,
 							buttons: [{
-								text: 'Có', 
+								text: 'Có',
 								action: toast =>{
 									this.$snotify.remove(toast.id);
 									this.$router.push( { name: 'educationprogramindex' } );
-								}, 
+								},
 								bold: false
 							},{
-								text: 'Không', 
-								action: toast => { 
-									this.$snotify.remove(toast.id); 
-								}, 
+								text: 'Không',
+								action: toast => {
+									this.$snotify.remove(toast.id);
+								},
 								bold: true
 							}]
 						});
@@ -361,6 +371,9 @@
 						const  stringSplit = stringError.split(".");
 						this.error = stringSplit[1];
 					}
+					this.form.file_data ='';
+					this.$refs.fileupload.value='';
+					this.form.file_data='';
 					this.$snotify.error(this.error);
 				});
 			},

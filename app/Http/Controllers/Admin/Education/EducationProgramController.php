@@ -27,10 +27,10 @@ class EducationProgramController extends Controller
 
     public function showdata($lecturer_id, $currentEntries)
     {
-        $edu_program = EducationProgram::join('tbl_lecturer','tbl_lecturer.lecturer_faculty','=','tbl_education_program.education_program_faculty')
-        ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_education_program.education_program_course')
-        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_education_program.education_program_faculty')
-        ->where('tbl_lecturer.lecturer_id',$lecturer_id)->orderby('education_program_id', 'DESC')->paginate($currentEntries);
+        $edu_program = EducationProgram::join('tbl_lecturer', 'tbl_lecturer.lecturer_faculty', '=', 'tbl_education_program.education_program_faculty')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_education_program.education_program_course')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_education_program.education_program_faculty')
+            ->where('tbl_lecturer.lecturer_id', $lecturer_id)->orderby('education_program_id', 'DESC')->paginate($currentEntries);
         return EducationProgramResource::collection($edu_program);
     }
 
@@ -59,7 +59,7 @@ class EducationProgramController extends Controller
             'education_program_year' => ['required', 'max:10'],
             'education_program_status' => ['required'],
             'file_data' => ['required', 'file', 'mimes:xls,xlsx'],
-        ],[
+        ], [
             'education_program_code.required' => 'Mã CTĐT không được để trống!',
             'education_program_code.max' => 'Mã CTĐT không nhập quá 10 ký tự!',
             'education_program_code.unique' => 'Mã CTĐT đã tồn tại!',
@@ -84,20 +84,20 @@ class EducationProgramController extends Controller
         $program->education_program_year = $data['education_program_year'];
         $program->education_program_faculty = $request->education_program_faculty;
         $program->education_program_status = $data['education_program_status'];
-        $save = $program->save();
         $program_code = $data['education_program_code'];
         $path = $request->file('file_data')->getRealPath();
         $import = Excel::import(new ProgramDetailImport($program_code), $path);
         $sum = 0;
-        
+
         if ($import) {
+            $program->save();
             $find = ProgramDetail::where('program_detail_code', $program_code)->get();
-            foreach($find as $key => $value) {
+            foreach ($find as $key => $value) {
                 $subject = Subject::where('subject_code', $value->program_detail_subject)->get();
-                foreach($subject as $key => $value2) {
+                foreach ($subject as $key => $value2) {
                     $sum += $value2->subject_credit;
                     $education = EducationProgram::where('education_program_code', $program_code)->get();
-                    foreach($education as $key => $value3) {
+                    foreach ($education as $key => $value3) {
                         $value3->education_program_credit = $sum;
                         $value3->save();
                     }
@@ -140,7 +140,7 @@ class EducationProgramController extends Controller
         $data = $request->validate([
             'education_program_type' => ['required'],
             'education_program_year' => ['required', 'max:10'],
-        ],[
+        ], [
             'education_program_year.required' => 'Năm đào tạo không được để trống!',
             'education_program_year.max' => 'Năm đào tạo không nhập quá 100 ký tự!',
             'education_program_type.required' => 'Vui lòng chọn hệ đào tạo!',
@@ -178,31 +178,31 @@ class EducationProgramController extends Controller
     public function change(Request $request, $educationProgram)
     {
         $pro = EducationProgram::find($educationProgram);
-        if($pro->education_program_status==0){
-            $pro->education_program_status=1;
+        if ($pro->education_program_status == 0) {
+            $pro->education_program_status = 1;
             $pro->save();
-        }else{
-            $pro->education_program_status=0;
+        } else {
+            $pro->education_program_status = 0;
             $pro->save();
         }
     }
 
     public function program_one(Request $request, $education_program_id)
     {
-        $join = EducationProgram::join('tbl_program_type', 'tbl_program_type.program_type_id','=','tbl_education_program.education_program_type')
-        ->join('tbl_faculty', 'tbl_faculty.faculty_id','=','tbl_education_program.education_program_faculty')
-        ->join('tbl_course', 'tbl_course.course_id','=','tbl_education_program.education_program_course')
-        ->where('education_program_id', $education_program_id)->orderby('education_program_id','DESC')->get();
+        $join = EducationProgram::join('tbl_program_type', 'tbl_program_type.program_type_id', '=', 'tbl_education_program.education_program_type')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_education_program.education_program_faculty')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_education_program.education_program_course')
+            ->where('education_program_id', $education_program_id)->orderby('education_program_id', 'DESC')->get();
         return EducationProgramResource::collection($join);
     }
 
     public function show_subject_program($education_program_id)
     {
-        $program = ProgramDetail::join('tbl_education_program','tbl_education_program.education_program_code','=','tbl_program_detail.program_detail_code')
-        ->join('tbl_subject','tbl_subject.subject_code','=','tbl_program_detail.program_detail_subject')
-        ->join('tbl_faculty', 'tbl_faculty.faculty_id','=','subject_faculty')
-        ->where('tbl_education_program.education_program_id',$education_program_id)
-        ->orderby('tbl_program_detail.program_detail_semester', 'ASC')->get();
+        $program = ProgramDetail::join('tbl_education_program', 'tbl_education_program.education_program_code', '=', 'tbl_program_detail.program_detail_code')
+            ->join('tbl_subject', 'tbl_subject.subject_code', '=', 'tbl_program_detail.program_detail_subject')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'subject_faculty')
+            ->where('tbl_education_program.education_program_id', $education_program_id)
+            ->orderby('tbl_program_detail.program_detail_semester', 'ASC')->get();
         return ProgramDetailResource::collection($program);
     }
 
@@ -221,20 +221,20 @@ class EducationProgramController extends Controller
             $find = ProgramDetail::where('program_detail_code', $program_code)->get();
             $count = $find->count();
             if ($count > 0) {
-                foreach($find as $key => $value) {
+                foreach ($find as $key => $value) {
                     $subject = Subject::where('subject_code', $value->program_detail_subject)->get();
-                    foreach($subject as $key => $value2) {
+                    foreach ($subject as $key => $value2) {
                         $sum += $value2->subject_credit;
                         $education = EducationProgram::where('education_program_code', $program_code)->get();
-                        foreach($education as $key => $value3) {
+                        foreach ($education as $key => $value3) {
                             $value3->education_program_credit = $sum;
                             $value3->save();
                         }
                     }
                 }
-            }else {
+            } else {
                 $education = EducationProgram::where('education_program_code', $program_code)->get();
-                foreach($education as $key => $value3) {
+                foreach ($education as $key => $value3) {
                     $value3->education_program_credit = $sum;
                     $value3->save();
                 }
@@ -244,17 +244,33 @@ class EducationProgramController extends Controller
 
     public function import(Request $request, $education_program_id)
     {
+        $sum = 0;
         $find = EducationProgram::find($education_program_id);
         $program_code = $find->education_program_code;
         $request->validate([
             'fileImport' => 'required|file|mimes:xls,xlsx'
-        ],[
+        ], [
             'fileImport.required' => 'Vui lòng không để trống!',
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
         ]);
         $path = $request->file('fileImport')->getRealPath();
         $data = Excel::import(new ProgramDetailUpdateImport($program_code), $path);
+
+        if ($data) {
+            $find = ProgramDetail::where('program_detail_code', $program_code)->get();
+            foreach ($find as $key => $value) {
+                $subject = Subject::where('subject_code', $value->program_detail_subject)->get();
+                foreach ($subject as $key => $value2) {
+                    $sum += $value2->subject_credit;
+                    $education = EducationProgram::where('education_program_code', $program_code)->get();
+                    foreach ($education as $key => $value3) {
+                        $value3->education_program_credit = $sum;
+                        $value3->save();
+                    }
+                }
+            }
+        }
         return response()->json(200);
     }
 
@@ -262,14 +278,31 @@ class EducationProgramController extends Controller
     {
         $data = $request->validate([
             'subject_semester' => ['required', 'max:10'],
-        ],[
+            'program_detail_lecturer' => 'required|max:100',
+            'program_detail_calendar' => 'required|max:255',
+            'program_detail_start' => 'required',
+            'program_detail_end' => 'required',
+        ], [
             'subject_semester.required' => 'Học kỳ không dược để trống!',
             'subject_semester.max' => 'Học kỳ không nhập quá 10 ký tự!',
+
+            'program_detail_lecturer.required' => 'Tên giảng viên không dược để trống!',
+            'program_detail_lecturer.max' => 'Tên giảng viên không nhập quá 100 ký tự!',
+
+            'program_detail_calendar.required' => 'Lịch học không dược để trống!',
+            'program_detail_calendar.max' => 'Lịch học không nhập quá 255 ký tự!',
+
+            'program_detail_start.required' => 'Ngày bắt đầu không dược để trống!',
+            'program_detail_end.required' => 'Ngày kết thúc không dược để trống!',
         ]);
 
         $program = ProgramDetail::find($program_detail_id);
         $program->program_detail_semester = $data['subject_semester'];
         $program->program_detail_note = $request->subject_major;
+        $program->program_detail_calendar = $data['program_detail_calendar'];
+        $program->program_detail_lecturer = $data['program_detail_lecturer'];
+        $program->program_detail_start = $data['program_detail_start'];
+        $program->program_detail_end = $data['program_detail_end'];
         $program->save();
     }
 

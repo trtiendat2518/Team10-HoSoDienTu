@@ -46,7 +46,7 @@ class MajorController extends Controller
             'major_name' => ['required', 'max:50', 'min:5', 'unique:tbl_major', 'notspecial_spaces'],
             'major_faculty' => ['required'],
             'major_status' => ['required'],
-        ],[
+        ], [
             'major_code.required' => 'Mã Chuyên Ngành không được để trống!',
             'major_code.max' => 'Mã Chuyên Ngành không nhập quá 10 ký tự chữ!',
             'major_code.min' => 'Mã Chuyên Ngành phải có 2 ký tự chữ trở lên!',
@@ -79,7 +79,7 @@ class MajorController extends Controller
      */
     public function show($currentEntries)
     {
-        $joins = Major::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')->orderby('major_id','DESC')->paginate($currentEntries);
+        $joins = Major::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')->orderby('major_id', 'DESC')->paginate($currentEntries);
         return MajorResource::collection($joins);
     }
 
@@ -106,9 +106,15 @@ class MajorController extends Controller
         $mj = Major::find($major);
 
         $data = $request->validate([
-            'major_name' => ['required', 'max:50', 'min:5', 'notspecial_spaces'],
+            'major_name' => [
+                'required',
+                'max:50',
+                'min:5',
+                'notspecial_spaces',
+                "unique:tbl_major,major_name,$major,major_id"
+            ],
             'major_faculty' => ['required'],
-        ],[
+        ], [
             'major_name.required' => 'Tên Chuyên Ngành không được để trống!',
             'major_name.max' => 'Tên Chuyên Ngành không nhập quá 50 ký tự chữ!',
             'major_name.min' => 'Tên Chuyên Ngành phải có 5 ký tự chữ trở lên!',
@@ -137,12 +143,12 @@ class MajorController extends Controller
 
     public function search($query, $currentEntries)
     {
-        return MajorResource::collection(Major::where('major_code','LIKE','%'.$query.'%')->orwhere('major_name','LIKE','%'.$query.'%')->orderby('major_id','DESC')->paginate($currentEntries));
+        return MajorResource::collection(Major::where('major_code', 'LIKE', '%' . $query . '%')->orwhere('major_name', 'LIKE', '%' . $query . '%')->orderby('major_id', 'DESC')->paginate($currentEntries));
     }
 
     public function major()
     {
-        return MajorResource::collection(Major::orderby('major_name','DESC')->get());
+        return MajorResource::collection(Major::orderby('major_name', 'DESC')->get());
     }
 
     public function destroyall(Request $request, $major = null)
@@ -157,36 +163,36 @@ class MajorController extends Controller
     public function change(Request $request, $major)
     {
         $mj = Major::find($major);
-        if($mj->major_status==0){
-            $mj->major_status=1;
+        if ($mj->major_status == 0) {
+            $mj->major_status = 1;
             $mj->save();
-        }else{
-            $mj->major_status=0;
+        } else {
+            $mj->major_status = 0;
             $mj->save();
         }
     }
 
     public function filter($faculty, $currentEntries)
     {
-        return MajorResource::collection(Major::where('major_faculty','=', $faculty)->orderby('major_name','DESC')->paginate($currentEntries));
+        return MajorResource::collection(Major::where('major_faculty', '=', $faculty)->orderby('major_name', 'DESC')->paginate($currentEntries));
     }
 
     public function detail($major)
     {
-        $joins = Major::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')->where('tbl_major.major_id', $major)->orderby('major_id','DESC')->get();
+        $joins = Major::join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')->where('tbl_major.major_id', $major)->orderby('major_id', 'DESC')->get();
         return MajorResource::collection($joins);
     }
 
     public function export(Request $request)
     {
-        return Excel::download(new MajorExport , 'list_of_major.xlsx');
+        return Excel::download(new MajorExport, 'list_of_major.xlsx');
     }
 
     public function import(Request $request)
     {
         $request->validate([
             'fileImport' => 'required|file|mimes:xls,xlsx'
-        ],[
+        ], [
             'fileImport.required' => 'Vui lòng không để trống!',
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
