@@ -30,47 +30,16 @@ Vue.component(
     require("./components/pagination/PaginationComponent.vue").default
 );
 
-//Users
+//Avatar
 Vue.component(
-    "lecturer-manage-component",
-    require("./components/admin/pages/users/LecturerManageComponent.vue")
-        .default
+    "admin-avatar",
+    require("./components/avatar/AdminAvatarComponent.vue").default
 );
 Vue.component(
-    "student-manage-component",
-    require("./components/admin/pages/users/StudentManageComponent.vue").default
-);
-
-//Education
-Vue.component(
-    "faculty-component",
-    require("./components/admin/pages/education/FacultyComponent.vue").default
+    "deanfaculty-avatar",
+    require("./components/avatar/DeanFacultyAvatarComponent.vue").default
 );
 Vue.component(
-    "major-component",
-    require("./components/admin/pages/education/MajorComponent.vue").default
-);
-Vue.component(
-    "course-component",
-    require("./components/admin/pages/education/CourseComponent.vue").default
-);
-
-//Posts
-Vue.component(
-    "post-component",
-    require("./components/admin/pages/posts/PostComponent.vue").default
-);
-Vue.component(
-    "post-index-component",
-    require("./components/admin/pages/posts/PostIndexComponent.vue").default
-);
-Vue.component(
-    "post-create-component",
-    require("./components/admin/pages/posts/PostCreateComponent.vue").default
-);
-
-//Subjects
-Vue.component(
-    "subject-component",
-    require("./components/admin/pages/subjects/SubjectComponent.vue").default
+    "formteacher-avatar",
+    require("./components/avatar/FormTeacherAvatarComponent.vue").default
 );
