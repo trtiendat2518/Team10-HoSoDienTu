@@ -35,13 +35,13 @@
                     </div>
 
                     <div class="row">
-                        <!-- <div class="col-md-1">
+                        <div class="col-md-1">
                             <button
                                 class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash"
                                 @click="destroyall()"
                                 :disabled="!selected.length"
                             ></button>
-                        </div> -->
+                        </div>
                         <div class="col-md-6">
                             <input
                                 type="text"
@@ -139,14 +139,9 @@
                                         </center>
                                     </td>
                                     <td>
-                                        <router-link
-                                            tag="a"
-                                            :to="{
-                                                name: 'postupdate',
-                                                params: {
-                                                    idPost: req.request_id
-                                                }
-                                            }"
+                                        <a
+                                            href="javascript:void(0)"
+                                            @click="detail(req)"
                                         >
                                             <div v-if="req.request_title < 40">
                                                 {{ req.request_title }}
@@ -159,7 +154,7 @@
                                                     ) + "..."
                                                 }}
                                             </div>
-                                        </router-link>
+                                        </a>
                                     </td>
                                     <td>
                                         {{ req.student_code }} -
@@ -210,16 +205,11 @@
                                         </select>
                                     </td>
                                     <td style="text-align: center">
-                                        <router-link
-                                            class="btn-3d btn btn-success btn-lg fa fa-eye"
-                                            tag="button"
-                                            :to="{
-                                                name: 'postupdate',
-                                                params: {
-                                                    idPost: req.request_id
-                                                }
-                                            }"
-                                        ></router-link>
+                                        <a
+                                            href="javascript:void(0)"
+                                            class="btn-3d btn btn-success btn-lg fa fa-reply"
+                                            @click="show(req)"
+                                        ></a>
                                     </td>
                                     <td>
                                         <button
@@ -312,10 +302,249 @@
             </div>
         </div>
         <!-- Modal end-->
+
+        <!-- Modal -->
+        <div
+            class="modal fade bd-example-modal-lg"
+            id="DetailModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="DetailModalTitle"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header styling-modal-header-info">
+                        <h5
+                            class="modal-title styling-font-modal-header"
+                            id="DetailModalTitle"
+                        >
+                            Chi tiết yêu cầu sinh viên
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table
+                            class="table row table-borderless w-100 m-0 border"
+                        >
+                            <tbody class="col-lg-12 p-0">
+                                <tr class="row ml-1">
+                                    <td class="col-md-6">
+                                        Ngày gửi:
+                                        <strong>
+                                            {{
+                                                form.created_at | formatFullTime
+                                            }}
+                                        </strong>
+                                    </td>
+                                    <td class="col-md-6">
+                                        Lớp học:
+                                        <strong>
+                                            {{ form.course_code }}
+                                            -
+                                            {{ form.class_name }}
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr class="row ml-1">
+                                    <td class="col-md-6">
+                                        Mã số sinh viên:
+                                        <strong>
+                                            {{ form.student_code }}
+                                        </strong>
+                                    </td>
+                                    <td class="col-md-6">
+                                        Họ và tên sinh viên:
+                                        <strong>
+                                            {{ form.student_fullname }}
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Tiêu đề:
+                                        <strong>
+                                            {{ form.request_title }}
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Nội dung:
+                                        <strong>
+                                            {{ form.request_content }}
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Tệp đính kèm:
+                                        <strong>
+                                            {{ form.request_file }}
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn-3d btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Đóng
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal end-->
+
+        <!-- Modal -->
+        <div
+            class="modal fade bd-example-modal-lg"
+            id="RequestModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="RequestModalTitle"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-lg" role="document">
+                <form
+                    @submit.prevent="reply()"
+                    @keydown="form.onKeydown($event)"
+                >
+                    <span class="alert-danger" :form="form"></span>
+                    <div class="modal-content">
+                        <div class="modal-header styling-modal-header-update">
+                            <h5 class="modal-title" id="RequestModalTitle">
+                                Trả lời yêu cầu sinh viên
+                            </h5>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table
+                                class="table row table-borderless w-100 m-0 border"
+                            >
+                                <tbody class="col-lg-12 p-0">
+                                    <tr class="row ml-1">
+                                        <td class="col-md-6">
+                                            Ngày gửi:
+                                            <strong>
+                                                {{
+                                                    form.created_at
+                                                        | formatFullTime
+                                                }}
+                                            </strong>
+                                        </td>
+                                        <td class="col-md-6">
+                                            Lớp học:
+                                            <strong>
+                                                {{ form.course_code }}
+                                                -
+                                                {{ form.class_name }}
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <tr class="row ml-1">
+                                        <td class="col-md-6">
+                                            Mã số sinh viên:
+                                            <strong>
+                                                {{ form.student_code }}
+                                            </strong>
+                                        </td>
+                                        <td class="col-md-6">
+                                            Họ và tên sinh viên:
+                                            <strong>
+                                                {{ form.student_fullname }}
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <br />
+                                    <tr>
+                                        <td>
+                                            Tiêu đề:
+                                            <strong>
+                                                {{ form.request_title }}
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Nội dung:
+                                            <strong>
+                                                {{ form.request_content }}
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Tệp đính kèm:
+                                            <strong>
+                                                {{ form.request_file }}
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <label class="mt-3">
+                                Trả lời
+                            </label>
+                            <!-- <textarea
+                                rows="5"
+                                v-model="form.request_reply"
+                                type="text"
+                                name="request_reply"
+                                class="form-control"
+                                placeholder="Nhập nội dung...."
+                            ></textarea> -->
+                            <vue-editor
+                                v-model="form.request_reply"
+                                :editorToolbar="customToolbar"
+                            ></vue-editor>
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                class="btn-3d btn btn-secondary"
+                                data-dismiss="modal"
+                            >
+                                Đóng
+                            </button>
+                            <button
+                                :disabled="form.busy"
+                                type="submit"
+                                class="btn-3d btn btn-primary background-update"
+                            >
+                                Gửi
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Modal end-->
     </div>
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
 import "vue-snotify/styles/material.css";
 export default {
     data() {
@@ -337,13 +566,41 @@ export default {
                 request_content: "",
                 request_status: "",
                 request_reply: "",
-                request_file: ""
+                request_file: "",
+                student_fullname: "",
+                student_code: "",
+                created_at: "",
+                updated_at: "",
+                course_code: "",
+                class_name: ""
             }),
             selected: [],
             selectAll: false,
             error: {},
-            value_status: ""
+            value_status: "",
+            customToolbar: [
+                [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+                [{ size: ["small", false, "large", "huge"] }],
+                ["bold", "italic", "underline", "strike"],
+                [
+                    { align: "" },
+                    { align: "center" },
+                    { align: "right" },
+                    { align: "justify" }
+                ],
+                [{ header: 1 }, { header: 2 }],
+                ["blockquote", "code-block"],
+                [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+                [{ script: "sub" }, { script: "super" }],
+                [{ indent: "-1" }, { indent: "+1" }],
+                [{ color: [] }, { background: [] }],
+                ["link", "image", "video", "formula"],
+                [{ direction: "rtl" }]
+            ]
         };
+    },
+    components: {
+        VueEditor
     },
     watch: {
         currentEntries(number) {
@@ -435,83 +692,83 @@ export default {
                 })
                 .catch(err => console.log(err));
         },
-        // destroy(request_id) {
-        //     this.$snotify.clear();
-        //     this.$snotify.confirm("Xác nhận xóa", {
-        //         timeout: 5000,
-        //         showProgressBar: true,
-        //         closeOnClick: false,
-        //         pauseOnHover: true,
-        //         buttons: [
-        //             {
-        //                 text: "Xóa",
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id);
-        //                     axios
-        //                         .delete(
-        //                             `../../api/admin/post-news/bai-viet/${request_id}`
-        //                         )
-        //                         .then(res => {
-        //                             this.$snotify.success("Đã xóa!");
-        //                             this.fetchRequests();
-        //                         })
-        //                         .catch(err => console.log(err));
-        //                 },
-        //                 bold: false
-        //             },
-        //             {
-        //                 text: "Đóng",
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id);
-        //                 },
-        //                 bold: true
-        //             }
-        //         ]
-        //     });
-        // },
-        // destroyall() {
-        //     this.$snotify.clear();
-        //     this.$snotify.confirm("Xác nhận xóa", {
-        //         timeout: 5000,
-        //         showProgressBar: true,
-        //         closeOnClick: false,
-        //         pauseOnHover: true,
-        //         buttons: [
-        //             {
-        //                 text: "Xóa",
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id);
-        //                     axios
-        //                         .post(
-        //                             "../../api/admin/post-news/bai-viet/destroyall",
-        //                             { post: this.selected }
-        //                         )
-        //                         .then(res => {
-        //                             this.$snotify.success("Đã xóa!");
-        //                             this.fetchRequests();
-        //                         })
-        //                         .catch(err => console.log(err));
-        //                 },
-        //                 bold: false
-        //             },
-        //             {
-        //                 text: "Đóng",
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id);
-        //                 },
-        //                 bold: true
-        //             }
-        //         ]
-        //     });
-        // },
-        // select() {
-        //     this.selected = [];
-        //     if (!this.selectAll) {
-        //         for (let i in this.requests) {
-        //             this.selected.push(this.requests[i].request_id);
-        //         }
-        //     }
-        // },
+        destroy(request_id) {
+            this.$snotify.clear();
+            this.$snotify.confirm("Xác nhận xóa", {
+                timeout: 5000,
+                showProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: true,
+                buttons: [
+                    {
+                        text: "Xóa",
+                        action: toast => {
+                            this.$snotify.remove(toast.id);
+                            axios
+                                .delete(
+                                    `../../api/admin/request-sv/yeu-cau-sinh-vien/${request_id}`
+                                )
+                                .then(res => {
+                                    this.$snotify.success("Đã xóa!");
+                                    this.fetchRequests();
+                                })
+                                .catch(err => console.log(err));
+                        },
+                        bold: false
+                    },
+                    {
+                        text: "Đóng",
+                        action: toast => {
+                            this.$snotify.remove(toast.id);
+                        },
+                        bold: true
+                    }
+                ]
+            });
+        },
+        destroyall() {
+            this.$snotify.clear();
+            this.$snotify.confirm("Xác nhận xóa", {
+                timeout: 5000,
+                showProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: true,
+                buttons: [
+                    {
+                        text: "Xóa",
+                        action: toast => {
+                            this.$snotify.remove(toast.id);
+                            axios
+                                .post(
+                                    "../../api/admin/request-sv/yeu-cau-sinh-vien/destroyall",
+                                    { req: this.selected }
+                                )
+                                .then(res => {
+                                    this.$snotify.success("Đã xóa!");
+                                    this.fetchRequests();
+                                })
+                                .catch(err => console.log(err));
+                        },
+                        bold: false
+                    },
+                    {
+                        text: "Đóng",
+                        action: toast => {
+                            this.$snotify.remove(toast.id);
+                        },
+                        bold: true
+                    }
+                ]
+            });
+        },
+        select() {
+            this.selected = [];
+            if (!this.selectAll) {
+                for (let i in this.requests) {
+                    this.selected.push(this.requests[i].request_id);
+                }
+            }
+        },
         reload() {
             this.fetchRequests();
             this.query = "";
@@ -528,6 +785,44 @@ export default {
                     this.pagination = res.meta;
                 })
                 .catch(err => console.log(err));
+        },
+        detail(reql, page_url) {
+            let vm = this;
+            page_url = `../../api/admin/request-sv/yeu-cau-sinh-vien/detail/${reql.request_id}`;
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.form.fill(res.data[0]);
+                    $("#DetailModal").modal("show");
+                    console.log(res.data);
+                })
+                .catch(err => console.log(err));
+        },
+        show(req) {
+            this.form.reset();
+            this.form.clear();
+            this.form.fill(req);
+            $("#RequestModal").modal("show");
+        },
+        reply() {
+            if (this.form.request_reply == null) {
+                $("#RequestModal").modal("hide");
+            } else {
+                this.form
+                    .put(
+                        `../../api/admin/request-sv/yeu-cau-sinh-vien/${this.form.request_id}`
+                    )
+                    .then(res => {
+                        this.fetchRequests();
+                        $("#RequestModal").modal("hide");
+                        if (this.form.successful) {
+                            this.$snotify.success("Đã gửi câu trả lời!");
+                        } else {
+                            this.$snotify.error("Không thể gửi");
+                        }
+                    })
+                    .catch(err => console.log(err));
+            }
         }
     }
 };
@@ -560,7 +855,7 @@ export default {
     color: #1753fc;
 }
 .styling-modal-header-info {
-    background-color: #1753fc;
+    background-color: darkblue;
     color: white;
 }
 .styling-font-modal-header {
