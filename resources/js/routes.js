@@ -41,6 +41,7 @@ import CalendarReference from "./components/admin/pages/calendar/CalendarReferen
 import ClassStudent from "./components/admin/pages/class/ClassStudentComponent.vue";
 import ClassStudentIndex from "./components/admin/pages/class/ClassStudentIndexComponent.vue";
 import ClassStudentDetail from "./components/admin/pages/class/ClassStudentDetailComponent.vue";
+import ClassStudentScore from "./components/admin/pages/class/ClassStudentScoreComponent.vue";
 
 import EducationProgramStudent from "./components/admin/pages/education_program_student/EducationProgramStudentComponent.vue";
 import EducationProgramStudentIndex from "./components/admin/pages/education_program_student/EducationProgramStudentIndexComponent.vue";
@@ -375,6 +376,11 @@ export default new VueRouter({
                     path: "sinh-vien/:idClass",
                     name: "classstudentdetail",
                     component: ClassStudentDetail
+                },
+                {
+                    path: "xem-diem/:idClass/:idStudent",
+                    name: "classstudentscore",
+                    component: ClassStudentScore
                 }
             ],
             beforeEnter: (to, from, next) => {
