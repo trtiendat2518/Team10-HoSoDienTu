@@ -99,15 +99,22 @@
                                     <td>{{ stu.student_fullname }}</td>
                                     <td>{{ stu.student_email }}</td>
                                     <td>
-                                        <button
+                                        <router-link
                                             class="btn-3d btn btn-success btn-lg fa fa-book"
-                                            @click="show(clas)"
-                                        ></button>
+                                            tag="button"
+                                            :to="{
+                                                name: 'classstudentscore',
+                                                params: {
+                                                    idClass: class_id,
+                                                    idStudent: stu.student_id
+                                                }
+                                            }"
+                                        ></router-link>
                                     </td>
                                     <td class="text-center">
                                         <button
                                             class="btn-3d btn btn-primary btn-lg fa fa-calendar"
-                                            @click="destroy(clas.class_id)"
+                                            @click="destroy(stu.class_id)"
                                         ></button>
                                     </td>
                                 </tr>
