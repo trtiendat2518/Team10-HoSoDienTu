@@ -325,4 +325,9 @@ class StudentManageController extends Controller
         $data = Excel::import(new StudentImport, $path);
         return response()->json(200);
     }
+
+    public function allstudent()
+    {
+        return StudentResource::collection(Student::orderby('student_id', 'DESC')->get());
+    }
 }
