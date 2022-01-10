@@ -20,7 +20,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function () {
     Route::prefix('user-gv')->group(function () {
-        Route::post('giang-vien/role/{lecturer}', 'Admin\Users\LecturerManageController@role');
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty_noimg');
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty');
+        Route::post('giang-vien/tao-thong-tin-ca-nhan-bcnk', 'Admin\Users\LecturerManageController@create_info_deanfaculty');
+        Route::get('giang-vien/thong-tin-ca-nhan-bcnk/{lecturer_id}', 'Admin\Users\LecturerManageController@info_deanfaculty');
+        Route::get('giang-vien/bcnk/{lecturer_id}', 'Admin\Users\LecturerManageController@deanfaculty');
+
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_admin_noimg');
+        Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan/{info_id}', 'Admin\Users\LecturerManageController@update_info_admin');
+        Route::post('giang-vien/tao-thong-tin-ca-nhan', 'Admin\Users\LecturerManageController@create_info_admin');
+        Route::get('giang-vien/thong-tin-ca-nhan/{admin_id}', 'Admin\Users\LecturerManageController@info_admin');
+
+        Route::get('giang-vien/search-formteacher/{lecturer_id}/{query}/{currentEntries}', 'Admin\Users\LecturerManageController@search_formteacher');
+        Route::get('giang-vien/show-formteacher/{lecturer_id}/{currentEntries}', 'Admin\Users\LecturerManageController@show_formteacher');
+        Route::get('giang-vien/formteacher/{lecturer_id}', 'Admin\Users\LecturerManageController@formteacher');
+
         Route::get('giang-vien/admin/', 'Admin\Users\LecturerManageController@admin');
         Route::get('giang-vien/lecturer/', 'Admin\Users\LecturerManageController@lecturer');
         Route::get('giang-vien/detail/{lecturer}', 'Admin\Users\LecturerManageController@detail');
@@ -32,6 +46,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('user-sv')->group(function () {
+        Route::get('sinh-vien/allstudent', 'Admin\Users\StudentManageController@allstudent');
         Route::post('sinh-vien/import', 'Admin\Users\StudentManageController@import');
         Route::post('sinh-vien/upgrade/{student}', 'Admin\Users\StudentManageController@upgrade');
         Route::patch('sinh-vien/patch/{student}', 'Admin\Users\StudentManageController@patch');
@@ -142,15 +157,8 @@ Route::prefix('admin')->group(function () {
         Route::resource('yeu-cau-thu-tuc', 'Admin\Posts\ProcedureRequireController');
     });
 
-    Route::prefix('user-cn')->group(function () {
-        Route::get('chu-nhiem-sinh-vien/detail/{form_teacher_id}', 'Admin\Users\FormTeacherController@detail');
-        // Route::get('chu-nhiem-sinh-vien/filter/{lecturer_id}/{value}/{currentEntries}','Admin\Users\FormTeacherController@filter');
-        Route::get('chu-nhiem-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Users\FormTeacherController@search');
-        Route::get('chu-nhiem-sinh-vien/showdata/{lecturer_id}/{currentEntries}', 'Admin\Users\FormTeacherController@showdata');
-        Route::resource('chu-nhiem-sinh-vien', 'Admin\Users\FormTeacherController');
-    });
-
     Route::prefix('class-sv')->group(function () {
+        Route::get('lop/class-formteacher/{lecturer_id}', 'Admin\Education\ClassStudentController@formteacher_class');
         Route::get('lop/teacher-student-class/{class}', 'Admin\Education\ClassStudentController@teacher_student_class');
         Route::get('lop/search-student-class/{class}/{query}', 'Admin\Education\ClassStudentController@search_student_class');
         Route::get('lop/student-class/{class}', 'Admin\Education\ClassStudentController@student_class');
@@ -176,8 +184,26 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('edu-program-sv')->group(function () {
-        Route::get('chuong-trinh-dao-tao-sinh-vien/select/{faculty}', 'Admin\Education\EducationProgramStudentController@select');
         Route::get('chuong-trinh-dao-tao-sinh-vien/filter/{value}', 'Admin\Education\EducationProgramStudentController@filter');
         Route::resource('chuong-trinh-dao-tao-sinh-vien', 'Admin\Education\EducationProgramStudentController');
+    });
+
+    Route::prefix('request-sv')->group(function () {
+        Route::get('yeu-cau-sinh-vien/detail/{request_id}', 'Admin\Posts\RequestStudentController@detail');
+        Route::post('yeu-cau-sinh-vien/destroyall/', 'Admin\Posts\RequestStudentController@destroyall');
+        Route::get('yeu-cau-sinh-vien/filter/{lecturer_id}/{value}/{currentEntries}', 'Admin\Posts\RequestStudentController@filter');
+        Route::get('yeu-cau-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Posts\RequestStudentController@search');
+        Route::put('yeu-cau-sinh-vien/reject/{lecturer_id}', 'Admin\Posts\RequestStudentController@reject');
+        Route::patch('yeu-cau-sinh-vien/accept/{lecturer_id}', 'Admin\Posts\RequestStudentController@accept');
+        Route::get('yeu-cau-sinh-vien/showdata/{lecturer_id}/{currentEntries}', 'Admin\Posts\RequestStudentController@showdata');
+        Route::resource('yeu-cau-sinh-vien', 'Admin\Posts\RequestStudentController');
+    });
+
+    Route::prefix('register-subject')->group(function () {
+        Route::get('dang-ky-mon-hoc-sv/xem-diem/{student_id}', 'Admin\Education\RegisterSubjectController@score');
+    });
+
+    Route::prefix('register-plan')->group(function () {
+        Route::resource('dang-ky-ke-hoach-hoc-tap-sv', 'Admin\Education\RegisterPlanController');
     });
 });
