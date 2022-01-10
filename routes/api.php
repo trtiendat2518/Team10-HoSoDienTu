@@ -46,6 +46,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('user-sv')->group(function () {
+        Route::get('sinh-vien/allstudent', 'Admin\Users\StudentManageController@allstudent');
         Route::post('sinh-vien/import', 'Admin\Users\StudentManageController@import');
         Route::post('sinh-vien/upgrade/{student}', 'Admin\Users\StudentManageController@upgrade');
         Route::patch('sinh-vien/patch/{student}', 'Admin\Users\StudentManageController@patch');

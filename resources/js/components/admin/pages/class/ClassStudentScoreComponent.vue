@@ -271,7 +271,6 @@
                                         ></button>
                                     </td>
                                 </tr>
-
                                 <tr class="background-result">
                                     <td colspan="3">
                                         <div>

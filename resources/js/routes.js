@@ -66,6 +66,10 @@ import InfoFormTeacherCreate from "./components/admin/pages/info/InfoFormTeacher
 import RequestStudent from "./components/admin/pages/request/RequestStudentComponent.vue";
 import RequestStudentIndex from "./components/admin/pages/request/RequestStudentIndexComponent.vue";
 
+import FormTeacherClass from "./components/admin/pages/formteacher_class/FormTeacherClassComponent.vue";
+import FormTeacherClassIndex from "./components/admin/pages/formteacher_class/FormTeacherClassIndexComponent.vue";
+import FormTeacherClassDetail from "./components/admin/pages/formteacher_class/FormTeacherClassDetailComponent.vue";
+
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
 if (
@@ -522,6 +526,31 @@ export default new VueRouter({
                     path: "",
                     name: "requeststudentindex",
                     component: RequestStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$teacherId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/lop-sinh-vien",
+            name: "formteacherclass",
+            component: FormTeacherClass,
+            children: [
+                {
+                    path: "",
+                    name: "formteacherclassindex",
+                    component: FormTeacherClassIndex
+                },
+                {
+                    path: ":idFTClass",
+                    name: "formteacherclassdetail",
+                    component: FormTeacherClassDetail
                 }
             ],
             beforeEnter: (to, from, next) => {
