@@ -201,4 +201,8 @@ Route::prefix('admin')->group(function () {
     Route::prefix('register-subject')->group(function () {
         Route::get('dang-ky-mon-hoc-sv/xem-diem/{student_id}', 'Admin\Education\RegisterSubjectController@score');
     });
+
+    Route::prefix('register-plan')->group(function () {
+        Route::resource('dang-ky-ke-hoach-hoc-tap-sv', 'Admin\Education\RegisterPlanController');
+    });
 });

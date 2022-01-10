@@ -44,6 +44,24 @@
             Quay lại
         </router-link>
 
+        <div class="alert alert-info">
+            <p>
+                <i><u>Chú ý:</u></i>
+            </p>
+            <div>
+                <p class="fa fa-check"></p>
+                : Môn học đã đậu
+            </div>
+            <div>
+                <p class="fa fa-times"></p>
+                : Môn học đã rớt
+            </div>
+            <div>
+                <p class="fa fa-minus"></p>
+                : Chưa có điểm
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12 col-lg-12">
                 <div class="card">
@@ -99,7 +117,7 @@
                                 <tr
                                     v-show="subjects[i].length"
                                     v-for="(subject, index) in subjects[i]"
-                                    :key="subject.subject_ide"
+                                    :key="subject.subject_id"
                                 >
                                     <td class="text-center">
                                         {{ (index += 1) }}
@@ -114,57 +132,136 @@
                                         {{ subject.subject_credit }}
                                     </td>
                                     <td class="text-center">
-                                        {{ scoreSum(subject) }}
-                                    </td>
-                                    <td class="text-center">
-                                        <div v-if="scoreSum(subject) < 4">
-                                            F
-                                        </div>
-                                        <div v-else-if="scoreSum(subject) < 5">
-                                            D
-                                        </div>
                                         <div
-                                            v-else-if="scoreSum(subject) < 5.5"
+                                            v-if="
+                                                subject.register_subject_exercise ==
+                                                    null &&
+                                                    subject.register_subject_exam ==
+                                                        null &&
+                                                    subject.register_subject_final ==
+                                                        null
+                                            "
                                         >
-                                            D+
-                                        </div>
-                                        <div
-                                            v-else-if="scoreSum(subject) < 6.5"
-                                        >
-                                            C
-                                        </div>
-                                        <div v-else-if="scoreSum(subject) < 7">
-                                            C+
-                                        </div>
-                                        <div v-else-if="scoreSum(subject) < 8">
-                                            B
-                                        </div>
-                                        <div
-                                            v-else-if="scoreSum(subject) < 8.5"
-                                        >
-                                            B+
-                                        </div>
-                                        <div v-else-if="scoreSum(subject) < 9">
-                                            A
-                                        </div>
-                                        <div
-                                            v-else-if="scoreSum(subject) <= 10"
-                                        >
-                                            A+
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <div v-if="scoreSum(subject) < 4">
                                             <i
-                                                class="fa fa-times"
+                                                class="fa fa-minus"
                                                 aria-hidden="true"
                                             ></i>
                                         </div>
-                                        <div v-else-if="scoreSum(subject) >= 4">
+                                        <div v-else>
+                                            {{ scoreSum(subject) }}
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div
+                                            v-if="
+                                                subject.register_subject_exercise ==
+                                                    null &&
+                                                    subject.register_subject_exam ==
+                                                        null &&
+                                                    subject.register_subject_final ==
+                                                        null
+                                            "
+                                        >
                                             <i
-                                                class="fa fa-check"
+                                                class="fa fa-minus"
                                                 aria-hidden="true"
                                             ></i>
+                                        </div>
+                                        <div v-else>
+                                            <div v-if="scoreSum(subject) < 4">
+                                                F
+                                            </div>
+                                            <div
+                                                v-else-if="
+                                                    scoreSum(subject) < 5
+                                                "
+                                            >
+                                                D
+                                            </div>
+                                            <div
+                                                v-else-if="
+                                                    scoreSum(subject) < 5.5
+                                                "
+                                            >
+                                                D+
+                                            </div>
+                                            <div
+                                                v-else-if="
+                                                    scoreSum(subject) < 6.5
+                                                "
+                                            >
+                                                C
+                                            </div>
+                                            <div
+                                                v-else-if="
+                                                    scoreSum(subject) < 7
+                                                "
+                                            >
+                                                C+
+                                            </div>
+                                            <div
+                                                v-else-if="
+                                                    scoreSum(subject) < 8
+                                                "
+                                            >
+                                                B
+                                            </div>
+                                            <div
+                                                v-else-if="
+                                                    scoreSum(subject) < 8.5
+                                                "
+                                            >
+                                                B+
+                                            </div>
+                                            <div
+                                                v-else-if="
+                                                    scoreSum(subject) < 9
+                                                "
+                                            >
+                                                A
+                                            </div>
+                                            <div
+                                                v-else-if="
+                                                    scoreSum(subject) <= 10
+                                                "
+                                            >
+                                                A+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div
+                                            v-if="
+                                                subject.register_subject_exercise ==
+                                                    null &&
+                                                    subject.register_subject_exam ==
+                                                        null &&
+                                                    subject.register_subject_final ==
+                                                        null
+                                            "
+                                        >
+                                            <i
+                                                class="fa fa-minus"
+                                                aria-hidden="true"
+                                            ></i>
+                                        </div>
+                                        <div v-else>
+                                            <div v-if="scoreSum(subject) < 4">
+                                                <i
+                                                    class="fa fa-times"
+                                                    aria-hidden="true"
+                                                ></i>
+                                            </div>
+                                            <div
+                                                v-else-if="
+                                                    scoreSum(subject) >= 4
+                                                "
+                                            >
+                                                <i
+                                                    class="fa fa-check"
+                                                    aria-hidden="true"
+                                                ></i>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="text-center">
@@ -174,6 +271,7 @@
                                         ></button>
                                     </td>
                                 </tr>
+
                                 <tr class="background-result">
                                     <td colspan="3">
                                         <div>
@@ -359,9 +457,9 @@ export default {
 
                     const semesters = res.data.reduce((semesters, item) => {
                         const semester =
-                            semesters[item.program_detail_semester] || [];
+                            semesters[item.register_subject_semester] || [];
                         semester.push(item);
-                        semesters[item.program_detail_semester] = semester;
+                        semesters[item.register_subject_semester] = semester;
                         return semesters;
                     }, {});
 
