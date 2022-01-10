@@ -41,6 +41,8 @@ import CalendarReference from "./components/admin/pages/calendar/CalendarReferen
 import ClassStudent from "./components/admin/pages/class/ClassStudentComponent.vue";
 import ClassStudentIndex from "./components/admin/pages/class/ClassStudentIndexComponent.vue";
 import ClassStudentDetail from "./components/admin/pages/class/ClassStudentDetailComponent.vue";
+import ClassStudentScore from "./components/admin/pages/class/ClassStudentScoreComponent.vue";
+import ClassStudentPlan from "./components/admin/pages/class/ClassStudentPlanComponent.vue";
 
 import EducationProgramStudent from "./components/admin/pages/education_program_student/EducationProgramStudentComponent.vue";
 import EducationProgramStudentIndex from "./components/admin/pages/education_program_student/EducationProgramStudentIndexComponent.vue";
@@ -63,6 +65,12 @@ import InfoFormTeacherCreate from "./components/admin/pages/info/InfoFormTeacher
 
 import RequestStudent from "./components/admin/pages/request/RequestStudentComponent.vue";
 import RequestStudentIndex from "./components/admin/pages/request/RequestStudentIndexComponent.vue";
+
+import FormTeacherClass from "./components/admin/pages/formteacher_class/FormTeacherClassComponent.vue";
+import FormTeacherClassIndex from "./components/admin/pages/formteacher_class/FormTeacherClassIndexComponent.vue";
+import FormTeacherClassDetail from "./components/admin/pages/formteacher_class/FormTeacherClassDetailComponent.vue";
+import FormTeacherClassScore from "./components/admin/pages/formteacher_class/FormTeacherClassScoreComponent.vue";
+import FormTeacherClassPlan from "./components/admin/pages/formteacher_class/FormTeacherClassPlanComponent.vue";
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
 
@@ -375,6 +383,16 @@ export default new VueRouter({
                     path: "sinh-vien/:idClass",
                     name: "classstudentdetail",
                     component: ClassStudentDetail
+                },
+                {
+                    path: "xem-diem/:idClass/:idStudent",
+                    name: "classstudentscore",
+                    component: ClassStudentScore
+                },
+                {
+                    path: "ke-hoach-hoc-tap/:idClass/:idStudent",
+                    name: "classstudentplan",
+                    component: ClassStudentPlan
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -510,6 +528,41 @@ export default new VueRouter({
                     path: "",
                     name: "requeststudentindex",
                     component: RequestStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$teacherId != null) {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
+
+        {
+            path: "/lop-sinh-vien",
+            name: "formteacherclass",
+            component: FormTeacherClass,
+            children: [
+                {
+                    path: "",
+                    name: "formteacherclassindex",
+                    component: FormTeacherClassIndex
+                },
+                {
+                    path: ":idFTClass",
+                    name: "formteacherclassdetail",
+                    component: FormTeacherClassDetail
+                },
+                {
+                    path: "xem-diem/:idFTClass/:idStudent",
+                    name: "formteacherclassscore",
+                    component: FormTeacherClassScore
+                },
+                {
+                    path: "ke-hoach-hoc-tap/:idFTClass/:idStudent",
+                    name: "formteacherclassplan",
+                    component: FormTeacherClassPlan
                 }
             ],
             beforeEnter: (to, from, next) => {

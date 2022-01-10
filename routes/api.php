@@ -46,6 +46,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('user-sv')->group(function () {
+        Route::get('sinh-vien/allstudent', 'Admin\Users\StudentManageController@allstudent');
         Route::post('sinh-vien/import', 'Admin\Users\StudentManageController@import');
         Route::post('sinh-vien/upgrade/{student}', 'Admin\Users\StudentManageController@upgrade');
         Route::patch('sinh-vien/patch/{student}', 'Admin\Users\StudentManageController@patch');
@@ -188,7 +189,21 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('request-sv')->group(function () {
+        Route::get('yeu-cau-sinh-vien/detail/{request_id}', 'Admin\Posts\RequestStudentController@detail');
+        Route::post('yeu-cau-sinh-vien/destroyall/', 'Admin\Posts\RequestStudentController@destroyall');
+        Route::get('yeu-cau-sinh-vien/filter/{lecturer_id}/{value}/{currentEntries}', 'Admin\Posts\RequestStudentController@filter');
+        Route::get('yeu-cau-sinh-vien/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Posts\RequestStudentController@search');
+        Route::put('yeu-cau-sinh-vien/reject/{lecturer_id}', 'Admin\Posts\RequestStudentController@reject');
+        Route::patch('yeu-cau-sinh-vien/accept/{lecturer_id}', 'Admin\Posts\RequestStudentController@accept');
         Route::get('yeu-cau-sinh-vien/showdata/{lecturer_id}/{currentEntries}', 'Admin\Posts\RequestStudentController@showdata');
         Route::resource('yeu-cau-sinh-vien', 'Admin\Posts\RequestStudentController');
+    });
+
+    Route::prefix('register-subject')->group(function () {
+        Route::get('dang-ky-mon-hoc-sv/xem-diem/{student_id}', 'Admin\Education\RegisterSubjectController@score');
+    });
+
+    Route::prefix('register-plan')->group(function () {
+        Route::resource('dang-ky-ke-hoach-hoc-tap-sv', 'Admin\Education\RegisterPlanController');
     });
 });
