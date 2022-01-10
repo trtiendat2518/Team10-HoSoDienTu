@@ -42,9 +42,6 @@
                                     <th class="text-white text-center w-30">
                                         Chuyên ngành
                                     </th>
-                                    <th class="text-white text-center w-10">
-                                        Sinh viên
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,9 +70,6 @@
                                     <td class="text-center td-table">
                                         {{ clas.major_name }}
                                     </td>
-                                    <td class="text-center td-table">
-                                        {{ countStudent(clas) }}
-                                    </td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -100,13 +94,11 @@ export default {
     data() {
         return {
             classes: [],
-            students: [],
             lecturer_id: this.$teacherId
         };
     },
     mounted() {
         this.fetchClasses();
-        this.fetchStudents();
     },
     methods: {
         fetchClasses(page_url) {
@@ -118,22 +110,6 @@ export default {
                     this.classes = res.data;
                 })
                 .catch(err => console.log(err));
-        },
-        fetchStudents(page_url) {
-            let vm = this;
-            page_url = `../../api/admin/user-sv/sinh-vien/allstudent`;
-            fetch(page_url)
-                .then(res => res.json())
-                .then(res => {
-                    this.studens = res.data;
-                })
-                .catch(err => console.log(err));
-        },
-        countStudent(clas) {
-            const count = this.studens.filter(
-                student => student.student_class == clas.class_id
-            );
-            return count.length;
         }
     }
 };

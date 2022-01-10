@@ -69,14 +69,24 @@
                     </div>
 
                     <div class="ml-2 mt-3">
-                        <div v-if="lecturer_fullname == ''">
-                            <h4>Chủ nhiệm sinh viên: Chưa có</h4>
-                        </div>
-                        <div v-else>
-                            <h4>
-                                Chủ nhiệm sinh viên:
-                                <i>{{ lecturer_fullname }}</i>
-                            </h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div v-if="lecturer_fullname == ''">
+                                    <h4>Chủ nhiệm sinh viên: Chưa có</h4>
+                                </div>
+                                <div v-else>
+                                    <h4>
+                                        Chủ nhiệm sinh viên:
+                                        <i>{{ lecturer_fullname }}</i>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>
+                                    Sỉ số lớp:
+                                    <i>{{ class_length }}</i>
+                                </h4>
+                            </div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -112,9 +122,9 @@
                                             class="btn-3d btn btn-success btn-lg fa fa-book"
                                             tag="button"
                                             :to="{
-                                                name: 'classstudentscore',
+                                                name: 'formteacherclassscore',
                                                 params: {
-                                                    idClass: class_id,
+                                                    idFTClass: class_id,
                                                     idStudent: stu.student_id
                                                 }
                                             }"
@@ -125,9 +135,9 @@
                                             class="btn-3d btn btn-primary btn-lg fa fa-calendar"
                                             tag="button"
                                             :to="{
-                                                name: 'classstudentplan',
+                                                name: 'formteacherclassplan',
                                                 params: {
-                                                    idClass: class_id,
+                                                    idFTClass: class_id,
                                                     idStudent: stu.student_id
                                                 }
                                             }"
@@ -476,6 +486,7 @@ export default {
             course_code: "",
             class_name: "",
             lecturer_fullname: "",
+            class_length: "",
             class_id: this.$route.params.idFTClass
         };
     },
@@ -502,6 +513,7 @@ export default {
                 .then(res => res.json())
                 .then(res => {
                     this.students = res.data;
+                    this.class_length = res.data.length;
                     if (res.data.length > 0) {
                         this.course_code = res.data[0].course_code;
                         this.class_name = res.data[0].class_name;
