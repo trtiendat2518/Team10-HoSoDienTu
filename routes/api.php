@@ -200,7 +200,9 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('register-subject')->group(function () {
+        Route::post('dang-ky-mon-hoc-sv/import/{student_id}', 'Admin\Education\RegisterSubjectController@import');
         Route::get('dang-ky-mon-hoc-sv/xem-diem/{student_id}', 'Admin\Education\RegisterSubjectController@score');
+        Route::resource('dang-ky-mon-hoc-sv', 'Admin\Education\RegisterSubjectController');
     });
 
     Route::prefix('register-plan')->group(function () {
