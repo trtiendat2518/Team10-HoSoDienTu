@@ -197,4 +197,12 @@ Route::prefix('admin')->group(function () {
         Route::get('yeu-cau-sinh-vien/showdata/{lecturer_id}/{currentEntries}', 'Admin\Posts\RequestStudentController@showdata');
         Route::resource('yeu-cau-sinh-vien', 'Admin\Posts\RequestStudentController');
     });
+
+    Route::prefix('register-subject')->group(function () {
+        Route::get('dang-ky-mon-hoc-sv/xem-diem/{student_id}', 'Admin\Education\RegisterSubjectController@score');
+    });
+
+    Route::prefix('register-plan')->group(function () {
+        Route::resource('dang-ky-ke-hoach-hoc-tap-sv', 'Admin\Education\RegisterPlanController');
+    });
 });
