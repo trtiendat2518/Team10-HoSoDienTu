@@ -112,10 +112,17 @@
                                         ></router-link>
                                     </td>
                                     <td class="text-center">
-                                        <button
+                                        <router-link
                                             class="btn-3d btn btn-primary btn-lg fa fa-calendar"
-                                            @click="destroy(stu.class_id)"
-                                        ></button>
+                                            tag="button"
+                                            :to="{
+                                                name: 'classstudentplan',
+                                                params: {
+                                                    idClass: class_id,
+                                                    idStudent: stu.student_id
+                                                }
+                                            }"
+                                        ></router-link>
                                     </td>
                                 </tr>
                                 <tr v-show="!students.length">
@@ -169,7 +176,9 @@
                     >
                         <center>
                             <img
-                                :src="`../public/avatar/${info.student_avatar}`"
+                                :src="
+                                    `../public/avatar/student/${info.student_avatar}`
+                                "
                                 class="avatar-xxl"
                                 alt="profile"
                             />

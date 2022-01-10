@@ -85,7 +85,7 @@ class RegisterSubjectController extends Controller
         //
     }
 
-    public function score(Request $request, $student_id)
+    public function score($student_id)
     {
         $joins = RegisterSubject::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_subject.register_subject_student')
             ->join('tbl_program_detail', 'tbl_program_detail.program_detail_id', '=', 'tbl_register_subject.register_subject_program')
