@@ -69,7 +69,7 @@ import RequestStudentIndex from "./components/admin/pages/request/RequestStudent
 import FormTeacherClass from "./components/admin/pages/formteacher_class/FormTeacherClassComponent.vue";
 import FormTeacherClassIndex from "./components/admin/pages/formteacher_class/FormTeacherClassIndexComponent.vue";
 import FormTeacherClassDetail from "./components/admin/pages/formteacher_class/FormTeacherClassDetailComponent.vue";
-//import FormTeacherClassScore from "./components/admin/pages/class/FormTeacherClassScoreComponent.vue";
+import FormTeacherClassScore from "./components/admin/pages/formteacher_class/FormTeacherClassScoreComponent.vue";
 import FormTeacherClassPlan from "./components/admin/pages/formteacher_class/FormTeacherClassPlanComponent.vue";
 
 import Error404 from "./components/layouts/ErrorComponent.vue";
@@ -554,11 +554,11 @@ export default new VueRouter({
                     name: "formteacherclassdetail",
                     component: FormTeacherClassDetail
                 },
-                // {
-                //     path: "xem-diem/:idClass/:idStudent",
-                //     name: "classstudentscore",
-                //     component: ClassStudentScore
-                // },
+                {
+                    path: "xem-diem/:idFTClass/:idStudent",
+                    name: "formteacherclassscore",
+                    component: FormTeacherClassScore
+                },
                 {
                     path: "ke-hoach-hoc-tap/:idFTClass/:idStudent",
                     name: "formteacherclassplan",
