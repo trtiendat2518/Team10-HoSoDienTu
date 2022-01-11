@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\RegisterSubject;
 use Illuminate\Http\Request;
 use App\Http\Resources\RegisterSubjectResource;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ScoreImport;
 
 class RegisterSubjectController extends Controller
 {
@@ -69,9 +71,38 @@ class RegisterSubjectController extends Controller
      * @param  \App\Models\RegisterSubject  $registerSubject
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RegisterSubject $registerSubject)
+    public function update(Request $request, $registerSubject)
     {
-        //
+        $reg = RegisterSubject::find($registerSubject);
+
+        $data = $request->validate([
+            'register_subject_exercise' => ['required', 'numeric', 'max:11'],
+            'register_subject_exam' => ['required', 'numeric', 'max:11'],
+            'register_subject_final' => ['required', 'numeric', 'max:11'],
+            'register_subject_second' => ['required', 'numeric', 'max:11'],
+        ], [
+            'register_subject_exercise.required' => 'Điểm bài tập không được để trống!',
+            'register_subject_exercise.max' => 'Điểm bài tập không nhập quá 11 số!',
+            'register_subject_exercise.numeric' => 'Điểm bài tập phải là ký tự số!',
+
+            'register_subject_exam.required' => 'Điểm kiểm tra không được để trống!',
+            'register_subject_exam.max' => 'Điểm kiểm tra nhập không quá 11 số!',
+            'register_subject_exam.numeric' => 'Điểm kiểm tra phải là ký tự số!',
+
+            'register_subject_final.required' => 'Điểm thi lần 1 không được để trống!',
+            'register_subject_final.max' => 'Điểm thi lần 1 không nhập quá 11 số!',
+            'register_subject_final.numeric' => 'Điểm thi lần 1 phải là ký tự số!',
+
+            'register_subject_second.required' => 'Điểm thi lần 2 không được để trống!',
+            'register_subject_second.max' => 'Điểm thi lần 2 không nhập quá 11 số!',
+            'register_subject_second.numeric' => 'Điểm thi lần 2 phải là ký tự số!',
+        ]);
+
+        $reg->register_subject_exercise = $data['register_subject_exercise'];
+        $reg->register_subject_exam = $data['register_subject_exam'];
+        $reg->register_subject_final = $data['register_subject_final'];
+        $reg->register_subject_second = $data['register_subject_second'];
+        $reg->save();
     }
 
     /**
@@ -95,5 +126,19 @@ class RegisterSubjectController extends Controller
             ->get();
 
         return RegisterSubjectResource::collection($joins);
+    }
+
+    public function import(Request $request, $student_id)
+    {
+        $request->validate([
+            'fileImport' => 'required|file|mimes:xls,xlsx'
+        ], [
+            'fileImport.required' => 'Vui lòng không để trống!',
+            'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
+            'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
+        ]);
+        $path = $request->file('fileImport')->getRealPath();
+        $data = Excel::import(new ScoreImport($student_id), $path);
+        return response()->json(200);
     }
 }

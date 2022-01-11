@@ -46,6 +46,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('user-sv')->group(function () {
+        Route::get('sinh-vien/student-form-teacher/{lecturer_id}', 'Admin\Users\StudentManageController@student_form_teacher');
         Route::get('sinh-vien/allstudent', 'Admin\Users\StudentManageController@allstudent');
         Route::post('sinh-vien/import', 'Admin\Users\StudentManageController@import');
         Route::post('sinh-vien/upgrade/{student}', 'Admin\Users\StudentManageController@upgrade');
@@ -200,10 +201,19 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('register-subject')->group(function () {
+        Route::post('dang-ky-mon-hoc-sv/import/{student_id}', 'Admin\Education\RegisterSubjectController@import');
         Route::get('dang-ky-mon-hoc-sv/xem-diem/{student_id}', 'Admin\Education\RegisterSubjectController@score');
+        Route::resource('dang-ky-mon-hoc-sv', 'Admin\Education\RegisterSubjectController');
     });
 
     Route::prefix('register-plan')->group(function () {
         Route::resource('dang-ky-ke-hoach-hoc-tap-sv', 'Admin\Education\RegisterPlanController');
+    });
+
+    Route::prefix('suggest-plan')->group(function () {
+        Route::patch('goi-y-ke-hoach-hoc-tap-sv/change/{plan_suggest_id}', 'Admin\Education\PlanSuggestController@change');
+        Route::get('goi-y-ke-hoach-hoc-tap-sv/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Education\PlanSuggestController@search');
+        Route::get('goi-y-ke-hoach-hoc-tap-sv/{lecturer_id}/{currentEntries}', 'Admin\Education\PlanSuggestController@showdata');
+        Route::resource('goi-y-ke-hoach-hoc-tap-sv', 'Admin\Education\PlanSuggestController');
     });
 });
