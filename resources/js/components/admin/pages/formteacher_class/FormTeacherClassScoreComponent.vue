@@ -481,16 +481,33 @@ export default {
             $("#DetailModal").modal("show");
         },
         scoreSum(subject) {
-            let scoreExercise =
+            let scoreExercise = 0;
+            let scoreExam = 0;
+            let scoreFinal = 0;
+
+            scoreExercise =
                 (subject.register_subject_exercise *
                     subject.subject_score_exercise) /
                 100;
-            let scoreExam =
+            scoreExam =
                 (subject.register_subject_exam * subject.subject_score_exam) /
                 100;
-            let scoreFinal =
-                (subject.register_subject_final * subject.subject_score_final) /
-                100;
+
+            if (
+                subject.register_subject_final >=
+                subject.register_subject_second
+            ) {
+                scoreFinal =
+                    (subject.register_subject_final *
+                        subject.subject_score_final) /
+                    100;
+            } else {
+                scoreFinal =
+                    (subject.register_subject_second *
+                        subject.subject_score_final) /
+                    100;
+            }
+
             return scoreExercise + scoreExam + scoreFinal;
         },
         resultCreditSemester(i) {
@@ -508,10 +525,21 @@ export default {
                     (this.subjects[i][j].register_subject_exam *
                         this.subjects[i][j].subject_score_exam) /
                     100;
-                scoreFinal =
-                    (this.subjects[i][j].register_subject_final *
-                        this.subjects[i][j].subject_score_final) /
-                    100;
+                if (
+                    this.subjects[i][j].register_subject_final >=
+                    this.subjects[i][j].register_subject_second
+                ) {
+                    scoreFinal =
+                        (this.subjects[i][j].register_subject_final *
+                            this.subjects[i][j].subject_score_final) /
+                        100;
+                } else {
+                    scoreFinal =
+                        (this.subjects[i][j].register_subject_second *
+                            this.subjects[i][j].subject_score_final) /
+                        100;
+                }
+
                 scoreSum = scoreExercise + scoreExam + scoreFinal;
                 if (scoreSum >= 4) {
                     sum += parseFloat(this.subjects[i][j].subject_credit);
@@ -535,10 +563,20 @@ export default {
                     (this.subjects[i][j].register_subject_exam *
                         this.subjects[i][j].subject_score_exam) /
                     100;
-                scoreFinal =
-                    (this.subjects[i][j].register_subject_final *
-                        this.subjects[i][j].subject_score_final) /
-                    100;
+                if (
+                    this.subjects[i][j].register_subject_final >=
+                    this.subjects[i][j].register_subject_second
+                ) {
+                    scoreFinal =
+                        (this.subjects[i][j].register_subject_final *
+                            this.subjects[i][j].subject_score_final) /
+                        100;
+                } else {
+                    scoreFinal =
+                        (this.subjects[i][j].register_subject_second *
+                            this.subjects[i][j].subject_score_final) /
+                        100;
+                }
                 scoreSum +=
                     (scoreExercise + scoreExam + scoreFinal) *
                     this.subjects[i][j].subject_credit;
@@ -563,10 +601,21 @@ export default {
                         (this.subjects[l][j].register_subject_exam *
                             this.subjects[l][j].subject_score_exam) /
                         100;
-                    scoreFinal =
-                        (this.subjects[l][j].register_subject_final *
-                            this.subjects[l][j].subject_score_final) /
-                        100;
+                    if (
+                        this.subjects[l][j].register_subject_final >=
+                        this.subjects[l][j].register_subject_second
+                    ) {
+                        scoreFinal =
+                            (this.subjects[l][j].register_subject_final *
+                                this.subjects[l][j].subject_score_final) /
+                            100;
+                    } else {
+                        scoreFinal =
+                            (this.subjects[l][j].register_subject_second *
+                                this.subjects[l][j].subject_score_final) /
+                            100;
+                    }
+
                     scoreSum = scoreExercise + scoreExam + scoreFinal;
 
                     if (scoreSum >= 4) {
@@ -593,10 +642,20 @@ export default {
                         (this.subjects[l][j].register_subject_exam *
                             this.subjects[l][j].subject_score_exam) /
                         100;
-                    scoreFinal =
-                        (this.subjects[l][j].register_subject_final *
-                            this.subjects[l][j].subject_score_final) /
-                        100;
+                    if (
+                        this.subjects[l][j].register_subject_final >=
+                        this.subjects[l][j].register_subject_second
+                    ) {
+                        scoreFinal =
+                            (this.subjects[l][j].register_subject_final *
+                                this.subjects[l][j].subject_score_final) /
+                            100;
+                    } else {
+                        scoreFinal =
+                            (this.subjects[l][j].register_subject_second *
+                                this.subjects[l][j].subject_score_final) /
+                            100;
+                    }
                     scoreSum +=
                         (scoreExercise + scoreExam + scoreFinal) *
                         this.subjects[l][j].subject_credit;
