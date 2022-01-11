@@ -346,17 +346,17 @@ export default {
                 return ''
             }
         },
-        // search(page_url) {
-        //     let vm = this
-        //     page_url = `../../api/admin/suggest-plan/goi-y-ke-hoach-hoc-tap-sv/search/${this.lecturer_id}/${this.query}/${this.currentEntries}?page=${this.pagination.current_page}`
-        //     fetch(page_url)
-        //         .then(res => res.json())
-        //         .then(res => {
-        //             this.suggestions = res.data
-        //             this.pagination = res.meta
-        //         })
-        //         .catch(err => console.log(err))
-        // },
+        search(page_url) {
+            let vm = this
+            page_url = `../../api/admin/suggest-plan/goi-y-ke-hoach-hoc-tap-sv/search/${this.lecturer_id}/${this.query}/${this.currentEntries}?page=${this.pagination.current_page}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.suggestions = res.data
+                    this.pagination = res.meta
+                })
+                .catch(err => console.log(err))
+        },
         // create() {
         //     this.editMode = false
         //     this.form.reset()
