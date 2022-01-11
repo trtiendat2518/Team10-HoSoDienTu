@@ -399,15 +399,15 @@ export default {
         //         })
         //         .catch(err => console.log(err))
         // },
-        // change(plan_suggest_id) {
-        //     axios
-        //         .patch(`../../api/admin/suggest-plan/goi-y-ke-hoach-hoc-tap-sv/change/${plan_suggest_id}`)
-        //         .then(res => {
-        //             this.fetchSuggestions()
-        //             this.$snotify.warning('Đã thay đổi trạng thái')
-        //         })
-        //         .catch(err => console.log(err))
-        // },
+        change(plan_suggest_id) {
+            axios
+                .patch(`../../api/admin/suggest-plan/goi-y-ke-hoach-hoc-tap-sv/change/${plan_suggest_id}`)
+                .then(res => {
+                    this.fetchSuggestions()
+                    this.$snotify.warning('Đã thay đổi trạng thái')
+                })
+                .catch(err => console.log(err))
+        },
         // destroy(plan_suggest_id) {
         //     this.$snotify.clear()
         //     this.$snotify.confirm('Xác nhận xóa', {
