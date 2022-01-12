@@ -211,6 +211,8 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('suggest-plan')->group(function () {
+        Route::post('goi-y-ke-hoach-hoc-tap-sv/upgrade/{plan_suggest_id}', 'Admin\Education\PlanSuggestController@upgrade');
+        Route::get('goi-y-ke-hoach-hoc-tap-sv/onlyone/{plan_suggest_id}', 'Admin\Education\PlanSuggestController@onlyone');
         Route::patch('goi-y-ke-hoach-hoc-tap-sv/change/{plan_suggest_id}', 'Admin\Education\PlanSuggestController@change');
         Route::get('goi-y-ke-hoach-hoc-tap-sv/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Education\PlanSuggestController@search');
         Route::get('goi-y-ke-hoach-hoc-tap-sv/{lecturer_id}/{currentEntries}', 'Admin\Education\PlanSuggestController@showdata');

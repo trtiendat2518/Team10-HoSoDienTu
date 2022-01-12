@@ -74,6 +74,8 @@ import FormTeacherClassPlan from './components/admin/pages/formteacher_class/For
 
 import StudyPlanSuggest from './components/admin/pages/suggest/StudyPlanSuggestComponent.vue'
 import StudyPlanSuggestIndex from './components/admin/pages/suggest/StudyPlanSuggestIndexComponent.vue'
+import StudyPlanSuggestCreate from './components/admin/pages/suggest/StudyPlanSuggestCreateComponent.vue'
+import StudyPlanSuggestUpdate from './components/admin/pages/suggest/StudyPlanSuggestUpdateComponent.vue'
 
 import Error404 from './components/layouts/ErrorComponent.vue'
 
@@ -574,6 +576,16 @@ export default new VueRouter({
                     path: '',
                     name: 'studyplansuggestindex',
                     component: StudyPlanSuggestIndex
+                },
+                {
+                    path: 'tao-moi',
+                    name: 'studyplansuggestcreate',
+                    component: StudyPlanSuggestCreate
+                },
+                {
+                    path: 'cap-nhat/:idSPClass/:idSPSuggest',
+                    name: 'studyplansuggestupdate',
+                    component: StudyPlanSuggestUpdate
                 }
             ],
             beforeEnter: (to, from, next) => {
