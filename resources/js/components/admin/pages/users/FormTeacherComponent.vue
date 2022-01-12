@@ -89,8 +89,7 @@
 					</div>
 					<div class="modal-body" v-show="details.length" v-for="info in details" :key="info.lecturer_info_id">
 						<center>
-							<img src="('public/lecturer/images/vlu.ico')" class="avatar-xxl rounded-circle" alt="profile">
-							{{ info.lecturer_avatar }}
+							<img :src="(`public/avatar/lecturer/${info.lecturer_avatar}`)" class="avatar-xxl" alt="profile">
 						</center>
 						<table class="table row table-borderless w-100 m-0 border">
 							<tbody class="col-lg-6 p-0">

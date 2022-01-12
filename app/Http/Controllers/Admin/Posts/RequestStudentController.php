@@ -55,6 +55,7 @@ class RequestStudentController extends Controller
     {
         $joins = RequestSudent::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_request.request_student')
             ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
             ->where('tbl_class.class_form_teacher', $lecturer_id)
             ->orderby('tbl_request.request_id', 'DESC')
             ->paginate($currentEntries);
@@ -65,6 +66,7 @@ class RequestStudentController extends Controller
     {
         $joins = RequestSudent::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_request.request_student')
             ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
             ->where('tbl_student.student_fullname', 'LIKE', '%' . $query . '%')
             ->where('tbl_class.class_form_teacher', $lecturer_id)
             ->orwhere('tbl_student.student_code', 'LIKE', '%' . $query . '%')
@@ -92,9 +94,13 @@ class RequestStudentController extends Controller
      * @param  \App\Models\RequestSudent  $requestSudent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RequestSudent $requestSudent)
+    public function update(Request $request, $requestSudent)
     {
-        //
+        $find = RequestSudent::find($requestSudent);
+        $find->request_reply = $request->request_reply;
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $find->updated_at = now();
+        $find->save();
     }
 
     /**
@@ -132,6 +138,7 @@ class RequestStudentController extends Controller
     {
         $joins = RequestSudent::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_request.request_student')
             ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
             ->where('tbl_request.request_status', $value)
             ->where('tbl_class.class_form_teacher', $lecturer_id)
             ->orderby('tbl_request.request_id', 'DESC')
@@ -146,5 +153,15 @@ class RequestStudentController extends Controller
                 RequestSudent::where('request_id', $id)->delete();
             }
         }
+    }
+
+    public function detail($request_id)
+    {
+        $joins = RequestSudent::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_request.request_student')
+            ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
+            ->where('tbl_request.request_id', $request_id)
+            ->get();
+        return RequestResource::collection($joins);
     }
 }

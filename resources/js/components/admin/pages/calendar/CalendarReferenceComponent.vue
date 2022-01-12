@@ -137,7 +137,7 @@
                                                 :class="{'is-invalid': form.errors.has('calendar_exam_course')}">
                                             <option value="" selected disabled>Chọn khóa học</option>
                                             <option disabled>---------------</option>
-                                            <option v-for="course in courses" :value="course.course_id"
+                                            <option v-for="course in courses" :value="course.course_id" :key="course.course_id"
                                                     :hidden="course.course_status>0">{{ course.course_code }} -
                                                 {{ course.course_name }}
                                             </option>
@@ -154,7 +154,7 @@
                                                 :class="{'is-invalid': form.errors.has('calendar_exam_faculty')}">
                                             <option value="" selected disabled>Chọn khoa</option>
                                             <option disabled>---------------</option>
-                                            <option v-for="faculty in faculties" :value="faculty.faculty_id"
+                                            <option v-for="faculty in faculties" :value="faculty.faculty_id" :key="faculty.faculty_id"
                                                     :hidden="faculty.faculty_status>0">{{ faculty.faculty_code }} -
                                                 {{ faculty.faculty_name }}
                                             </option>
@@ -171,7 +171,7 @@
                                                 :class="{'is-invalid': form.errors.has('calendar_exam_major')}">
                                             <option value="" selected disabled>Chọn chuyên ngành</option>
                                             <option disabled>---------------</option>
-                                            <option v-for="major in majors" :value="major.major_id"
+                                            <option v-for="major in majors" :value="major.major_id" :key="major.major_id"
                                                     :hidden="major.major_status>0">{{ major.major_code }} -
                                                 {{ major.major_name }}
                                             </option>
@@ -191,7 +191,7 @@
                                                 :class="{'is-invalid': form.errors.has('calendar_exam_subject')}">
                                             <option value="" selected disabled>Chọn môn học</option>
                                             <option disabled>---------------</option>
-                                            <option v-for="subject in subjects" :value="subject.subject_id"
+                                            <option v-for="subject in subjects" :value="subject.subject_id" :key="subject.subject_id"
                                                     :hidden="subject.subject_status>0">{{ subject.subject_name }}
                                             </option>
                                         </select>
@@ -229,7 +229,7 @@
                                         :class="{'is-invalid': form.errors.has('calendar_exam_schedule')}">
                                     <option value="" selected disabled>Chọn lịch</option>
                                     <option disabled>---------------</option>
-                                    <option v-for="schedule in schedules" :value="schedule.id">
+                                    <option v-for="schedule in schedules" :value="schedule.id" :key="schedule.id">
                                         {{ schedule.start | formatFullTime }} - {{ schedule.end | formatFullTime }} ----
                                         {{ schedule.title }}
                                     </option>
@@ -330,6 +330,12 @@
                                 </tr>
                                 <tr>
                                     <td>Nội dung: <strong> {{ detail.body }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Phòng thi: <strong> {{ detail.calendar_exam_room }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Địa điểm: <strong> {{ detail.calendar_exam_place }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td>Môn học: <strong > {{ detail.subject_name }}</strong></td>
