@@ -11,10 +11,10 @@
             </ol>
             <!-- End breadcrumb -->
         </div>
-        <button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()">
+        <router-link class="btn btn-info btn-lg mb-3 btn-3d" tag="button" :to="{ name: 'studyplansuggestcreate' }">
             <li class="fa fa-plus"></li>
             Tạo mới
-        </button>
+        </router-link>
         <div class="row">
             <div class="col-md-12 col-lg-12">
                 <div class="card">
@@ -91,7 +91,17 @@
                                         </div>
                                     </td>
                                     <td style="text-align: center">
-                                        <button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(suggest)"></button>
+                                        <router-link
+                                            class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o"
+                                            tag="button"
+                                            :to="{
+                                                name: 'studyplansuggestupdate',
+                                                params: {
+                                                    idSPClass: suggest.plan_suggest_class,
+                                                    idSPSuggest: suggest.plan_suggest_id
+                                                }
+                                            }"
+                                        ></router-link>
                                     </td>
                                     <td>
                                         <button
@@ -121,74 +131,6 @@
             </div>
             <!-- col end -->
         </div>
-
-        <!-- Modal -->
-        <!-- <div class="modal fade" id="FacultyModal" tabindex="-1" role="dialog" aria-labelledby="FacultyModalTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)">
-                    <span class="alert-danger" :form="form"></span>
-                    <div class="modal-content">
-                        <div class="modal-header styling-modal-header-update">
-                            <h5 class="modal-title" id="FacultyModalTitle">{{ editMode ? 'Cập nhật' : 'Thêm mới' }} Khoa</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <label>Mã khoa <span :hidden="editMode" class="text-danger">(*)</span></label>
-                            <input
-                                v-model="form.faculty_code"
-                                type="text"
-                                name="faculty_code"
-                                class="form-control"
-                                placeholder="Nhập mã Khoa"
-                                :disabled="editMode"
-                                :class="[{ 'is-invalid': form.errors.has('faculty_code') }, { 'not-allowed': editMode }]"
-                            />
-                            <div class="text-danger" v-if="form.errors.has('faculty_code')" v-html="form.errors.get('faculty_code')"></div>
-
-                            <label class="mt-3">Tên Khoa <span class="text-danger">(*)</span></label>
-                            <input
-                                v-model="form.faculty_name"
-                                type="text"
-                                name="faculty_name"
-                                class="form-control"
-                                placeholder="Nhập tên Khoa"
-                                :class="{ 'is-invalid': form.errors.has('faculty_name') }"
-                            />
-                            <div class="text-danger" v-if="form.errors.has('faculty_name')" v-html="form.errors.get('faculty_name')"></div>
-
-                            <div v-if="!editMode">
-                                <label class="mt-3">Trạng thái <span class="text-danger">(*)</span></label>
-                                <select
-                                    v-model="form.faculty_status"
-                                    name="faculty_status"
-                                    class="form-control select-option"
-                                    :class="{ 'is-invalid': form.errors.has('faculty_status') }"
-                                >
-                                    <option value="" selected disabled>Chọn trạng thái:</option>
-                                    <option disabled>---------------</option>
-                                    <option value="0">Hiển thị</option>
-                                    <option value="1">Không hiển thị</option>
-                                </select>
-                                <div
-                                    class="text-danger mb-3"
-                                    v-if="form.errors.has('faculty_status')"
-                                    v-html="form.errors.get('faculty_status')"
-                                ></div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn-3d btn btn-secondary" data-dismiss="modal">Đóng</button>
-                            <button :disabled="form.busy" type="submit" class="btn-3d btn btn-primary background-update">
-                                {{ editMode ? 'Cập nhật' : 'Thêm mới' }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div> -->
-        <!-- Modal end-->
 
         <!-- <div
             class="modal fade bd-example-modal-lg"
@@ -357,48 +299,6 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
-        // create() {
-        //     this.editMode = false
-        //     this.form.reset()
-        //     this.form.clear()
-        //     $('#FacultyModal').modal('show')
-        // },
-        // store() {
-        //     this.form.busy = true
-        //     this.form
-        //         .post('../../api/admin/edu-faculty/khoa')
-        //         .then(res => {
-        //             this.fetchSuggestions()
-        //             $('#FacultyModal').modal('hide')
-        //             if (this.form.successful) {
-        //                 this.$snotify.success('Thêm mới thành công!')
-        //             } else {
-        //                 this.$snotify.error('Không thể thêm Khoa', 'Lỗi')
-        //             }
-        //         })
-        //         .catch(err => console.log(err))
-        // },
-        // show(faculty) {
-        //     this.editMode = true
-        //     this.form.reset()
-        //     this.form.clear()
-        //     this.form.fill(faculty)
-        //     $('#FacultyModal').modal('show')
-        // },
-        // update() {
-        //     this.form
-        //         .put('../../api/admin/edu-faculty/khoa/' + this.form.plan_suggest_id)
-        //         .then(res => {
-        //             this.fetchSuggestions()
-        //             $('#FacultyModal').modal('hide')
-        //             if (this.form.successful) {
-        //                 this.$snotify.success('Cập nhật Khoa thành công!')
-        //             } else {
-        //                 this.$snotify.error('Không thể chỉnh sửa')
-        //             }
-        //         })
-        //         .catch(err => console.log(err))
-        // },
         change(plan_suggest_id) {
             axios
                 .patch(`../../api/admin/suggest-plan/goi-y-ke-hoach-hoc-tap-sv/change/${plan_suggest_id}`)
