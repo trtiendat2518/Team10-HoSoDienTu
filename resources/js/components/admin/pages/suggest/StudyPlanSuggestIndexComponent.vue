@@ -28,13 +28,13 @@
                     </div>
 
                     <div class="row">
-                        <!-- <div class="col-md-1">
+                        <div class="col-md-1">
                             <button
                                 class="btn-3d btn btn-danger mt-3 ml-3 btn-lg fa fa-trash"
                                 @click="destroyall()"
                                 :disabled="!selected.length"
                             ></button>
-                        </div> -->
+                        </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm..." />
                         </div>
@@ -132,7 +132,7 @@
             <!-- col end -->
         </div>
 
-        <!-- <div
+        <div
             class="modal fade bd-example-modal-lg"
             id="DetailModal"
             tabindex="-1"
@@ -143,51 +143,30 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header styling-modal-header-info">
-                        <h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết Khoa</h5>
+                        <h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">Chi tiết gợi ý kế hoạch</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table class="table row table-borderless w-100 m-0 border">
-                            <tbody class="col-lg-6 p-0">
+                        <table class="table table-nowrap">
+                            <thead class="detail-background text-white">
                                 <tr>
-                                    <td class="h3-strong">
-                                        <h3><strong> Thông tin chi tiết</strong></h3>
-                                    </td>
+                                    <th class="text-center w-30">Mã môn học</th>
+                                    <th class="w-60">Tên môn học</th>
+                                    <th class="text-center w-10">Số tín chỉ</th>
                                 </tr>
-                                <tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="detail in details" :key="detail.subject_id">
+                                    <td class="text-center">
+                                        {{ detail.subject_code }}
+                                    </td>
                                     <td>
-                                        Mã Khoa: <strong> {{ form.faculty_code }}</strong>
+                                        {{ detail.subject_name }}
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Tên Khoa: <strong> {{ form.faculty_name }}</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Tổng số Chuyên Ngành: <strong> {{ countMajor.length }}</strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody class="col-lg-6 p-0">
-                                <tr>
-                                    <td class="h3-strong">
-                                        <h3><strong> Ban chủ nhiệm Khoa</strong></h3>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Trưởng Khoa:
-                                        <strong>{{ head_lecturer }}</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Phó Khoa:
-                                        <strong>{{ vice_lecturer }}</strong>
+                                    <td class="text-center">
+                                        {{ detail.subject_credit }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -198,7 +177,7 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -226,7 +205,11 @@ export default {
                 plan_suggest_status: '',
                 lecturer_fullname: '',
                 class_name: '',
-                course_code: ''
+                course_code: '',
+                plansuggest_detail_program: '',
+                subject_code: '',
+                subject_name: '',
+                subject_credit: ''
             }),
             selected: [],
             selectAll: false,
@@ -308,101 +291,93 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
-        // destroy(plan_suggest_id) {
-        //     this.$snotify.clear()
-        //     this.$snotify.confirm('Xác nhận xóa', {
-        //         timeout: 5000,
-        //         showProgressBar: true,
-        //         closeOnClick: false,
-        //         pauseOnHover: true,
-        //         buttons: [
-        //             {
-        //                 text: 'Xóa',
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id)
-        //                     axios
-        //                         .delete(`../../api/admin/edu-faculty/khoa/${plan_suggest_id}`)
-        //                         .then(res => {
-        //                             this.$snotify.success('Đã xóa!')
-        //                             this.fetchSuggestions()
-        //                         })
-        //                         .catch(err => console.log(err))
-        //                 },
-        //                 bold: false
-        //             },
-        //             {
-        //                 text: 'Đóng',
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id)
-        //                 },
-        //                 bold: true
-        //             }
-        //         ]
-        //     })
-        // },
-        // destroyall() {
-        //     this.$snotify.clear()
-        //     this.$snotify.confirm('Xác nhận xóa', {
-        //         timeout: 5000,
-        //         showProgressBar: true,
-        //         closeOnClick: false,
-        //         pauseOnHover: true,
-        //         buttons: [
-        //             {
-        //                 text: 'Xóa',
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id)
-        //                     axios
-        //                         .post('../../api/admin/edu-faculty/khoa/destroyall', { faculty: this.selected })
-        //                         .then(res => {
-        //                             this.$snotify.success('Đã xóa!')
-        //                             this.fetchSuggestions()
-        //                         })
-        //                         .catch(err => console.log(err))
-        //                 },
-        //                 bold: false
-        //             },
-        //             {
-        //                 text: 'Đóng',
-        //                 action: toast => {
-        //                     this.$snotify.remove(toast.id)
-        //                 },
-        //                 bold: true
-        //             }
-        //         ]
-        //     })
-        // },
-        // select() {
-        //     this.selected = []
-        //     if (!this.selectAll) {
-        //         for (let i in this.suggestions) {
-        //             this.selected.push(this.suggestions[i].plan_suggest_id)
-        //         }
-        //     }
-        // },
-        // detail(faculty, page_url) {
-        //     let vm = this
-        //     page_url = `../../api/admin/edu-faculty/khoa/detail/${faculty.plan_suggest_id}`
-        //     fetch(page_url)
-        //         .then(res => res.json())
-        //         .then(res => {
-        //             this.details = res.data
-        //             this.form.fill(faculty)
-        //             let head = this.lecturers.filter(function(lec) {
-        //                 return lec.lecturer_faculty === faculty.plan_suggest_id && lec.lecturer_level === 1
-        //             })
-        //             this.head_lecturer = head[0].lecturer_fullname
+        destroy(plan_suggest_id) {
+            this.$snotify.clear()
+            this.$snotify.confirm('Xác nhận xóa', {
+                timeout: 5000,
+                showProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: true,
+                buttons: [
+                    {
+                        text: 'Xóa',
+                        action: toast => {
+                            this.$snotify.remove(toast.id)
+                            axios
+                                .delete(`../../api/admin/suggest-plan/goi-y-ke-hoach-hoc-tap-sv/${plan_suggest_id}`)
+                                .then(res => {
+                                    this.$snotify.success('Đã xóa!')
+                                    this.fetchSuggestions()
+                                })
+                                .catch(err => console.log(err))
+                        },
+                        bold: false
+                    },
+                    {
+                        text: 'Đóng',
+                        action: toast => {
+                            this.$snotify.remove(toast.id)
+                        },
+                        bold: true
+                    }
+                ]
+            })
+        },
+        destroyall() {
+            this.$snotify.clear()
+            this.$snotify.confirm('Xác nhận xóa', {
+                timeout: 5000,
+                showProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: true,
+                buttons: [
+                    {
+                        text: 'Xóa',
+                        action: toast => {
+                            this.$snotify.remove(toast.id)
+                            axios
+                                .post('../../api/admin/suggest-plan/goi-y-ke-hoach-hoc-tap-sv/destroyall', {
+                                    plan_suggest_id: this.selected
+                                })
+                                .then(res => {
+                                    this.$snotify.success('Đã xóa!')
+                                    this.fetchSuggestions()
+                                })
+                                .catch(err => console.log(err))
+                        },
+                        bold: false
+                    },
+                    {
+                        text: 'Đóng',
+                        action: toast => {
+                            this.$snotify.remove(toast.id)
+                        },
+                        bold: true
+                    }
+                ]
+            })
+        },
+        select() {
+            this.selected = []
+            if (!this.selectAll) {
+                for (let i in this.suggestions) {
+                    this.selected.push(this.suggestions[i].plan_suggest_id)
+                }
+            }
+        },
+        detail(suggest, page_url) {
+            let vm = this
+            page_url = `../../api/admin/suggest-plan/goi-y-ke-hoach-hoc-tap-sv/detail/${suggest.plan_suggest_id}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.details = res.data
+                    this.form.fill(suggest)
 
-        //             let vice = this.lecturers.filter(function(lec) {
-        //                 return lec.lecturer_faculty === faculty.plan_suggest_id && lec.lecturer_level === 2
-        //             })
-        //             this.vice_lecturer = vice[0].lecturer_fullname
-
-        //             $('#DetailModal').modal('show')
-        //             console.log(res.data.length)
-        //         })
-        //         .catch(err => this.$snotify.error('Khoa này chưa có thông tin chi tiết'))
-        // },
+                    $('#DetailModal').modal('show')
+                })
+                .catch(err => console.log(err))
+        },
         reload() {
             this.fetchSuggestions()
             this.query = ''
