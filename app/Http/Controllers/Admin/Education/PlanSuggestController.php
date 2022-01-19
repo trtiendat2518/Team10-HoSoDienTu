@@ -123,9 +123,14 @@ class PlanSuggestController extends Controller
      * @param  \App\Models\PlanSuggest  $planSuggest
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PlanSuggest $planSuggest)
+    public function destroy($planSuggest)
     {
-        //
+        $plan_suggest = PlanSuggest::find($planSuggest);
+        $plan_detail = PlanSuggestDetail::where('plansuggest_detail_ref', $planSuggest)->get();
+        foreach ($plan_detail as $value) {
+            $value->delete();
+        }
+        $plan_suggest->delete();
     }
 
     public function showdata($lectuer_id, $currentEntries)
@@ -172,6 +177,33 @@ class PlanSuggestController extends Controller
             ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_plan_suggest.plan_suggest_class')
             ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
             ->join('tbl_plansuggest_detail', 'tbl_plansuggest_detail.plansuggest_detail_ref', '=', 'tbl_plan_suggest.plan_suggest_id')
+            ->where('tbl_plan_suggest.plan_suggest_id', $plan_suggest_id)
+            ->get();
+
+        return PlanSuggestResource::collection($joins);
+    }
+
+    public function destroyall(Request $request, $plan_suggest_id = null)
+    {
+        if ($request->plan_suggest_id) {
+            foreach ($request->plan_suggest_id as $id) {
+                $plan_suggest = PlanSuggest::where('plan_suggest_id', $id)->get();
+                foreach ($plan_suggest as $suggest) {
+                    $plan_detail = PlanSuggestDetail::where('plansuggest_detail_ref', $suggest->plan_suggest_id)->get();
+                    foreach ($plan_detail as $detail) {
+                        $detail->delete();
+                    }
+                    $suggest->delete();
+                }
+            }
+        }
+    }
+
+    public function detail($plan_suggest_id)
+    {
+        $joins = PlanSuggest::join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_plan_suggest.plan_suggest_lecturer')
+            ->join('tbl_plansuggest_detail', 'tbl_plansuggest_detail.plansuggest_detail_ref', '=', 'tbl_plan_suggest.plan_suggest_id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_plansuggest_detail.plansuggest_detail_program')
             ->where('tbl_plan_suggest.plan_suggest_id', $plan_suggest_id)
             ->get();
 
