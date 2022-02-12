@@ -10,7 +10,7 @@ use App\Imports\StudentImport;
 use Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentManageController extends Controller
 {
@@ -321,7 +321,11 @@ class StudentManageController extends Controller
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
         ]);
-        $path = $request->file('fileImport')->getRealPath();
+        // $path = $request->file('fileImport')->getRealPath();
+        // $data = Excel::import(new StudentImport, $path);
+
+        $path1 = $request->file('fileImport')->store('temp');
+        $path = storage_path('app') . '/' . $path1;
         $data = Excel::import(new StudentImport, $path);
         return response()->json(200);
     }

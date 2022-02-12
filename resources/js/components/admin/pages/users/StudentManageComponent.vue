@@ -884,7 +884,7 @@
 		color: white;
 	}
 	.avatar-xxl {
-		height: 100%;
+        height: 8rem;
 		width: 8rem;
 	}
 	strong {
