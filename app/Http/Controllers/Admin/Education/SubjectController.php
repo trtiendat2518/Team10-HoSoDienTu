@@ -8,7 +8,7 @@ use App\Models\ProgramDetail;
 use App\Models\EducationProgram;
 use Illuminate\Http\Request;
 use App\Http\Resources\SubjectResource;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SubjectExport;
 use App\Imports\SubjectImport;
 use Validator;
@@ -281,7 +281,9 @@ class SubjectController extends Controller
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
         ]);
-        $path = $request->file('fileImport')->getRealPath();
+
+        $path1 = $request->file('fileImport')->store('temp');
+        $path = storage_path('app') . '/' . $path1;
         $data = Excel::import(new SubjectImport($faculty), $path);
         return response()->json(200);
     }

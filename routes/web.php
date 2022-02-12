@@ -16,14 +16,23 @@ Route::get('/', function () {
     return view('student.pages.home');
 });
 
-Route::prefix('admin')->group(function(){
+Route::get('/dang-nhap', function () {
+    return view('student.auth.login');
+});
+
+Route::prefix('admin')->group(function () {
     Route::resource('', 'Admin\DashboardController')->only('index')->middleware('checkloged');
 
     Route::get('/login', 'Admin\AuthController@get_login')->middleware('checkss');
     Route::post('/loged-in', 'Admin\AuthController@post_login');
     Route::get('/logout', 'Admin\AuthController@get_logout');
 
-    Route::get('/microsoft','Admin\AuthController@login_ms')->name('connectMs');
-    Route::get('/microsoft-callback','Admin\AuthController@callback_ms');
+    Route::get('/microsoft', 'Admin\AuthController@login_ms')->name('connectMs');
+    Route::get('/microsoft-callback', 'Admin\AuthController@callback_ms');
 });
 
+Route::prefix('student')->group(function () {
+    Route::get('/microsoft-student', 'Admin\AuthController@login_ms_stu')->name('connectStuMs');
+    Route::get('/microsoft-student-callback', 'Admin\AuthController@callback_ms_stu');
+    Route::get('/logout-student', 'Admin\AuthController@get_logout_student');
+});
