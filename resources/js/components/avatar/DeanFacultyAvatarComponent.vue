@@ -1,38 +1,40 @@
 <template>
     <div>
         <div>
-            <img
-                :src="`../public/avatar/lecturer/${lecturer_avatar}`"
-                class="avatar-xxl avatar-styling"
-                alt="profile"
-            />
+            <img :src="`../public/avatar/lecturer/${lecturer_avatar}`" class="avatar-xxl avatar-styling" alt="profile" />
         </div>
     </div>
 </template>
 
 <script>
+import { eventBus } from '../../app.js'
 export default {
     data() {
         return {
             lecturer_id: this.$facultyId,
-            lecturer_avatar: ""
-        };
+            lecturer_avatar: ''
+        }
     },
     mounted() {
-        this.fetchInfo();
+        this.fetchInfo()
     },
     methods: {
         fetchInfo(page_url) {
-            page_url = `../../api/admin/user-gv/giang-vien/thong-tin-ca-nhan-bcnk/${this.lecturer_id}`;
+            page_url = `../../api/admin/user-gv/giang-vien/thong-tin-ca-nhan-bcnk/${this.lecturer_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.lecturer_avatar = res.data[0].lecturer_avatar;
+                    this.lecturer_avatar = res.data[0].lecturer_avatar
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         }
+    },
+    created() {
+        eventBus.$on('wasAvatar', avatar => {
+            this.lecturer_avatar = avatar
+        })
     }
-};
+}
 </script>
 
 <style scoped>

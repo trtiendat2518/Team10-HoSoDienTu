@@ -10,7 +10,7 @@ use App\Imports\StudentImport;
 use Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentManageController extends Controller
 {
@@ -321,7 +321,11 @@ class StudentManageController extends Controller
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
         ]);
-        $path = $request->file('fileImport')->getRealPath();
+        // $path = $request->file('fileImport')->getRealPath();
+        // $data = Excel::import(new StudentImport, $path);
+
+        $path1 = $request->file('fileImport')->store('temp');
+        $path = storage_path('app') . '/' . $path1;
         $data = Excel::import(new StudentImport, $path);
         return response()->json(200);
     }
@@ -329,5 +333,15 @@ class StudentManageController extends Controller
     public function allstudent()
     {
         return StudentResource::collection(Student::orderby('student_id', 'DESC')->get());
+    }
+
+    public function student_form_teacher($lecturer_id)
+    {
+        $joins = Student::join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_class.class_form_teacher')
+            ->where('tbl_lecturer.lecturer_id', $lecturer_id)
+            ->get();
+
+        return StudentResource::collection($joins);
     }
 }

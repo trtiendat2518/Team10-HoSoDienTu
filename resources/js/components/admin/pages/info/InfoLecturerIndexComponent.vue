@@ -26,13 +26,7 @@
                                 <div class="">
                                     <div class="">
                                         <a href="#">
-                                            <img
-                                                :src="
-                                                    `../public/avatar/lecturer/${lecturer_avatar}`
-                                                "
-                                                class="avatar-xxl"
-                                                alt="profile"
-                                            />
+                                            <img :src="`../public/avatar/lecturer/${lecturer_avatar}`" class="avatar-xxl" alt="profile" />
                                         </a>
                                     </div>
                                 </div>
@@ -43,19 +37,12 @@
                         <p class="mb-2 text-white" v-if="lecturer_role == 1">
                             Ban chủ nhiệm khoa
                         </p>
-                        <p
-                            class="mb-2 text-white"
-                            v-else-if="lecturer_role == 2"
-                        >
+                        <p class="mb-2 text-white" v-else-if="lecturer_role == 2">
                             Chủ nhiệm sinh viên
                         </p>
 
                         <div v-if="infos.length == 0">
-                            <router-link
-                                tag="button"
-                                class="btn btn-lg btn-light"
-                                :to="{ name: 'infolecturercreate' }"
-                            >
+                            <router-link tag="button" class="btn btn-lg btn-light" :to="{ name: 'infolecturercreate' }">
                                 Tạo mới hồ sơ cá nhân
                             </router-link>
                         </div>
@@ -110,10 +97,7 @@
                                                     <strong>
                                                         Ngày sinh :
                                                     </strong>
-                                                    {{
-                                                        info.lecturer_birthday
-                                                            | formatDate
-                                                    }}
+                                                    {{ info.lecturer_birthday | formatDate }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -121,20 +105,10 @@
                                                     <strong>
                                                         Giới tính :
                                                     </strong>
-                                                    <span
-                                                        v-if="
-                                                            info.lecturer_gender ==
-                                                                0
-                                                        "
-                                                    >
+                                                    <span v-if="info.lecturer_gender == 0">
                                                         Nam
                                                     </span>
-                                                    <span
-                                                        v-else-if="
-                                                            info.lecturer_gender ==
-                                                                1
-                                                        "
-                                                    >
+                                                    <span v-else-if="info.lecturer_gender == 1">
                                                         Nữ
                                                     </span>
                                                 </td>
@@ -186,9 +160,7 @@
                                                     <strong>
                                                         CMND/CCCD :
                                                     </strong>
-                                                    {{
-                                                        info.lecturer_identify_card
-                                                    }}
+                                                    {{ info.lecturer_identify_card }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -196,9 +168,7 @@
                                                     <strong>
                                                         Nơi sinh :
                                                     </strong>
-                                                    {{
-                                                        info.lecturer_birth_place
-                                                    }}
+                                                    {{ info.lecturer_birth_place }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -206,9 +176,7 @@
                                                     <strong>
                                                         Địa chỉ email khác :
                                                     </strong>
-                                                    {{
-                                                        info.lecturer_other_email
-                                                    }}
+                                                    {{ info.lecturer_other_email }}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -230,36 +198,38 @@
 </template>
 
 <script>
+import { eventBus } from '../../../../app.js'
 export default {
     data() {
         return {
             lecturer_id: this.$facultyId,
-            lecturer_fullname: "",
-            lecturer_avatar: "",
-            lecturer_info_id: "",
-            lecturer_role: "",
+            lecturer_fullname: '',
+            lecturer_avatar: '',
+            lecturer_info_id: '',
+            lecturer_role: '',
             infos: []
-        };
+        }
     },
     mounted() {
-        this.fetchInfo();
+        this.fetchInfo()
     },
     methods: {
         fetchInfo(page_url) {
-            page_url = `../../api/admin/user-gv/giang-vien/thong-tin-ca-nhan-bcnk/${this.lecturer_id}`;
+            page_url = `../../api/admin/user-gv/giang-vien/thong-tin-ca-nhan-bcnk/${this.lecturer_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.infos = res.data;
-                    this.lecturer_avatar = res.data[0].lecturer_avatar;
-                    this.lecturer_info_id = res.data[0].lecturer_info_id;
-                    this.lecturer_fullname = res.data[0].lecturer_fullname;
-                    this.lecturer_role = res.data[0].lecturer_role;
+                    this.infos = res.data
+                    this.lecturer_avatar = res.data[0].lecturer_avatar
+                    this.lecturer_info_id = res.data[0].lecturer_info_id
+                    this.lecturer_fullname = res.data[0].lecturer_fullname
+                    this.lecturer_role = res.data[0].lecturer_role
+                    eventBus.changeAvatar(res.data[0].lecturer_avatar)
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         }
     }
-};
+}
 </script>
 
 <style></style>

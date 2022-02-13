@@ -13409,7 +13409,7 @@ figure>img {
 }
 
 .header .action-item {
-	width: 80px;
+	/* width: 80px; */
 	height: 80px
 }
 
