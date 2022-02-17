@@ -19,7 +19,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         'SocialiteProviders\Manager\SocialiteWasCalled' => [
-            'SocialiteProviders\Graph\GraphExtendSocialite@handle'
+            'SocialiteProviders\Graph\GraphExtendSocialite@handle',
+            'SocialiteProviders\Microsoft\MicrosoftExtendSocialite@handle'
         ],
         'SocialiteProviders\Manager\SocialiteWasCalled' => [
             'SocialiteProviders\Microsoft\MicrosoftExtendSocialite@handle',

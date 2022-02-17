@@ -77,7 +77,12 @@ import StudyPlanSuggestIndex from './components/admin/pages/suggest/StudyPlanSug
 import StudyPlanSuggestCreate from './components/admin/pages/suggest/StudyPlanSuggestCreateComponent.vue'
 import StudyPlanSuggestUpdate from './components/admin/pages/suggest/StudyPlanSuggestUpdateComponent.vue'
 
-import Error404 from './components/layouts/ErrorComponent.vue'
+import Home from './components/student/pages/HomeComponent.vue'
+
+import StudyPlan from './components/student/pages/study_plan/StudyPlanComponent.vue'
+import StudyPlanIndex from './components/student/pages/study_plan/StudyPlanIndexComponent.vue'
+
+import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
     Vue.prototype.$adminId = document.querySelector("meta[name='admin-fullname']").getAttribute('content')
@@ -86,6 +91,8 @@ if (document.querySelector("meta[name='admin-fullname']") && document.querySelec
     Vue.prototype.$facultyId = document.querySelector("meta[name='deanfaculty-id']").getAttribute('content')
 } else if (document.querySelector("meta[name='formteacher-id']")) {
     Vue.prototype.$teacherId = document.querySelector("meta[name='formteacher-id']").getAttribute('content')
+} else if (document.querySelector("meta[name='student-id']")) {
+    Vue.prototype.$studentId = document.querySelector("meta[name='student-id']").getAttribute('content')
 }
 
 export default new VueRouter({
@@ -94,7 +101,8 @@ export default new VueRouter({
             path: '/',
             name: 'dashboard',
             components: {
-                default: Dashboard
+                default: Dashboard,
+                student: Home
             }
         },
 
@@ -590,6 +598,28 @@ export default new VueRouter({
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$teacherId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/ke-hoach-hoc-tap',
+            name: 'studyplan',
+            components: {
+                student: StudyPlan
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'studyplanindex',
+                    component: StudyPlanIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
                     next()
                 } else {
                     next(false)

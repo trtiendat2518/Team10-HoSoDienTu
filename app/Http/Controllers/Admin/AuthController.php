@@ -145,7 +145,7 @@ class AuthController extends Controller
                     $request->session()->put('student_id', $authUser->student_id);
                     $request->session()->put('student_code', $authUser->student_code);
                 }
-                return redirect()->intended('/');
+                return redirect()->intended('/home');
             } else {
                 return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
             }

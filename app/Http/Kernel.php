@@ -80,6 +80,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'checkloged' => \App\Http\Middleware\CheckLogin::class,
         'checkss' => \App\Http\Middleware\CheckSession::class,
+        'checklogedst' => \App\Http\Middleware\CheckLoginStudent::class,
+        'checkssst' => \App\Http\Middleware\CheckSessionStudent::class,
         'deanfaculty' => \App\Http\Middleware\CheckFacultyOfDean::class,
         'formteacher' => \App\Http\Middleware\CheckFormTeacher::class,
         'lecturer' => \App\Http\Middleware\CheckLecturer::class,
