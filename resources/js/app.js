@@ -25,6 +25,8 @@ if (document.querySelector("meta[name='admin-fullname']")) {
     Vue.prototype.$facultyId = document.querySelector("meta[name='deanfaculty-id']").getAttribute('content')
 } else if (document.querySelector("meta[name='formteacher-id']")) {
     Vue.prototype.$teacherId = document.querySelector("meta[name='formteacher-id']").getAttribute('content')
+} else if (document.querySelector("meta[name='student-id']")) {
+    Vue.prototype.$studentId = document.querySelector("meta[name='student-id']").getAttribute('content')
 }
 
 export const eventBus = new Vue({
@@ -36,6 +38,5 @@ export const eventBus = new Vue({
 })
 
 const app = new Vue({
-    el: '#app',
     router
-})
+}).$mount('#app')

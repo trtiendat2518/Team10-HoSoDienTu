@@ -221,3 +221,12 @@ Route::prefix('admin')->group(function () {
         Route::resource('goi-y-ke-hoach-hoc-tap-sv', 'Admin\Education\PlanSuggestController');
     });
 });
+
+Route::prefix('student')->group(function () {
+    Route::prefix('study-plan')->group(function () {
+        Route::get('dang-ky-ke-hoach-hoc-tap/goi-y-ca-nhan/{student_id}', 'Student\Registration\StudyPlanController@show_suggest_only');
+        Route::get('dang-ky-ke-hoach-hoc-tap/goi-y-ca-lop/{student_id}', 'Student\Registration\StudyPlanController@show_suggest_all');
+        Route::get('dang-ky-ke-hoach-hoc-tap/score/{student_id}', 'Student\Registration\StudyPlanController@showdata');
+        Route::resource('dang-ky-ke-hoach-hoc-tap', 'Student\Registration\StudyPlanController');
+    });
+});
