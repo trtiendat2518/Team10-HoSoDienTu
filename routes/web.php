@@ -13,12 +13,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('student.pages.home');
+    return view('student.pages.main');
 });
 
 Route::get('/dang-nhap', function () {
     return view('student.auth.login');
-});
+})->middleware('checkssst');
+
+Route::get('/home', function () {
+    return view('student.pages.home');
+})->middleware('checklogedst');
 
 Route::prefix('admin')->group(function () {
     Route::resource('', 'Admin\DashboardController')->only('index')->middleware('checkloged');
