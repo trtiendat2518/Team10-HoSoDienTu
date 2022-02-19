@@ -202,4 +202,11 @@ class MajorController extends Controller
         $data = Excel::import(new MajorImport, $path);
         return response()->json(200);
     }
+
+    public function lecturer_major($lecturer_id)
+    {
+        $joins = Major::join('tbl_lecturer', 'tbl_lecturer.lecturer_faculty', '=', 'tbl_major.major_faculty')
+            ->where('tbl_lecturer.lecturer_id', $lecturer_id)->get();
+        return MajorResource::collection($joins);
+    }
 }

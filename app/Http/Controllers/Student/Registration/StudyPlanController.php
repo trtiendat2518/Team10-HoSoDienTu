@@ -7,8 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\EducationProgram;
 use App\Models\RegisterSubject;
 use App\Models\PlanSuggest;
+use App\Models\RegisterPlan;
+use App\Models\Calendar;
+use App\Models\Student;
 use App\Http\Resources\EducationProgramResource;
 use App\Http\Resources\PlanSuggestResource;
+use App\Http\Resources\CalendarResource;
+use App\Http\Resources\RegisterPlanResource;
 
 class StudyPlanController extends Controller
 {
@@ -30,7 +35,42 @@ class StudyPlanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'subject' => ['required'],
+        ], [
+            'subject.required' => 'Vui lòng chọn môn học!'
+        ]);
+
+        $quey = RegisterPlan::where('register_plan_student', $request->student_id)
+            ->where('register_plan_semester', $request->semester)->get();
+        if ($quey) {
+            foreach ($quey as $value) {
+                $value->delete();
+            }
+            foreach ($request->subject as $subject_id) {
+                $study_plan = new RegisterPlan();
+                $study_plan->register_plan_student = $request->student_id;
+                $study_plan->register_plan_program = $subject_id;
+                $study_plan->register_plan_semester = $request->semester;
+                $study_plan->register_plan_yearstart = $request->yearstart;
+                $study_plan->register_plan_yearend = $request->yearstart + 1;
+                date_default_timezone_set('Asia/Ho_Chi_Minh');
+                $study_plan->register_plan_date = now();
+                $study_plan->save();
+            }
+        } else {
+            foreach ($request->subject as $subject_id) {
+                $study_plan = new RegisterPlan();
+                $study_plan->register_plan_student = $request->student_id;
+                $study_plan->register_plan_program = $subject_id;
+                $study_plan->register_plan_semester = $request->semester;
+                $study_plan->register_plan_yearstart = $request->yearstart;
+                $study_plan->register_plan_yearend = $request->yearstart + 1;
+                date_default_timezone_set('Asia/Ho_Chi_Minh');
+                $study_plan->register_plan_date = now();
+                $study_plan->save();
+            }
+        }
     }
 
     /**
@@ -100,5 +140,30 @@ class StudyPlanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function calendar_plan($student_id)
+    {
+        $find = Student::find($student_id);
+        $joins = Calendar::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->join('tbl_register_plan', 'tbl_register_plan.register_plan_semester', '=', 'tbl_calendar.location')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_student.student_faculty')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+            ->where('tbl_course.course_id', $find->student_course)
+            ->where('tbl_major.major_id', $find->student_major)
+            ->where('tbl_register_plan.register_plan_student', $student_id)
+            ->where('tbl_calendar.calendarId', 0)->get();
+
+        return CalendarResource::collection($joins);
+    }
+
+    public function my_plan($student_id, $semester)
+    {
+        $query = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+            ->where('register_plan_student', $student_id)->where('register_plan_semester', $semester)->get();
+        return RegisterPlanResource::collection($query);
     }
 }
