@@ -74,18 +74,8 @@
                                     <b> {{ course_code }}-{{ class_name }} </b>
                                 </div>
                                 <div class="col-md-6">
-                                    Hệ:
-                                    <b> {{ program_type_name }} </b>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    Năm học:
-                                    <b> {{ year_start }} - {{ year_end }} </b>
-                                </div>
-                                <div class="col-md-6">
-                                    Học kỳ:
-                                    <b>HK{{ semester }}</b>
+                                    Học kỳ (Năm học):
+                                    <b> HK{{ semester }} ({{ year_start }} - {{ year_end }}) </b>
                                 </div>
                             </div>
                         </div>
@@ -100,32 +90,19 @@
                                     <th class="text-center text-white w-10">
                                         Mã môn học
                                     </th>
-                                    <th class="text-center text-white w-15">
+                                    <th class="text-center text-white w-55">
                                         Tên môn học
                                     </th>
                                     <th class="text-center w-5">
                                         Số TC
                                     </th>
                                     <th class="text-center w-25">
-                                        Lịch học
-                                    </th>
-                                    <th class="text-center w-10">
-                                        Giảng viên
-                                    </th>
-                                    <th class="text-center w-15">
-                                        Ngày bắt đầu
-                                    </th>
-                                    <th class="text-center w-15">
-                                        Ngày kết thúc
+                                        Ngày đăng ký
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr
-                                    v-show="subjects.length"
-                                    v-for="(subject, index) in subjects"
-                                    :key="subject.subject_id"
-                                >
+                                <tr v-show="subjects.length" v-for="(subject, index) in subjects" :key="subject.subject_id">
                                     <td class="text-center">
                                         {{ (index += 1) }}
                                     </td>
@@ -139,22 +116,7 @@
                                         {{ subject.subject_credit }}
                                     </td>
                                     <td class="text-center">
-                                        {{ subject.program_detail_calendar }}
-                                    </td>
-                                    <td class="text-center">
-                                        {{ subject.program_detail_lecturer }}
-                                    </td>
-                                    <td class="text-center">
-                                        {{
-                                            subject.program_detail_start
-                                                | formatDate
-                                        }}
-                                    </td>
-                                    <td class="text-center">
-                                        {{
-                                            subject.program_detail_end
-                                                | formatDate
-                                        }}
+                                        {{ subject.register_plan_date | formatFullTime }}
                                     </td>
                                 </tr>
                                 <tr v-show="!subjects.length">
@@ -181,49 +143,48 @@ export default {
         return {
             subjects: [],
             semesters: [],
-            student_code: "",
-            student_fullname: "",
-            class_name: "",
-            course_code: "",
-            program_type_name: "",
-            year_start: "",
-            year_end: "",
-            semester: "",
+            student_code: '',
+            student_fullname: '',
+            class_name: '',
+            course_code: '',
+            year_start: '',
+            year_end: '',
+            register_date: '',
+            semester: '',
             class_id: this.$route.params.idClass,
             student_id: this.$route.params.idStudent
-        };
+        }
     },
     mounted() {
-        this.fetchStudentClass();
+        this.fetchStudentClass()
     },
     watch: {
         $route(to, from) {
-            this.class_id = to.params.idClass;
-            this.student_id = to.params.idStudent;
+            this.class_id = to.params.idClass
+            this.student_id = to.params.idStudent
         }
     },
     methods: {
         fetchStudentClass(page_url) {
-            let vm = this;
-            page_url = `../../api/admin/register-plan/dang-ky-ke-hoach-hoc-tap-sv/${this.student_id}`;
+            let vm = this
+            page_url = `../../api/admin/register-plan/dang-ky-ke-hoach-hoc-tap-sv/${this.student_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.student_code = res.data[0].student_code;
-                    this.student_fullname = res.data[0].student_fullname;
-                    this.class_name = res.data[0].class_name;
-                    this.course_code = res.data[0].course_code;
-                    this.program_type_name = res.data[0].program_type_name;
-                    this.year_start = res.data[0].register_plan_yearstart;
-                    this.year_end = res.data[0].register_plan_yearend;
-                    this.semester = res.data[0].register_plan_semester;
-                    this.subjects = res.data;
-                    console.log(res.data);
+                    this.student_code = res.data[0].student_code
+                    this.student_fullname = res.data[0].student_fullname
+                    this.class_name = res.data[0].class_name
+                    this.course_code = res.data[0].course_code
+                    this.year_start = res.data[0].register_plan_yearstart
+                    this.year_end = res.data[0].register_plan_yearend
+                    this.semester = res.data[0].register_plan_semester
+                    this.register_date = res.data[0].register_plan_date
+                    this.subjects = res.data
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         }
     }
-};
+}
 </script>
 
 <style scoped>

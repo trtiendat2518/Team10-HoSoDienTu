@@ -81,6 +81,7 @@ import Home from './components/student/pages/HomeComponent.vue'
 
 import StudyPlan from './components/student/pages/study_plan/StudyPlanComponent.vue'
 import StudyPlanIndex from './components/student/pages/study_plan/StudyPlanIndexComponent.vue'
+import StudyPlanError from './components/student/pages/study_plan/StudyPlanErrorComponent.vue'
 
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
@@ -612,6 +613,11 @@ export default new VueRouter({
                 student: StudyPlan
             },
             children: [
+                {
+                    path: '',
+                    name: 'studyplanerror',
+                    component: StudyPlanError
+                },
                 {
                     path: '',
                     name: 'studyplanindex',
