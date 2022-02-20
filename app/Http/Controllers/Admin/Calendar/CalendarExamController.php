@@ -40,20 +40,14 @@ class CalendarExamController extends Controller
     {
         $data = $request->validate([
             'calendar_exam_schedule' => ['required'],
-            'calendar_exam_course' => ['required'],
-            'calendar_exam_faculty' => ['required'],
-            'calendar_exam_major' => ['required'],
             'calendar_exam_subject' => ['required'],
             'calendar_exam_room' => ['required', 'max:20', 'notspecial_spaces'],
             'calendar_exam_method' => ['required', 'max:50', 'notspecial_spaces'],
             'calendar_exam_place' => ['required', 'max:100'],
             'calendar_exam_semester' => ['required', 'max:11'],
             'calendar_exam_note' => ['max:250']
-        ],[
+        ], [
             'calendar_exam_schedule.required' => 'Lịch biểu không được để trống!',
-            'calendar_exam_course.required' => 'Khóa Học không được để trống!',
-            'calendar_exam_faculty.required' => 'Khoa không được để trống!',
-            'calendar_exam_major.required' => 'Chuyên ngành không được để trống!',
             'calendar_exam_subject.required' => 'Môn Học không được để trống!',
 
             'calendar_exam_room.required' => 'Phòng thi không được để trống!',
@@ -75,9 +69,6 @@ class CalendarExamController extends Controller
 
         $calendar = new CalendarExam();
         $calendar->calendar_exam_schedule = $data['calendar_exam_schedule'];
-        $calendar->calendar_exam_course = $data['calendar_exam_course'];
-        $calendar->calendar_exam_faculty = $data['calendar_exam_faculty'];
-        $calendar->calendar_exam_major = $data['calendar_exam_major'];
         $calendar->calendar_exam_subject = $data['calendar_exam_subject'];
         $calendar->calendar_exam_room = $data['calendar_exam_room'];
         $calendar->calendar_exam_method = $data['calendar_exam_method'];
@@ -95,12 +86,12 @@ class CalendarExamController extends Controller
      */
     public function show($currentEntries)
     {
-        $joins = CalendarExam::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar_exam.calendar_exam_course')
-        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_calendar_exam.calendar_exam_faculty')
-        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar_exam.calendar_exam_major')
-        ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_exam.calendar_exam_subject')
-        ->join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_exam.calendar_exam_schedule')
-        ->orderby('calendar_exam_id', 'DESC')->paginate($currentEntries);
+        $joins = CalendarExam::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_exam.calendar_exam_schedule')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_exam.calendar_exam_subject')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_subject.subject_faculty')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->orderby('calendar_exam_id', 'DESC')->paginate($currentEntries);
         return CalendarExamResource::collection($joins);
     }
 
@@ -126,20 +117,14 @@ class CalendarExamController extends Controller
     {
         $data = $request->validate([
             'calendar_exam_schedule' => ['required'],
-            'calendar_exam_course' => ['required'],
-            'calendar_exam_faculty' => ['required'],
-            'calendar_exam_major' => ['required'],
             'calendar_exam_subject' => ['required'],
             'calendar_exam_room' => ['required', 'max:20', 'notspecial_spaces'],
             'calendar_exam_method' => ['required', 'max:50', 'notspecial_spaces'],
             'calendar_exam_place' => ['required', 'max:100'],
             'calendar_exam_semester' => ['required', 'max:11'],
             'calendar_exam_note' => ['max:250']
-        ],[
+        ], [
             'calendar_exam_schedule.required' => 'Lịch biểu không được để trống!',
-            'calendar_exam_course.required' => 'Khóa Học không được để trống!',
-            'calendar_exam_faculty.required' => 'Khoa không được để trống!',
-            'calendar_exam_major.required' => 'Chuyên ngành không được để trống!',
             'calendar_exam_subject.required' => 'Môn Học không được để trống!',
 
             'calendar_exam_room.required' => 'Phòng thi không được để trống!',
@@ -161,9 +146,6 @@ class CalendarExamController extends Controller
 
         $calendar = CalendarExam::find($calendarExam);
         $calendar->calendar_exam_schedule = $data['calendar_exam_schedule'];
-        $calendar->calendar_exam_course = $data['calendar_exam_course'];
-        $calendar->calendar_exam_faculty = $data['calendar_exam_faculty'];
-        $calendar->calendar_exam_major = $data['calendar_exam_major'];
         $calendar->calendar_exam_subject = $data['calendar_exam_subject'];
         $calendar->calendar_exam_room = $data['calendar_exam_room'];
         $calendar->calendar_exam_method = $data['calendar_exam_method'];
@@ -187,25 +169,26 @@ class CalendarExamController extends Controller
 
     public function search($query, $currentEntries)
     {
-        $joins = CalendarExam::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar_exam.calendar_exam_course')
-        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_calendar_exam.calendar_exam_faculty')
-        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar_exam.calendar_exam_major')
-        ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_exam.calendar_exam_subject')
-        ->join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_exam.calendar_exam_schedule')
-        ->where('tbl_subject.subject_name','LIKE','%'.$query.'%')
-        ->orderby('calendar_exam_id', 'DESC')->paginate($currentEntries);
+        $joins = CalendarExam::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_exam.calendar_exam_schedule')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_exam.calendar_exam_subject')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_subject.subject_faculty')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->where('tbl_subject.subject_name', 'LIKE', '%' . $query . '%')
+            ->orwhere('tbl_calendar.title', 'LIKE', '%' . $query . '%')
+            ->orderby('calendar_exam_id', 'DESC')->paginate($currentEntries);
         return CalendarExamResource::collection($joins);
     }
 
     public function detail($calendar_exam_id)
     {
-        $joins = CalendarExam::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar_exam.calendar_exam_course')
-        ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_calendar_exam.calendar_exam_faculty')
-        ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar_exam.calendar_exam_major')
-        ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_exam.calendar_exam_subject')
-        ->join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_exam.calendar_exam_schedule')
-        ->where('tbl_calendar_exam.calendar_exam_id', $calendar_exam_id)
-        ->orderby('calendar_exam_id', 'DESC')->get();
+        $joins = CalendarExam::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_exam.calendar_exam_schedule')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_exam.calendar_exam_subject')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_subject.subject_faculty')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->where('tbl_calendar_exam.calendar_exam_id', $calendar_exam_id)
+            ->orderby('calendar_exam_id', 'DESC')->get();
         return CalendarExamResource::collection($joins);
     }
 }
