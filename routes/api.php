@@ -226,6 +226,7 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('student')->group(function () {
     Route::prefix('study-plan')->group(function () {
+        Route::get('dang-ky-ke-hoach-hoc-tap/send-mail/{student_id}/{semester}', 'Student\Registration\StudyPlanController@send_mail');
         Route::get('dang-ky-ke-hoach-hoc-tap/my-plan/{student_id}/{semester}', 'Student\Registration\StudyPlanController@my_plan');
         Route::get('dang-ky-ke-hoach-hoc-tap/lich-ke-hoach/{student_id}', 'Student\Registration\StudyPlanController@calendar_plan');
         Route::get('dang-ky-ke-hoach-hoc-tap/goi-y-ca-nhan/{student_id}', 'Student\Registration\StudyPlanController@show_suggest_only');
