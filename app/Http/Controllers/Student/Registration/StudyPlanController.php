@@ -14,6 +14,7 @@ use App\Http\Resources\EducationProgramResource;
 use App\Http\Resources\PlanSuggestResource;
 use App\Http\Resources\CalendarResource;
 use App\Http\Resources\RegisterPlanResource;
+use Illuminate\Support\Facades\Mail;
 
 class StudyPlanController extends Controller
 {
@@ -41,8 +42,10 @@ class StudyPlanController extends Controller
             'subject.required' => 'Vui lòng chọn môn học!'
         ]);
 
-        $quey = RegisterPlan::where('register_plan_student', $request->student_id)
-            ->where('register_plan_semester', $request->semester)->get();
+        $quey = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+            ->where('tbl_register_plan.register_plan_student', $request->student_id)
+            ->where('tbl_register_plan.register_plan_semester', $request->semester)->get();
+
         if ($quey) {
             foreach ($quey as $value) {
                 $value->delete();
@@ -165,5 +168,27 @@ class StudyPlanController extends Controller
         $query = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
             ->where('register_plan_student', $student_id)->where('register_plan_semester', $semester)->get();
         return RegisterPlanResource::collection($query);
+    }
+
+    public function send_mail($student_id, $semester)
+    {
+        $student = Student::find($student_id);
+        $query = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+            ->where('tbl_register_plan.register_plan_student', $student_id)
+            ->where('tbl_register_plan.register_plan_semester', $semester)->get();
+
+        $to_name = "BCN Khoa CNTT";
+        $to_email = $student->student_email;
+        $student_fullname = $student->student_fullname;
+        $student_code = $student->student_code;
+
+        Mail::send(
+            'student.pages.mail.study_plan_mail',
+            ['quey' => $query],
+            function ($message) use ($to_name, $to_email, $student_fullname, $student_code) {
+                $message->to($to_email)->subject('Kết quả đăng ký kế hoạch học tập của ' . $student_fullname . '-' . $student_code);
+                $message->from($to_email, $to_name);
+            }
+        );
     }
 }

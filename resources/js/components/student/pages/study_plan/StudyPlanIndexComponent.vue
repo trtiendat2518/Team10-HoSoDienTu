@@ -401,7 +401,7 @@
                                                 {{ value.subject_credit }}
                                             </td>
                                             <td class="text-center td-table">
-                                                {{ value.register_plan_date }}
+                                                {{ value.register_plan_date || formatFullTime }}
                                             </td>
                                             <td class="text-center">
                                                 <i class="fa fa-check" aria-hidden="true"></i>
@@ -545,13 +545,10 @@ export default {
                     for (let i = 0; i < res.data.length; i++) {
                         this.sum_credit = res.data[i].subject_credit + this.sum_credit
                     }
-
-                    console.log(res.data)
                 })
                 .catch(err => console.log(err))
         },
         fetchMyPlan(page_url) {
-            console.log(this.semester)
             page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/my-plan/${this.student_id}/${this.semester}`
             fetch(page_url)
                 .then(res => res.json())
@@ -648,9 +645,11 @@ export default {
                     this.$swal({
                         title: 'Đăng ký thành công!',
                         icon: 'success',
+                        text: 'Bạn sẽ nhận được Email kết quả đăng ký sau vài phút!',
                         confirmButtonText: 'OK!',
-                        timer: 2000
+                        timer: 3500
                     })
+                    this.sendMail()
                 })
                 .catch(err => {
                     const null_subject = err.response.data.errors?.subject?.length
@@ -678,6 +677,11 @@ export default {
             const year = date.getFullYear()
             this.print_date = 'Ngày ' + day + ' tháng ' + month + ' năm ' + year
             this.$refs.DownloadComp.generatePdf()
+        },
+        sendMail() {
+            axios.get(`../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/send-mail/${this.student_id}/${this.semester}`).catch(err => {
+                console.log(err)
+            })
         }
     }
 }
