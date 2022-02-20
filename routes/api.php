@@ -72,6 +72,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('edu-major')->group(function () {
+        Route::get('chuyen-nganh/lecturer_major/{lecturer_id}', 'Admin\Education\MajorController@lecturer_major');
         Route::get('chuyen-nganh/major/', 'Admin\Education\MajorController@major');
         Route::patch('chuyen-nganh/change/{major}', 'Admin\Education\MajorController@change');
         Route::get('chuyen-nganh/search/{query}/{currentEntries}', 'Admin\Education\MajorController@search');
@@ -174,6 +175,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('calendar-schedule')->group(function () {
+        Route::get('lich-bieu/schedule-exam', 'Admin\Calendar\CalendarController@schedule_exam');
         Route::get('lich-bieu/schedule', 'Admin\Calendar\CalendarController@schedule');
         Route::resource('lich-bieu', 'Admin\Calendar\CalendarController');
     });
@@ -219,5 +221,17 @@ Route::prefix('admin')->group(function () {
         Route::get('goi-y-ke-hoach-hoc-tap-sv/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Education\PlanSuggestController@search');
         Route::get('goi-y-ke-hoach-hoc-tap-sv/{lecturer_id}/{currentEntries}', 'Admin\Education\PlanSuggestController@showdata');
         Route::resource('goi-y-ke-hoach-hoc-tap-sv', 'Admin\Education\PlanSuggestController');
+    });
+});
+
+Route::prefix('student')->group(function () {
+    Route::prefix('study-plan')->group(function () {
+        Route::get('dang-ky-ke-hoach-hoc-tap/send-mail/{student_id}/{semester}', 'Student\Registration\StudyPlanController@send_mail');
+        Route::get('dang-ky-ke-hoach-hoc-tap/my-plan/{student_id}/{semester}', 'Student\Registration\StudyPlanController@my_plan');
+        Route::get('dang-ky-ke-hoach-hoc-tap/lich-ke-hoach/{student_id}', 'Student\Registration\StudyPlanController@calendar_plan');
+        Route::get('dang-ky-ke-hoach-hoc-tap/goi-y-ca-nhan/{student_id}', 'Student\Registration\StudyPlanController@show_suggest_only');
+        Route::get('dang-ky-ke-hoach-hoc-tap/goi-y-ca-lop/{student_id}', 'Student\Registration\StudyPlanController@show_suggest_all');
+        Route::get('dang-ky-ke-hoach-hoc-tap/score/{student_id}', 'Student\Registration\StudyPlanController@showdata');
+        Route::resource('dang-ky-ke-hoach-hoc-tap', 'Student\Registration\StudyPlanController');
     });
 });

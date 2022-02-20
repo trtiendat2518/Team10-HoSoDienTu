@@ -137,7 +137,9 @@ class RegisterSubjectController extends Controller
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
         ]);
-        $path = $request->file('fileImport')->getRealPath();
+
+        $path1 = $request->file('fileImport')->store('temp');
+        $path = storage_path('app') . '/' . $path1;
         $data = Excel::import(new ScoreImport($student_id), $path);
         return response()->json(200);
     }
