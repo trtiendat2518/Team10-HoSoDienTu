@@ -82,6 +82,7 @@ import Home from './components/student/pages/HomeComponent.vue'
 import StudyPlan from './components/student/pages/study_plan/StudyPlanComponent.vue'
 import StudyPlanIndex from './components/student/pages/study_plan/StudyPlanIndexComponent.vue'
 import StudyPlanError from './components/student/pages/study_plan/StudyPlanErrorComponent.vue'
+import StudyPlanHistory from './components/student/pages/study_plan/StudyPlanHistoryComponent.vue'
 
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
@@ -622,6 +623,11 @@ export default new VueRouter({
                     path: '',
                     name: 'studyplanindex',
                     component: StudyPlanIndex
+                },
+                {
+                    path: 'lich-su-dang-ky-ke-hoach',
+                    name: 'studyplanhistory',
+                    component: StudyPlanHistory
                 }
             ],
             beforeEnter: (to, from, next) => {

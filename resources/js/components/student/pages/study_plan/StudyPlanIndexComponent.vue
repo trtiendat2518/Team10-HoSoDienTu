@@ -40,11 +40,16 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button class="btn btn-block btn-lg btn-primary" @click="store()">Đăng ký</button>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button class="btn btn-block btn-lg btn-info" @click="print()">In PDF</button>
+                </div>
+                <div class="col-md-2">
+                    <router-link tag="button" class="btn btn-block btn-lg btn-secondary" :to="{ name: 'studyplanhistory' }">
+                        Lịch sử ĐK
+                    </router-link>
                 </div>
             </div>
 
