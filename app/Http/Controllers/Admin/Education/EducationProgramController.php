@@ -7,7 +7,7 @@ use App\Models\EducationProgram;
 use App\Models\ProgramDetail;
 use App\Models\Subject;
 use Illuminate\Http\Request;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProgramDetailImport;
 use App\Imports\ProgramDetailUpdateImport;
 use App\Http\Resources\EducationProgramResource;
@@ -85,7 +85,9 @@ class EducationProgramController extends Controller
         $program->education_program_faculty = $request->education_program_faculty;
         $program->education_program_status = $data['education_program_status'];
         $program_code = $data['education_program_code'];
-        $path = $request->file('file_data')->getRealPath();
+
+        $path1 = $request->file('file_data')->store('temp');
+        $path = storage_path('app') . '/' . $path1;
         $import = Excel::import(new ProgramDetailImport($program_code), $path);
         $sum = 0;
 
@@ -254,7 +256,9 @@ class EducationProgramController extends Controller
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
         ]);
-        $path = $request->file('fileImport')->getRealPath();
+
+        $path1 = $request->file('fileImport')->store('temp');
+        $path = storage_path('app') . '/' . $path1;
         $data = Excel::import(new ProgramDetailUpdateImport($program_code), $path);
 
         if ($data) {

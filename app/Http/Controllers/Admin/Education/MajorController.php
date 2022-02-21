@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Major;
 use Illuminate\Http\Request;
 use App\Http\Resources\MajorResource;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MajorExport;
 use App\Imports\MajorImport;
 use Validator;
@@ -197,8 +197,16 @@ class MajorController extends Controller
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
         ]);
-        $path = $request->file('fileImport')->getRealPath();
+        $path1 = $request->file('fileImport')->store('temp');
+        $path = storage_path('app') . '/' . $path1;
         $data = Excel::import(new MajorImport, $path);
         return response()->json(200);
+    }
+
+    public function lecturer_major($lecturer_id)
+    {
+        $joins = Major::join('tbl_lecturer', 'tbl_lecturer.lecturer_faculty', '=', 'tbl_major.major_faculty')
+            ->where('tbl_lecturer.lecturer_id', $lecturer_id)->get();
+        return MajorResource::collection($joins);
     }
 }

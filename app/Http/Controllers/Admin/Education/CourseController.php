@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Resources\CourseResource;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\CourseExport;
 use App\Imports\CourseImport;
 use Validator;
@@ -178,7 +178,9 @@ class CourseController extends Controller
             'fileImport.file' => 'Vui lòng nhập tệp Excel để import!',
             'fileImport.mimes' => 'Vui lòng nhập tệp Excel để import!',
         ]);
-        $path = $request->file('fileImport')->getRealPath();
+
+        $path1 = $request->file('fileImport')->store('temp');
+        $path = storage_path('app') . '/' . $path1;
         $data = Excel::import(new CourseImport, $path);
         return response()->json(200);
     }

@@ -74,8 +74,20 @@ import FormTeacherClassPlan from './components/admin/pages/formteacher_class/For
 
 import StudyPlanSuggest from './components/admin/pages/suggest/StudyPlanSuggestComponent.vue'
 import StudyPlanSuggestIndex from './components/admin/pages/suggest/StudyPlanSuggestIndexComponent.vue'
+import StudyPlanSuggestCreate from './components/admin/pages/suggest/StudyPlanSuggestCreateComponent.vue'
+import StudyPlanSuggestUpdate from './components/admin/pages/suggest/StudyPlanSuggestUpdateComponent.vue'
 
-import Error404 from './components/layouts/ErrorComponent.vue'
+import Home from './components/student/pages/HomeComponent.vue'
+
+import StudyPlan from './components/student/pages/study_plan/StudyPlanComponent.vue'
+import StudyPlanIndex from './components/student/pages/study_plan/StudyPlanIndexComponent.vue'
+import StudyPlanError from './components/student/pages/study_plan/StudyPlanErrorComponent.vue'
+import StudyPlanHistory from './components/student/pages/study_plan/StudyPlanHistoryComponent.vue'
+
+import Score from './components/student/pages/scores/ScoreComponent.vue'
+import ScoreIndex from './components/student/pages/scores/ScoreIndexComponent.vue'
+
+import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
     Vue.prototype.$adminId = document.querySelector("meta[name='admin-fullname']").getAttribute('content')
@@ -84,6 +96,8 @@ if (document.querySelector("meta[name='admin-fullname']") && document.querySelec
     Vue.prototype.$facultyId = document.querySelector("meta[name='deanfaculty-id']").getAttribute('content')
 } else if (document.querySelector("meta[name='formteacher-id']")) {
     Vue.prototype.$teacherId = document.querySelector("meta[name='formteacher-id']").getAttribute('content')
+} else if (document.querySelector("meta[name='student-id']")) {
+    Vue.prototype.$studentId = document.querySelector("meta[name='student-id']").getAttribute('content')
 }
 
 export default new VueRouter({
@@ -92,7 +106,8 @@ export default new VueRouter({
             path: '/',
             name: 'dashboard',
             components: {
-                default: Dashboard
+                default: Dashboard,
+                student: Home
             }
         },
 
@@ -574,10 +589,74 @@ export default new VueRouter({
                     path: '',
                     name: 'studyplansuggestindex',
                     component: StudyPlanSuggestIndex
+                },
+                {
+                    path: 'tao-moi',
+                    name: 'studyplansuggestcreate',
+                    component: StudyPlanSuggestCreate
+                },
+                {
+                    path: 'cap-nhat/:idSPClass/:idSPSuggest',
+                    name: 'studyplansuggestupdate',
+                    component: StudyPlanSuggestUpdate
                 }
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$teacherId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/ke-hoach-hoc-tap',
+            name: 'studyplan',
+            components: {
+                student: StudyPlan
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'studyplanerror',
+                    component: StudyPlanError
+                },
+                {
+                    path: '',
+                    name: 'studyplanindex',
+                    component: StudyPlanIndex
+                },
+                {
+                    path: 'lich-su-dang-ky-ke-hoach',
+                    name: 'studyplanhistory',
+                    component: StudyPlanHistory
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/ket-qua-hoc-tap',
+            name: 'score',
+            components: {
+                student: Score
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'scoreindex',
+                    component: ScoreIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
                     next()
                 } else {
                     next(false)
