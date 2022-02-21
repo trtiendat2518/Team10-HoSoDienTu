@@ -76,26 +76,34 @@ class RegisterSubjectController extends Controller
         $reg = RegisterSubject::find($registerSubject);
 
         $data = $request->validate([
-            'register_subject_exercise' => ['required', 'numeric', 'max:11'],
-            'register_subject_exam' => ['required', 'numeric', 'max:11'],
-            'register_subject_final' => ['required', 'numeric', 'max:11'],
-            'register_subject_second' => ['required', 'numeric', 'max:11'],
+            'register_subject_exercise' => ['required', 'numeric', 'max:11', 'gte:0', 'lte:10'],
+            'register_subject_exam' => ['required', 'numeric', 'max:11', 'gte:0', 'lte:10'],
+            'register_subject_final' => ['required', 'numeric', 'max:11', 'gte:0', 'lte:10'],
+            'register_subject_second' => ['required', 'numeric', 'max:11', 'gte:0', 'lte:10'],
         ], [
             'register_subject_exercise.required' => 'Điểm bài tập không được để trống!',
-            'register_subject_exercise.max' => 'Điểm bài tập không nhập quá 11 số!',
+            'register_subject_exercise.max' => 'Điểm bài tập chỉ được nhập từ 0 đến 10!',
             'register_subject_exercise.numeric' => 'Điểm bài tập phải là ký tự số!',
+            'register_subject_exercise.gte' => 'Điểm bài tập chỉ được nhập từ 0 đến 10!',
+            'register_subject_exercise.lte' => 'Điểm bài tập chỉ được nhập từ 0 đến 10!',
 
             'register_subject_exam.required' => 'Điểm kiểm tra không được để trống!',
-            'register_subject_exam.max' => 'Điểm kiểm tra nhập không quá 11 số!',
+            'register_subject_exam.max' => 'Điểm kiểm tra chỉ được nhập từ 0 đến 10!',
             'register_subject_exam.numeric' => 'Điểm kiểm tra phải là ký tự số!',
+            'register_subject_exam.gte' => 'Điểm kiểm tra chỉ được nhập từ 0 đến 10!',
+            'register_subject_exam.lte' => 'Điểm kiểm tra chỉ được nhập từ 0 đến 10!',
 
             'register_subject_final.required' => 'Điểm thi lần 1 không được để trống!',
-            'register_subject_final.max' => 'Điểm thi lần 1 không nhập quá 11 số!',
+            'register_subject_final.max' => 'Điểm thi lần 1 chỉ được nhập từ 0 đến 10!',
             'register_subject_final.numeric' => 'Điểm thi lần 1 phải là ký tự số!',
+            'register_subject_final.gte' => 'Điểm thi lần 1 chỉ được nhập từ 0 đến 10!',
+            'register_subject_final.lte' => 'Điểm thi lần 1 chỉ được nhập từ 0 đến 10!',
 
             'register_subject_second.required' => 'Điểm thi lần 2 không được để trống!',
-            'register_subject_second.max' => 'Điểm thi lần 2 không nhập quá 11 số!',
+            'register_subject_second.max' => 'Điểm thi lần 2 chỉ được nhập từ 0 đến 10!',
             'register_subject_second.numeric' => 'Điểm thi lần 2 phải là ký tự số!',
+            'register_subject_second.gte' => 'Điểm thi lần 2 chỉ được nhập từ 0 đến 10!',
+            'register_subject_second.lte' => 'Điểm thi lần 2 chỉ được nhập từ 0 đến 10!',
         ]);
 
         $reg->register_subject_exercise = $data['register_subject_exercise'];
@@ -119,9 +127,7 @@ class RegisterSubjectController extends Controller
     public function score($student_id)
     {
         $joins = RegisterSubject::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_subject.register_subject_student')
-            ->join('tbl_program_detail', 'tbl_program_detail.program_detail_id', '=', 'tbl_register_subject.register_subject_program')
-            ->join('tbl_education_program', 'tbl_education_program.education_program_code', '=', 'tbl_program_detail.program_detail_code')
-            ->join('tbl_subject', 'tbl_subject.subject_code', '=', 'tbl_program_detail.program_detail_subject')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_subject.register_subject_program')
             ->where('tbl_register_subject.register_subject_student', $student_id)
             ->get();
 

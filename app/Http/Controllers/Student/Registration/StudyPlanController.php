@@ -98,8 +98,7 @@ class StudyPlanController extends Controller
 
     public function showdata($student_id)
     {
-        $joins = RegisterSubject::join('tbl_program_detail', 'tbl_program_detail.program_detail_id', '=', 'tbl_register_subject.register_subject_program')
-            ->join('tbl_subject', 'tbl_subject.subject_code', '=', 'tbl_program_detail.program_detail_subject')
+        $joins = RegisterSubject::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_subject.register_subject_program')
             ->where('tbl_register_subject.register_subject_student', $student_id)
             ->get();
         return EducationProgramResource::collection($joins);

@@ -18,10 +18,6 @@
         </div>
         <!-- /HEADER BRAND -->
 
-        <!-- SIDEMENU TRIGGER -->
-        <header-component></header-component>
-        <!-- /SIDEMENU TRIGGER -->
-
         <!-- NAVIGATION -->
         <nav class="navigation">
             <!-- MENU MAIN -->
