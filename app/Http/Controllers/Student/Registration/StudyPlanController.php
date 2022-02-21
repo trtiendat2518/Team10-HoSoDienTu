@@ -170,6 +170,21 @@ class StudyPlanController extends Controller
         return RegisterPlanResource::collection($query);
     }
 
+    public function my_all_plan($student_id)
+    {
+        $query = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+            ->where('register_plan_student', $student_id)->get();
+        return RegisterPlanResource::collection($query);
+    }
+
+    public function filter($student_id, $value)
+    {
+        $query = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+            ->where('register_plan_student', $student_id)
+            ->where('register_plan_semester', $value)->get();
+        return RegisterPlanResource::collection($query);
+    }
+
     public function send_mail($student_id, $semester)
     {
         $student = Student::find($student_id);
