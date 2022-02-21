@@ -6,6 +6,9 @@
         </div>
 
         <div class="grid">
+            <router-link tag="button" class="btn btn-block btn-lg btn-secondary" :to="{ name: 'studyplanhistory' }">
+                Lịch sử ĐK
+            </router-link>
             <div class="alert alert-warning">
                 <div class="mb-2 text-center">
                     <p>Hiện tại chưa tới ngày giờ để bạn đăng ký kế hoạch học tập</p>

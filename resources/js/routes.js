@@ -84,6 +84,9 @@ import StudyPlanIndex from './components/student/pages/study_plan/StudyPlanIndex
 import StudyPlanError from './components/student/pages/study_plan/StudyPlanErrorComponent.vue'
 import StudyPlanHistory from './components/student/pages/study_plan/StudyPlanHistoryComponent.vue'
 
+import Score from './components/student/pages/scores/ScoreComponent.vue'
+import ScoreIndex from './components/student/pages/scores/ScoreIndexComponent.vue'
+
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
@@ -628,6 +631,28 @@ export default new VueRouter({
                     path: 'lich-su-dang-ky-ke-hoach',
                     name: 'studyplanhistory',
                     component: StudyPlanHistory
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/ket-qua-hoc-tap',
+            name: 'score',
+            components: {
+                student: Score
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'scoreindex',
+                    component: ScoreIndex
                 }
             ],
             beforeEnter: (to, from, next) => {
