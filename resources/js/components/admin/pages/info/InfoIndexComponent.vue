@@ -26,13 +26,7 @@
                                 <div class="">
                                     <div class="">
                                         <a href="#">
-                                            <img
-                                                :src="
-                                                    `../public/avatar/admin/${admin_avatar}`
-                                                "
-                                                class="avatar-xxl"
-                                                alt="profile"
-                                            />
+                                            <img :src="`../public/avatar/admin/${admin_avatar}`" class="avatar-xxl" alt="profile" />
                                         </a>
                                     </div>
                                 </div>
@@ -41,11 +35,7 @@
                         <h3 class="mt-3 text-white">{{ admin_fullname }}</h3>
                         <p class="mb-2 text-white">Quản trị viên</p>
                         <div v-if="infos.length == 0">
-                            <router-link
-                                tag="button"
-                                class="btn btn-lg btn-light"
-                                :to="{ name: 'infocreate' }"
-                            >
+                            <router-link tag="button" class="btn btn-lg btn-light" :to="{ name: 'infocreate' }">
                                 Tạo mới hồ sơ cá nhân
                             </router-link>
                         </div>
@@ -73,11 +63,7 @@
                                 aria-labelledby="tabs-icons-text-1-tab"
                             >
                                 <div class="table-responsive mb-3">
-                                    <table
-                                        class="table row table-borderless w-100 m-0 border"
-                                        v-for="info in infos"
-                                        :key="info.admin_id"
-                                    >
+                                    <table class="table row table-borderless w-100 m-0 border" v-for="info in infos" :key="info.admin_id">
                                         <tbody class="col-lg-6 p-0">
                                             <tr>
                                                 <td>
@@ -100,10 +86,7 @@
                                                     <strong>
                                                         Ngày sinh :
                                                     </strong>
-                                                    {{
-                                                        info.admin_birthday
-                                                            | formatDate
-                                                    }}
+                                                    {{ info.admin_birthday | formatDate }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -111,20 +94,10 @@
                                                     <strong>
                                                         Giới tính :
                                                     </strong>
-                                                    <span
-                                                        v-if="
-                                                            info.admin_gender ==
-                                                                0
-                                                        "
-                                                    >
+                                                    <span v-if="info.admin_gender == 0">
                                                         Nam
                                                     </span>
-                                                    <span
-                                                        v-else-if="
-                                                            info.admin_gender ==
-                                                                1
-                                                        "
-                                                    >
+                                                    <span v-else-if="info.admin_gender == 1">
                                                         Nữ
                                                     </span>
                                                 </td>
@@ -176,9 +149,7 @@
                                                     <strong>
                                                         CMND/CCCD :
                                                     </strong>
-                                                    {{
-                                                        info.admin_identify_card
-                                                    }}
+                                                    {{ info.admin_identify_card }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -216,33 +187,35 @@
 </template>
 
 <script>
+import { eventBus } from '../../../../app.js'
 export default {
     data() {
         return {
             admin_id: this.$adminCode,
             admin_fullname: this.$adminId,
-            admin_avatar: "",
-            admin_info_id: "",
+            admin_avatar: '',
+            admin_info_id: '',
             infos: []
-        };
+        }
     },
     mounted() {
-        this.fetchInfo();
+        this.fetchInfo()
     },
     methods: {
         fetchInfo(page_url) {
-            page_url = `../../api/admin/user-gv/giang-vien/thong-tin-ca-nhan/${this.admin_id}`;
+            page_url = `../../api/admin/user-gv/giang-vien/thong-tin-ca-nhan/${this.admin_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.infos = res.data;
-                    this.admin_avatar = res.data[0].admin_avatar;
-                    this.admin_info_id = res.data[0].admin_info_id;
+                    this.infos = res.data
+                    this.admin_avatar = res.data[0].admin_avatar
+                    this.admin_info_id = res.data[0].admin_info_id
+                    eventBus.changeAvatar(res.data[0].admin_avatar)
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         }
     }
-};
+}
 </script>
 
 <style></style>

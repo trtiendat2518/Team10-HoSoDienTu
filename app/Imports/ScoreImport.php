@@ -40,10 +40,10 @@ class ScoreImport implements ToCollection, WithHeadingRow, WithValidation
     {
         return [
             'ma_mon_hoc' => 'required|notspecial_spaces|max:10',
-            'bai_tap' => 'required|numeric|max:11|',
-            'kiem_tra' => 'required|numeric|max:11|',
-            'thi_lan_1' => 'required|numeric|max:11',
-            'thi_lan_2' => 'required|numeric|max:11',
+            'bai_tap' => 'required|numeric|max:11|gte:0|lte:10',
+            'kiem_tra' => 'required|numeric|max:11|gte:0|lte:10',
+            'thi_lan_1' => 'required|numeric|max:11|gte:0|lte:10',
+            'thi_lan_2' => 'required|numeric|max:11|gte:0|lte:10',
         ];
     }
 
@@ -57,18 +57,26 @@ class ScoreImport implements ToCollection, WithHeadingRow, WithValidation
             'bai_tap.required' => 'Trường thông tin :attribute không được để trống',
             'bai_tap.max' => 'Trường thông tin :attribute không nhập quá 11 ký tự chữ!',
             'bai_tap.integer' => 'Trường thông tin :attribute phải là ký tự số',
+            'bai_tap.gte' => 'Trường thông tin :attribute chỉ được nhập từ 0 đến 10!',
+            'bai_tap.lte' => 'Trường thông tin :attribute chỉ được nhập từ 0 đến 10!',
 
             'kiem_tra.required' => 'Trường thông tin :attribute không được để trống',
             'kiem_tra.max' => 'Trường thông tin :attribute không nhập quá 11 ký tự chữ!',
             'kiem_tra.integer' => 'Trường thông tin :attribute phải là ký tự số',
+            'kiem_tra.gte' => 'Trường thông tin :attribute chỉ được nhập từ 0 đến 10!',
+            'kiem_tra.lte' => 'Trường thông tin :attribute chỉ được nhập từ 0 đến 10!',
 
             'thi_lan_1.required' => 'Trường thông tin :attribute không được để trống',
             'thi_lan_1.max' => 'Trường thông tin :attribute không nhập quá 11 ký tự chữ!',
             'thi_lan_1.integer' => 'Trường thông tin :attribute phải là ký tự số',
+            'thi_lan_1.gte' => 'Trường thông tin :attribute chỉ được nhập từ 0 đến 10!',
+            'thi_lan_1.lte' => 'Trường thông tin :attribute chỉ được nhập từ 0 đến 10!',
 
             'thi_lan_2.required' => 'Trường thông tin :attribute không được để trống',
             'thi_lan_2.max' => 'Trường thông tin :attribute không nhập quá 11 ký tự chữ!',
             'thi_lan_2.integer' => 'Trường thông tin :attribute phải là ký tự số',
+            'thi_lan_2.gte' => 'Trường thông tin :attribute chỉ được nhập từ 0 đến 10!',
+            'thi_lan_2.lte' => 'Trường thông tin :attribute chỉ được nhập từ 0 đến 10!',
         ];
     }
 }
