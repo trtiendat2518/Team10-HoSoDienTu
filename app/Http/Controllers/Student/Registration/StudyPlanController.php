@@ -162,6 +162,18 @@ class StudyPlanController extends Controller
         return CalendarResource::collection($joins);
     }
 
+    public function calendar_timeplan($student_id)
+    {
+        $find = Student::find($student_id);
+        $joins = Calendar::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->where('tbl_course.course_id', $find->student_course)
+            ->where('tbl_major.major_id', $find->student_major)
+            ->where('tbl_calendar.calendarId', 0)->get();
+
+        return CalendarResource::collection($joins);
+    }
+
     public function my_plan($student_id, $semester)
     {
         $query = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')

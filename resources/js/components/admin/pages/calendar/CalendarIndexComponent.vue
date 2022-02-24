@@ -17,9 +17,13 @@
                 Tạo mới
             </button>
             <router-link class="btn btn-indigo btn-lg mb-3 btn-3d float-right" tag="button" :to="{ name: 'calendarreference' }"
-                ><li class="fa fa-info"></li>
-                Sự kiện</router-link
-            >
+                ><li class="fa fa-calendar-o"></li>
+                Lịch thi
+            </router-link>
+            <router-link class="btn btn-primary btn-lg mb-3 btn-3d float-right mr-2" tag="button" :to="{ name: 'calendarsubjectslot' }"
+                ><li class="fa fa-window-maximize"></li>
+                Mở lớp môn học
+            </router-link>
         </div>
         <div class="row">
             <div class="col-md-12 col-lg-12">
@@ -167,7 +171,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-6" :class="{ 'col-md-12': form.calendarId > 1 }">
                                     <div class="form-group">
                                         <label class="mt-3">Loại sự kiện <span class="text-danger">(*)</span></label>
                                         <select
@@ -191,8 +195,8 @@
                                         ></div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div v-if="form.calendarId <= 1">
+                                <div class="col-md-2">
+                                    <div v-show="form.calendarId <= 1">
                                         <div class="form-group">
                                             <label class="mt-3">Học kỳ <span class="text-danger">(*)</span></label>
                                             <input
@@ -200,13 +204,33 @@
                                                 v-model="form.location"
                                                 name="location"
                                                 class="form-control"
-                                                placeholder="Nhập số học kỳ"
+                                                placeholder="Nhập HK"
                                                 :class="{ 'is-invalid': form.errors.has('location') }"
                                             />
                                             <div
                                                 class="text-danger mb-3"
                                                 v-if="form.errors.has('location')"
                                                 v-html="form.errors.get('location')"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div v-show="form.calendarId <= 1">
+                                        <div class="form-group">
+                                            <label class="mt-3">TC bắt buộc <span class="text-danger">(*)</span></label>
+                                            <input
+                                                type="number"
+                                                v-model="form.recurrenceRule"
+                                                name="recurrenceRule"
+                                                class="form-control"
+                                                placeholder="Nhập số TC bắt buộc"
+                                                :class="{ 'is-invalid': form.errors.has('recurrenceRule') }"
+                                            />
+                                            <div
+                                                class="text-danger mb-3"
+                                                v-if="form.errors.has('recurrenceRule')"
+                                                v-html="form.errors.get('recurrenceRule')"
                                             ></div>
                                         </div>
                                     </div>
@@ -369,6 +393,7 @@ export default {
                 end: '',
                 calendarId: '',
                 location: '',
+                recurrenceRule: '',
                 course_code: '',
                 course_name: '',
                 major_name: ''
@@ -522,6 +547,7 @@ export default {
                 .catch(err => console.log(err))
         },
         onBeforeCreateSchedule(e) {
+            console.log(e)
             this.editMode = false
             this.form.clear()
             this.form.reset()

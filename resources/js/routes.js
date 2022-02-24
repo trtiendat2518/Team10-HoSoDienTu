@@ -37,6 +37,7 @@ import ProcedureRequire from './components/admin/pages/procedures/ProcedureRequi
 import Calendar from './components/admin/pages/calendar/CalendarComponent.vue'
 import CalendarIndex from './components/admin/pages/calendar/CalendarIndexComponent.vue'
 import CalendarReference from './components/admin/pages/calendar/CalendarReferenceComponent.vue'
+import CalendarSubjectSlot from './components/admin/pages/calendar/CalendarSubjectSlotComponent.vue'
 
 import ClassStudent from './components/admin/pages/class/ClassStudentComponent.vue'
 import ClassStudentIndex from './components/admin/pages/class/ClassStudentIndexComponent.vue'
@@ -364,6 +365,11 @@ export default new VueRouter({
                     path: 'rang-buoc-lich-bieu',
                     name: 'calendarreference',
                     component: CalendarReference
+                },
+                {
+                    path: 'mo-lop-mon-hoc',
+                    name: 'calendarsubjectslot',
+                    component: CalendarSubjectSlot
                 }
             ],
             beforeEnter: (to, from, next) => {
