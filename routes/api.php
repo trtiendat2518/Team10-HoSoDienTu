@@ -246,6 +246,7 @@ Route::prefix('student')->group(function () {
     });
 
     Route::prefix('subject-register')->group(function () {
+        Route::get('dang-ky-mon-hoc/send-mail/{student_id}/{semester}', 'Student\Registration\SubjectController@send_mail');
         Route::post('dang-ky-mon-hoc/thay-doi-mon-hoc/{calendar_subject_id}/{register_subject_id}', 'Student\Registration\SubjectController@change_subject');
         Route::post('dang-ky-mon-hoc/huy-mon-hoc/{calendar_subject_id}/{register_subject_id}', 'Student\Registration\SubjectController@cancel_subject');
         Route::get('dang-ky-mon-hoc/ket-qua-dk-tat-ca/{student_id}/{semester}', 'Student\Registration\SubjectController@result_all');
