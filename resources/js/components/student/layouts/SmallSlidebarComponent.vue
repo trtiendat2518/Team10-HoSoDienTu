@@ -1,183 +1,171 @@
 <template>
     <div>
-        <nav id="navigation-widget-small" class="navigation-widget navigation-widget-desktop closed sidebar left delayed ">
-            <!-- USER AVATAR -->
-            <a class="user-avatar small no-outline" href="profile-timeline.html">
-                <!-- USER AVATAR CONTENT -->
-                <div class="user-avatar-content">
-                    <!-- HEXAGON -->
-                    <div class="hexagon-image-30-32" data-src="">avatar</div>
-                    <!-- /HEXAGON -->
-                </div>
-                <!-- /USER AVATAR CONTENT -->
+        <ul class="menu">
+            <!-- NAVIGATION WIDGET SECTION TITLE -->
+            <p class="navigation-widget-section-title mb-3">Tra cứu thông tin</p>
+            <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
-                <!-- USER AVATAR PROGRESS -->
-                <div class="user-avatar-progress">
-                    <!-- HEXAGON -->
-                    <div class="hexagon-progress-40-44"></div>
-                    <!-- /HEXAGON -->
-                </div>
-                <!-- /USER AVATAR PROGRESS -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/lchuong-trinh-dao-tao" active-class="active">
+                    <svg class="menu-item-link-icon icon-newsfeed">
+                        <use xlink:href="#svg-newsfeed"></use>
+                    </svg>
+                    Chương trình đào tạo
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- USER AVATAR PROGRESS BORDER -->
-                <div class="user-avatar-progress-border">
-                    <!-- HEXAGON -->
-                    <div class="hexagon-border-40-44"></div>
-                    <!-- /HEXAGON -->
-                </div>
-                <!-- /USER AVATAR PROGRESS BORDER -->
-            </a>
-            <!-- /USER AVATAR -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/lich-hoc" active-class="active">
+                    <svg class="menu-item-link-icon icon-events-monthly">
+                        <use xlink:href="#svg-events-monthly"></use>
+                    </svg>
+                    Lịch học
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-            <!-- MENU -->
-            <ul class="menu small">
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/chuong-trinh-dao-tao" active-class="active" exact>
-                        <svg class="menu-item-link-icon icon-newsfeed">
-                            <use xlink:href="#svg-newsfeed"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/lich-thi" active-class="active">
+                    <svg class="menu-item-link-icon icon-events-weekly">
+                        <use xlink:href="#svg-events-weekly"></use>
+                    </svg>
+                    Lịch thi
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/lich-hoc" active-class="active">
-                        <svg class="menu-item-link-icon icon-events-monthly">
-                            <use xlink:href="#svg-events-monthly"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/ket-qua-hoc-tap" active-class="active">
+                    <svg class="menu-item-link-icon icon-badges">
+                        <use xlink:href="#svg-badges"></use>
+                    </svg>
+                    Kết quả học tập
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/lich-thi" active-class="active">
-                        <svg class="menu-item-link-icon icon-events-weekly">
-                            <use xlink:href="#svg-events-weekly"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/tong-hop-hoc-phi" active-class="active">
+                    <svg class="menu-item-link-icon icon-wallet">
+                        <use xlink:href="#svg-wallet"></use>
+                    </svg>
+                    Tổng hợp học phí
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/ket-qua-hoc-tap" active-class="active">
-                        <svg class="menu-item-link-icon icon-badges">
-                            <use xlink:href="#svg-badges"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- NAVIGATION WIDGET SECTION TITLE -->
+            <p class="navigation-widget-section-title mb-3 mt-5">Chức năng trực tuyến</p>
+            <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/tong-hop-hoc-phi" active-class="active">
-                        <svg class="menu-item-link-icon icon-wallet">
-                            <use xlink:href="#svg-wallet"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/ke-hoach-hoc-tap" active-class="active">
+                    <svg class="menu-item-link-icon icon-clock">
+                        <use xlink:href="#svg-clock"></use>
+                    </svg>
+                    Đăng ký kế hoạch học tập
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/ke-hoach-hoc-tap" active-class="active">
-                        <svg class="menu-item-link-icon icon-clock">
-                            <use xlink:href="#svg-clock"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/dang-ky-mon-hoc" active-class="active">
+                    <svg class="menu-item-link-icon icon-list-grid-view">
+                        <use xlink:href="#svg-list-grid-view"></use>
+                    </svg>
+                    Đăng ký môn học
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/dang-ky-mon-hoc" active-class="active">
-                        <svg class="menu-item-link-icon icon-list-grid-view">
-                            <use xlink:href="#svg-list-grid-view"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/dang-ky-thi-lan-2" active-class="active">
+                    <svg class="menu-item-link-icon icon-forums">
+                        <use xlink:href="#svg-forums"></use>
+                    </svg>
+                    Đăng ký thi lần 2
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/dang-ky-thi-lan-2" active-class="active">
-                        <svg class="menu-item-link-icon icon-forums">
-                            <use xlink:href="#svg-forums"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/danh-gia-diem-ren-luyen" active-class="active">
+                    <svg class="menu-item-link-icon icon-trophy">
+                        <use xlink:href="#svg-trophy"></use>
+                    </svg>
+                    Đánh giá điểm rèn luyện
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/danh-gia-diem-ren-luyen" active-class="active">
-                        <svg class="menu-item-link-icon icon-trophy">
-                            <use xlink:href="#svg-trophy"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/gui-yeu-cau" active-class="active">
+                    <svg class="menu-item-link-icon icon-send-message">
+                        <use xlink:href="#svg-send-message"></use>
+                    </svg>
+                    Gửi yêu cầu
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/gui-yeu-cau" active-class="active">
-                        <svg class="menu-item-link-icon icon-send-message">
-                            <use xlink:href="#svg-send-message"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/yeu-cau-thu-tuc-sinh-vien" active-class="active">
+                    <svg class="menu-item-link-icon icon-forum">
+                        <use xlink:href="#svg-forum"></use>
+                    </svg>
+                    Thủ tục sinh viên
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
 
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/yeu-cau-thu-tuc-sinh-vien" active-class="active">
-                        <svg class="menu-item-link-icon icon-forum">
-                            <use xlink:href="#svg-forum"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
-
-                <!-- MENU ITEM -->
-                <li class="menu-item">
-                    <!-- MENU ITEM LINK -->
-                    <router-link tag="a" class="menu-item-link text-tooltip-tfr" to="/thanh-toan-hoc-phi" active-class="active">
-                        <svg class="menu-item-link-icon icon-revenue">
-                            <use xlink:href="#svg-revenue"></use>
-                        </svg>
-                    </router-link>
-                    <!-- /MENU ITEM LINK -->
-                </li>
-                <!-- /MENU ITEM -->
-            </ul>
-            <!-- /MENU -->
-            <br /><br />
-        </nav>
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/thanh-toan-hoc-phi" active-class="active">
+                    <svg class="menu-item-link-icon icon-revenue">
+                        <use xlink:href="#svg-revenue"></use>
+                    </svg>
+                    Thanh toán học phí
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
+        </ul>
+        <br /><br />
     </div>
 </template>
 

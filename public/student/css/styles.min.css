@@ -1249,8 +1249,8 @@ textarea::placeholder {
 }
 
 .content-grid {
-    max-width: 1200px;
-    padding: 112px 0 100px;
+    /* max-width: 1200px; */
+    padding: 112px 112px 200px 350px;
 }
 
 .content-grid.full {
@@ -1549,16 +1549,18 @@ textarea::placeholder {
     grid-area: j;
 }
 
-@media screen and (max-width: 1500px) {
+/* @media screen and (max-width: 1500px) {
     .content-grid {
         max-width: 1200px;
     }
-}
+} */
 
 @media screen and (max-width: 1366px) {
     .content-grid {
         max-width: 100%;
-        padding: 112px 112px 200px;
+        /* padding: 112px 112px 200px 200px; */
+        padding-left: 310px;
+        padding-right: 0px;
         margin: 0 auto;
     }
     .content-grid.full {
@@ -1654,7 +1656,7 @@ textarea::placeholder {
 
 @media screen and (max-width: 680px) {
     .content-grid {
-        width: 95%;
+        /* width: 95%; */
         padding: 92px 0 200px;
     }
     .content-grid.full {
@@ -2620,7 +2622,6 @@ figure > img {
     color: #adafca;
     font-size: 0.6875rem;
     font-weight: 700;
-    text-transform: uppercase;
 }
 
 .user-short-description .user-short-description-text a {
@@ -9093,7 +9094,7 @@ figure > img {
 }
 
 .navigation-widget {
-    width: 300px;
+    width: 270px;
     padding-bottom: 40px;
     background-color: #fff;
     box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);
@@ -13772,19 +13773,33 @@ figure > img {
     margin-bottom: 0;
 }
 
-.menu .menu-item.active .menu-item-link,
+/* .menu .menu-item.active .menu-item-link,
 .menu .menu-item.active .menu-item-link:hover {
+    color: #fff;
+    background-color: #dc3545;
+    box-shadow: 4px 7px 12px 0 rgba(35, 210, 226, 0.2);
+} */
+
+.menu-item-link.active {
     color: #fff;
     background-color: #dc3545;
     box-shadow: 4px 7px 12px 0 rgba(35, 210, 226, 0.2);
 }
 
-.menu .menu-item.active .menu-item-link:hover {
+.menu-item-link.active:hover {
+    color: #fff;
+    background-color: #dc3545;
+    box-shadow: 4px 7px 12px 0 rgba(35, 210, 226, 0.2);
+}
+
+.menu-item-link:hover {
     padding-left: 62px;
 }
 
-.menu .menu-item.active .menu-item-link .menu-item-link-icon,
-.menu .menu-item.active .menu-item-link:hover .menu-item-link-icon {
+.menu-item-link .menu-item-link-icon {
+    fill: #3e3f5e;
+}
+.menu-item-link.active .menu-item-link-icon {
     fill: #fff;
 }
 

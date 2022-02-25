@@ -12,7 +12,7 @@
                         <i><u>Kết quả đăng ký:</u></i>
                     </p>
                     <div>
-                        Tổng số tín chỉ theo kế hoạch đăng ký: <b class="text-red">{{ sum_credit }}/20</b> (tín chỉ)
+                        Tổng số tín chỉ theo kế hoạch đăng ký: <b class="text-red">{{ sum_credit }}/{{ credit_ref }}</b> (tín chỉ)
                     </div>
                 </div>
                 <div>
@@ -40,59 +40,60 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button class="btn btn-block btn-lg btn-primary" @click="store()">Đăng ký</button>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button class="btn btn-block btn-lg btn-info" @click="print()">In PDF</button>
+                </div>
+                <div class="col-md-2">
+                    <router-link tag="button" class="btn btn-block btn-lg btn-secondary" :to="{ name: 'studyplanhistory' }">
+                        Lịch sử ĐK
+                    </router-link>
                 </div>
             </div>
 
-            <div class="table-responsive" ref="content">
-                <div v-if="plans.length > 0">
-                    <table class="table table-nowrap">
-                        <thead class="result-background text-white">
-                            <tr>
-                                <th class="text-center w-5" scope="col" rowspan="2">
-                                    STT
-                                </th>
-                                <th class="text-center w-15" scope="col" rowspan="2">
-                                    Mã môn học
-                                </th>
-                                <th class="text-center w-50" scope="col" rowspan="2">
-                                    Tên môn học
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Số TC
-                                </th>
-                                <th class="w-10 text-center" scope="col" rowspan="2">
-                                    Kế hoạch
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(value, index) in plans" :key="value.subject_id">
-                                <td class="td-table text-center">
-                                    {{ (index += 1) }}
-                                </td>
-                                <td class="text-center td-table">
-                                    <a href="javscript:void(0)" @click="detail(value.subject_id)">
-                                        {{ value.subject_code }}
-                                    </a>
-                                </td>
-                                <td class="td-table">
-                                    {{ value.subject_name }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_credit }}
-                                </td>
-                                <td class="text-center">
-                                    <i class="fa fa-check" aria-hidden="true"></i>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive" ref="content" v-if="plans.length > 0">
+                <table class="table table-nowrap">
+                    <thead class="result-background text-white">
+                        <tr>
+                            <th class="text-center w-5" scope="col" rowspan="2">
+                                STT
+                            </th>
+                            <th class="text-center w-15" scope="col" rowspan="2">
+                                Mã môn học
+                            </th>
+                            <th class="text-center w-50" scope="col" rowspan="2">
+                                Tên môn học
+                            </th>
+                            <th class="text-center w-10" scope="col" rowspan="2">
+                                Số TC
+                            </th>
+                            <th class="w-10 text-center" scope="col" rowspan="2">
+                                Kế hoạch
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(value, index) in plans" :key="value.subject_id">
+                            <td class="td-table text-center">
+                                {{ (index += 1) }}
+                            </td>
+                            <td class="text-center td-table">
+                                {{ value.subject_code }}
+                            </td>
+                            <td class="td-table">
+                                {{ value.subject_name }}
+                            </td>
+                            <td class="text-center td-table">
+                                {{ value.subject_credit }}
+                            </td>
+                            <td class="text-center">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div v-show="show_type == 1" class="table-responsive">
@@ -124,9 +125,7 @@
                                     {{ (index += 1) }}
                                 </td>
                                 <td class="text-center td-table">
-                                    <a href="javscript:void(0)" @click="detail(value.subject_id)">
-                                        {{ value.subject_code }}
-                                    </a>
+                                    {{ value.subject_code }}
                                 </td>
                                 <td class="td-table">
                                     {{ value.subject_name }}
@@ -202,9 +201,7 @@
                                     {{ (index += 1) }}
                                 </td>
                                 <td class="text-center td-table">
-                                    <a href="javscript:void(0)" @click="detail(value.subject_id)">
-                                        {{ value.subject_code }}
-                                    </a>
+                                    {{ value.subject_code }}
                                 </td>
                                 <td class="td-table">
                                     {{ value.subject_name }}
@@ -279,9 +276,7 @@
                                 {{ (index += 1) }}
                             </td>
                             <td class="text-center td-table">
-                                <a href="javscript:void(0)" @click="detail(value.subject_id)">
-                                    {{ value.subject_code }}
-                                </a>
+                                {{ value.subject_code }}
                             </td>
                             <td class="td-table">
                                 {{ value.subject_name }}
@@ -390,9 +385,7 @@
                                                 {{ (index += 1) }}
                                             </td>
                                             <td class="text-center td-table">
-                                                <a href="javscript:void(0)" @click="detail(value.subject_id)">
-                                                    {{ value.subject_code }}
-                                                </a>
+                                                {{ value.subject_code }}
                                             </td>
                                             <td class="td-table">
                                                 {{ value.subject_name }}
@@ -401,7 +394,7 @@
                                                 {{ value.subject_credit }}
                                             </td>
                                             <td class="text-center td-table">
-                                                {{ value.register_plan_date }}
+                                                {{ value.register_plan_date || formatFullTime }}
                                             </td>
                                             <td class="text-center">
                                                 <i class="fa fa-check" aria-hidden="true"></i>
@@ -447,6 +440,7 @@ export default {
             yearstart: '',
             sum_credit: 0,
             print_date: '',
+            credit_ref: 0,
             form: new Form({
                 register_plan_id: '',
                 register_plan_student: '',
@@ -472,6 +466,7 @@ export default {
         this.fetchScore()
         this.fetchSuggestAll()
         this.fetchCalendarPlan()
+        this.fetchTimePlan()
     },
     watch: {
         select_type(value) {
@@ -529,29 +524,51 @@ export default {
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.plans = res.data
-                    const start = new Date(res.data[0].start)
-                    this.semester = res.data[0].location
+                    const today = new Date()
+                    let plan = res.data.filter(el => {
+                        const start = new Date(el.start)
+                        const end = new Date(el.end)
+                        if (today >= start && today <= end) {
+                            return el
+                        }
+                    })
+                    this.plans = plan
+
+                    const start = new Date(plan[0].start)
                     this.yearstart = start.getFullYear()
-                    this.student_info.student_fullname = res.data[0].student_fullname
-                    this.student_info.student_code = res.data[0].student_code
-                    this.student_info.student_course = res.data[0].course_name
-                    this.student_info.student_course_code = res.data[0].course_code
-                    this.student_info.student_faculty = res.data[0].faculty_name
-                    this.student_info.student_major = res.data[0].major_name
-                    this.student_info.student_class = res.data[0].class_name
+                    this.credit_ref = plan[0].recurrenceRule
+                    this.student_info.student_fullname = plan[0].student_fullname
+                    this.student_info.student_code = plan[0].student_code
+                    this.student_info.student_course = plan[0].course_name
+                    this.student_info.student_course_code = plan[0].course_code
+                    this.student_info.student_faculty = plan[0].faculty_name
+                    this.student_info.student_major = plan[0].major_name
+                    this.student_info.student_class = plan[0].class_name
 
                     this.sum_credit = 0
-                    for (let i = 0; i < res.data.length; i++) {
-                        this.sum_credit = res.data[i].subject_credit + this.sum_credit
+                    for (let i = 0; i < plan.length; i++) {
+                        this.sum_credit = plan[i].subject_credit + this.sum_credit
                     }
-
-                    console.log(res.data)
+                })
+                .catch(err => console.log(err))
+        },
+        fetchTimePlan(page_url) {
+            page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/thoi-gian-dang-ky/${this.student_id}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    const today = new Date()
+                    res.data.forEach(el => {
+                        const start = new Date(el.start)
+                        const end = new Date(el.end)
+                        if (today >= start && today <= end) {
+                            this.semester = el.location
+                        }
+                    })
                 })
                 .catch(err => console.log(err))
         },
         fetchMyPlan(page_url) {
-            console.log(this.semester)
             page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/my-plan/${this.student_id}/${this.semester}`
             fetch(page_url)
                 .then(res => res.json())
@@ -634,42 +651,61 @@ export default {
             }
         },
         store() {
-            let formData = new FormData()
-            formData.append('semester', this.semester)
-            formData.append('yearstart', this.yearstart)
-            formData.append('student_id', this.student_id)
-            for (let i = 0; i < this.selected.length; i++) {
-                formData.append('subject[]', this.selected[i])
-            }
-            axios
-                .post('../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap', formData)
-                .then(res => {
-                    this.fetchCalendarPlan()
-                    this.$swal({
-                        title: 'Đăng ký thành công!',
-                        icon: 'success',
-                        confirmButtonText: 'OK!',
-                        timer: 2000
-                    })
-                })
-                .catch(err => {
-                    const null_subject = err.response.data.errors?.subject?.length
-                    if (null_subject > 0) {
-                        this.$swal({
-                            icon: 'error',
-                            title: 'Lỗi!',
-                            text: err.response.data.errors.subject[0],
-                            timer: 2000
-                        })
-                    } else {
-                        this.$swal({
-                            icon: 'error',
-                            title: 'Lỗi!',
-                            text: 'Lỗi định dạng!',
-                            timer: 2000
-                        })
+            this.sum_credit = 0
+            for (let i = 0; i < this.programs.length; i++) {
+                for (let j = 0; j < this.selected.length; j++) {
+                    if (this.programs[i].subject_id == this.selected[j]) {
+                        this.sum_credit = this.programs[i].subject_credit + this.sum_credit
                     }
+                }
+            }
+            if (this.sum_credit < this.credit_ref) {
+                this.$swal({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng đăng ký đủ TC yêu cầu!',
+                    timer: 2000
                 })
+            } else {
+                let formData = new FormData()
+                formData.append('semester', this.semester)
+                formData.append('yearstart', this.yearstart)
+                formData.append('student_id', this.student_id)
+                for (let i = 0; i < this.selected.length; i++) {
+                    formData.append('subject[]', this.selected[i])
+                }
+                axios
+                    .post('../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap', formData)
+                    .then(res => {
+                        this.fetchCalendarPlan()
+                        this.$swal({
+                            title: 'Đăng ký thành công!',
+                            icon: 'success',
+                            text: 'Bạn sẽ nhận được Email kết quả đăng ký sau vài phút!',
+                            confirmButtonText: 'OK!',
+                            timer: 3500
+                        })
+                        this.sendMail()
+                    })
+                    .catch(err => {
+                        const null_subject = err.response.data.errors?.subject?.length
+                        if (null_subject > 0) {
+                            this.$swal({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: err.response.data.errors.subject[0],
+                                timer: 2000
+                            })
+                        } else {
+                            this.$swal({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Lỗi định dạng!',
+                                timer: 2000
+                            })
+                        }
+                    })
+            }
         },
         print() {
             const date = new Date()
@@ -678,6 +714,11 @@ export default {
             const year = date.getFullYear()
             this.print_date = 'Ngày ' + day + ' tháng ' + month + ' năm ' + year
             this.$refs.DownloadComp.generatePdf()
+        },
+        sendMail() {
+            axios.get(`../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/send-mail/${this.student_id}/${this.semester}`).catch(err => {
+                console.log(err)
+            })
         }
     }
 }

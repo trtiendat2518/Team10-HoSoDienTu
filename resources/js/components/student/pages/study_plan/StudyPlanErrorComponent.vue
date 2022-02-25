@@ -6,6 +6,9 @@
         </div>
 
         <div class="grid">
+            <router-link tag="button" class="btn btn-block btn-lg btn-secondary" :to="{ name: 'studyplanhistory' }">
+                Lịch sử ĐK
+            </router-link>
             <div class="alert alert-warning">
                 <div class="mb-2 text-center">
                     <p>Hiện tại chưa tới ngày giờ để bạn đăng ký kế hoạch học tập</p>
@@ -27,17 +30,18 @@ export default {
     },
     methods: {
         fetchCalendarPlan(page_url) {
-            page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/lich-ke-hoach/${this.student_id}`
+            page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/thoi-gian-dang-ky/${this.student_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
                     const today = new Date()
-                    const start = new Date(res.data[0].start)
-                    const end = new Date(res.data[0].end)
-
-                    if (today >= start && today <= end) {
-                        this.$router.push({ name: 'studyplanindex' })
-                    }
+                    res.data.filter(el => {
+                        const start = new Date(el.start)
+                        const end = new Date(el.end)
+                        if (today >= start && today <= end) {
+                            this.$router.push({ name: 'studyplanindex' })
+                        }
+                    })
                 })
                 .catch(err => console.log(err))
         }
