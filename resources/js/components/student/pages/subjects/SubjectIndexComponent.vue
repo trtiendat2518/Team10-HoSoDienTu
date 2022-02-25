@@ -212,6 +212,90 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h4 class="text-center">
+                        Kết quả đăng ký: <i>{{ result_subject }} môn học</i>, <i>{{ result_credit }} tín chỉ</i>
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div v-if="result_all.length > 0">
+                            <table class="table table-nowrap">
+                                <thead class="result-background text-white">
+                                    <tr>
+                                        <th class="text-center w10">
+                                            Loại
+                                        </th>
+                                        <th class="text-center w10">
+                                            Mã môn học
+                                        </th>
+                                        <th class="text-center w30">
+                                            Tên môn học
+                                        </th>
+                                        <th class="text-center w5">
+                                            TC
+                                        </th>
+                                        <th class="text-center w15">
+                                            Lịch học
+                                        </th>
+                                        <th class="text-center w10">
+                                            Ngày BĐ
+                                        </th>
+                                        <th class="text-center w10">
+                                            Ngày KT
+                                        </th>
+                                        <th class="w10"></th>
+                                        <th class="w10"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="value in result_all" :key="value.calendar_subject_id">
+                                        <td class="text-center td-table">
+                                            <div v-if="value.calendar_subject_type == 0">Lý thuyết</div>
+                                            <div v-else-if="value.calendar_subject_type == 1">Thực hành</div>
+                                        </td>
+                                        <td class="td-table">
+                                            {{ value.subject_code }}
+                                        </td>
+                                        <td class="text-center td-table">
+                                            {{ value.subject_name }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ value.subject_credit }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ value.calendar_subject_schedule }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ value.calendar_subject_start | formatDate }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ value.calendar_subject_end | formatDate }}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-block btn-primary" @click="changeMode(value)">
+                                                Xem thêm
+                                            </button>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-block btn-danger" @click="cancel(value)">
+                                                Huỷ bỏ
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div v-else>
+                            <div class="alert alert-danger">
+                                Không tìm thấy kết quả phù hợp!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -228,6 +312,9 @@ export default {
             subject_inplan: [],
             subject_outplan: [],
             quantities: [],
+            result_all: [],
+            result_credit: 0,
+            result_subject: 0,
             semester: ''
         }
     },
@@ -246,6 +333,7 @@ export default {
             if (value != '') {
                 this.fetchSubjectInplan()
                 this.subjectQuantity()
+                this.fetchResultAll()
             }
         }
     },
@@ -295,6 +383,20 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
+        fetchResultAll(page_url) {
+            page_url = `../../api/student/subject-register/dang-ky-mon-hoc/ket-qua-dk-tat-ca/${this.student_id}/${this.semester}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.result_all = res.data
+                    this.result_subject = res.data.length
+                    this.result_credit = 0
+                    for (let i = 0; i < res.data.length; i++) {
+                        this.result_credit = res.data[i].subject_credit + this.result_credit
+                    }
+                })
+                .catch(err => console.log(err))
+        },
         subjectQuantity(page_url) {
             page_url = `../../api/student/subject-register/dang-ky-mon-hoc/so-luong-lop-mon-hoc/${this.student_id}/${this.semester}`
             fetch(page_url)
@@ -307,6 +409,35 @@ export default {
         countSubject(value) {
             let number = this.quantities.filter(qtt => qtt.subject_id == value.subject_id)
             return number.length
+        },
+        cancel(value) {
+            this.$swal({
+                title: 'Bạn có chắc chắn huỷ môn ' + value.subject_name + '?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Huỷ !',
+                cancelButtonText: 'Quay lại !'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    axios
+                        .post(
+                            `../../api/student/subject-register/dang-ky-mon-hoc/huy-mon-hoc/${value.calendar_subject_id}/${value.register_subject_id}`
+                        )
+                        .then(res => {
+                            this.fetchSubjectProgram()
+                            this.fetchSubjectInplan()
+                            this.fetchSubjectOutplan()
+                            this.fetchResultAll()
+                            this.$swal('Đã huỷ!', 'Huỷ môn học thành công', 'success')
+                        })
+                        .catch(err => console.log(err))
+                }
+            })
+        },
+        changeMode(value) {
+            this.$router.push({ name: 'subjectregistering', params: { idRSubject: value.subject_id } })
         }
     }
 }

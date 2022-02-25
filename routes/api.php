@@ -246,12 +246,16 @@ Route::prefix('student')->group(function () {
     });
 
     Route::prefix('subject-register')->group(function () {
+        Route::post('dang-ky-mon-hoc/thay-doi-mon-hoc/{calendar_subject_id}/{register_subject_id}', 'Student\Registration\SubjectController@change_subject');
+        Route::post('dang-ky-mon-hoc/huy-mon-hoc/{calendar_subject_id}/{register_subject_id}', 'Student\Registration\SubjectController@cancel_subject');
+        Route::get('dang-ky-mon-hoc/ket-qua-dk-tat-ca/{student_id}/{semester}', 'Student\Registration\SubjectController@result_all');
+        Route::get('dang-ky-mon-hoc/ket-qua-dk-con/{student_id}/{semester}/{subject_id}', 'Student\Registration\SubjectController@result_register_subject');
         Route::get('dang-ky-mon-hoc/chon-lop-mon-hoc/{student_id}/{semester}/{subject_id}', 'Student\Registration\SubjectController@register_subject');
         Route::get('dang-ky-mon-hoc/so-luong-lop-mon-hoc/{student_id}/{semester}', 'Student\Registration\SubjectController@quantity');
         Route::get('dang-ky-mon-hoc/ngoai-ke-hoach/{student_id}/{semester}', 'Student\Registration\SubjectController@show_subject_outplan');
         Route::get('dang-ky-mon-hoc/theo-ke-hoach/{student_id}/{semester}', 'Student\Registration\SubjectController@show_subject_inplan');
         Route::get('dang-ky-mon-hoc/theo-ctdt/{student_id}/{semester}', 'Student\Registration\SubjectController@show_subject_program');
         Route::get('dang-ky-mon-hoc/thoi-gian-dang-ky/{student_id}', 'Student\Registration\SubjectController@calendar_time_register');
-        Route::resource('dang-ky-mon-hoc', 'Student\Registration\StudyPlanController');
+        Route::resource('dang-ky-mon-hoc', 'Student\Registration\SubjectController');
     });
 });
