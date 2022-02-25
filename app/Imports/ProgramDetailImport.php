@@ -26,10 +26,10 @@ class ProgramDetailImport implements ToModel, WithHeadingRow, WithValidation
             'program_detail_subject' => $row['ma_mon_hoc'],
             'program_detail_semester' => $row['hoc_ky'],
             'program_detail_note' => $row['ghi_chu'],
-            'program_detail_calendar' => $row['lich_hoc'],
-            'program_detail_lecturer' => $row['ten_giang_vien'],
-            'program_detail_start' => Date::excelToDateTimeObject($row['ngay_bat_dau']),
-            'program_detail_end' => Date::excelToDateTimeObject($row['ngay_ket_thuc']),
+            // 'program_detail_calendar' => $row['lich_hoc'],
+            // 'program_detail_lecturer' => $row['ten_giang_vien'],
+            // 'program_detail_start' => Date::excelToDateTimeObject($row['ngay_bat_dau']),
+            // 'program_detail_end' => Date::excelToDateTimeObject($row['ngay_ket_thuc']),
         ]);
 
         dd($row['ngay_bat_dau']);
@@ -46,10 +46,10 @@ class ProgramDetailImport implements ToModel, WithHeadingRow, WithValidation
             ],
             'hoc_ky' => 'required|integer|digits_between:1,11',
             'ghi_chu' => 'max:100',
-            'lich_hoc' => 'required|max:255',
-            'ten_giang_vien' => 'required|max:100',
-            'ngay_bat_dau' => 'required',
-            'ngay_ket_thuc' => 'required'
+            // 'lich_hoc' => 'required|max:255',
+            // 'ten_giang_vien' => 'required|max:100',
+            // 'ngay_bat_dau' => 'required',
+            // 'ngay_ket_thuc' => 'required'
         ];
     }
 
@@ -67,14 +67,14 @@ class ProgramDetailImport implements ToModel, WithHeadingRow, WithValidation
 
             'ghi_chu.max' => 'Trường thông tin :attribute vượt quá 100 ký tự',
 
-            'lich_hoc.required' => 'Trường thông tin :attribute không được để trống',
-            'lich_hoc.max' => 'Trường thông tin :attribute vượt quá 255 ký tự',
+            // 'lich_hoc.required' => 'Trường thông tin :attribute không được để trống',
+            // 'lich_hoc.max' => 'Trường thông tin :attribute vượt quá 255 ký tự',
 
-            'ten_giang_vien.required' => 'Trường thông tin :attribute không được để trống',
-            'ten_giang_vien.max' => 'Trường thông tin :attribute vượt quá 100 ký tự',
+            // 'ten_giang_vien.required' => 'Trường thông tin :attribute không được để trống',
+            // 'ten_giang_vien.max' => 'Trường thông tin :attribute vượt quá 100 ký tự',
 
-            'ngay_bat_dau.required' => 'Trường thông tin :attribute không được để trống',
-            'ngay_ket_thuc.required' => 'Trường thông tin :attribute không được để trống',
+            // 'ngay_bat_dau.required' => 'Trường thông tin :attribute không được để trống',
+            // 'ngay_ket_thuc.required' => 'Trường thông tin :attribute không được để trống',
         ];
     }
 }
