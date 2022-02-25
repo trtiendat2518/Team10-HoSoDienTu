@@ -343,6 +343,11 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        Tiêu đề: <strong> {{ form.title }}</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         Mã môn học: <strong> {{ form.subject_code }}</strong>
                                     </td>
                                 </tr>
@@ -408,6 +413,7 @@ export default {
             query: '',
             editMode: false,
             form: new Form({
+                title: '',
                 calendar_subject_id: '',
                 calendar_id: '',
                 subject_id: '',

@@ -53,49 +53,47 @@
                 </div>
             </div>
 
-            <div class="table-responsive" ref="content">
-                <div v-if="plans.length > 0">
-                    <table class="table table-nowrap">
-                        <thead class="result-background text-white">
-                            <tr>
-                                <th class="text-center w-5" scope="col" rowspan="2">
-                                    STT
-                                </th>
-                                <th class="text-center w-15" scope="col" rowspan="2">
-                                    Mã môn học
-                                </th>
-                                <th class="text-center w-50" scope="col" rowspan="2">
-                                    Tên môn học
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Số TC
-                                </th>
-                                <th class="w-10 text-center" scope="col" rowspan="2">
-                                    Kế hoạch
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(value, index) in plans" :key="value.subject_id">
-                                <td class="td-table text-center">
-                                    {{ (index += 1) }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_code }}
-                                </td>
-                                <td class="td-table">
-                                    {{ value.subject_name }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_credit }}
-                                </td>
-                                <td class="text-center">
-                                    <i class="fa fa-check" aria-hidden="true"></i>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive" ref="content" v-if="plans.length > 0">
+                <table class="table table-nowrap">
+                    <thead class="result-background text-white">
+                        <tr>
+                            <th class="text-center w-5" scope="col" rowspan="2">
+                                STT
+                            </th>
+                            <th class="text-center w-15" scope="col" rowspan="2">
+                                Mã môn học
+                            </th>
+                            <th class="text-center w-50" scope="col" rowspan="2">
+                                Tên môn học
+                            </th>
+                            <th class="text-center w-10" scope="col" rowspan="2">
+                                Số TC
+                            </th>
+                            <th class="w-10 text-center" scope="col" rowspan="2">
+                                Kế hoạch
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(value, index) in plans" :key="value.subject_id">
+                            <td class="td-table text-center">
+                                {{ (index += 1) }}
+                            </td>
+                            <td class="text-center td-table">
+                                {{ value.subject_code }}
+                            </td>
+                            <td class="td-table">
+                                {{ value.subject_name }}
+                            </td>
+                            <td class="text-center td-table">
+                                {{ value.subject_credit }}
+                            </td>
+                            <td class="text-center">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div v-show="show_type == 1" class="table-responsive">

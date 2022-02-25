@@ -628,6 +628,7 @@ export default {
                     this.form.body = res.data[0].body
                     this.form.calendarId = res.data[0].calendarId
                     this.form.location = res.data[0].location
+                    this.form.recurrenceRule = res.data[0].recurrenceRule
                     $('#CalendarModal').modal('show')
                 })
                 .catch(err => console.log(err))

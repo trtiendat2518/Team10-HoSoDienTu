@@ -244,4 +244,14 @@ Route::prefix('student')->group(function () {
         Route::get('dang-ky-ke-hoach-hoc-tap/score/{student_id}', 'Student\Registration\StudyPlanController@showdata');
         Route::resource('dang-ky-ke-hoach-hoc-tap', 'Student\Registration\StudyPlanController');
     });
+
+    Route::prefix('subject-register')->group(function () {
+        Route::get('dang-ky-mon-hoc/chon-lop-mon-hoc/{student_id}/{semester}/{subject_id}', 'Student\Registration\SubjectController@register_subject');
+        Route::get('dang-ky-mon-hoc/so-luong-lop-mon-hoc/{student_id}/{semester}', 'Student\Registration\SubjectController@quantity');
+        Route::get('dang-ky-mon-hoc/ngoai-ke-hoach/{student_id}/{semester}', 'Student\Registration\SubjectController@show_subject_outplan');
+        Route::get('dang-ky-mon-hoc/theo-ke-hoach/{student_id}/{semester}', 'Student\Registration\SubjectController@show_subject_inplan');
+        Route::get('dang-ky-mon-hoc/theo-ctdt/{student_id}/{semester}', 'Student\Registration\SubjectController@show_subject_program');
+        Route::get('dang-ky-mon-hoc/thoi-gian-dang-ky/{student_id}', 'Student\Registration\SubjectController@calendar_time_register');
+        Route::resource('dang-ky-mon-hoc', 'Student\Registration\StudyPlanController');
+    });
 });

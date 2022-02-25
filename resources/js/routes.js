@@ -85,6 +85,11 @@ import StudyPlanIndex from './components/student/pages/study_plan/StudyPlanIndex
 import StudyPlanError from './components/student/pages/study_plan/StudyPlanErrorComponent.vue'
 import StudyPlanHistory from './components/student/pages/study_plan/StudyPlanHistoryComponent.vue'
 
+import SubjectRegister from './components/student/pages/subjects/SubjectComponent.vue'
+import SubjectRegisterIndex from './components/student/pages/subjects/SubjectIndexComponent.vue'
+import SubjectRegisterError from './components/student/pages/subjects/SubjectErrorComponent.vue'
+import SubjectRegistering from './components/student/pages/subjects/SubjectRegisterComponent.vue'
+
 import Score from './components/student/pages/scores/ScoreComponent.vue'
 import ScoreIndex from './components/student/pages/scores/ScoreIndexComponent.vue'
 
@@ -637,6 +642,38 @@ export default new VueRouter({
                     path: 'lich-su-dang-ky-ke-hoach',
                     name: 'studyplanhistory',
                     component: StudyPlanHistory
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/dang-ky-mon-hoc',
+            name: 'subjectregister',
+            components: {
+                student: SubjectRegister
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'subjectregistererror',
+                    component: SubjectRegisterError
+                },
+                {
+                    path: '',
+                    name: 'subjectregisterindex',
+                    component: SubjectRegisterIndex
+                },
+                {
+                    path: ':idRSubject',
+                    name: 'subjectregistering',
+                    component: SubjectRegistering
                 }
             ],
             beforeEnter: (to, from, next) => {
