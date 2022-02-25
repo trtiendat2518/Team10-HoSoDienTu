@@ -10,7 +10,7 @@
                 <li class="breadcrumb-item">
                     <router-link tag="a" :to="{ name: 'calendarindex' }">Lịch biểu </router-link>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Sự kiện</li>
+                <li class="breadcrumb-item active" aria-current="page">Lịch thi</li>
             </ol>
             <!-- End breadcrumb -->
         </div>
