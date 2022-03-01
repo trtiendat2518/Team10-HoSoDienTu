@@ -98,7 +98,8 @@ class StudyPlanController extends Controller
 
     public function showdata($student_id)
     {
-        $joins = RegisterSubject::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_subject.register_subject_program')
+        $joins = RegisterSubject::join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
             ->where('tbl_register_subject.register_subject_student', $student_id)
             ->get();
         return EducationProgramResource::collection($joins);
@@ -157,6 +158,18 @@ class StudyPlanController extends Controller
             ->where('tbl_course.course_id', $find->student_course)
             ->where('tbl_major.major_id', $find->student_major)
             ->where('tbl_register_plan.register_plan_student', $student_id)
+            ->where('tbl_calendar.calendarId', 0)->get();
+
+        return CalendarResource::collection($joins);
+    }
+
+    public function calendar_timeplan($student_id)
+    {
+        $find = Student::find($student_id);
+        $joins = Calendar::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->where('tbl_course.course_id', $find->student_course)
+            ->where('tbl_major.major_id', $find->student_major)
             ->where('tbl_calendar.calendarId', 0)->get();
 
         return CalendarResource::collection($joins);

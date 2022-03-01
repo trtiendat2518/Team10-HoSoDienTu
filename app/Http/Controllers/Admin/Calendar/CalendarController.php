@@ -41,13 +41,14 @@ class CalendarController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title' => ['required', 'max:200', 'min:10', 'unique:tbl_calendar', 'notspecial_spaces'],
-            'raw' => ['required'],
-            'body' => ['required'],
+            'title' => ['required', 'max:200', 'min:10', 'unique:tbl_calendar', 'notspecial_spaces'], //title
+            'raw' => ['required'], // course
+            'body' => ['required'], //major
             'start' => ['required', 'after:today'],
             'end' => ['required', 'after:start'],
-            'calendarId' => ['required'],
-            'location' => ['max:11']
+            'calendarId' => ['required'], //type
+            'location' => ['max:11'], //semester
+            'recurrenceRule' => ['max:11'] //credit
         ], [
             'title.required' => 'Tiêu đề không được để trống!',
             'title.max' => 'Tiêu đề không nhập quá 200 ký tự chữ!',
@@ -66,6 +67,7 @@ class CalendarController extends Controller
 
             'calendarId.required' => 'Vui lòng chọn sự kiện!',
             'location.max' => 'Học kỳ tối đa 11 ký tự số!',
+            'recurrenceRule.max' => 'Số TC tối đa 11 ký tự số!',
         ]);
 
         $calendar = new Calendar();
@@ -76,6 +78,7 @@ class CalendarController extends Controller
         $calendar->end = $data['end'];
         $calendar->calendarId = $data['calendarId'];
         $calendar->location = $data['location'];
+        $calendar->recurrenceRule = $data['recurrenceRule'];
         $calendar->save();
     }
 
@@ -120,7 +123,8 @@ class CalendarController extends Controller
             'start' => ['required'],
             'end' => ['required', 'after_or_equal:start'],
             'calendarId' => ['required'],
-            'location' => ['max:11']
+            'location' => ['max:11'],
+            'recurrenceRule' => ['max:11']
         ], [
             'title.required' => 'Tiêu đề không được để trống!',
             'title.max' => 'Tiêu đề không nhập quá 200 ký tự chữ!',
@@ -138,6 +142,7 @@ class CalendarController extends Controller
 
             'calendarId.required' => 'Vui lòng chọn sự kiện!',
             'location.max' => 'Học kỳ tối đa 11 ký tự số!',
+            'recurrenceRule.max' => 'Số TC tối đa 11 ký tự số!',
         ]);
 
         $calendar = Calendar::find($id);
@@ -149,8 +154,10 @@ class CalendarController extends Controller
         $calendar->calendarId = $data['calendarId'];
         if ($data['calendarId'] <= 1) {
             $calendar->location = $data['location'];
+            $calendar->recurrenceRule = $data['recurrenceRule'];
         } else {
             $calendar->location = 0;
+            $calendar->recurrenceRule = 0;
         }
         $calendar->save();
     }
@@ -175,6 +182,12 @@ class CalendarController extends Controller
     public function schedule_exam()
     {
         $query = Calendar::where('calendarId', 2)->orwhere('calendarId', 3)->orderby('start', 'ASC')->get();
+        return CalendarResource::collection($query);
+    }
+
+    public function schedule_subject()
+    {
+        $query = Calendar::where('calendarId', 1)->orderby('start', 'ASC')->get();
         return CalendarResource::collection($query);
     }
 }

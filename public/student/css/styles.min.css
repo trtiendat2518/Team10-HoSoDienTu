@@ -1558,7 +1558,9 @@ textarea::placeholder {
 @media screen and (max-width: 1366px) {
     .content-grid {
         max-width: 100%;
-        padding: 112px 112px 200px 200px;
+        /* padding: 112px 112px 200px 200px; */
+        padding-left: 310px;
+        padding-right: 0px;
         margin: 0 auto;
     }
     .content-grid.full {
@@ -9092,7 +9094,7 @@ figure > img {
 }
 
 .navigation-widget {
-    width: 300px;
+    width: 270px;
     padding-bottom: 40px;
     background-color: #fff;
     box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);

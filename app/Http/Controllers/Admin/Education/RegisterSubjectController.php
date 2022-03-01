@@ -126,8 +126,9 @@ class RegisterSubjectController extends Controller
 
     public function score($student_id)
     {
-        $joins = RegisterSubject::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_subject.register_subject_student')
-            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_subject.register_subject_program')
+        $joins = RegisterSubject::join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_subject.register_subject_student')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
             ->where('tbl_register_subject.register_subject_student', $student_id)
             ->get();
 

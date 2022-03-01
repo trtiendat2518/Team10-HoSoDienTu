@@ -37,6 +37,7 @@ import ProcedureRequire from './components/admin/pages/procedures/ProcedureRequi
 import Calendar from './components/admin/pages/calendar/CalendarComponent.vue'
 import CalendarIndex from './components/admin/pages/calendar/CalendarIndexComponent.vue'
 import CalendarReference from './components/admin/pages/calendar/CalendarReferenceComponent.vue'
+import CalendarSubjectSlot from './components/admin/pages/calendar/CalendarSubjectSlotComponent.vue'
 
 import ClassStudent from './components/admin/pages/class/ClassStudentComponent.vue'
 import ClassStudentIndex from './components/admin/pages/class/ClassStudentIndexComponent.vue'
@@ -83,6 +84,11 @@ import StudyPlan from './components/student/pages/study_plan/StudyPlanComponent.
 import StudyPlanIndex from './components/student/pages/study_plan/StudyPlanIndexComponent.vue'
 import StudyPlanError from './components/student/pages/study_plan/StudyPlanErrorComponent.vue'
 import StudyPlanHistory from './components/student/pages/study_plan/StudyPlanHistoryComponent.vue'
+
+import SubjectRegister from './components/student/pages/subjects/SubjectComponent.vue'
+import SubjectRegisterIndex from './components/student/pages/subjects/SubjectIndexComponent.vue'
+import SubjectRegisterError from './components/student/pages/subjects/SubjectErrorComponent.vue'
+import SubjectRegistering from './components/student/pages/subjects/SubjectRegisterComponent.vue'
 
 import Score from './components/student/pages/scores/ScoreComponent.vue'
 import ScoreIndex from './components/student/pages/scores/ScoreIndexComponent.vue'
@@ -364,6 +370,11 @@ export default new VueRouter({
                     path: 'rang-buoc-lich-bieu',
                     name: 'calendarreference',
                     component: CalendarReference
+                },
+                {
+                    path: 'mo-lop-mon-hoc',
+                    name: 'calendarsubjectslot',
+                    component: CalendarSubjectSlot
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -631,6 +642,38 @@ export default new VueRouter({
                     path: 'lich-su-dang-ky-ke-hoach',
                     name: 'studyplanhistory',
                     component: StudyPlanHistory
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/dang-ky-mon-hoc',
+            name: 'subjectregister',
+            components: {
+                student: SubjectRegister
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'subjectregistererror',
+                    component: SubjectRegisterError
+                },
+                {
+                    path: '',
+                    name: 'subjectregisterindex',
+                    component: SubjectRegisterIndex
+                },
+                {
+                    path: ':idRSubject',
+                    name: 'subjectregistering',
+                    component: SubjectRegistering
                 }
             ],
             beforeEnter: (to, from, next) => {

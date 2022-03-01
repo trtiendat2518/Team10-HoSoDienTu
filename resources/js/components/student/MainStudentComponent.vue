@@ -1,12 +1,6 @@
 <template>
     <div>
-        <transition
-            appear
-            enter-class=""
-            enter-active-class="animate__animated animate__fast"
-            leave-class=""
-            leave-active-class="animate__animated animate__fast"
-        >
+        <transition>
             <router-view name="student"></router-view>
         </transition>
     </div>
