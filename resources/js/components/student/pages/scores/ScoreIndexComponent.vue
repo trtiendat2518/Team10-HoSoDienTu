@@ -593,7 +593,7 @@
                             <div class="col-md-6">
                                 <h6 class="text-center text-black">BỘ GIÁO DỤC VÀ ĐÀO TẠO</h6>
                                 <h6 class="text-center text-black">TRƯỜNG ĐẠI HỌC VĂN LANG</h6>
-                                <img :src="`../public/student/img/vlu.ico`" alt="vlu" class="img-style" />
+                                <img :src="`../public/student/img/vlu.png`" alt="vlu" class="img-style" />
                             </div>
                             <div class="col-md-6">
                                 <h6 class="text-center text-black">CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</h6>

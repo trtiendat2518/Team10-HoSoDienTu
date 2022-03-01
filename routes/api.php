@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function () {
     Route::prefix('user-gv')->group(function () {
+        Route::get('giang-vien/alllecturer', 'Admin\Users\LecturerManageController@alllecturer');
         Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty_noimg');
         Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty');
         Route::post('giang-vien/tao-thong-tin-ca-nhan-bcnk', 'Admin\Users\LecturerManageController@create_info_deanfaculty');
@@ -228,6 +229,13 @@ Route::prefix('admin')->group(function () {
         Route::get('goi-y-ke-hoach-hoc-tap-sv/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Education\PlanSuggestController@search');
         Route::get('goi-y-ke-hoach-hoc-tap-sv/{lecturer_id}/{currentEntries}', 'Admin\Education\PlanSuggestController@showdata');
         Route::resource('goi-y-ke-hoach-hoc-tap-sv', 'Admin\Education\PlanSuggestController');
+    });
+
+    Route::prefix('statistic')->group(function () {
+        Route::get('thong-ke-truy-cap/thang-truoc', 'Admin\AuthController@sum_lastmonth');
+        Route::get('thong-ke-truy-cap/thang-nay', 'Admin\AuthController@sum_thismonth');
+        Route::get('thong-ke-truy-cap/mot-nam', 'Admin\AuthController@sum_year');
+        Route::get('thong-ke-truy-cap/tat-ca', 'Admin\AuthController@sum_visitor');
     });
 });
 

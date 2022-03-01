@@ -584,4 +584,9 @@ class LecturerManageController extends Controller
 
         $info->save();
     }
+
+    public function alllecturer()
+    {
+        return LecturerManageResource::collection(Lecturer::orderby('lecturer_id', 'DESC')->get());
+    }
 }
