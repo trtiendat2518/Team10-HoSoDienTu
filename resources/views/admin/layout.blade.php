@@ -44,7 +44,7 @@
     <link href="{{ asset('public/lecturer/plugins/iconfonts/plugin.css') }}" rel="stylesheet" />
     <link href="{{ asset('public/lecturer/plugins/iconfonts/icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('public/lecturer/fonts/fonts/font-awesome.min.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('public/lecturer/css/morris.css') }}" rel="stylesheet">
 </head>
 
 <body class="app sidebar-mini rtl">
@@ -69,7 +69,9 @@
 
     <!-- Back to top -->
     <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
-
+    <!-- Morris -->
+    <script src="{{ asset('public/lecturer/js/morris/morris.js') }}"></script>
+    <script src="{{ asset('public/lecturer/js/morris/raphael-min.js') }}"></script>
     <!-- Jquery js-->
     <script src="{{ asset('public/lecturer/js/vendors/jquery-3.2.1.min.js') }}"></script>
     <!--Bootstrap.min js-->

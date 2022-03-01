@@ -19,7 +19,6 @@
                     </router-link>
                 </div>
             </div>
-
             <div class="table-responsive">
                 <div v-if="types.length > 0">
                     <table class="table table-nowrap">
