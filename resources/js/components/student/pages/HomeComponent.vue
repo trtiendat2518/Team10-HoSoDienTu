@@ -3,7 +3,7 @@
         <!-- SECTION BANNER -->
         <div class="section-banner">
             <img class="section-banner-icon" :src="`../public/student/img/banner/newsfeed-icon.png`" alt="newsfeed-icon" />
-            <p class="section-banner-title">Trang sinh viên</p>
+            <p class="section-banner-title">Thông báo</p>
         </div>
         <!-- /SECTION BANNER -->
 

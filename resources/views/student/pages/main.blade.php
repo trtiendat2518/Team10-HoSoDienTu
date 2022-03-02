@@ -65,9 +65,8 @@
         @endif
 
     </header>
-    <!--//END HEADER -->
 
-    <!-- SLIDER -->
+    <!--============================= SLIDER =============================-->
     <div class="slider_img">
         <div id="carousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
@@ -80,13 +79,13 @@
                     <img class="d-block" src="{{asset('public/homestudent/images/slider-2.jpg')}}" alt="First slide">
                     <div class="carousel-caption d-md-block">
                         <div class="slider_title bg-text">
-                            <h1>Creative Thinking &amp; Innovation</h1>
-                            <h4>Proactively utilize open-source users for process-centric total linkage.
-                                <br> Energistically reinvent web-enabled initiatives with premium <br>processes. Proactively drive.
+                            <h1>Đạo đức - Ý chí - Sáng tạo</h1>
+                            <h4>Trường Đại học Văn Lang là cơ sở đào tạo nguồn nhân lực có chất lượng cao, đáp ứng yêu cầu của thị trường lao động và
+                                đóng góp tích cực vào sự thay đổi lối sống, cách suy nghĩ và làm việc của con người thông qua giáo dục, nghiên cứu và
+                                phục vụ cộng đồng..
                             </h4>
                             <div class="slider-btn">
-                                <a href="#" class="btn btn-default">SEE Programs</a>
-                                <a href="#" class="btn btn-default">Learn more</a>
+                                <a href="{{ url('/home') }}" class="btn btn-default">Trang sinh viên</a>
                             </div>
                         </div>
                     </div>
@@ -95,13 +94,9 @@
                     <img class="d-block" src="{{asset('public/homestudent/images/slider-5.jpg')}}" alt="Second slide">
                     <div class="carousel-caption d-md-block">
                         <div class="slider_title bg-text">
-                            <h1>We foster wisdom</h1>
-                            <h4>Proactively utilize open-source users for process-centric total linkage.<br> Energistically reinvent web-enabled
-                                initiatives with premium <br>processes. Proactively drive.</h4>
-                            <div class="slider-btn">
-                                <a href="#" class="btn btn-default">SEE Programs</a>
-                                <a href="#" class="btn btn-default">Learn more</a>
-                            </div>
+                            <h1>Cẩm nang sinh viên</h1>
+                            <h4>Nhà trường sẽ gửi Cẩm nang Sinh viên đến sinh viên vào đầu năm nhất, để các bạn sử dụng trong toàn khóa học. Mỗi năm,
+                                cuốn sổ nhỏ này được biên tập, bổ sung những nội dung mới..</h4>
                         </div>
                     </div>
                 </div>
@@ -109,12 +104,10 @@
                     <img class="d-block" src="{{asset('public/homestudent/images/slider-4.jpg')}}" alt="Third slide">
                     <div class="carousel-caption d-md-block">
                         <div class="slider_title bg-text">
-                            <h1>Campus life @ Unisco</h1>
-                            <h4>Proactively utilize open-source users for process-centric total linkage.<br> Energistically reinvent web-enabled
-                                initiatives with premium <br>processes. Proactively drive.</h4>
-                            <div class="slider-btn">
-                                <a href="campus-life.html" class="btn btn-default">Campus Life</a>
-                            </div>
+                            <h1>Ký kết hợp tác quốc tế</h1>
+                            <h4>Với mục tiêu cung cấp các chương trình đào tạo chất lượng, đạt tiêu chuẩn quốc tế cho người học, Trường Đại học Văn
+                                Lang chủ động đẩy mạnh ký kết các biên bản ghi nhớ hợp tác với các trường đại học, viện nghiên cứu và doanh nghiệp
+                                hàng đầu trên thế giới.</h4>
                         </div>
                     </div>
                 </div>
@@ -129,7 +122,6 @@
             </a>
         </div>
     </div>
-    <!-- /SLIDER -->
 
     <!--============================= ABOUT =============================-->
     <section class="clearfix about">
@@ -150,8 +142,8 @@
             </div>
         </div>
     </section>
-    <!--//END ABOUT -->
-    <!--============================= OUR COURSES =============================-->
+
+    <!--============================= COMMON NOTIFICATION =============================-->
     <section class="our_courses">
         <div class="container">
             <div class="row">
@@ -160,205 +152,34 @@
                 </div>
             </div>
             <div class="row">
+                @foreach ($post_noti as $post)
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                     <div class="courses_box mb-5">
                         <div class="course-img-wrap">
-                            <img src="{{asset('public/homestudent/images/courses_1.jpg')}}" class="img-fluid" alt="courses-img">
+                            <img src="{{ asset('public/homestudent/images/courses_1.jpg') }}" class="img-fluid" alt="courses-img" />
                             <div class="courses_box-img">
-                                <div class="courses-link-wrap">
-                                    <a href="course-detail.html" class="course-link"><span>course Details </span></a>
-                                    <a href="admission-form.html" class="course-link"><span>Join today </span></a>
-                                </div>
-                                <!-- // end .courses-link-wrap -->
+                                <div class="courses-link-wrap"></div>
                             </div>
                         </div>
-                        <!-- // end .course-img-wrap -->
                         <div class="courses_icon">
-                            <img src="{{asset('public/homestudent/images/plus-icon.png')}}" class="img-fluid close-icon" alt="plus-icon">
+                            <img src="{{ asset('public/homestudent/images/plus-icon.png') }}" class="img-fluid close-icon" alt="plus-icon" />
                         </div>
-                        <a href="course-detail.html" class="course-box-content">
-                            <h3>Sử dụng email</h3>
-                            <p>Với mong muốn cung cấp thông tin đầy đủ, kịp thời đến sinh viên,...</p>
+                        <a href="{{ url('/home#/thong-bao-chung/'.$post->post_id) }}" class="course-box-content">
+                            <h3>{{ Str::limit($post->post_title, 30) }}</h3>
+                            <p class="mt-2">{!! Str::limit($post->post_content, 20) !!}</p>
                         </a>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                    <div class="courses_box mb-5">
-                        <div class="course-img-wrap">
-                            <img src="{{asset('public/homestudent/images/courses_2.jpg')}}" class="img-fluid" alt="courses-img">
-                            <div class="courses_box-img">
-                                <div class="courses-link-wrap">
-                                    <a href="course-detail.html" class="course-link"><span>course Details </span></a>
-                                    <a href="admission-form.html" class="course-link"><span>Join today </span></a>
-                                </div>
-                                <!-- // end .courses-link-wrap -->
-                            </div>
-                        </div>
-                        <!-- // end .course-img-wrap -->
-                        <div class="courses_icon">
-                            <img src="{{asset('public/homestudent/images/plus-icon.png')}}" class="img-fluid close-icon" alt="plus-icon">
-                        </div>
-                        <a href="course-detail.html" class="course-box-content">
-                            <h3>Học phí</h3>
-                            <p>Cách thức đóng học phí như thế nào?...</p>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                    <div class="courses_box mb-5">
-                        <div class="course-img-wrap">
-                            <img src="{{asset('public/homestudent/images/courses_3.jpg')}}" class="img-fluid" alt="courses-img">
-                            <div class="courses_box-img">
-                                <div class="courses-link-wrap">
-                                    <a href="course-detail.html" class="course-link"><span>course Details </span></a>
-                                    <a href="admission-form.html" class="course-link"><span>Join today </span></a>
-                                </div>
-                                <!-- // end .courses-link-wrap -->
-                            </div>
-                        </div>
-                        <!-- // end .course-img-wrap -->
-                        <div class="courses_icon">
-                            <img src="{{asset('public/homestudent/images/plus-icon.png')}}" class="img-fluid close-icon" alt="plus-icon">
-                        </div>
-                        <a href="course-detail.html" class="course-box-content">
-                            <h3>Đăng ký môn</h3>
-                            <p>Hướng dẫn sinh viên đăng ký môn học...</p>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                    <div class="courses_box mb-5">
-                        <div class="course-img-wrap">
-                            <img src="{{asset('public/homestudent/images/courses_4.jpg')}}" class="img-fluid" alt="courses-img">
-                            <div class="courses_box-img">
-                                <div class="courses-link-wrap">
-                                    <a href="course-detail.html" class="course-link"><span>course Details </span></a>
-                                    <a href="admission-form.html" class="course-link"><span>Join today </span></a>
-                                </div>
-                                <!-- // end .courses-link-wrap -->
-                            </div>
-                        </div>
-                        <!-- // end .course-img-wrap -->
-                        <div class="courses_icon">
-                            <img src="{{asset('public/homestudent/images/plus-icon.png')}}" class="img-fluid close-icon" alt="plus-icon">
-                        </div>
-                        <a href="course-detail.html" class="course-box-content">
-                            <h3>Anh văn đầu vào</h3>
-                            <p>Trường sẽ tổ chức thi anh văn đầu vào cho khóa mới...</p>
-                        </a>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <a href="#" class="btn btn-default btn-courses">Xem tất cả</a>
+                    <a href="{{ url('/home#/thong-bao-chung') }}" class="btn btn-default btn-courses">Xem tất cả</a>
                 </div>
             </div>
         </div>
     </section>
-    <!--//END OUR COURSES -->
-    <!--============================= EVENTS =============================-->
-    <section class="event">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h2>Upcoming Events</h2>
-                    <div class="event-img">
-                        <span class="event-img_date">06-Nov-17</span>
-                        <img src="{{asset('public/homestudent/images/upcoming-event-img.jpg')}}" class="img-fluid" alt="event-img">
-                        <div class="event-img_title">
-                            <h3>Event Heading</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <h2>Important Dates</h2>
-                    <div class="event-date-slide">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="event_date">
-                                    <div class="event-date-wrap">
-                                        <p>06</p>
-                                        <span>Nov.17</span>
-                                    </div>
-                                </div>
-                                <div class="date-description">
-                                    <h3>Eestibulum sodales metus.</h3>
-                                    <p>When an unknown printer took a galley of type and scrambled it to make a type specimen book ...</p>
-                                    <hr class="event_line">
-                                </div>
-                                <div class="event_date">
-                                    <div class="event-date-wrap">
-                                        <p>10</p>
-                                        <span>Nov.17</span>
-                                    </div>
-                                </div>
-                                <div class="date-description">
-                                    <h3>Integer faucibus nulla a ligula.</h3>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                                        standard dummy text ever...</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="event_date">
-                                    <div class="event-date-wrap">
-                                        <p>05</p>
-                                        <span>Oct.17</span>
-                                    </div>
-                                </div>
-                                <div class="date-description">
-                                    <h3>Eestibulum sodales metus.</h3>
-                                    <p>When an unknown printer took a galley of type and scrambled it to make a type specimen book ...</p>
-                                    <hr class="event_line">
-                                </div>
-                                <div class="event_date">
-                                    <div class="event-date-wrap">
-                                        <p>06</p>
-                                        <span>Nov.17</span>
-                                    </div>
-                                </div>
-                                <div class="date-description">
-                                    <h3>Integer faucibus nulla a ligula.</h3>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                                        standard dummy text ever...</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="event_date">
-                                    <div class="event-date-wrap">
-                                        <p>06</p>
-                                        <span>Sep.18</span>
-                                    </div>
-                                </div>
-                                <div class="date-description">
-                                    <h3>Eestibulum sodales metus.</h3>
-                                    <p>When an unknown printer took a galley of type and scrambled it to make a type specimen book ...</p>
-                                    <hr class="event_line">
-                                </div>
-                                <div class="event_date">
-                                    <div class="event-date-wrap">
-                                        <p>06</p>
-                                        <span>Mar.17</span>
-                                    </div>
-                                </div>
-                                <div class="date-description">
-                                    <h3>Integer faucibus nulla a ligula.</h3>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                                        standard dummy text ever...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--//END EVENTS -->
+
     <!--============================= DETAILED CHART =============================-->
     <div class="detailed_chart">
         <div class="container">
@@ -401,8 +222,8 @@
             </div>
         </div>
     </div>
-    <!--//END DETAILED CHART -->
-    <!--============================= OUR BLOG =============================-->
+
+    <!--============================= POST NEWS =============================-->
     <section class="blog">
         <div class="container">
             <div class="row">
@@ -411,92 +232,38 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8">
-                    <a href="blog-post.html" class="home_blog_link">
-                        <div class="blog-img_box">
-                            <img src="{{asset('public/homestudent/images/blog-img_1.jpg')}}" class="img-fluid blog_display" alt="blog-img">
-                            <div class="blogtitle">
-                                <h3>Eestibulum sodales</h3>
-                                <i class="icon-user fa-common" aria-hidden="true"></i>
-                                <p>by: admin</p>
-                                <i class="icon-speedometer fa-common" aria-hidden="true"></i>
-                                <p>9- Nov-2016</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                @foreach ($post_news as $post)
                 <div class="col-md-4">
-                    <a href="blog-post.html" class="home_blog_link">
+                    <a href="{{ url('/home#/ban-tin-van-lang/'.$post->post_id) }}" class="home_blog_link">
                         <div class="blog-img_box">
-                            <img src="{{asset('public/homestudent/images/blog-img_2.jpg')}}" class="img-fluid blog_display" alt="blog-img">
+                            <img src="{{ asset('public/homestudent/images/blog-img_3.jpg') }}" class="img-fluid blog_display" alt="blog-img" />
                             <div class="blogtitle">
-                                <h3>Variations of passages</h3>
-                                <i class="icon-user fa-common" aria-hidden="true"></i>
-                                <p>by: admin</p>
-                                <i class="icon-speedometer fa-common" aria-hidden="true"></i>
-                                <p>9- Nov-2016</p>
+                                <h4>{{ Str::limit($post->post_title, 50) }}</h4>
+                                <p class="mt-2">
+                                    <i class="icon-user fa-common" aria-hidden="true"></i>
+                                    Người đăng: {{ $post->post_author }}
+                                </p>
+                                <p>
+                                    <i class="icon-speedometer fa-common" aria-hidden="true"></i>
+                                    Ngày đăng: {{ date('d-m-Y', strtotime($post->post_date)) }}
+                                </p>
                             </div>
                         </div>
                     </a>
                 </div>
+                @endforeach
+                <br />
             </div>
             <div class="row">
-                <div class="col-md-4">
-                    <a href="blog-post.html" class="home_blog_link">
-                        <div class="blog-img_box">
-                            <img src="{{asset('public/homestudent/images/blog-img_3.jpg')}}" class="img-fluid blog_display" alt="blog-img">
-                            <div class="blogtitle">
-                                <h3>Lorem Ipsum passage</h3>
-                                <i class="icon-user fa-common" aria-hidden="true"></i>
-                                <p>by: admin</p>
-                                <i class="icon-speedometer fa-common" aria-hidden="true"></i>
-                                <p>9- Nov-2016</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="blog-post.html" class="home_blog_link">
-                        <div class="blog_hide">
-                            <i class="icon-link" aria-hidden="true"></i>
-                            <p class="m-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been dummy...
-                            </p>
-                            <div class="blogtitle-link">
-                                <i class="icon-user fa-common" aria-hidden="true"></i>
-                                <p>by: admin</p>
-                                <i class="icon-speedometer fa-common" aria-hidden="true"></i>
-                                <p>9- Nov-2016</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="blog-post.html" class="home_blog_link">
-                        <div class="blog-img_box">
-                            <div class="blog-video">
-                                <div class="blog-play_btn"> <img src="{{asset('public/homestudent/images/play-btn.png')}}" alt="play-btn"> </div>
-                                <img src="{{asset('public/homestudent/images/blog-img_4.jpg')}}" class="img-fluid blog_display" alt="blog-img">
-                            </div>
-                            <!-- // end .blog-video -->
-                            <div class="blogtitle">
-                                <h3>Nam libero tempore</h3>
-                                <i class="icon-user fa-common" aria-hidden="true"></i>
-                                <p>by: admin</p>
-                                <i class="icon-speedometer fa-common" aria-hidden="true"></i>
-                                <p>9- Nov-2016</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div><br>
-            <div class="row">
                 <div class="col-md-12 text-center">
-                    <a href="#" class="btn btn-default btn-courses">Xem tất cả</a>
+                    <a href="{{ url('/home#/ban-tin-van-lang') }}" class="btn btn-default btn-courses">
+                        Xem tất cả
+                    </a>
                 </div>
             </div>
         </div>
     </section>
-    <!--//END OUR BLOG -->
+
 
     <!--============================= FOOTER =============================-->
     <footer>
@@ -544,7 +311,6 @@
             </div>
         </div>
     </footer>
-    <!--//END FOOTER -->
 
     <!-- jQuery, Bootstrap JS. -->
     <script src="{{asset('public/homestudent/js/jquery.min.js')}}"></script>
@@ -562,9 +328,9 @@
     <script src="{{asset('public/homestudent/js/subscribe.js')}}"></script>
     <!-- Script JS -->
     <script src="{{asset('public/homestudent/js/script.js')}}"></script>
-
     <script src="{{asset('public/student/js/header/header.js')}}"></script>
     <script src="{{asset('public/student/js/utils/svg-loader.js')}}"></script>
+    <script src="{{ asset('public/lecturer/js/vendors/jquery-3.2.1.min.js') }}"></script>
 </body>
 
 </html>
