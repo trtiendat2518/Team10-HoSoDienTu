@@ -18,10 +18,6 @@
         </div>
         <!-- /HEADER BRAND -->
 
-        <!-- SIDEMENU TRIGGER -->
-        <header-component></header-component>
-        <!-- /SIDEMENU TRIGGER -->
-
         <!-- NAVIGATION -->
         <nav class="navigation">
             <!-- MENU MAIN -->
@@ -38,6 +34,22 @@
                 <li class="menu-main-item">
                     <!-- MENU MAIN ITEM LINK -->
                     <a class="menu-main-item-link" href="#">Thanh toán học phí</a>
+                    <!-- /MENU MAIN ITEM LINK -->
+                </li>
+                <!-- /MENU MAIN ITEM -->
+
+                <!-- MENU MAIN ITEM -->
+                <li class="menu-main-item">
+                    <!-- MENU MAIN ITEM LINK -->
+                    <a class="menu-main-item-link" href="{{ url('/home#/thong-bao-chung') }}">Thông báo chung</a>
+                    <!-- /MENU MAIN ITEM LINK -->
+                </li>
+                <!-- /MENU MAIN ITEM -->
+
+                <!-- MENU MAIN ITEM -->
+                <li class="menu-main-item">
+                    <!-- MENU MAIN ITEM LINK -->
+                    <a class="menu-main-item-link" href="{{ url('/home#/ban-tin-van-lang') }}">Bản tin VLU</a>
                     <!-- /MENU MAIN ITEM LINK -->
                 </li>
                 <!-- /MENU MAIN ITEM -->

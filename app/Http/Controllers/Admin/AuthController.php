@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\Lecturer;
 use App\Models\Admin;
 use App\Models\Student;
+use App\Models\Visitor;
+use App\Http\Resources\VisitorResource;
+use Carbon\Carbon;
 use Validator;
 use Session;
 
@@ -49,6 +52,16 @@ class AuthController extends Controller
             $request->session()->put('admin_id', $check->admin_id);
             $request->session()->put('admin_fullname', $check->admin_fullname);
             $request->session()->put('admin_email', $check->admin_email);
+
+            $user_ip_address = $request->ip();
+            $visitor_current = Visitor::where('visitor_ipaddress', $user_ip_address)->get();
+            $visitor_count = $visitor_current->count();
+            if ($visitor_count < 1) {
+                $visitor = new Visitor();
+                $visitor->visitor_ipaddress = $user_ip_address;
+                $visitor->visitor_date = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+                $visitor->save();
+            }
             return redirect()->intended('admin');
         } else {
             return back()->with('fail', 'Tên đăng nhập hoặc mật khẩu không đúng');
@@ -88,7 +101,17 @@ class AuthController extends Controller
                 $request->session()->put('lecturer_id', $authUser->lecturer_code);
                 $request->session()->put('lecturer_code', $authUser->lecturer_id);
             }
-            //dd($users);
+
+            $user_ip_address = $request->ip();
+            $visitor_current = Visitor::where('visitor_ipaddress', $user_ip_address)->get();
+            $visitor_count = $visitor_current->count();
+            if ($visitor_count < 1) {
+                $visitor = new Visitor();
+                $visitor->visitor_ipaddress = $user_ip_address;
+                $visitor->visitor_date = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+                $visitor->save();
+            }
+
             return redirect()->intended('admin');
         } else {
             return redirect()->intended('admin/login')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
@@ -145,6 +168,7 @@ class AuthController extends Controller
                     $request->session()->put('student_id', $authUser->student_id);
                     $request->session()->put('student_code', $authUser->student_code);
                 }
+
                 return redirect()->intended('/home');
             } else {
                 return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
@@ -162,5 +186,35 @@ class AuthController extends Controller
         $request->session()->put('student_email', null);
         $request->session()->put('student_code', null);
         return redirect()->intended('/');
+    }
+
+    public function sum_lastmonth()
+    {
+        $headmonthlast = Carbon::now('Asia/Ho_Chi_Minh')->subMonth()->startOfMonth()->toDateString();
+        $backmonthlast = Carbon::now('Asia/Ho_Chi_Minh')->subMonth()->endOfMonth()->toDateString();
+        $visitor_lastmonth = Visitor::whereBetween('visitor_date', [$headmonthlast, $backmonthlast])->get();
+        return VisitorResource::collection($visitor_lastmonth);
+    }
+
+    public function sum_thismonth()
+    {
+        $headmonthnow = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+        $visitor_thismonth = Visitor::whereBetween('visitor_date', [$headmonthnow, $now])->get();
+        return VisitorResource::collection($visitor_thismonth);
+    }
+
+    public function sum_year()
+    {
+        $sub365days = Carbon::now('Asia/Ho_Chi_Minh')->subdays(365)->toDateString();
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+        $visitor_oneyear = Visitor::whereBetween('visitor_date', [$sub365days, $now])->get();
+        return VisitorResource::collection($visitor_oneyear);
+    }
+
+    public function sum_visitor()
+    {
+        $visitors = Visitor::all();
+        return VisitorResource::collection($visitors);
     }
 }
