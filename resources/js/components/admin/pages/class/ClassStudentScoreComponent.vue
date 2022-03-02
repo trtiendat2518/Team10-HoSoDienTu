@@ -587,7 +587,7 @@ export default {
                 scoreFinal = (subject.register_subject_second * subject.subject_score_final) / 100
             }
 
-            return scoreExercise + scoreExam + scoreFinal
+            return (scoreExercise + scoreExam + scoreFinal).toFixed(1)
         },
         resultCreditSemester(i) {
             let sum = 0
