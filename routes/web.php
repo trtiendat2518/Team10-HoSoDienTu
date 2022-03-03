@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('student.pages.main');
-});
+// Route::get('/', function () {
+//     return view('student.pages.main');
+// });
+
+Route::get('/', 'Student\MainController@index');
 
 Route::get('/dang-nhap', function () {
     return view('student.auth.login');

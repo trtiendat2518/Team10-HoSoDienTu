@@ -20,6 +20,5 @@ Vue.component('formteacher-avatar', require('./components/avatar/FormTeacherAvat
 
 //----------------------------------- STUDENT -------------------------------------------
 Vue.component('small-slidebar-component', require('./components/student/layouts/SmallSlidebarComponent.vue').default)
-Vue.component('header-component', require('./components/student/layouts/HeaderComponent.vue').default)
 Vue.component('main-student-component', require('./components/student/MainStudentComponent.vue').default)
 Vue.component('home-component', require('./components/student/pages/HomeComponent.vue').default)

@@ -13,11 +13,13 @@ import formatDatetime from './format-datetime.js'
 import formatNumber from './format-number.js'
 import compo from './component.js'
 import router from './routes.js'
+import VueSweetalert2 from 'vue-sweetalert2'
 
 window.Form = Form
 window.Vue = require('vue').default
 
 Vue.config.productionTip = false
+Vue.use(VueSweetalert2)
 
 if (document.querySelector("meta[name='admin-fullname']")) {
     Vue.prototype.$adminId = document.querySelector("meta[name='admin-fullname']").getAttribute('content')
@@ -38,5 +40,6 @@ export const eventBus = new Vue({
 })
 
 const app = new Vue({
+    el: '#app',
     router
-}).$mount('#app')
+})

@@ -10,10 +10,7 @@
                     </router-link>
                 </li>
                 <li class="breadcrumb-item">
-                    <router-link
-                        tag="a"
-                        :to="{ name: 'educationprogramindex' }"
-                    >
+                    <router-link tag="a" :to="{ name: 'educationprogramindex' }">
                         Danh sách Chương trình đào tạo
                     </router-link>
                 </li>
@@ -23,11 +20,7 @@
             </ol>
             <!-- End breadcrumb -->
         </div>
-        <router-link
-            tag="button"
-            class="btn btn-lg btn-primary mb-3 btn-3d"
-            :to="{ name: 'educationprogramindex' }"
-        >
+        <router-link tag="button" class="btn btn-lg btn-primary mb-3 btn-3d" :to="{ name: 'educationprogramindex' }">
             <i class="fa fa-arrow-left" aria-hidden="true"></i> Quay lại
         </router-link>
         <div class="card">
@@ -35,11 +28,7 @@
                 <h3 class="card-title">Chương trình đào tạo</h3>
             </div>
             <div class="card-body">
-                <form
-                    @submit.prevent="update()"
-                    enctype="multipart/form-data"
-                    @keydown="form.onKeydown($event)"
-                >
+                <form @submit.prevent="update()" enctype="multipart/form-data" @keydown="form.onKeydown($event)">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="form-group">
@@ -52,24 +41,14 @@
                                     class="form-control not-allow"
                                     v-model="form.education_program_code"
                                     :class="{
-                                        'is-invalid': form.errors.has(
-                                            'education_program_code'
-                                        )
+                                        'is-invalid': form.errors.has('education_program_code')
                                     }"
                                     disabled
                                 />
                                 <div
                                     class="text-danger"
-                                    v-if="
-                                        form.errors.has(
-                                            'education_program_code'
-                                        )
-                                    "
-                                    v-html="
-                                        form.errors.get(
-                                            'education_program_code'
-                                        )
-                                    "
+                                    v-if="form.errors.has('education_program_code')"
+                                    v-html="form.errors.get('education_program_code')"
                                 ></div>
                             </div>
                         </div>
@@ -81,9 +60,7 @@
                                     name="education_program_course"
                                     v-model="form.education_program_course"
                                     :class="{
-                                        'is-invalid': form.errors.has(
-                                            'education_program_course'
-                                        )
+                                        'is-invalid': form.errors.has('education_program_course')
                                     }"
                                     disabled
                                 >
@@ -91,26 +68,14 @@
                                         Chọn khóa học
                                     </option>
                                     <option value="" disabled>-------</option>
-                                    <option
-                                        v-for="course in courses"
-                                        :key="course.course_id"
-                                        :value="course.course_id"
-                                        >{{ course.course_code }} -
-                                        {{ course.course_name }}</option
+                                    <option v-for="course in courses" :key="course.course_id" :value="course.course_id"
+                                        >{{ course.course_code }} - {{ course.course_name }}</option
                                     >
                                 </select>
                                 <div
                                     class="text-danger"
-                                    v-if="
-                                        form.errors.has(
-                                            'education_program_course'
-                                        )
-                                    "
-                                    v-html="
-                                        form.errors.get(
-                                            'education_program_course'
-                                        )
-                                    "
+                                    v-if="form.errors.has('education_program_course')"
+                                    v-html="form.errors.get('education_program_course')"
                                 ></div>
                             </div>
                         </div>
@@ -119,44 +84,25 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="form-group">
-                                <label class="form-label"
-                                    >Hệ đào tạo
-                                    <span class="text-danger">(*)</span></label
-                                >
+                                <label class="form-label">Hệ đào tạo <span class="text-danger">(*)</span></label>
                                 <select
                                     class="form-control"
                                     name="education_program_type"
                                     v-model="form.education_program_type"
                                     :class="{
-                                        'is-invalid': form.errors.has(
-                                            'education_program_type'
-                                        )
+                                        'is-invalid': form.errors.has('education_program_type')
                                     }"
                                 >
-                                    <option value="" disabled selected=""
-                                        >Chọn hệ đào tạo</option
-                                    >
+                                    <option value="" disabled selected="">Chọn hệ đào tạo</option>
                                     <option value="" disabled>-------</option>
-                                    <option
-                                        v-for="type in types"
-                                        :key="type.program_type_id"
-                                        :value="type.program_type_id"
-                                        >{{ type.program_type_code }} -
-                                        {{ type.program_type_name }}</option
+                                    <option v-for="type in types" :key="type.program_type_id" :value="type.program_type_id"
+                                        >{{ type.program_type_code }} - {{ type.program_type_name }}</option
                                     >
                                 </select>
                                 <div
                                     class="text-danger"
-                                    v-if="
-                                        form.errors.has(
-                                            'education_program_type'
-                                        )
-                                    "
-                                    v-html="
-                                        form.errors.get(
-                                            'education_program_type'
-                                        )
-                                    "
+                                    v-if="form.errors.has('education_program_type')"
+                                    v-html="form.errors.get('education_program_type')"
                                 ></div>
                             </div>
                         </div>
@@ -172,23 +118,13 @@
                                     class="form-control"
                                     v-model="form.education_program_year"
                                     :class="{
-                                        'is-invalid': form.errors.has(
-                                            'education_program_year'
-                                        )
+                                        'is-invalid': form.errors.has('education_program_year')
                                     }"
                                 />
                                 <div
                                     class="text-danger"
-                                    v-if="
-                                        form.errors.has(
-                                            'education_program_year'
-                                        )
-                                    "
-                                    v-html="
-                                        form.errors.get(
-                                            'education_program_year'
-                                        )
-                                    "
+                                    v-if="form.errors.has('education_program_year')"
+                                    v-html="form.errors.get('education_program_year')"
                                 ></div>
                             </div>
                         </div>
@@ -199,10 +135,7 @@
                             <div class="card">
                                 <div class="col-md-12">
                                     <h2 class="text-center mt-3">
-                                        <strong
-                                            >Chương trình đào tạo
-                                            {{ this.form.course_name }}</strong
-                                        >
+                                        <strong>Chương trình đào tạo {{ this.form.course_name }}</strong>
                                     </h2>
                                 </div>
 
@@ -227,187 +160,77 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table
-                                        class="table table-striped"
-                                    >
-                                        <thead
-                                            class="blue-background text-white"
-                                        >
+                                    <table class="table table-striped">
+                                        <thead class="blue-background text-white">
                                             <tr>
-                                                <th
-                                                    class="w-5"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                >
+                                                <th class="w-5" scope="col" rowspan="2">
                                                     STT
                                                 </th>
-                                                <th
-                                                    class="text-center w-15"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                >
+                                                <th class="text-center w-15" scope="col" rowspan="2">
                                                     Mã môn học
                                                 </th>
-                                                <th
-                                                    class="text-center w-20"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                >
+                                                <th class="text-center w-40" scope="col" rowspan="2">
                                                     Tên môn học
                                                 </th>
-                                                <th
-                                                    class="text-center w-5"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                >
+                                                <th class="text-center w-5" scope="col" rowspan="2">
                                                     Số TC
                                                 </th>
-                                                <th
-                                                    class="text-center w-5"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                >
+                                                <th class="text-center w-5" scope="col" rowspan="2">
                                                     Bắt buộc
                                                 </th>
-                                                <th
-                                                    class="text-center w-15"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                >
+                                                <th class="text-center w-25" scope="col" rowspan="2">
                                                     Khoa/Bộ môn
                                                 </th>
-                                                <th
-                                                    class="text-center w-15"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                >
-                                                    Tên giảng viên
-                                                </th>
-                                                <th
-                                                    class="text-center w-15"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                >
-                                                    Ngày bắt đầu
-                                                </th>
-                                                <th
-                                                    class="text-center w-15"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                >
-                                                    Ngày kết thúc
-                                                </th>
-                                                <th
-                                                    class="text-center w-5"
-                                                    scope="col"
-                                                    rowspan="2"
-                                                    colspan="2"
-                                                ></th>
+                                                <th class="text-center w-5" scope="col" rowspan="2" colspan="2"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr
-                                                v-show="education.length"
-                                                v-for="(edu,
-                                                index) in education"
-                                                :key="edu.program_detail_id"
-                                            >
+                                            <tr v-show="education.length" v-for="(edu, index) in education" :key="edu.program_detail_id">
                                                 <td class="td-table">
                                                     {{ (index += 1) }}
                                                 </td>
                                                 <td hidden>
                                                     {{ getCode(edu) }}
                                                 </td>
-                                                <td
-                                                    class="text-center td-table"
-                                                >
-                                                    <a
-                                                        href="javascript:void(0)"
-                                                        @click="
-                                                            detailEducation(
-                                                                edu.program_detail_id
-                                                            )
-                                                        "
-                                                        >{{ subject_code }}</a
-                                                    >
+                                                <td class="text-center td-table">
+                                                    <a href="javascript:void(0)" @click="detailEducation(edu.program_detail_id)">{{
+                                                        subject_code
+                                                    }}</a>
                                                 </td>
-                                                <td
-                                                    class="text-center td-table"
-                                                >
+                                                <td class="text-center td-table">
                                                     {{ subject_name }}
                                                 </td>
-                                                <td
-                                                    class="text-center td-table"
-                                                >
+                                                <td class="text-center td-table">
                                                     {{ subject_credit }}
                                                 </td>
-                                                <td
-                                                    class="text-center td-table"
-                                                >
+                                                <td class="text-center td-table">
                                                     <p v-if="subject_type == 0">
                                                         x
                                                     </p>
                                                     <p v-else></p>
                                                 </td>
-                                                <td
-                                                    class="text-center td-table"
-                                                >
+                                                <td class="text-center td-table">
                                                     {{ subject_faculty }}
-                                                </td>
-
-                                                <td
-                                                    class="text-center td-table"
-                                                >
-                                                    {{
-                                                        edu.program_detail_lecturer
-                                                    }}
-                                                </td>
-                                                <td
-                                                    class="text-center td-table"
-                                                >
-                                                    {{
-                                                        edu.program_detail_start
-                                                            | formatDate
-                                                    }}
-                                                </td>
-                                                <td
-                                                    class="text-center td-table"
-                                                >
-                                                    {{
-                                                        edu.program_detail_end
-                                                            | formatDate
-                                                    }}
                                                 </td>
                                                 <td style="text-align: center">
                                                     <button
                                                         type="button"
                                                         class="btn btn-success btn-lg fa fa-pencil btn-3d"
-                                                        @click="
-                                                            show(
-                                                                edu.program_detail_id
-                                                            )
-                                                        "
+                                                        @click="show(edu.program_detail_id)"
                                                     ></button>
                                                 </td>
                                                 <td>
                                                     <button
                                                         type="button"
                                                         class="btn btn-danger btn-lg fa fa-trash btn-3d"
-                                                        @click="
-                                                            destroy(
-                                                                edu.program_detail_id
-                                                            )
-                                                        "
+                                                        @click="destroy(edu.program_detail_id)"
                                                     ></button>
                                                 </td>
                                             </tr>
                                             <tr v-show="!education.length">
                                                 <td colspan="14">
-                                                    <div
-                                                        class="alert alert-danger"
-                                                    >
-                                                        Không tìm thấy kết quả
-                                                        phù hợp!
+                                                    <div class="alert alert-danger">
+                                                        Không tìm thấy kết quả phù hợp!
                                                     </div>
                                                 </td>
                                             </tr>
@@ -419,11 +242,7 @@
                     </div>
 
                     <div class="text-right">
-                        <button
-                            :disabled="form.busy"
-                            class="btn btn-success btn-lg mt-1 btn-3d"
-                            type="submit"
-                        >
+                        <button :disabled="form.busy" class="btn btn-success btn-lg mt-1 btn-3d" type="submit">
                             Lưu
                         </button>
                     </div>
@@ -442,140 +261,86 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header styling-modal-header-info">
-                        <h5
-                            class="modal-title styling-font-modal-header"
-                            id="DetailModalTitle"
-                        >
+                        <h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">
                             Chi tiết môn học
                         </h5>
-                        <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                        >
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table
-                            class="table row table-borderless w-100 m-0 border"
-                        >
-                            <tbody
-                                class="col-lg-6 p-0 br-styling"
-                                v-for="detail in details"
-                                :key="detail.subject_id"
-                            >
+                        <table class="table row table-borderless w-100 m-0 border">
+                            <tbody class="col-lg-6 p-0 br-styling" v-for="detail in details" :key="detail.subject_id">
                                 <tr>
                                     <td class="h3-strong">
                                         <h3>
-                                            <strong
-                                                ><u>
-                                                    Thông tin chi tiết</u
-                                                ></strong
-                                            >
+                                            <strong><u> Thông tin chi tiết</u></strong>
                                         </h3>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Mã Môn học:
-                                        <strong>
-                                            {{ detail.subject_code }}</strong
-                                        >
+                                        <strong> {{ detail.subject_code }}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Tên Môn học:
-                                        <strong>
-                                            {{ detail.subject_name }}</strong
-                                        >
+                                        <strong> {{ detail.subject_name }}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Số tín chỉ:
-                                        <strong>
-                                            {{ detail.subject_credit }}</strong
-                                        >
+                                        <strong> {{ detail.subject_credit }}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Khoa:
-                                        <strong>
-                                            {{ detail.subject_faculty }}</strong
-                                        >
+                                        <strong> {{ detail.subject_faculty }}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Loại môn học:
-                                        <strong v-if="detail.subject_type == 0">
-                                            Bắt buộc</strong
-                                        >
+                                        <strong v-if="detail.subject_type == 0"> Bắt buộc</strong>
                                         <strong v-else> Tự chọn</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Lý thuyết:
-                                        <strong
-                                            >{{
-                                                detail.subject_theory_period
-                                            }}
-                                            giờ</strong
-                                        >
+                                        <strong>{{ detail.subject_theory_period }} giờ</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Thực hành:
-                                        <strong
-                                            >{{
-                                                detail.subject_practice_period
-                                            }}
-                                            giờ</strong
-                                        >
+                                        <strong>{{ detail.subject_practice_period }} giờ</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Điểm bài tập:
-                                        <strong
-                                            >{{
-                                                detail.subject_score_exercise
-                                            }}%</strong
-                                        >
+                                        <strong>{{ detail.subject_score_exercise }}%</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Điểm kiểm tra:
-                                        <strong
-                                            >{{
-                                                detail.subject_score_exam
-                                            }}%</strong
-                                        >
+                                        <strong>{{ detail.subject_score_exam }}%</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Điểm thi:
-                                        <strong
-                                            >{{
-                                                detail.subject_score_final
-                                            }}%</strong
-                                        >
+                                        <strong>{{ detail.subject_score_final }}%</strong>
                                     </td>
                                 </tr>
                             </tbody>
-                            <tbody
-                                class="col-lg-6 p-0"
-                                v-for="detailpro in detailpros"
-                                :key="detailpro.program_detail_id"
-                            >
+                            <tbody class="col-lg-6 p-0" v-for="detailpro in detailpros" :key="detailpro.program_detail_id">
                                 <tr>
                                     <td class="h3-strong">
                                         <h3>
@@ -599,9 +364,7 @@
                                     <td>
                                         Học kỳ:
                                         <strong>
-                                            {{
-                                                detailpro.program_detail_semester
-                                            }}
+                                            {{ detailpro.program_detail_semester }}
                                         </strong>
                                     </td>
                                 </tr>
@@ -613,51 +376,11 @@
                                         </strong>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        Lịch học:
-                                        <strong>
-                                            {{
-                                                detailpro.program_detail_calendar
-                                            }}
-                                        </strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Giảng viên:
-                                        <strong>
-                                            {{
-                                                detailpro.program_detail_lecturer
-                                            }}
-                                        </strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Ngày bắt đầu:
-                                        <strong>
-                                            {{ detailpro.program_detail_start }}
-                                        </strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Ngày kết thúc:
-                                        <strong>
-                                            {{ detailpro.program_detail_end }}
-                                        </strong>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary btn-3d"
-                            data-dismiss="modal"
-                        >
+                        <button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">
                             Đóng
                         </button>
                     </div>
@@ -667,38 +390,20 @@
         <!-- Modal end-->
 
         <!-- Modal -->
-        <div
-            class="modal fade"
-            id="ImportModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="ImportModalTitle"
-            aria-hidden="true"
-        >
+        <div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form
-                    @submit.prevent="importFile()"
-                    @keydown="form.onKeydown($event)"
-                >
+                <form @submit.prevent="importFile()" @keydown="form.onKeydown($event)">
                     <div class="modal-content">
                         <div class="modal-header styling-modal-header-update">
                             <h5 class="modal-title" id="ImportModalTitle">
                                 Import Môn học
                             </h5>
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                            >
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <label
-                                >Tệp Excel
-                                <span class="text-danger">(*)</span></label
-                            >
+                            <label>Tệp Excel <span class="text-danger">(*)</span></label>
                             <input
                                 type="file"
                                 class="form-control"
@@ -709,18 +414,10 @@
                             />
                         </div>
                         <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-secondary btn-3d"
-                                @click="reloadFile()"
-                            >
+                            <button type="button" class="btn btn-secondary btn-3d" @click="reloadFile()">
                                 Tải lại
                             </button>
-                            <button
-                                :disabled="form.busy"
-                                type="submit"
-                                class="btn btn-primary btn-3d"
-                            >
+                            <button :disabled="form.busy" type="submit" class="btn btn-primary btn-3d">
                                 Import
                             </button>
                         </div>
@@ -731,137 +428,46 @@
         <!-- Modal end-->
 
         <!-- Modal -->
-        <div
-            class="modal fade"
-            id="UpdateModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="UpdateModalTitle"
-            aria-hidden="true"
-        >
+        <div class="modal fade" id="UpdateModal" tabindex="-1" role="dialog" aria-labelledby="UpdateModalTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form
-                    @submit.prevent="updatePro()"
-                    @keydown="form.onKeydown($event)"
-                >
+                <form @submit.prevent="updatePro()" @keydown="form.onKeydown($event)">
                     <div class="modal-content">
                         <div class="modal-header styling-modal-header-update">
                             <h5 class="modal-title" id="UpdateModalTitle">
                                 Cập nhật môn học trong CTĐT
                             </h5>
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                            >
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Mã môn học</label>
-                                <input
-                                    v-model="updatedata.subject_code"
-                                    class="form-control not-allow"
-                                    name="subject_code"
-                                    disabled
-                                />
+                                <input v-model="updatedata.subject_code" class="form-control not-allow" name="subject_code" disabled />
                             </div>
                             <div class="form-group">
-                                <label
-                                    >Học kỳ
-                                    <span class="text-danger">(*)</span></label
-                                >
-                                <input
-                                    v-model="updatedata.subject_semester"
-                                    type="number"
-                                    class="form-control"
-                                    name="subject_semester"
-                                />
+                                <label>Học kỳ <span class="text-danger">(*)</span></label>
+                                <input v-model="updatedata.subject_semester" type="number" class="form-control" name="subject_semester" />
                             </div>
                             <div class="form-group">
                                 <label>Dành cho chuyên ngành</label>
-                                <select
-                                    v-model="updatedata.subject_major"
-                                    class="form-control"
-                                    name="subject_major"
-                                >
+                                <select v-model="updatedata.subject_major" class="form-control" name="subject_major">
                                     <option value="">Không có</option>
                                     <option
                                         v-for="major in majors"
                                         :key="major.major_code"
                                         :value="major.major_code"
-                                        :hidden="
-                                            major.major_faculty !=
-                                                form.education_program_faculty
-                                        "
+                                        :hidden="major.major_faculty != form.education_program_faculty"
                                         >{{ major.major_name }}</option
                                     >
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>Lịch học</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="updatedata.program_detail_calendar"
-                                    name="program_detail_calendar"
-                                />
-                            </div>
-
-                            <div class="form-group">
-                                <label>Giảng viên</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="updatedata.program_detail_lecturer"
-                                    name="program_detail_lecturer"
-                                />
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Ngày bắt đầu</label>
-                                        <input
-                                            type="date"
-                                            class="form-control"
-                                            v-model="
-                                                updatedata.program_detail_start
-                                            "
-                                            name="program_detail_start"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Ngày kết thúc</label>
-                                        <input
-                                            type="date"
-                                            class="form-control"
-                                            v-model="
-                                                updatedata.program_detail_end
-                                            "
-                                            name="program_detail_end"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-secondary btn-3d"
-                                data-dismiss="modal"
-                            >
+                            <button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">
                                 Đóng
                             </button>
-                            <button
-                                :disabled="form.busy"
-                                type="submit"
-                                class="btn btn-primary btn-3d"
-                            >
+                            <button :disabled="form.busy" type="submit" class="btn btn-primary btn-3d">
                                 Cập nhật
                             </button>
                         </div>
@@ -874,7 +480,7 @@
 </template>
 
 <script>
-import XLSX from "xlsx";
+import XLSX from 'xlsx'
 export default {
     data() {
         return {
@@ -882,7 +488,7 @@ export default {
             education_program_id: this.$route.params.idProgram,
             education: [],
             lecturers: [],
-            lecturer_faculty: "",
+            lecturer_faculty: '',
             lecturer_id: this.$facultyId,
             faculties: [],
             subjects: [],
@@ -890,402 +496,339 @@ export default {
             courses: [],
             types: [],
             form: new Form({
-                education_program_id: "",
-                education_program_code: "",
-                education_program_type: "",
-                education_program_course: "",
-                education_program_faculty: "",
-                education_program_year: "",
-                education_program_credit: "",
-                education_program_status: "",
-                faculty_name: "",
-                course_name: "",
-                file_data: ""
+                education_program_id: '',
+                education_program_code: '',
+                education_program_type: '',
+                education_program_course: '',
+                education_program_faculty: '',
+                education_program_year: '',
+                education_program_credit: '',
+                education_program_status: '',
+                faculty_name: '',
+                course_name: '',
+                file_data: ''
             }),
             updatedata: {
-                subject_id: "",
-                subject_code: "",
-                subject_semester: "",
-                subject_major: "",
-                program_detail_calendar: "",
-                program_detail_lecturer: "",
-                program_detail_start: "",
-                program_detail_end: ""
+                subject_id: '',
+                subject_code: '',
+                subject_semester: '',
+                subject_major: ''
             },
             displayData: [],
-            subject_code: "",
-            subject_name: "",
-            subject_faculty: "",
-            subject_credit: "",
-            subject_practice_period: "",
-            subject_theory_period: "",
-            subject_score_exercise: "",
-            subject_score_exam: "",
-            subject_score_final: "",
-            subject_type: "",
+            subject_code: '',
+            subject_name: '',
+            subject_faculty: '',
+            subject_credit: '',
+            subject_practice_period: '',
+            subject_theory_period: '',
+            subject_score_exercise: '',
+            subject_score_exam: '',
+            subject_score_final: '',
+            subject_type: '',
             details: [],
             detailpros: [],
             error: {},
-            fileImport: ""
-        };
+            fileImport: ''
+        }
     },
     mounted() {
-        this.fetchCourses();
-        this.fetchFaculties();
-        this.fetchMajors();
-        this.fetchSubjects();
-        this.fetchTypes();
-        this.fetchLecturers();
-        this.fetchPrograms();
-        this.fetchEducation();
+        this.fetchCourses()
+        this.fetchFaculties()
+        this.fetchMajors()
+        this.fetchSubjects()
+        this.fetchTypes()
+        this.fetchLecturers()
+        this.fetchPrograms()
+        this.fetchEducation()
     },
     watch: {
         $route(to, from) {
-            this.education_program_id = to.params.idProgram;
+            this.education_program_id = to.params.idProgram
         }
     },
     methods: {
         empty() {
-            return this.education.length < 1;
+            return this.education.length < 1
         },
         fetchPrograms(education_program_id, page_url) {
-            let vm = this;
-            education_program_id = this.education_program_id;
-            page_url = `../../api/admin/program/chuong-trinh-dao-tao/program-one/${education_program_id}`;
+            let vm = this
+            education_program_id = this.education_program_id
+            page_url = `../../api/admin/program/chuong-trinh-dao-tao/program-one/${education_program_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.programs = res.data;
-                    this.form.fill(this.programs[0]);
+                    this.programs = res.data
+                    this.form.fill(this.programs[0])
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         fetchCourses(page_url) {
-            let vm = this;
-            page_url = "../../api/admin/edu-course/khoa-hoc/course";
+            let vm = this
+            page_url = '../../api/admin/edu-course/khoa-hoc/course'
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.courses = res.data;
+                    this.courses = res.data
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         fetchFaculties(page_url) {
-            let vm = this;
-            page_url = "../../api/admin/edu-faculty/khoa/faculty";
+            let vm = this
+            page_url = '../../api/admin/edu-faculty/khoa/faculty'
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.faculties = res.data;
+                    this.faculties = res.data
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         fetchMajors(page_url) {
-            let vm = this;
-            page_url = "../../api/admin/edu-major/chuyen-nganh/major";
+            let vm = this
+            page_url = '../../api/admin/edu-major/chuyen-nganh/major'
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.majors = res.data;
+                    this.majors = res.data
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         fetchSubjects(page_url) {
-            let vm = this;
-            page_url = "../../api/admin/manage/mon-hoc/subject";
+            let vm = this
+            page_url = '../../api/admin/manage/mon-hoc/subject'
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.subjects = res.data;
+                    this.subjects = res.data
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         fetchTypes(page_url) {
-            let vm = this;
-            page_url = "../../api/admin/type/he-dao-tao/program-type";
+            let vm = this
+            page_url = '../../api/admin/type/he-dao-tao/program-type'
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.types = res.data;
+                    this.types = res.data
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         fetchLecturers(page_url) {
-            let vm = this;
-            page_url = "../../api/admin/user-gv/giang-vien/lecturer";
+            let vm = this
+            page_url = '../../api/admin/user-gv/giang-vien/lecturer'
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.lecturers = res.data;
+                    this.lecturers = res.data
                     this.lecturers.forEach(el => {
                         if (el.lecturer_code === this.lecturer_id) {
-                            this.lecturer_faculty = el.lecturer_faculty;
+                            this.lecturer_faculty = el.lecturer_faculty
                         }
-                    });
+                    })
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         fetchEducation(education_program_id, page_url) {
-            let vm = this;
-            education_program_id = this.education_program_id;
-            page_url = `../../api/admin/program/chuong-trinh-dao-tao/show-subject-program/${education_program_id}`;
+            let vm = this
+            education_program_id = this.education_program_id
+            page_url = `../../api/admin/program/chuong-trinh-dao-tao/show-subject-program/${education_program_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.education = res.data;
+                    this.education = res.data
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         getCode(edu) {
             this.subjects.forEach(sbj => {
                 if (sbj.subject_code === edu.program_detail_subject) {
-                    this.subject_code = sbj.subject_code;
-                    this.subject_name = sbj.subject_name;
-                    this.subject_credit = sbj.subject_credit;
-                    this.subject_practice_period = sbj.subject_practice_period;
-                    this.subject_theory_period = sbj.subject_theory_period;
-                    this.subject_score_exercise = sbj.subject_score_exercise;
-                    this.subject_score_exam = sbj.subject_score_exam;
-                    this.subject_score_final = sbj.subject_score_final;
-                    this.subject_type = sbj.subject_type;
-                    this.subject_faculty = sbj.subject_faculty;
+                    this.subject_code = sbj.subject_code
+                    this.subject_name = sbj.subject_name
+                    this.subject_credit = sbj.subject_credit
+                    this.subject_practice_period = sbj.subject_practice_period
+                    this.subject_theory_period = sbj.subject_theory_period
+                    this.subject_score_exercise = sbj.subject_score_exercise
+                    this.subject_score_exam = sbj.subject_score_exam
+                    this.subject_score_final = sbj.subject_score_final
+                    this.subject_type = sbj.subject_type
+                    this.subject_faculty = sbj.subject_faculty
                 }
-            });
-            const faculty = this.faculties.find(
-                fac => fac.faculty_id === this.subject_faculty
-            );
-            this.subject_faculty = faculty.faculty_name;
+            })
+            const faculty = this.faculties.find(fac => fac.faculty_id === this.subject_faculty)
+            this.subject_faculty = faculty.faculty_name
         },
         majorSubject(detailpro) {
-            if (
-                detailpro.program_detail_note != "null" &&
-                detailpro.program_detail_note != null
-            ) {
-                const major = this.majors.find(
-                    mjr => mjr.major_code === detailpro.program_detail_note
-                );
-                return major.major_name;
+            if (detailpro.program_detail_note != 'null' && detailpro.program_detail_note != null) {
+                const major = this.majors.find(mjr => mjr.major_code === detailpro.program_detail_note)
+                return major.major_name
             } else {
-                return "";
+                return ''
             }
         },
         facultySubject(subject) {
-            const faculty = this.faculties.find(
-                fac => fac.faculty_id === subject.subject_faculty
-            );
-            return faculty.faculty_name;
+            const faculty = this.faculties.find(fac => fac.faculty_id === subject.subject_faculty)
+            return faculty.faculty_name
         },
         update() {
             this.form
-                .put(
-                    `../../api/admin/program/chuong-trinh-dao-tao/${this.education_program_id}`
-                )
+                .put(`../../api/admin/program/chuong-trinh-dao-tao/${this.education_program_id}`)
                 .then(res => {
                     if (this.form.successful) {
-                        this.fetchPrograms();
-                        this.$snotify.success("Cập nhật Khoa thành công!");
-                        this.$snotify.confirm(
-                            "Bạn có muốn đi đến danh sách không?",
-                            {
-                                timeout: 5000,
-                                showProgressBar: true,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                buttons: [
-                                    {
-                                        text: "Có",
-                                        action: toast => {
-                                            this.$snotify.remove(toast.id);
-                                            this.$router.push({
-                                                name: "educationprogramindex"
-                                            });
-                                        },
-                                        bold: false
+                        this.fetchPrograms()
+                        this.$snotify.success('Cập nhật Khoa thành công!')
+                        this.$snotify.confirm('Bạn có muốn đi đến danh sách không?', {
+                            timeout: 5000,
+                            showProgressBar: true,
+                            closeOnClick: false,
+                            pauseOnHover: true,
+                            buttons: [
+                                {
+                                    text: 'Có',
+                                    action: toast => {
+                                        this.$snotify.remove(toast.id)
+                                        this.$router.push({
+                                            name: 'educationprogramindex'
+                                        })
                                     },
-                                    {
-                                        text: "Không",
-                                        action: toast => {
-                                            this.$snotify.remove(toast.id);
-                                        },
-                                        bold: true
-                                    }
-                                ]
-                            }
-                        );
+                                    bold: false
+                                },
+                                {
+                                    text: 'Không',
+                                    action: toast => {
+                                        this.$snotify.remove(toast.id)
+                                    },
+                                    bold: true
+                                }
+                            ]
+                        })
                     } else {
-                        this.$snotify.error("Không thể chỉnh sửa");
+                        this.$snotify.error('Không thể chỉnh sửa')
                     }
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         show(program_detail_id) {
             let detailpro = this.education.filter(function(edu) {
-                return edu.program_detail_id === program_detail_id;
-            });
-            this.updatedata.subject_id = detailpro[0].program_detail_id;
-            this.updatedata.subject_code = detailpro[0].program_detail_subject;
-            this.updatedata.subject_semester =
-                detailpro[0].program_detail_semester;
-            this.updatedata.subject_major = detailpro[0].program_detail_note;
-            this.updatedata.program_detail_calendar =
-                detailpro[0].program_detail_calendar;
-            this.updatedata.program_detail_lecturer =
-                detailpro[0].program_detail_lecturer;
-            this.updatedata.program_detail_start =
-                detailpro[0].program_detail_start;
-            this.updatedata.program_detail_end =
-                detailpro[0].program_detail_end;
-            $("#UpdateModal").modal("show");
+                return edu.program_detail_id === program_detail_id
+            })
+            this.updatedata.subject_id = detailpro[0].program_detail_id
+            this.updatedata.subject_code = detailpro[0].program_detail_subject
+            this.updatedata.subject_semester = detailpro[0].program_detail_semester
+            this.updatedata.subject_major = detailpro[0].program_detail_note
+            $('#UpdateModal').modal('show')
         },
         updatePro() {
-            let formData = new FormData();
-            formData.append(
-                "subject_semester",
-                this.updatedata.subject_semester
-            );
-            formData.append("subject_major", this.updatedata.subject_major);
-            formData.append(
-                "program_detail_calendar",
-                this.updatedata.program_detail_calendar
-            );
-            formData.append(
-                "program_detail_lecturer",
-                this.updatedata.program_detail_lecturer
-            );
-            formData.append(
-                "program_detail_start",
-                this.updatedata.program_detail_start
-            );
-            formData.append(
-                "program_detail_end",
-                this.updatedata.program_detail_end
-            );
+            let formData = new FormData()
+            formData.append('subject_semester', this.updatedata.subject_semester)
+            formData.append('subject_major', this.updatedata.subject_major)
             axios
-                .post(
-                    `../../api/admin/program/chuong-trinh-dao-tao/update-subject-program/${this.updatedata.subject_id}`,
-                    formData
-                )
+                .post(`../../api/admin/program/chuong-trinh-dao-tao/update-subject-program/${this.updatedata.subject_id}`, formData)
                 .then(res => {
-                    this.fetchEducation();
-                    this.fetchPrograms();
-                    this.$snotify.success("Cập nhật Khoa thành công!");
-                    $("#UpdateModal").modal("hide");
+                    this.fetchEducation()
+                    this.fetchPrograms()
+                    this.$snotify.success('Cập nhật Khoa thành công!')
+                    $('#UpdateModal').modal('hide')
                 })
                 .catch(err => {
-                    this.$snotify.error(
-                        err.response.data.errors.subject_semester[0]
-                    );
-                });
+                    this.$snotify.error(err.response.data.errors.subject_semester[0])
+                })
         },
         detailEducation(program_detail_id, page_url) {
-            let vm = this;
-            page_url = `../../api/admin/program/chuong-trinh-dao-tao/detail-subject-program/${program_detail_id}`;
+            let vm = this
+            page_url = `../../api/admin/program/chuong-trinh-dao-tao/detail-subject-program/${program_detail_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.detailpros = res.data;
+                    this.detailpros = res.data
                     let subject = this.subjects.filter(function(sbj) {
-                        return (
-                            sbj.subject_code ===
-                            res.data[0].program_detail_subject
-                        );
-                    });
-                    this.details = subject;
-                    $("#DetailModal").modal("show");
+                        return sbj.subject_code === res.data[0].program_detail_subject
+                    })
+                    this.details = subject
+                    $('#DetailModal').modal('show')
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         destroy(program_detail_id) {
-            this.$snotify.clear();
-            this.$snotify.confirm(
-                "Bạn muốn xóa môn học khỏi chương trình đào tạo?",
-                {
-                    timeout: 5000,
-                    showProgressBar: true,
-                    closeOnClick: false,
-                    pauseOnHover: true,
-                    buttons: [
-                        {
-                            text: "Xóa",
-                            action: toast => {
-                                this.$snotify.remove(toast.id);
-                                axios
-                                    .post(
-                                        `../../api/admin/program/chuong-trinh-dao-tao/destroy-subject-program/${program_detail_id}`
-                                    )
-                                    .then(res => {
-                                        this.$snotify.success("Đã xóa!");
-                                        this.fetchEducation();
-                                        this.fetchPrograms();
-                                    })
-                                    .catch(err => console.log(err));
-                            },
-                            bold: false
+            this.$snotify.clear()
+            this.$snotify.confirm('Bạn muốn xóa môn học khỏi chương trình đào tạo?', {
+                timeout: 5000,
+                showProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: true,
+                buttons: [
+                    {
+                        text: 'Xóa',
+                        action: toast => {
+                            this.$snotify.remove(toast.id)
+                            axios
+                                .post(`../../api/admin/program/chuong-trinh-dao-tao/destroy-subject-program/${program_detail_id}`)
+                                .then(res => {
+                                    this.$snotify.success('Đã xóa!')
+                                    this.fetchEducation()
+                                    this.fetchPrograms()
+                                })
+                                .catch(err => console.log(err))
                         },
-                        {
-                            text: "Đóng",
-                            action: toast => {
-                                this.$snotify.remove(toast.id);
-                            },
-                            bold: true
-                        }
-                    ]
-                }
-            );
+                        bold: false
+                    },
+                    {
+                        text: 'Đóng',
+                        action: toast => {
+                            this.$snotify.remove(toast.id)
+                        },
+                        bold: true
+                    }
+                ]
+            })
         },
         openImport() {
-            this.$refs.importupload.value = "";
-            $("#ImportModal").modal("show");
+            this.$refs.importupload.value = ''
+            $('#ImportModal').modal('show')
         },
         onFileChange(e) {
-            if (e.target.files[0].name != "education_program.xlsx") {
-                this.$refs.importupload.value = "";
-                this.$snotify.error("Tên tệp Excel không đúng!");
+            if (e.target.files[0].name != 'education_program.xlsx') {
+                this.$refs.importupload.value = ''
+                this.$snotify.error('Tên tệp Excel không đúng!')
             } else {
-                this.fileImport = e.target.files[0];
+                this.fileImport = e.target.files[0]
             }
         },
         reloadFile() {
-            this.$refs.importupload.value = "";
-            this.fileImport = "";
+            this.$refs.importupload.value = ''
+            this.fileImport = ''
         },
         importFile(education_program_id) {
-            education_program_id = this.education_program_id;
-            let formData = new FormData();
-            formData.append("fileImport", this.fileImport);
+            education_program_id = this.education_program_id
+            let formData = new FormData()
+            formData.append('fileImport', this.fileImport)
             axios
-                .post(
-                    `../../api/admin/program/chuong-trinh-dao-tao/import/${education_program_id}`,
-                    formData,
-                    {
-                        headers: { "content-type": "multipart/form-data" }
-                    }
-                )
+                .post(`../../api/admin/program/chuong-trinh-dao-tao/import/${education_program_id}`, formData, {
+                    headers: { 'content-type': 'multipart/form-data' }
+                })
                 .then(res => {
                     if (res.status === 200) {
-                        this.$snotify.success("Import thành công");
-                        $("#ImportModal").modal("hide");
-                        this.fetchEducation();
+                        this.$snotify.success('Import thành công')
+                        $('#ImportModal').modal('hide')
+                        this.fetchEducation()
                     }
                 })
                 .catch(err => {
                     if (err.response.data.errors?.fileImport?.length > 0) {
-                        this.error = err.response.data.errors.fileImport[0];
+                        this.error = err.response.data.errors.fileImport[0]
                     } else if (err.response.data.errors[0].length > 0) {
-                        const stringError = err.response.data.errors[0][0];
-                        const stringSplit = stringError.split(".");
-                        this.error = stringSplit[1];
+                        const stringError = err.response.data.errors[0][0]
+                        const stringSplit = stringError.split('.')
+                        this.error = stringSplit[1]
                     }
 
-                    this.fetchEducation();
-                    this.$snotify.error(this.error);
-                });
+                    this.fetchEducation()
+                    this.$snotify.error(this.error)
+                })
         },
         create() {
-            $("#SubjectModal").modal("show");
+            $('#SubjectModal').modal('show')
         }
     }
-};
+}
 </script>
 
 <style lang="css" scoped>
