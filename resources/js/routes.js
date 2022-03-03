@@ -101,6 +101,9 @@ import PostNews from './components/student/pages/news/PostComponent.vue'
 import PostNewsIndex from './components/student/pages/news/PostNewsPageComponent.vue'
 import PostNewsDetail from './components/student/pages/news/PostNewsDetailComponent.vue'
 
+import Timetable from './components/student/pages/timetable/TimetableComponent.vue'
+import TimetableIndex from './components/student/pages/timetable/TimetableIndexComponent.vue'
+
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
@@ -770,9 +773,34 @@ export default new VueRouter({
         },
 
         {
+            path: '/lich-hoc',
+            name: 'timetable',
+            components: {
+                student: Timetable
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'timetableindex',
+                    component: TimetableIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
             path: '/404',
             name: 'error404',
-            component: Error404
+            components: {
+                default: Error404,
+                student: Error404
+            }
         },
 
         {
