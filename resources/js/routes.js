@@ -104,6 +104,9 @@ import PostNewsDetail from './components/student/pages/news/PostNewsDetailCompon
 import Timetable from './components/student/pages/timetable/TimetableComponent.vue'
 import TimetableIndex from './components/student/pages/timetable/TimetableIndexComponent.vue'
 
+import EducationProStudent from './components/student/pages/education_program/EducationProgramComponent.vue'
+import EducationProStudentIndex from './components/student/pages/education_program/EducationProgramIndexComponent.vue'
+
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
@@ -783,6 +786,28 @@ export default new VueRouter({
                     path: '/',
                     name: 'timetableindex',
                     component: TimetableIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/chuong-trinh-dao-tao-sv',
+            name: 'educationprostudent',
+            components: {
+                student: EducationProStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'educationprostudentindex',
+                    component: EducationProStudentIndex
                 }
             ],
             beforeEnter: (to, from, next) => {

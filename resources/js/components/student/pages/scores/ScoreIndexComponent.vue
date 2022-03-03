@@ -512,9 +512,7 @@
                                 {{ (index += 1) }}
                             </td>
                             <td class="text-center td-table">
-                                <a href="javscript:void(0)" @click="detail(subject.subject_id)">
-                                    {{ subject.subject_code }}
-                                </a>
+                                {{ subject.subject_code }}
                             </td>
                             <td class="td-table">
                                 {{ subject.subject_name }}
@@ -1096,9 +1094,7 @@
                                                 {{ (index += 1) }}
                                             </td>
                                             <td class="text-center td-table">
-                                                <a href="javscript:void(0)" @click="detail(subject.subject_id)">
-                                                    {{ subject.subject_code }}
-                                                </a>
+                                                {{ subject.subject_code }}
                                             </td>
                                             <td class="td-table">
                                                 {{ subject.subject_name }}
