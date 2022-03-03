@@ -93,6 +93,20 @@ import SubjectRegistering from './components/student/pages/subjects/SubjectRegis
 import Score from './components/student/pages/scores/ScoreComponent.vue'
 import ScoreIndex from './components/student/pages/scores/ScoreIndexComponent.vue'
 
+import PostNotification from './components/student/pages/posts/PostComponent.vue'
+import PostNotificationIndex from './components/student/pages/posts/PostNotificationPageComponent.vue'
+import PostNotificationDetail from './components/student/pages/posts/PostNotificationDetailComponent.vue'
+
+import PostNews from './components/student/pages/news/PostComponent.vue'
+import PostNewsIndex from './components/student/pages/news/PostNewsPageComponent.vue'
+import PostNewsDetail from './components/student/pages/news/PostNewsDetailComponent.vue'
+
+import Timetable from './components/student/pages/timetable/TimetableComponent.vue'
+import TimetableIndex from './components/student/pages/timetable/TimetableIndexComponent.vue'
+
+import EducationProStudent from './components/student/pages/education_program/EducationProgramComponent.vue'
+import EducationProStudentIndex from './components/student/pages/education_program/EducationProgramIndexComponent.vue'
+
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
@@ -708,9 +722,110 @@ export default new VueRouter({
         },
 
         {
+            path: '/thong-bao-chung',
+            name: 'postnotification',
+            components: {
+                student: PostNotification
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'postnotificationindex',
+                    component: PostNotificationIndex
+                },
+                {
+                    path: ':idPostNoti',
+                    name: 'postnotificationdetail',
+                    component: PostNotificationDetail
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/ban-tin-van-lang',
+            name: 'postnews',
+            components: {
+                student: PostNews
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'postnewsindex',
+                    component: PostNewsIndex
+                },
+                {
+                    path: ':idPostNews',
+                    name: 'postnewsdetail',
+                    component: PostNewsDetail
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/lich-hoc',
+            name: 'timetable',
+            components: {
+                student: Timetable
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'timetableindex',
+                    component: TimetableIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/chuong-trinh-dao-tao-sv',
+            name: 'educationprostudent',
+            components: {
+                student: EducationProStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'educationprostudentindex',
+                    component: EducationProStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
             path: '/404',
             name: 'error404',
-            component: Error404
+            components: {
+                default: Error404,
+                student: Error404
+            }
         },
 
         {

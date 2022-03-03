@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function () {
     Route::prefix('user-gv')->group(function () {
+        Route::get('giang-vien/alllecturer', 'Admin\Users\LecturerManageController@alllecturer');
         Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty_noimg');
         Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty');
         Route::post('giang-vien/tao-thong-tin-ca-nhan-bcnk', 'Admin\Users\LecturerManageController@create_info_deanfaculty');
@@ -96,7 +97,10 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('post-news')->group(function () {
-        //Route::get('bai-viet/detail/{post}','Admin\Posts\PostController@detail');
+        Route::get('bai-viet/post-news-all', 'Admin\Posts\PostController@post_news_all');
+        Route::get('bai-viet/post-notification-all', 'Admin\Posts\PostController@post_notification_all');
+        Route::get('bai-viet/post-news', 'Admin\Posts\PostController@post_news');
+        Route::get('bai-viet/post-notification', 'Admin\Posts\PostController@post_notification');
         Route::get('bai-viet/post/{post_id}', 'Admin\Posts\PostController@post');
         Route::post('bai-viet/destroyall/', 'Admin\Posts\PostController@destroyall');
         Route::get('bai-viet/filter/{admin}/{currentEntries}', 'Admin\Posts\PostController@filter');
@@ -228,6 +232,13 @@ Route::prefix('admin')->group(function () {
         Route::get('goi-y-ke-hoach-hoc-tap-sv/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Education\PlanSuggestController@search');
         Route::get('goi-y-ke-hoach-hoc-tap-sv/{lecturer_id}/{currentEntries}', 'Admin\Education\PlanSuggestController@showdata');
         Route::resource('goi-y-ke-hoach-hoc-tap-sv', 'Admin\Education\PlanSuggestController');
+    });
+
+    Route::prefix('statistic')->group(function () {
+        Route::get('thong-ke-truy-cap/thang-truoc', 'Admin\AuthController@sum_lastmonth');
+        Route::get('thong-ke-truy-cap/thang-nay', 'Admin\AuthController@sum_thismonth');
+        Route::get('thong-ke-truy-cap/mot-nam', 'Admin\AuthController@sum_year');
+        Route::get('thong-ke-truy-cap/tat-ca', 'Admin\AuthController@sum_visitor');
     });
 });
 

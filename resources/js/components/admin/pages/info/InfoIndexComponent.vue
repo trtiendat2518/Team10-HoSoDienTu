@@ -63,7 +63,7 @@
                                 aria-labelledby="tabs-icons-text-1-tab"
                             >
                                 <div class="table-responsive mb-3">
-                                    <table class="table row table-borderless w-100 m-0 border" v-for="info in infos" :key="info.admin_id">
+                                    <table class="table row w-100 m-0" v-for="info in infos" :key="info.admin_id">
                                         <tbody class="col-lg-6 p-0">
                                             <tr>
                                                 <td>
@@ -218,4 +218,4 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped></style>

@@ -43,6 +43,7 @@ class PostController extends Controller
             'post_title' => ['required', 'max:200', 'min:10', 'unique:tbl_post'],
             'post_content' => ['required', 'min:20'],
             'post_status' => ['required'],
+            'post_type' => ['required'],
         ], [
             'post_title.required' => 'Tiêu đề bài viết không được để trống!',
             'post_title.max' => 'Tiêu đề bài viết không nhập quá 200 ký tự!',
@@ -52,12 +53,14 @@ class PostController extends Controller
             'post_content.required' => 'Nội dung bài viết không được để trống!',
             'post_content.min' => 'Nội dung bài viết phải có 20 ký tự trở lên!',
 
-            'post_status.required' => 'Vui lòng chọn trạng thái cho bài viết này!'
+            'post_status.required' => 'Vui lòng chọn trạng thái cho bài viết này!',
+            'post_type.required' => 'Vui lòng chọn danh mục cho bài viết này!'
         ]);
 
         $post = new Post();
         $post->post_title = $data['post_title'];
         $post->post_content = $data['post_content'];
+        $post->post_type = $data['post_type'];
         $post->post_status = $data['post_status'];
         $post->post_author = $request->post_author;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -99,6 +102,7 @@ class PostController extends Controller
         $data = $request->validate([
             'post_title' => ['required', 'max:200', 'min:10', "unique:tbl_post,post_title,$post,post_id"],
             'post_content' => ['required', 'min:20'],
+            'post_type' => ['required'],
         ], [
             'post_title.required' => 'Tiêu đề bài viết không được để trống!',
             'post_title.max' => 'Tiêu đề bài viết không nhập quá 200 ký tự!',
@@ -107,11 +111,13 @@ class PostController extends Controller
 
             'post_content.required' => 'Nội dung bài viết không được để trống!',
             'post_content.min' => 'Nội dung bài viết phải có 20 ký tự trở lên!',
+            'post_type.required' => 'Vui lòng chọn danh mục cho bài viết này!'
         ]);
 
         $pst = Post::find($post);
         $pst->post_title = $data['post_title'];
         $pst->post_content = $data['post_content'];
+        $pst->post_type = $data['post_type'];
         $pst->post_author = $request->post_author;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $pst->post_date = now();
@@ -166,8 +172,27 @@ class PostController extends Controller
         return PostNewsResource::collection(Post::where('post_id', $post_id)->orderby('post_id', 'DESC')->get());
     }
 
-    // public function detail($post)
-    // {
-    //     return PostNewsResource::collection(Post::where('post_id',$post)->get());
-    // }
+    public function post_notification()
+    {
+        $post_noti = Post::where('post_type', 0)->orderby('post_id', 'DESC')->limit(4)->get();
+        return PostNewsResource::collection($post_noti);
+    }
+
+    public function post_notification_all()
+    {
+        $post_noti = Post::where('post_type', 0)->orderby('post_id', 'DESC')->get();
+        return PostNewsResource::collection($post_noti);
+    }
+
+    public function post_news()
+    {
+        $post_noti = Post::where('post_type', 1)->orderby('post_id', 'DESC')->limit(6)->get();
+        return PostNewsResource::collection($post_noti);
+    }
+
+    public function post_news_all()
+    {
+        $post_noti = Post::where('post_type', 1)->orderby('post_id', 'DESC')->get();
+        return PostNewsResource::collection($post_noti);
+    }
 }
