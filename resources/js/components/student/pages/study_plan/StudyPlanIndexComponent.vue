@@ -671,6 +671,7 @@ export default {
                 formData.append('semester', this.semester)
                 formData.append('yearstart', this.yearstart)
                 formData.append('student_id', this.student_id)
+                formData.append('type', this.select_type)
                 for (let i = 0; i < this.selected.length; i++) {
                     formData.append('subject[]', this.selected[i])
                 }

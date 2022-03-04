@@ -344,4 +344,10 @@ class StudentManageController extends Controller
 
         return StudentResource::collection($joins);
     }
+
+    public function student_course_major($course, $major)
+    {
+        $joins = Student::where('student_course', $course)->where('student_major', $major)->get();
+        return StudentResource::collection($joins);
+    }
 }

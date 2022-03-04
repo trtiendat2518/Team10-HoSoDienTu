@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RegisterPlan;
 use App\Models\RegisterSubject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\RegisterPlanResource;
 
 class RegisterPlanController extends Controller
@@ -101,5 +102,49 @@ class RegisterPlanController extends Controller
     public function destroy(RegisterPlan $registerPlan)
     {
         //
+    }
+
+    public function statistic_student_plan($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)->get();
+        return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_plan_suggestall($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)
+            ->where('tbl_register_plan.register_plan_type', 1)->get();
+        return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_plan_suggestonly($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)
+            ->where('tbl_register_plan.register_plan_type', 2)->get();
+        return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_plan_mine($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)
+            ->where('tbl_register_plan.register_plan_type', 3)->get();
+        return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_detail_type($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)->get()
+            ->unique('tbl_register_plan.register_plan_student');
+        return RegisterPlanResource::collection($joins);
     }
 }
