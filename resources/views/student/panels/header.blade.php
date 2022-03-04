@@ -41,6 +41,22 @@
                 <!-- MENU MAIN ITEM -->
                 <li class="menu-main-item">
                     <!-- MENU MAIN ITEM LINK -->
+                    <a class="menu-main-item-link" href="{{ url('/home#/thong-bao-chung') }}">Thông báo chung</a>
+                    <!-- /MENU MAIN ITEM LINK -->
+                </li>
+                <!-- /MENU MAIN ITEM -->
+
+                <!-- MENU MAIN ITEM -->
+                <li class="menu-main-item">
+                    <!-- MENU MAIN ITEM LINK -->
+                    <a class="menu-main-item-link" href="{{ url('/home#/ban-tin-van-lang') }}">Bản tin VLU</a>
+                    <!-- /MENU MAIN ITEM LINK -->
+                </li>
+                <!-- /MENU MAIN ITEM -->
+
+                <!-- MENU MAIN ITEM -->
+                <li class="menu-main-item">
+                    <!-- MENU MAIN ITEM LINK -->
                     <a class="menu-main-item-link" href="#">Faqs</a>
                     <!-- /MENU MAIN ITEM LINK -->
                 </li>

@@ -59,6 +59,7 @@ class StudyPlanController extends Controller
                 $study_plan->register_plan_yearend = $request->yearstart + 1;
                 date_default_timezone_set('Asia/Ho_Chi_Minh');
                 $study_plan->register_plan_date = now();
+                $study_plan->register_plan_type =  $request->type;
                 $study_plan->save();
             }
         } else {
@@ -71,6 +72,7 @@ class StudyPlanController extends Controller
                 $study_plan->register_plan_yearend = $request->yearstart + 1;
                 date_default_timezone_set('Asia/Ho_Chi_Minh');
                 $study_plan->register_plan_date = now();
+                $study_plan->register_plan_type =  $request->type;
                 $study_plan->save();
             }
         }
@@ -98,7 +100,8 @@ class StudyPlanController extends Controller
 
     public function showdata($student_id)
     {
-        $joins = RegisterSubject::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_subject.register_subject_program')
+        $joins = RegisterSubject::join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
             ->where('tbl_register_subject.register_subject_student', $student_id)
             ->get();
         return EducationProgramResource::collection($joins);

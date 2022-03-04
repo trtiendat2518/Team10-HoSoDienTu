@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->group(function () {
     Route::prefix('user-gv')->group(function () {
+        Route::get('giang-vien/alllecturer', 'Admin\Users\LecturerManageController@alllecturer');
         Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk-noimg/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty_noimg');
         Route::post('giang-vien/cap-nhat-thong-tin-ca-nhan-bcnk/{info_id}', 'Admin\Users\LecturerManageController@update_info_deanfaculty');
         Route::post('giang-vien/tao-thong-tin-ca-nhan-bcnk', 'Admin\Users\LecturerManageController@create_info_deanfaculty');
@@ -46,6 +47,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('user-sv')->group(function () {
+        Route::get('sinh-vien/course-major/{course}/{major}', 'Admin\Users\StudentManageController@student_course_major');
         Route::get('sinh-vien/student-form-teacher/{lecturer_id}', 'Admin\Users\StudentManageController@student_form_teacher');
         Route::get('sinh-vien/allstudent', 'Admin\Users\StudentManageController@allstudent');
         Route::post('sinh-vien/import', 'Admin\Users\StudentManageController@import');
@@ -96,7 +98,10 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('post-news')->group(function () {
-        //Route::get('bai-viet/detail/{post}','Admin\Posts\PostController@detail');
+        Route::get('bai-viet/post-news-all', 'Admin\Posts\PostController@post_news_all');
+        Route::get('bai-viet/post-notification-all', 'Admin\Posts\PostController@post_notification_all');
+        Route::get('bai-viet/post-news', 'Admin\Posts\PostController@post_news');
+        Route::get('bai-viet/post-notification', 'Admin\Posts\PostController@post_notification');
         Route::get('bai-viet/post/{post_id}', 'Admin\Posts\PostController@post');
         Route::post('bai-viet/destroyall/', 'Admin\Posts\PostController@destroyall');
         Route::get('bai-viet/filter/{admin}/{currentEntries}', 'Admin\Posts\PostController@filter');
@@ -121,6 +126,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('program')->group(function () {
+        Route::get('chuong-trinh-dao-tao/theo-khoa-hoc/{course}/{lecturer_id}', 'Admin\Education\EducationProgramController@education_program_lecturer');
         Route::post('chuong-trinh-dao-tao/create-subject-program', 'Admin\Education\EducationProgramController@create_subject_program');
         Route::post('chuong-trinh-dao-tao/update-subject-program/{program_detail_id}', 'Admin\Education\EducationProgramController@update_subject_program');
         Route::post('chuong-trinh-dao-tao/import/{program_code}', 'Admin\Education\EducationProgramController@import');
@@ -216,6 +222,11 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('register-plan')->group(function () {
+        Route::get('dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-xem-loai/{course}/{major}/{semester}', 'Admin\Education\RegisterPlanController@statistic_detail_type');
+        Route::get('dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-goi-y-tat-ca/{course}/{major}/{semester}', 'Admin\Education\RegisterPlanController@statistic_plan_suggestall');
+        Route::get('dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-goi-y-ca-nhan/{course}/{major}/{semester}', 'Admin\Education\RegisterPlanController@statistic_plan_suggestonly');
+        Route::get('dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-ca-nhan/{course}/{major}/{semester}', 'Admin\Education\RegisterPlanController@statistic_plan_mine');
+        Route::get('dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky/{course}/{major}/{semester}', 'Admin\Education\RegisterPlanController@statistic_student_plan');
         Route::resource('dang-ky-ke-hoach-hoc-tap-sv', 'Admin\Education\RegisterPlanController');
     });
 
@@ -228,6 +239,13 @@ Route::prefix('admin')->group(function () {
         Route::get('goi-y-ke-hoach-hoc-tap-sv/search/{lecturer_id}/{query}/{currentEntries}', 'Admin\Education\PlanSuggestController@search');
         Route::get('goi-y-ke-hoach-hoc-tap-sv/{lecturer_id}/{currentEntries}', 'Admin\Education\PlanSuggestController@showdata');
         Route::resource('goi-y-ke-hoach-hoc-tap-sv', 'Admin\Education\PlanSuggestController');
+    });
+
+    Route::prefix('statistic')->group(function () {
+        Route::get('thong-ke-truy-cap/thang-truoc', 'Admin\AuthController@sum_lastmonth');
+        Route::get('thong-ke-truy-cap/thang-nay', 'Admin\AuthController@sum_thismonth');
+        Route::get('thong-ke-truy-cap/mot-nam', 'Admin\AuthController@sum_year');
+        Route::get('thong-ke-truy-cap/tat-ca', 'Admin\AuthController@sum_visitor');
     });
 });
 
@@ -246,12 +264,17 @@ Route::prefix('student')->group(function () {
     });
 
     Route::prefix('subject-register')->group(function () {
+        Route::get('dang-ky-mon-hoc/send-mail/{student_id}/{semester}', 'Student\Registration\SubjectController@send_mail');
+        Route::post('dang-ky-mon-hoc/thay-doi-mon-hoc/{calendar_subject_id}/{register_subject_id}', 'Student\Registration\SubjectController@change_subject');
+        Route::post('dang-ky-mon-hoc/huy-mon-hoc/{calendar_subject_id}/{register_subject_id}', 'Student\Registration\SubjectController@cancel_subject');
+        Route::get('dang-ky-mon-hoc/ket-qua-dk-tat-ca/{student_id}/{semester}', 'Student\Registration\SubjectController@result_all');
+        Route::get('dang-ky-mon-hoc/ket-qua-dk-con/{student_id}/{semester}/{subject_id}', 'Student\Registration\SubjectController@result_register_subject');
         Route::get('dang-ky-mon-hoc/chon-lop-mon-hoc/{student_id}/{semester}/{subject_id}', 'Student\Registration\SubjectController@register_subject');
         Route::get('dang-ky-mon-hoc/so-luong-lop-mon-hoc/{student_id}/{semester}', 'Student\Registration\SubjectController@quantity');
         Route::get('dang-ky-mon-hoc/ngoai-ke-hoach/{student_id}/{semester}', 'Student\Registration\SubjectController@show_subject_outplan');
         Route::get('dang-ky-mon-hoc/theo-ke-hoach/{student_id}/{semester}', 'Student\Registration\SubjectController@show_subject_inplan');
         Route::get('dang-ky-mon-hoc/theo-ctdt/{student_id}/{semester}', 'Student\Registration\SubjectController@show_subject_program');
         Route::get('dang-ky-mon-hoc/thoi-gian-dang-ky/{student_id}', 'Student\Registration\SubjectController@calendar_time_register');
-        Route::resource('dang-ky-mon-hoc', 'Student\Registration\StudyPlanController');
+        Route::resource('dang-ky-mon-hoc', 'Student\Registration\SubjectController');
     });
 });

@@ -95,7 +95,7 @@
                             </td>
                         </tr>
 
-                        <tr v-show="subjects[i].length" v-for="(subject, index) in subjects[i]" :key="subject.subject_id">
+                        <tr v-show="subjects[i].length" v-for="(subject, index) in subjects[i]" :key="subject.register_subject_id">
                             <td class="text-center">
                                 {{ (index += 1) }}
                             </td>
@@ -103,7 +103,11 @@
                                 {{ subject.subject_code }}
                             </td>
                             <td>
-                                {{ subject.subject_name }}
+                                <div v-if="nameSubject(subject) < 2">{{ subject.subject_name }}</div>
+                                <div v-else>
+                                    <div v-if="subject.calendar_subject_type == 0">{{ subject.subject_name }} (Lý thuyết)</div>
+                                    <div v-else-if="subject.calendar_subject_type == 1">{{ subject.subject_name }} (Thực hành)</div>
+                                </div>
                             </td>
                             <td class="text-center">
                                 {{ subject.subject_credit }}
@@ -499,14 +503,16 @@
                                 <b> Học kỳ {{ i }} </b>
                             </td>
                         </tr>
-                        <tr v-show="subjects_programs[i].length" v-for="(subject, index) in subjects_programs[i]" :key="subject.subject_id">
+                        <tr
+                            v-show="subjects_programs[i].length"
+                            v-for="(subject, index) in subjects_programs[i]"
+                            :key="subject.register_subject_id"
+                        >
                             <td class="td-table text-center">
                                 {{ (index += 1) }}
                             </td>
                             <td class="text-center td-table">
-                                <a href="javscript:void(0)" @click="detail(subject.subject_id)">
-                                    {{ subject.subject_code }}
-                                </a>
+                                {{ subject.subject_code }}
                             </td>
                             <td class="td-table">
                                 {{ subject.subject_name }}
@@ -593,7 +599,7 @@
                             <div class="col-md-6">
                                 <h6 class="text-center text-black">BỘ GIÁO DỤC VÀ ĐÀO TẠO</h6>
                                 <h6 class="text-center text-black">TRƯỜNG ĐẠI HỌC VĂN LANG</h6>
-                                <img :src="`../public/student/img/vlu.ico`" alt="vlu" class="img-style" />
+                                <img :src="`../public/student/img/vlu.png`" alt="vlu" class="img-style" />
                             </div>
                             <div class="col-md-6">
                                 <h6 class="text-center text-black">CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</h6>
@@ -677,7 +683,11 @@
                                             </td>
                                         </tr>
 
-                                        <tr v-show="subjects[i].length" v-for="(subject, index) in subjects[i]" :key="subject.subject_id">
+                                        <tr
+                                            v-show="subjects[i].length"
+                                            v-for="(subject, index) in subjects[i]"
+                                            :key="subject.register_subject_id"
+                                        >
                                             <td class="text-center">
                                                 {{ (index += 1) }}
                                             </td>
@@ -1078,15 +1088,13 @@
                                         <tr
                                             v-show="subjects_programs[i].length"
                                             v-for="(subject, index) in subjects_programs[i]"
-                                            :key="subject.subject_id"
+                                            :key="subject.register_subject_id"
                                         >
                                             <td class="td-table text-center">
                                                 {{ (index += 1) }}
                                             </td>
                                             <td class="text-center td-table">
-                                                <a href="javscript:void(0)" @click="detail(subject.subject_id)">
-                                                    {{ subject.subject_code }}
-                                                </a>
+                                                {{ subject.subject_code }}
                                             </td>
                                             <td class="td-table">
                                                 {{ subject.subject_name }}
@@ -1188,6 +1196,8 @@ export default {
             subjects_programs: [],
             semesters_program: [],
             scores_program: [],
+            find_types: [],
+            count_type: 0,
             error: {},
             filter: '',
             print_date: ''
@@ -1213,6 +1223,8 @@ export default {
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
+                    this.find_types = res.data
+
                     const semesters = res.data.reduce((semesters, item) => {
                         const semester = semesters[item.register_subject_semester] || []
                         semester.push(item)
@@ -1243,7 +1255,18 @@ export default {
                 scoreFinal = (subject.register_subject_second * subject.subject_score_final) / 100
             }
 
-            return scoreExercise + scoreExam + scoreFinal
+            return (scoreExercise + scoreExam + scoreFinal).toFixed(1)
+        },
+        nameSubject(subject) {
+            let count = this.find_types.filter(el => {
+                if (subject.subject_id == el.subject_id) {
+                    if (el.calendar_subject_type == 1 || el.calendar_subject_type == 0) {
+                        return el
+                    }
+                }
+            })
+
+            return (this.count_type = count.length)
         },
         resultCreditSemester(i) {
             let sum = 0
@@ -1251,6 +1274,7 @@ export default {
             let scoreExam = 0
             let scoreFinal = 0
             let scoreSum = 0
+
             for (let j = 0; j < this.subjects[i].length; j++) {
                 scoreExercise = (this.subjects[i][j].register_subject_exercise * this.subjects[i][j].subject_score_exercise) / 100
                 scoreExam = (this.subjects[i][j].register_subject_exam * this.subjects[i][j].subject_score_exam) / 100
@@ -1401,7 +1425,7 @@ export default {
                         scoreFinal = (this.scores_program[i].register_subject_second * subject.subject_score_final) / 100
                     }
 
-                    return scoreExercise + scoreExam + scoreFinal
+                    return (scoreExercise + scoreExam + scoreFinal).toFixed(1)
                 }
             }
         },

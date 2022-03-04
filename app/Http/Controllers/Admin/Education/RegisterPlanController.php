@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RegisterPlan;
 use App\Models\RegisterSubject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\RegisterPlanResource;
 
 class RegisterPlanController extends Controller
@@ -47,26 +48,26 @@ class RegisterPlanController extends Controller
      * @param  \App\Models\RegisterPlan  $registerPlan
      * @return \Illuminate\Http\Response
      */
-    public function show($registerPlan)
+    public function show($student_id)
     {
-        // $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
-        //     ->join('tbl_program_detail', 'tbl_program_detail.program_detail_id', '=', 'tbl_register_plan.register_plan_program')
-        //     ->join('tbl_education_program', 'tbl_education_program.education_program_code', '=', 'tbl_program_detail.program_detail_code')
-        //     ->join('tbl_program_type', 'tbl_program_type.program_type_id', '=', 'tbl_education_program.education_program_type')
-        //     ->join('tbl_subject', 'tbl_subject.subject_code', '=', 'tbl_program_detail.program_detail_subject')
-        //     ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
-        //     ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
-        //     ->whereNotIn('tbl_register_plan.register_plan_program', RegisterSubject::where('tbl_register_subject.register_subject_program', '!=', ['tbl_register_plan.register_plan_program'])->pluck('tbl_register_subject.register_subject_program'))
-        //     ->where('tbl_register_plan.register_plan_student', $registerPlan)->get();
+        $get = RegisterSubject::join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_subject.register_subject_student')
+            ->where('tbl_register_subject.register_subject_student', $student_id)->get();
 
         $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
             ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
             ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
             ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_class.class_course')
-            // ->whereNotIn('tbl_register_plan.register_plan_program', RegisterSubject::where('tbl_register_subject.register_subject_program', '!=', ['tbl_register_plan.register_plan_program'])->pluck('tbl_register_subject.register_subject_program'))
-            ->where('tbl_register_plan.register_plan_student', $registerPlan)->get();
+            ->where('tbl_register_plan.register_plan_student', $student_id);
 
-        return RegisterPlanResource::collection($joins);
+        foreach ($get as $key => $value) {
+            $value->subject_id;
+            $joins->where('tbl_register_plan.register_plan_program', '!=', $value->subject_id);
+        }
+        $results = $joins->get();
+
+        return RegisterPlanResource::collection($results);
     }
 
     /**
@@ -101,5 +102,49 @@ class RegisterPlanController extends Controller
     public function destroy(RegisterPlan $registerPlan)
     {
         //
+    }
+
+    public function statistic_student_plan($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)->get();
+        return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_plan_suggestall($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)
+            ->where('tbl_register_plan.register_plan_type', 1)->get();
+        return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_plan_suggestonly($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)
+            ->where('tbl_register_plan.register_plan_type', 2)->get();
+        return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_plan_mine($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)
+            ->where('tbl_register_plan.register_plan_type', 3)->get();
+        return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_detail_type($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)->get()
+            ->unique('tbl_register_plan.register_plan_student');
+        return RegisterPlanResource::collection($joins);
     }
 }

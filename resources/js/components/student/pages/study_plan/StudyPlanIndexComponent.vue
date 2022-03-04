@@ -331,7 +331,7 @@
                             <div class="col-md-6">
                                 <h6 class="text-center text-black">BỘ GIÁO DỤC VÀ ĐÀO TẠO</h6>
                                 <h6 class="text-center text-black">TRƯỜNG ĐẠI HỌC VĂN LANG</h6>
-                                <img :src="`../public/student/img/vlu.ico`" alt="vlu" class="img-style" />
+                                <img :src="`../public/student/img/vlu.png`" alt="vlu" class="img-style" />
                             </div>
                             <div class="col-md-6">
                                 <h6 class="text-center text-black">CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</h6>
@@ -671,6 +671,7 @@ export default {
                 formData.append('semester', this.semester)
                 formData.append('yearstart', this.yearstart)
                 formData.append('student_id', this.student_id)
+                formData.append('type', this.select_type)
                 for (let i = 0; i < this.selected.length; i++) {
                     formData.append('subject[]', this.selected[i])
                 }
@@ -764,7 +765,7 @@ td {
     margin-top: 10%;
     margin-bottom: 10%;
     width: 40%;
-    height: 40%;
+    height: 60%;
 }
 .center-style {
     display: block;

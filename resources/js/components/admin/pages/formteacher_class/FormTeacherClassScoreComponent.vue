@@ -120,11 +120,7 @@
                                     </td>
                                 </tr>
 
-                                <tr
-                                    v-show="subjects[i].length"
-                                    v-for="(subject, index) in subjects[i]"
-                                    :key="subject.subject_id"
-                                >
+                                <tr v-show="subjects[i].length" v-for="(subject, index) in subjects[i]" :key="subject.subject_id">
                                     <td class="text-center">
                                         {{ (index += 1) }}
                                     </td>
@@ -140,18 +136,12 @@
                                     <td class="text-center">
                                         <div
                                             v-if="
-                                                subject.register_subject_exercise ==
-                                                    null &&
-                                                    subject.register_subject_exam ==
-                                                        null &&
-                                                    subject.register_subject_final ==
-                                                        null
+                                                subject.register_subject_exercise == null &&
+                                                    subject.register_subject_exam == null &&
+                                                    subject.register_subject_final == null
                                             "
                                         >
-                                            <i
-                                                class="fa fa-minus"
-                                                aria-hidden="true"
-                                            ></i>
+                                            <i class="fa fa-minus" aria-hidden="true"></i>
                                         </div>
                                         <div v-else>
                                             {{ scoreSum(subject) }}
@@ -160,77 +150,39 @@
                                     <td class="text-center">
                                         <div
                                             v-if="
-                                                subject.register_subject_exercise ==
-                                                    null &&
-                                                    subject.register_subject_exam ==
-                                                        null &&
-                                                    subject.register_subject_final ==
-                                                        null
+                                                subject.register_subject_exercise == null &&
+                                                    subject.register_subject_exam == null &&
+                                                    subject.register_subject_final == null
                                             "
                                         >
-                                            <i
-                                                class="fa fa-minus"
-                                                aria-hidden="true"
-                                            ></i>
+                                            <i class="fa fa-minus" aria-hidden="true"></i>
                                         </div>
                                         <div v-else>
                                             <div v-if="scoreSum(subject) < 4">
                                                 F
                                             </div>
-                                            <div
-                                                v-else-if="
-                                                    scoreSum(subject) < 5
-                                                "
-                                            >
+                                            <div v-else-if="scoreSum(subject) < 5">
                                                 D
                                             </div>
-                                            <div
-                                                v-else-if="
-                                                    scoreSum(subject) < 5.5
-                                                "
-                                            >
+                                            <div v-else-if="scoreSum(subject) < 5.5">
                                                 D+
                                             </div>
-                                            <div
-                                                v-else-if="
-                                                    scoreSum(subject) < 6.5
-                                                "
-                                            >
+                                            <div v-else-if="scoreSum(subject) < 6.5">
                                                 C
                                             </div>
-                                            <div
-                                                v-else-if="
-                                                    scoreSum(subject) < 7
-                                                "
-                                            >
+                                            <div v-else-if="scoreSum(subject) < 7">
                                                 C+
                                             </div>
-                                            <div
-                                                v-else-if="
-                                                    scoreSum(subject) < 8
-                                                "
-                                            >
+                                            <div v-else-if="scoreSum(subject) < 8">
                                                 B
                                             </div>
-                                            <div
-                                                v-else-if="
-                                                    scoreSum(subject) < 8.5
-                                                "
-                                            >
+                                            <div v-else-if="scoreSum(subject) < 8.5">
                                                 B+
                                             </div>
-                                            <div
-                                                v-else-if="
-                                                    scoreSum(subject) < 9
-                                                "
-                                            >
+                                            <div v-else-if="scoreSum(subject) < 9">
                                                 A
                                             </div>
-                                            <div
-                                                v-else-if="
-                                                    scoreSum(subject) <= 10
-                                                "
-                                            >
+                                            <div v-else-if="scoreSum(subject) <= 10">
                                                 A+
                                             </div>
                                         </div>
@@ -238,43 +190,24 @@
                                     <td class="text-center">
                                         <div
                                             v-if="
-                                                subject.register_subject_exercise ==
-                                                    null &&
-                                                    subject.register_subject_exam ==
-                                                        null &&
-                                                    subject.register_subject_final ==
-                                                        null
+                                                subject.register_subject_exercise == null &&
+                                                    subject.register_subject_exam == null &&
+                                                    subject.register_subject_final == null
                                             "
                                         >
-                                            <i
-                                                class="fa fa-minus"
-                                                aria-hidden="true"
-                                            ></i>
+                                            <i class="fa fa-minus" aria-hidden="true"></i>
                                         </div>
                                         <div v-else>
                                             <div v-if="scoreSum(subject) < 4">
-                                                <i
-                                                    class="fa fa-times"
-                                                    aria-hidden="true"
-                                                ></i>
+                                                <i class="fa fa-times" aria-hidden="true"></i>
                                             </div>
-                                            <div
-                                                v-else-if="
-                                                    scoreSum(subject) >= 4
-                                                "
-                                            >
-                                                <i
-                                                    class="fa fa-check"
-                                                    aria-hidden="true"
-                                                ></i>
+                                            <div v-else-if="scoreSum(subject) >= 4">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <button
-                                            class="btn-3d btn btn-success btn-lg fa fa-info"
-                                            @click="show(subject)"
-                                        ></button>
+                                        <button class="btn-3d btn btn-success btn-lg fa fa-info" @click="show(subject)"></button>
                                     </td>
                                 </tr>
                                 <tr class="background-result">
@@ -338,25 +271,15 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header styling-modal-header-info">
-                        <h5
-                            class="modal-title styling-font-modal-header"
-                            id="DetailModalTitle"
-                        >
+                        <h5 class="modal-title styling-font-modal-header" id="DetailModalTitle">
                             {{ form.subject_name }}
                         </h5>
-                        <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                        >
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table
-                            class="table card-table table-vcenter text-nowrap table-nowrap"
-                        >
+                        <table class="table card-table table-vcenter text-nowrap table-nowrap">
                             <thead class="detail-background text-white">
                                 <tr>
                                     <th class="text-center">Tên thành phần</th>
@@ -370,9 +293,7 @@
                                     <td class="text-center">
                                         Điểm bài tập
                                     </td>
-                                    <td class="text-center">
-                                        {{ form.subject_score_exercise }}%
-                                    </td>
+                                    <td class="text-center">{{ form.subject_score_exercise }}%</td>
                                     <td class="text-center">
                                         {{ form.register_subject_exercise }}
                                     </td>
@@ -382,9 +303,7 @@
                                     <td class="text-center">
                                         Điểm kiểm tra
                                     </td>
-                                    <td class="text-center">
-                                        {{ form.subject_score_exam }}%
-                                    </td>
+                                    <td class="text-center">{{ form.subject_score_exam }}%</td>
                                     <td class="text-center">
                                         {{ form.register_subject_exam }}
                                     </td>
@@ -394,9 +313,7 @@
                                     <td class="text-center">
                                         Điểm thi
                                     </td>
-                                    <td class="text-center">
-                                        {{ form.subject_score_final }}%
-                                    </td>
+                                    <td class="text-center">{{ form.subject_score_final }}%</td>
                                     <td class="text-center">
                                         {{ form.register_subject_final }}
                                     </td>
@@ -406,11 +323,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary btn-3d"
-                            data-dismiss="modal"
-                        >
+                        <button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">
                             Đóng
                         </button>
                     </div>
@@ -427,247 +340,168 @@ export default {
         return {
             subjects: [],
             semesters: [],
-            student_code: "",
+            student_code: '',
             class_id: this.$route.params.idFTClass,
             student_id: this.$route.params.idStudent,
             form: new Form({
-                subject_id: "",
-                subject_name: "",
-                subject_score_exercise: "",
-                subject_score_exam: "",
-                subject_score_final: "",
-                register_subject_exercise: "",
-                register_subject_exam: "",
-                register_subject_final: ""
+                subject_id: '',
+                subject_name: '',
+                subject_score_exercise: '',
+                subject_score_exam: '',
+                subject_score_final: '',
+                register_subject_exercise: '',
+                register_subject_exam: '',
+                register_subject_final: ''
             })
-        };
+        }
     },
     mounted() {
-        this.fetchStudentClass();
+        this.fetchStudentClass()
     },
     watch: {
         $route(to, from) {
-            this.class_id = to.params.idFTClass;
-            this.student_id = to.params.idStudent;
+            this.class_id = to.params.idFTClass
+            this.student_id = to.params.idStudent
         }
     },
     methods: {
         fetchStudentClass(page_url) {
-            let vm = this;
-            page_url = `../../api/admin/register-subject/dang-ky-mon-hoc-sv/xem-diem/${this.student_id}`;
+            let vm = this
+            page_url = `../../api/admin/register-subject/dang-ky-mon-hoc-sv/xem-diem/${this.student_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    this.student_code = res.data[0].student_code;
+                    this.student_code = res.data[0].student_code
 
                     const semesters = res.data.reduce((semesters, item) => {
-                        const semester =
-                            semesters[item.register_subject_semester] || [];
-                        semester.push(item);
-                        semesters[item.register_subject_semester] = semester;
-                        return semesters;
-                    }, {});
+                        const semester = semesters[item.register_subject_semester] || []
+                        semester.push(item)
+                        semesters[item.register_subject_semester] = semester
+                        return semesters
+                    }, {})
 
-                    let key = Object.keys(semesters);
-                    this.subjects = semesters;
-                    this.semesters = key;
+                    let key = Object.keys(semesters)
+                    this.subjects = semesters
+                    this.semesters = key
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         },
         show(subject) {
-            this.form.reset();
-            this.form.clear();
-            this.form.fill(subject);
-            $("#DetailModal").modal("show");
+            this.form.reset()
+            this.form.clear()
+            this.form.fill(subject)
+            $('#DetailModal').modal('show')
         },
         scoreSum(subject) {
-            let scoreExercise = 0;
-            let scoreExam = 0;
-            let scoreFinal = 0;
+            let scoreExercise = 0
+            let scoreExam = 0
+            let scoreFinal = 0
 
-            scoreExercise =
-                (subject.register_subject_exercise *
-                    subject.subject_score_exercise) /
-                100;
-            scoreExam =
-                (subject.register_subject_exam * subject.subject_score_exam) /
-                100;
+            scoreExercise = (subject.register_subject_exercise * subject.subject_score_exercise) / 100
+            scoreExam = (subject.register_subject_exam * subject.subject_score_exam) / 100
 
-            if (
-                subject.register_subject_final >=
-                subject.register_subject_second
-            ) {
-                scoreFinal =
-                    (subject.register_subject_final *
-                        subject.subject_score_final) /
-                    100;
+            if (subject.register_subject_final >= subject.register_subject_second) {
+                scoreFinal = (subject.register_subject_final * subject.subject_score_final) / 100
             } else {
-                scoreFinal =
-                    (subject.register_subject_second *
-                        subject.subject_score_final) /
-                    100;
+                scoreFinal = (subject.register_subject_second * subject.subject_score_final) / 100
             }
 
-            return scoreExercise + scoreExam + scoreFinal;
+            return (scoreExercise + scoreExam + scoreFinal).toFixed(1)
         },
         resultCreditSemester(i) {
-            let sum = 0;
-            let scoreExercise = 0;
-            let scoreExam = 0;
-            let scoreFinal = 0;
-            let scoreSum = 0;
+            let sum = 0
+            let scoreExercise = 0
+            let scoreExam = 0
+            let scoreFinal = 0
+            let scoreSum = 0
             for (let j = 0; j < this.subjects[i].length; j++) {
-                scoreExercise =
-                    (this.subjects[i][j].register_subject_exercise *
-                        this.subjects[i][j].subject_score_exercise) /
-                    100;
-                scoreExam =
-                    (this.subjects[i][j].register_subject_exam *
-                        this.subjects[i][j].subject_score_exam) /
-                    100;
-                if (
-                    this.subjects[i][j].register_subject_final >=
-                    this.subjects[i][j].register_subject_second
-                ) {
-                    scoreFinal =
-                        (this.subjects[i][j].register_subject_final *
-                            this.subjects[i][j].subject_score_final) /
-                        100;
+                scoreExercise = (this.subjects[i][j].register_subject_exercise * this.subjects[i][j].subject_score_exercise) / 100
+                scoreExam = (this.subjects[i][j].register_subject_exam * this.subjects[i][j].subject_score_exam) / 100
+                if (this.subjects[i][j].register_subject_final >= this.subjects[i][j].register_subject_second) {
+                    scoreFinal = (this.subjects[i][j].register_subject_final * this.subjects[i][j].subject_score_final) / 100
                 } else {
-                    scoreFinal =
-                        (this.subjects[i][j].register_subject_second *
-                            this.subjects[i][j].subject_score_final) /
-                        100;
+                    scoreFinal = (this.subjects[i][j].register_subject_second * this.subjects[i][j].subject_score_final) / 100
                 }
 
-                scoreSum = scoreExercise + scoreExam + scoreFinal;
+                scoreSum = scoreExercise + scoreExam + scoreFinal
                 if (scoreSum >= 4) {
-                    sum += parseFloat(this.subjects[i][j].subject_credit);
+                    sum += parseFloat(this.subjects[i][j].subject_credit)
                 }
             }
-            return sum;
+            return sum
         },
         resultScoreSemester(i) {
-            let sum = 0;
-            let sumCredit = 0;
-            let scoreExercise = 0;
-            let scoreExam = 0;
-            let scoreFinal = 0;
-            let scoreSum = 0;
+            let sum = 0
+            let sumCredit = 0
+            let scoreExercise = 0
+            let scoreExam = 0
+            let scoreFinal = 0
+            let scoreSum = 0
             for (let j = 0; j < this.subjects[i].length; j++) {
-                scoreExercise =
-                    (this.subjects[i][j].register_subject_exercise *
-                        this.subjects[i][j].subject_score_exercise) /
-                    100;
-                scoreExam =
-                    (this.subjects[i][j].register_subject_exam *
-                        this.subjects[i][j].subject_score_exam) /
-                    100;
-                if (
-                    this.subjects[i][j].register_subject_final >=
-                    this.subjects[i][j].register_subject_second
-                ) {
-                    scoreFinal =
-                        (this.subjects[i][j].register_subject_final *
-                            this.subjects[i][j].subject_score_final) /
-                        100;
+                scoreExercise = (this.subjects[i][j].register_subject_exercise * this.subjects[i][j].subject_score_exercise) / 100
+                scoreExam = (this.subjects[i][j].register_subject_exam * this.subjects[i][j].subject_score_exam) / 100
+                if (this.subjects[i][j].register_subject_final >= this.subjects[i][j].register_subject_second) {
+                    scoreFinal = (this.subjects[i][j].register_subject_final * this.subjects[i][j].subject_score_final) / 100
                 } else {
-                    scoreFinal =
-                        (this.subjects[i][j].register_subject_second *
-                            this.subjects[i][j].subject_score_final) /
-                        100;
+                    scoreFinal = (this.subjects[i][j].register_subject_second * this.subjects[i][j].subject_score_final) / 100
                 }
-                scoreSum +=
-                    (scoreExercise + scoreExam + scoreFinal) *
-                    this.subjects[i][j].subject_credit;
-                sumCredit += this.subjects[i][j].subject_credit;
-                sum = parseFloat(scoreSum / sumCredit);
+                scoreSum += (scoreExercise + scoreExam + scoreFinal) * this.subjects[i][j].subject_credit
+                sumCredit += this.subjects[i][j].subject_credit
+                sum = parseFloat(scoreSum / sumCredit)
             }
-            return sum.toFixed(2);
+            return sum.toFixed(2)
         },
         resultCreditAll(i) {
-            let sum = 0;
-            let scoreExercise = 0;
-            let scoreExam = 0;
-            let scoreFinal = 0;
-            let scoreSum = 0;
+            let sum = 0
+            let scoreExercise = 0
+            let scoreExam = 0
+            let scoreFinal = 0
+            let scoreSum = 0
             for (let l = 1; l <= i; l++) {
                 for (let j = 0; j < this.subjects[l].length; j++) {
-                    scoreExercise =
-                        (this.subjects[l][j].register_subject_exercise *
-                            this.subjects[l][j].subject_score_exercise) /
-                        100;
-                    scoreExam =
-                        (this.subjects[l][j].register_subject_exam *
-                            this.subjects[l][j].subject_score_exam) /
-                        100;
-                    if (
-                        this.subjects[l][j].register_subject_final >=
-                        this.subjects[l][j].register_subject_second
-                    ) {
-                        scoreFinal =
-                            (this.subjects[l][j].register_subject_final *
-                                this.subjects[l][j].subject_score_final) /
-                            100;
+                    scoreExercise = (this.subjects[l][j].register_subject_exercise * this.subjects[l][j].subject_score_exercise) / 100
+                    scoreExam = (this.subjects[l][j].register_subject_exam * this.subjects[l][j].subject_score_exam) / 100
+                    if (this.subjects[l][j].register_subject_final >= this.subjects[l][j].register_subject_second) {
+                        scoreFinal = (this.subjects[l][j].register_subject_final * this.subjects[l][j].subject_score_final) / 100
                     } else {
-                        scoreFinal =
-                            (this.subjects[l][j].register_subject_second *
-                                this.subjects[l][j].subject_score_final) /
-                            100;
+                        scoreFinal = (this.subjects[l][j].register_subject_second * this.subjects[l][j].subject_score_final) / 100
                     }
 
-                    scoreSum = scoreExercise + scoreExam + scoreFinal;
+                    scoreSum = scoreExercise + scoreExam + scoreFinal
 
                     if (scoreSum >= 4) {
-                        sum += parseFloat(this.subjects[l][j].subject_credit);
+                        sum += parseFloat(this.subjects[l][j].subject_credit)
                     }
                 }
             }
-            return sum;
+            return sum
         },
         resultScoreAll(i) {
-            let sum = 0;
-            let sumCredit = 0;
-            let scoreExercise = 0;
-            let scoreExam = 0;
-            let scoreFinal = 0;
-            let scoreSum = 0;
+            let sum = 0
+            let sumCredit = 0
+            let scoreExercise = 0
+            let scoreExam = 0
+            let scoreFinal = 0
+            let scoreSum = 0
             for (let l = 1; l <= i; l++) {
                 for (let j = 0; j < this.subjects[l].length; j++) {
-                    scoreExercise =
-                        (this.subjects[l][j].register_subject_exercise *
-                            this.subjects[l][j].subject_score_exercise) /
-                        100;
-                    scoreExam =
-                        (this.subjects[l][j].register_subject_exam *
-                            this.subjects[l][j].subject_score_exam) /
-                        100;
-                    if (
-                        this.subjects[l][j].register_subject_final >=
-                        this.subjects[l][j].register_subject_second
-                    ) {
-                        scoreFinal =
-                            (this.subjects[l][j].register_subject_final *
-                                this.subjects[l][j].subject_score_final) /
-                            100;
+                    scoreExercise = (this.subjects[l][j].register_subject_exercise * this.subjects[l][j].subject_score_exercise) / 100
+                    scoreExam = (this.subjects[l][j].register_subject_exam * this.subjects[l][j].subject_score_exam) / 100
+                    if (this.subjects[l][j].register_subject_final >= this.subjects[l][j].register_subject_second) {
+                        scoreFinal = (this.subjects[l][j].register_subject_final * this.subjects[l][j].subject_score_final) / 100
                     } else {
-                        scoreFinal =
-                            (this.subjects[l][j].register_subject_second *
-                                this.subjects[l][j].subject_score_final) /
-                            100;
+                        scoreFinal = (this.subjects[l][j].register_subject_second * this.subjects[l][j].subject_score_final) / 100
                     }
-                    scoreSum +=
-                        (scoreExercise + scoreExam + scoreFinal) *
-                        this.subjects[l][j].subject_credit;
-                    sumCredit += parseFloat(this.subjects[l][j].subject_credit);
+                    scoreSum += (scoreExercise + scoreExam + scoreFinal) * this.subjects[l][j].subject_credit
+                    sumCredit += parseFloat(this.subjects[l][j].subject_credit)
 
-                    sum = parseFloat(scoreSum / sumCredit);
+                    sum = parseFloat(scoreSum / sumCredit)
                 }
             }
-            return sum.toFixed(2);
+            return sum.toFixed(2)
         }
     }
-};
+}
 </script>
 
 <style scoped>
