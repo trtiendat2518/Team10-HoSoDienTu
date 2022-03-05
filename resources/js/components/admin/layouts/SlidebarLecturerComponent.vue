@@ -81,7 +81,7 @@
                             </router-link>
                         </li>
                         <li class="slide">
-                            <router-link tag="a" class="side-menu__item" to="/sl-mh" active-class="active">
+                            <router-link tag="a" class="side-menu__item" to="/thong-ke-so-luong-dang-ky-mon-hoc" active-class="active">
                                 <i class="side-menu__icon fa fa-area-chart"></i>
                                 <span class="side-menu__label">Số lượng đăng ký môn học</span>
                             </router-link>

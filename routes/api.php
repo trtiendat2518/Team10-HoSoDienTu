@@ -216,12 +216,15 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('register-subject')->group(function () {
+        Route::get('dang-ky-mon-hoc-sv/so-luong-lop-it/{course}/{major}/{semester}', 'Admin\Education\RegisterSubjectController@statistic_subject_slot');
+        Route::get('dang-ky-mon-hoc-sv/da-dang-ky/{course}/{major}/{semester}', 'Admin\Education\RegisterSubjectController@statistic_student_registered');
         Route::post('dang-ky-mon-hoc-sv/import/{student_id}', 'Admin\Education\RegisterSubjectController@import');
         Route::get('dang-ky-mon-hoc-sv/xem-diem/{student_id}', 'Admin\Education\RegisterSubjectController@score');
         Route::resource('dang-ky-mon-hoc-sv', 'Admin\Education\RegisterSubjectController');
     });
 
     Route::prefix('register-plan')->group(function () {
+        Route::get('dang-ky-ke-hoach-hoc-tap-sv/tong-so-mon-ke-hoach/{course}/{major}/{semester}', 'Admin\Education\RegisterPlanController@statistic_subject_plan');
         Route::get('dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-xem-loai/{course}/{major}/{semester}', 'Admin\Education\RegisterPlanController@statistic_detail_type');
         Route::get('dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-goi-y-tat-ca/{course}/{major}/{semester}', 'Admin\Education\RegisterPlanController@statistic_plan_suggestall');
         Route::get('dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-goi-y-ca-nhan/{course}/{major}/{semester}', 'Admin\Education\RegisterPlanController@statistic_plan_suggestonly');

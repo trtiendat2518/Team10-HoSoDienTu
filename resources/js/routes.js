@@ -79,9 +79,13 @@ import StudyPlanSuggestCreate from './components/admin/pages/suggest/StudyPlanSu
 import StudyPlanSuggestUpdate from './components/admin/pages/suggest/StudyPlanSuggestUpdateComponent.vue'
 
 import StatisticPLan from './components/admin/pages/statistic_plan/StatisticPLanComponent.vue'
-import StatisticPLanIndex from './components/admin/pages/statistic_plan/StatisticPLanIndexComponent.vue'
+import StatisticPLanIndex from './components/admin/pages/statistic_plan/StatisticIndexComponent.vue'
 import StatisticPLanStudent from './components/admin/pages/statistic_plan/StatisticPLanStudentComponent.vue'
 import StatisticPLanType from './components/admin/pages/statistic_plan/StatisticPLanTypeComponent.vue'
+
+import StatisticSubject from './components/admin/pages/statistic_subject/StatisticSubjectComponent.vue'
+import StatisticSubjectIndex from './components/admin/pages/statistic_subject/StatisticSubjectIndexComponent.vue'
+import StatisticSubjectDetail from './components/admin/pages/statistic_subject/StatisticSubjectDetailComponent.vue'
 
 //---------------------------------- STUDENT --------------------------------------------------------
 import Home from './components/student/pages/HomeComponent.vue'
@@ -522,6 +526,31 @@ export default new VueRouter({
                     path: 'chi-tiet-dang-ky-loai-ke-hoach-sinh-vien/:idCourse/:idMajor/:idSemester',
                     name: 'statisticplantype',
                     component: StatisticPLanType
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/thong-ke-so-luong-dang-ky-mon-hoc',
+            name: 'statisticsubject',
+            component: StatisticSubject,
+            children: [
+                {
+                    path: '',
+                    name: 'statisticsubjectindex',
+                    component: StatisticSubjectIndex
+                },
+                {
+                    path: 'chi-tiet-dang-ky-mon-hoc-sinh-vien/:idCourse/:idMajor/:idSemester',
+                    name: 'statisticsubjectdetail',
+                    component: StatisticSubjectDetail
                 }
             ],
             beforeEnter: (to, from, next) => {
