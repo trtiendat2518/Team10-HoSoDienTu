@@ -534,9 +534,6 @@ export default {
                     })
                     this.plans = plan
 
-                    const start = new Date(plan[0].start)
-                    this.yearstart = start.getFullYear()
-                    this.credit_ref = plan[0].recurrenceRule
                     this.student_info.student_fullname = plan[0].student_fullname
                     this.student_info.student_code = plan[0].student_code
                     this.student_info.student_course = plan[0].course_name
@@ -563,6 +560,9 @@ export default {
                         const end = new Date(el.end)
                         if (today >= start && today <= end) {
                             this.semester = el.location
+                            this.credit_ref = el.recurrenceRule
+                            const date = new Date(el.start)
+                            this.yearstart = date.getFullYear()
                         }
                     })
                 })

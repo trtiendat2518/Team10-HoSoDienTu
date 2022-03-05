@@ -1,0 +1,132 @@
+<template>
+    <div>
+        <div class="page-header">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
+                </li>
+                <li class="breadcrumb-item">
+                    <router-link tag="a" :to="{ name: 'statisticsubjectindex' }">
+                        Thống kê số lượng đăng ký môn học sinh viên
+                    </router-link>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Chi tiết thống kê</li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Danh sách sinh viên</h3>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap table-nowrap">
+                            <thead class="blue-background text-white">
+                                <tr>
+                                    <th class="text-white w-25">MSSV</th>
+                                    <th class="text-white w-30">Họ tên</th>
+                                    <th class="text-white w-30">Email</th>
+                                    <th class="text-white w-5">Trạng thái ĐK</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-show="students.length" v-for="stu in students" :key="stu.student_id">
+                                    <td>
+                                        {{ stu.student_code }}
+                                    </td>
+                                    <td>
+                                        {{ stu.student_fullname }}
+                                    </td>
+                                    <td>
+                                        {{ stu.student_email }}
+                                    </td>
+                                    <td class="td-styling">
+                                        <div v-if="checkStatus(stu) > 0">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                        <div v-if="checkStatus(stu) == 0">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-show="!students.length">
+                                    <td colspan="8">
+                                        <div class="alert alert-danger">
+                                            Không tìm thấy kết quả phù hợp!
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- table-responsive -->
+                </div>
+            </div>
+            <!-- col end -->
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            course_id: this.$route.params.idCourse,
+            major_id: this.$route.params.idMajor,
+            semester: this.$route.params.idSemester,
+            students: [],
+            registered: []
+        }
+    },
+    watch: {
+        $route(to, from) {
+            this.course_id = to.params.idCourse
+            this.major_id = to.params.idMajor
+            this.semester = to.params.idSemester
+        }
+    },
+    mounted() {
+        this.fetchStudentCourseMajor()
+        this.fetchStudentRegistered()
+    },
+    methods: {
+        fetchStudentCourseMajor(page_url) {
+            let vm = this
+            page_url = `../../api/admin/user-sv/sinh-vien/course-major/${this.course_id}/${this.major_id}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.students = res.data
+                })
+                .catch(err => console.log(err))
+        },
+        fetchStudentRegistered(page_url) {
+            page_url = `../../api/admin/register-subject/dang-ky-mon-hoc-sv/da-dang-ky/${this.course_id}/${this.major_id}/${this.semester}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    const registers = res.data.reduce((registers, item) => {
+                        const register = registers[item.register_subject_student] || []
+                        register.push(item)
+                        registers[item.register_subject_student] = register
+                        return registers
+                    }, {})
+                    let value = Object.values(registers)
+                    this.registered = value
+                })
+                .catch(err => console.log(err))
+        },
+        checkStatus(stu) {
+            let count = this.registered.filter(el => {
+                if (el[0].student_id == stu.student_id) {
+                    return el
+                }
+            })
+            return count.length
+        }
+    }
+}
+</script>
+
+<style></style>
