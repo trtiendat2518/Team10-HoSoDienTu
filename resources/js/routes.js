@@ -78,10 +78,10 @@ import StudyPlanSuggestIndex from './components/admin/pages/suggest/StudyPlanSug
 import StudyPlanSuggestCreate from './components/admin/pages/suggest/StudyPlanSuggestCreateComponent.vue'
 import StudyPlanSuggestUpdate from './components/admin/pages/suggest/StudyPlanSuggestUpdateComponent.vue'
 
-import StatisticPLan from './components/admin/pages/statistic_plan/StatisticPLanComponent.vue'
+import StatisticPLan from './components/admin/pages/statistic_plan/StatisticComponent.vue'
 import StatisticPLanIndex from './components/admin/pages/statistic_plan/StatisticIndexComponent.vue'
-import StatisticPLanStudent from './components/admin/pages/statistic_plan/StatisticPLanStudentComponent.vue'
-import StatisticPLanType from './components/admin/pages/statistic_plan/StatisticPLanTypeComponent.vue'
+import StatisticPLanStudent from './components/admin/pages/statistic_plan/StatisticStudentComponent.vue'
+import StatisticPLanType from './components/admin/pages/statistic_plan/StatisticTypeComponent.vue'
 
 import StatisticSubject from './components/admin/pages/statistic_subject/StatisticSubjectComponent.vue'
 import StatisticSubjectIndex from './components/admin/pages/statistic_subject/StatisticSubjectIndexComponent.vue'
