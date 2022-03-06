@@ -10,6 +10,7 @@ use App\Models\CalendarSubject;
 use App\Models\ProgramDetail;
 use App\Models\RegisterSubject;
 use App\Http\Resources\CalendarResource;
+use App\Http\Resources\RegisterSubjectResource;
 use Illuminate\Support\Facades\Mail;
 
 class SubjectController extends Controller
@@ -65,9 +66,13 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($student_id)
     {
-        //
+        $joins = RegisterSubject::join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_calendar_subject.calendar_subject_lecturer')
+            ->where('tbl_register_subject.register_subject_student', $student_id)->get();
+        return RegisterSubjectResource::collection($joins);
     }
 
     /**

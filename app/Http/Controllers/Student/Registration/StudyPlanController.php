@@ -59,6 +59,7 @@ class StudyPlanController extends Controller
                 $study_plan->register_plan_yearend = $request->yearstart + 1;
                 date_default_timezone_set('Asia/Ho_Chi_Minh');
                 $study_plan->register_plan_date = now();
+                $study_plan->register_plan_type =  $request->type;
                 $study_plan->save();
             }
         } else {
@@ -71,6 +72,7 @@ class StudyPlanController extends Controller
                 $study_plan->register_plan_yearend = $request->yearstart + 1;
                 date_default_timezone_set('Asia/Ho_Chi_Minh');
                 $study_plan->register_plan_date = now();
+                $study_plan->register_plan_type =  $request->type;
                 $study_plan->save();
             }
         }
