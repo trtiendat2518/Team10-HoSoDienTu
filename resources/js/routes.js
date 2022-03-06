@@ -78,6 +78,16 @@ import StudyPlanSuggestIndex from './components/admin/pages/suggest/StudyPlanSug
 import StudyPlanSuggestCreate from './components/admin/pages/suggest/StudyPlanSuggestCreateComponent.vue'
 import StudyPlanSuggestUpdate from './components/admin/pages/suggest/StudyPlanSuggestUpdateComponent.vue'
 
+import StatisticPLan from './components/admin/pages/statistic_plan/StatisticComponent.vue'
+import StatisticPLanIndex from './components/admin/pages/statistic_plan/StatisticIndexComponent.vue'
+import StatisticPLanStudent from './components/admin/pages/statistic_plan/StatisticStudentComponent.vue'
+import StatisticPLanType from './components/admin/pages/statistic_plan/StatisticTypeComponent.vue'
+
+import StatisticSubject from './components/admin/pages/statistic_subject/StatisticSubjectComponent.vue'
+import StatisticSubjectIndex from './components/admin/pages/statistic_subject/StatisticSubjectIndexComponent.vue'
+import StatisticSubjectDetail from './components/admin/pages/statistic_subject/StatisticSubjectDetailComponent.vue'
+
+//---------------------------------- STUDENT --------------------------------------------------------
 import Home from './components/student/pages/HomeComponent.vue'
 
 import StudyPlan from './components/student/pages/study_plan/StudyPlanComponent.vue'
@@ -92,6 +102,26 @@ import SubjectRegistering from './components/student/pages/subjects/SubjectRegis
 
 import Score from './components/student/pages/scores/ScoreComponent.vue'
 import ScoreIndex from './components/student/pages/scores/ScoreIndexComponent.vue'
+
+import PostNotification from './components/student/pages/posts/PostComponent.vue'
+import PostNotificationIndex from './components/student/pages/posts/PostNotificationPageComponent.vue'
+import PostNotificationDetail from './components/student/pages/posts/PostNotificationDetailComponent.vue'
+
+import PostNews from './components/student/pages/news/PostComponent.vue'
+import PostNewsIndex from './components/student/pages/news/PostNewsPageComponent.vue'
+import PostNewsDetail from './components/student/pages/news/PostNewsDetailComponent.vue'
+
+import Timetable from './components/student/pages/timetable/TimetableComponent.vue'
+import TimetableIndex from './components/student/pages/timetable/TimetableIndexComponent.vue'
+
+import EducationProStudent from './components/student/pages/education_program/EducationProgramComponent.vue'
+import EducationProStudentIndex from './components/student/pages/education_program/EducationProgramIndexComponent.vue'
+
+import ExamStudent from './components/student/pages/exam/ExamComponent.vue'
+import ExamStudentIndex from './components/student/pages/exam/ExamIndexComponent.vue'
+
+import ExamSecondStudent from './components/student/pages/exam_second/ExamSecondComponent.vue'
+import ExamSecondStudentIndex from './components/student/pages/exam_second/ExamSecondIndexComponent.vue'
 
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
@@ -117,6 +147,7 @@ export default new VueRouter({
             }
         },
 
+        //-------------------- ADMIN -------------------
         {
             path: '/giang-vien',
             name: 'lecturer',
@@ -240,6 +271,75 @@ export default new VueRouter({
         },
 
         {
+            path: '/thu-tuc',
+            name: 'procedure',
+            component: Procedure,
+            children: [
+                {
+                    path: '',
+                    name: 'procedureindex',
+                    component: ProcedureIndex
+                },
+
+                {
+                    path: 'tao-moi',
+                    name: 'procedurecreate',
+                    component: ProcedureCreate
+                },
+
+                {
+                    path: 'cap-nhat/:idProcedure',
+                    name: 'procedureupdate',
+                    component: ProcedureUpdate
+                },
+
+                {
+                    path: 'yeu-cau-cua-sinh-vien',
+                    name: 'procedurerequire',
+                    component: ProcedureRequire
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/thong-tin-ca-nhan',
+            name: 'info',
+            component: Info,
+            children: [
+                {
+                    path: '',
+                    name: 'infoindex',
+                    component: InfoIndex
+                },
+                {
+                    path: 'nhap-thong-tin',
+                    name: 'infocreate',
+                    component: InfoCreate
+                },
+                {
+                    path: 'cap-nhat/:idAdmin',
+                    name: 'infoupdate',
+                    component: InfoUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        //---------------------- DEAN OF FACULTY ---------------------
+        {
             path: '/mon-hoc',
             name: 'subject',
             component: Subject,
@@ -296,44 +396,6 @@ export default new VueRouter({
             ],
             beforeEnter: (to, from, next) => {
                 if (Vue.prototype.$facultyId != null) {
-                    next()
-                } else {
-                    next(false)
-                }
-            }
-        },
-
-        {
-            path: '/thu-tuc',
-            name: 'procedure',
-            component: Procedure,
-            children: [
-                {
-                    path: '',
-                    name: 'procedureindex',
-                    component: ProcedureIndex
-                },
-
-                {
-                    path: 'tao-moi',
-                    name: 'procedurecreate',
-                    component: ProcedureCreate
-                },
-
-                {
-                    path: 'cap-nhat/:idProcedure',
-                    name: 'procedureupdate',
-                    component: ProcedureUpdate
-                },
-
-                {
-                    path: 'yeu-cau-cua-sinh-vien',
-                    name: 'procedurerequire',
-                    component: ProcedureRequire
-                }
-            ],
-            beforeEnter: (to, from, next) => {
-                if (Vue.prototype.$adminId != null) {
                     next()
                 } else {
                     next(false)
@@ -422,61 +484,6 @@ export default new VueRouter({
         },
 
         {
-            path: '/chuong-trinh-dao-tao-sinh-vien',
-            name: 'educationprogramstudent',
-            component: EducationProgramStudent,
-            children: [
-                {
-                    path: '',
-                    name: 'educationprogramstudentindex',
-                    component: EducationProgramStudentIndex
-                },
-                {
-                    path: ':idEPStudent',
-                    name: 'educationprogramstudentdetail',
-                    component: EducationProgramStudentDetail
-                }
-            ],
-            beforeEnter: (to, from, next) => {
-                if (Vue.prototype.$teacherId != null) {
-                    next()
-                } else {
-                    next(false)
-                }
-            }
-        },
-
-        {
-            path: '/thong-tin-ca-nhan',
-            name: 'info',
-            component: Info,
-            children: [
-                {
-                    path: '',
-                    name: 'infoindex',
-                    component: InfoIndex
-                },
-                {
-                    path: 'nhap-thong-tin',
-                    name: 'infocreate',
-                    component: InfoCreate
-                },
-                {
-                    path: 'cap-nhat/:idAdmin',
-                    name: 'infoupdate',
-                    component: InfoUpdate
-                }
-            ],
-            beforeEnter: (to, from, next) => {
-                if (Vue.prototype.$adminId != null) {
-                    next()
-                } else {
-                    next(false)
-                }
-            }
-        },
-
-        {
             path: '/thong-tin-ca-nhan-cua-ban-chu-nhiem-khoa',
             name: 'infolecturer',
             component: InfoLecturer,
@@ -506,6 +513,62 @@ export default new VueRouter({
             }
         },
 
+        {
+            path: '/thong-ke-so-luong-dang-ky-ke-hoach',
+            name: 'statisticplan',
+            component: StatisticPLan,
+            children: [
+                {
+                    path: '',
+                    name: 'statisticindex',
+                    component: StatisticPLanIndex
+                },
+                {
+                    path: 'chi-tiet-dang-ky-ke-hoach-sinh-vien/:idCourse/:idMajor/:idSemester',
+                    name: 'statisticplanstudent',
+                    component: StatisticPLanStudent
+                },
+                {
+                    path: 'chi-tiet-dang-ky-loai-ke-hoach-sinh-vien/:idCourse/:idMajor/:idSemester',
+                    name: 'statisticplantype',
+                    component: StatisticPLanType
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/thong-ke-so-luong-dang-ky-mon-hoc',
+            name: 'statisticsubject',
+            component: StatisticSubject,
+            children: [
+                {
+                    path: '',
+                    name: 'statisticsubjectindex',
+                    component: StatisticSubjectIndex
+                },
+                {
+                    path: 'chi-tiet-dang-ky-mon-hoc-sinh-vien/:idCourse/:idMajor/:idSemester',
+                    name: 'statisticsubjectdetail',
+                    component: StatisticSubjectDetail
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        //-------------------------- FORM TEACHER -------------------
         {
             path: '/thong-tin-ca-nhan-cua-chu-nhiem-sinh-vien',
             name: 'infoformteacher',
@@ -622,6 +685,32 @@ export default new VueRouter({
         },
 
         {
+            path: '/chuong-trinh-dao-tao-sinh-vien',
+            name: 'educationprogramstudent',
+            component: EducationProgramStudent,
+            children: [
+                {
+                    path: '',
+                    name: 'educationprogramstudentindex',
+                    component: EducationProgramStudentIndex
+                },
+                {
+                    path: ':idEPStudent',
+                    name: 'educationprogramstudentdetail',
+                    component: EducationProgramStudentDetail
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$teacherId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        //-------------------- STUDENT ----------------------------
+        {
             path: '/ke-hoach-hoc-tap',
             name: 'studyplan',
             components: {
@@ -708,9 +797,154 @@ export default new VueRouter({
         },
 
         {
+            path: '/thong-bao-chung',
+            name: 'postnotification',
+            components: {
+                student: PostNotification
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'postnotificationindex',
+                    component: PostNotificationIndex
+                },
+                {
+                    path: ':idPostNoti',
+                    name: 'postnotificationdetail',
+                    component: PostNotificationDetail
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/ban-tin-van-lang',
+            name: 'postnews',
+            components: {
+                student: PostNews
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'postnewsindex',
+                    component: PostNewsIndex
+                },
+                {
+                    path: ':idPostNews',
+                    name: 'postnewsdetail',
+                    component: PostNewsDetail
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/lich-hoc',
+            name: 'timetable',
+            components: {
+                student: Timetable
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'timetableindex',
+                    component: TimetableIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/chuong-trinh-dao-tao-sv',
+            name: 'educationprostudent',
+            components: {
+                student: EducationProStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'educationprostudentindex',
+                    component: EducationProStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/lich-thi',
+            name: 'examstudent',
+            components: {
+                student: ExamStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'examstudentindex',
+                    component: ExamStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/dang-ky-thi-lan-2',
+            name: 'examsecondstudent',
+            components: {
+                student: ExamSecondStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'examsecondstudentindex',
+                    component: ExamSecondStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
             path: '/404',
             name: 'error404',
-            component: Error404
+            components: {
+                default: Error404,
+                student: Error404
+            }
         },
 
         {

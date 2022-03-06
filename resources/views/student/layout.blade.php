@@ -64,6 +64,7 @@
     <script src="{{ asset('public/student/js/form/form.utils.js') }}"></script>
     <!-- SVG icons -->
     <script src="{{ asset('public/student/js/utils/svg-loader.js') }}"></script>
+    <script src="{{ asset('public/lecturer/js/vendors/jquery-3.2.1.min.js') }}"></script>
 
     <script src="{{ asset('public/js/app.js') }}"></script>
 </body>
