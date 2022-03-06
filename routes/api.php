@@ -188,6 +188,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('calendar-exam')->group(function () {
+        Route::get('lich-thi/sinh-vien/{student_id}', 'Admin\Calendar\CalendarExamController@calendar_student_exam');
         Route::get('lich-thi/detail/{calendar_exam_id}', 'Admin\Calendar\CalendarExamController@detail');
         Route::get('lich-thi/search/{query}/{currentEntries}', 'Admin\Calendar\CalendarExamController@search');
         Route::resource('lich-thi', 'Admin\Calendar\CalendarExamController');
