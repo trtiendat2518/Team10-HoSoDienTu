@@ -120,6 +120,9 @@ import EducationProStudentIndex from './components/student/pages/education_progr
 import ExamStudent from './components/student/pages/exam/ExamComponent.vue'
 import ExamStudentIndex from './components/student/pages/exam/ExamIndexComponent.vue'
 
+import ExamSecondStudent from './components/student/pages/exam_second/ExamSecondComponent.vue'
+import ExamSecondStudentIndex from './components/student/pages/exam_second/ExamSecondIndexComponent.vue'
+
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
@@ -902,6 +905,28 @@ export default new VueRouter({
                     path: '/',
                     name: 'examstudentindex',
                     component: ExamStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/dang-ky-thi-lan-2',
+            name: 'examsecondstudent',
+            components: {
+                student: ExamSecondStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'examsecondstudentindex',
+                    component: ExamSecondStudentIndex
                 }
             ],
             beforeEnter: (to, from, next) => {
