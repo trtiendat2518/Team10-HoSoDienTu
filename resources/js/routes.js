@@ -117,6 +117,9 @@ import TimetableIndex from './components/student/pages/timetable/TimetableIndexC
 import EducationProStudent from './components/student/pages/education_program/EducationProgramComponent.vue'
 import EducationProStudentIndex from './components/student/pages/education_program/EducationProgramIndexComponent.vue'
 
+import ExamStudent from './components/student/pages/exam/ExamComponent.vue'
+import ExamStudentIndex from './components/student/pages/exam/ExamIndexComponent.vue'
+
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
@@ -877,6 +880,28 @@ export default new VueRouter({
                     path: '/',
                     name: 'educationprostudentindex',
                     component: EducationProStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/lich-thi',
+            name: 'examstudent',
+            components: {
+                student: ExamStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'examstudentindex',
+                    component: ExamStudentIndex
                 }
             ],
             beforeEnter: (to, from, next) => {

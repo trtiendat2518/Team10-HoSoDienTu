@@ -77,8 +77,10 @@ class CalendarController extends Controller
         $calendar->start = $data['start'];
         $calendar->end = $data['end'];
         $calendar->calendarId = $data['calendarId'];
-        $calendar->location = $data['location'];
-        $calendar->recurrenceRule = $data['recurrenceRule'];
+        if ($calendar->calendarId < 2 &&  $calendar->calendarId > 3) {
+            $calendar->location = $data['location'];
+            $calendar->recurrenceRule = $data['recurrenceRule'];
+        }
         $calendar->save();
     }
 
