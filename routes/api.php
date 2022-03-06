@@ -194,6 +194,14 @@ Route::prefix('admin')->group(function () {
         Route::resource('lich-thi', 'Admin\Calendar\CalendarExamController');
     });
 
+    Route::prefix('exam-second')->group(function () {
+        Route::get('dang-ky-thi-lan-2/search-data/{lecturer_id}/{query}/{currentEntries}', 'Admin\Calendar\ExamSecondController@searchdata');
+        Route::get('dang-ky-thi-lan-2/show-data/{lecturer_id}/{currentEntries}', 'Admin\Calendar\ExamSecondController@showdata');
+        Route::post('dang-ky-thi-lan-2/huy-bo/{student_id}/{subject_id}', 'Admin\Calendar\ExamSecondController@cancel_subject_student');
+        Route::get('dang-ky-thi-lan-2/sinh-vien/{student_id}', 'Admin\Calendar\ExamSecondController@show_subject_student');
+        Route::resource('dang-ky-thi-lan-2', 'Admin\Calendar\ExamSecondController');
+    });
+
     Route::prefix('calendar-subject')->group(function () {
         Route::get('lich-mo-lop-hoc/detail/{calendar_subject_id}', 'Admin\Calendar\CalendarSubjectController@detail');
         Route::get('lich-mo-lop-hoc/search/{query}/{currentEntries}', 'Admin\Calendar\CalendarSubjectController@search');
