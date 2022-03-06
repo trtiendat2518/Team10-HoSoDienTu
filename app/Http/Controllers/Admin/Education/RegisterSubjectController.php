@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Education;
 
 use App\Http\Controllers\Controller;
 use App\Models\RegisterSubject;
+use App\Models\CalendarSubject;
 use Illuminate\Http\Request;
 use App\Http\Resources\RegisterSubjectResource;
 use Maatwebsite\Excel\Facades\Excel;
@@ -149,5 +150,35 @@ class RegisterSubjectController extends Controller
         $path = storage_path('app') . '/' . $path1;
         $data = Excel::import(new ScoreImport($student_id), $path);
         return response()->json(200);
+    }
+
+    public function statistic_student_registered($course, $major, $semester)
+    {
+        $joins = RegisterSubject::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_subject.register_subject_student')
+            ->join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->where('student_course', $course)->where('student_major', $major)
+            ->where('tbl_register_subject.register_subject_semester', $semester)->get();
+        return RegisterSubjectResource::collection($joins);
+    }
+
+    public function statistic_subject_slot($course, $major, $semester)
+    {
+        $get = CalendarSubject::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_subject.calendar_id')
+            ->where('tbl_calendar.raw', $course)->where('tbl_calendar.body', $major)->where('tbl_calendar.location', $semester)
+            ->where('tbl_calendar_subject.calendar_subject_registered', '>', 0)
+            ->get();
+
+        $joins = CalendarSubject::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_subject.calendar_id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->where('tbl_calendar.raw', $course)->where('tbl_calendar.body', $major)->where('tbl_calendar.location', $semester)
+            ->where('tbl_calendar_subject.calendar_subject_registered', '>', 0);
+
+        foreach ($get as $key => $value) {
+            $slot = $value->calendar_subject_slot - ($value->calendar_subject_slot * 0.3);
+            $joins->where('tbl_calendar_subject.calendar_subject_registered', '<', $slot);
+        }
+        $results = $joins->get();
+        return RegisterSubjectResource::collection($results);
     }
 }

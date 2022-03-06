@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin\Calendar;
 
 use App\Http\Controllers\Controller;
 use App\Models\CalendarExam;
+use App\Models\Student;
 use App\Http\Resources\CalendarExamResource;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\MockObject\Builder\Stub;
 use Validator;
 
 class CalendarExamController extends Controller
@@ -190,5 +192,18 @@ class CalendarExamController extends Controller
             ->where('tbl_calendar_exam.calendar_exam_id', $calendar_exam_id)
             ->orderby('calendar_exam_id', 'DESC')->get();
         return CalendarExamResource::collection($joins);
+    }
+
+    public function calendar_student_exam($student_id)
+    {
+        $student = Student::find($student_id);
+        $calendar = CalendarExam::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_exam.calendar_exam_schedule')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_exam.calendar_exam_subject')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->where('tbl_course.course_id', $student->student_course)
+            ->where('tbl_major.major_id', $student->student_major)
+            ->where('tbl_calendar.location', 0)->get();
+        return CalendarExamResource::collection($calendar);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EducationProgram;
 use App\Models\ProgramDetail;
 use App\Models\Subject;
+use App\Models\Lecturer;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProgramDetailImport;
@@ -317,5 +318,17 @@ class EducationProgramController extends Controller
                 ProgramDetail::where('program_detail_id', $id)->delete();
             }
         }
+    }
+
+    public function education_program_lecturer($course, $lecturer_id)
+    {
+        $find = Lecturer::find($lecturer_id);
+        $joins = ProgramDetail::join('tbl_education_program', 'tbl_education_program.education_program_code', '=', 'tbl_program_detail.program_detail_code')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_education_program.education_program_course')
+            ->join('tbl_lecturer', 'tbl_lecturer.lecturer_faculty', '=', 'tbl_education_program.education_program_faculty')
+            ->where('tbl_course.course_id', $course)
+            ->where('tbl_lecturer.lecturer_id', $lecturer_id)->get();
+
+        return ProgramDetailResource::collection($joins);
     }
 }

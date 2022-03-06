@@ -8,7 +8,7 @@
             <!-- MENU ITEM -->
             <li class="menu-item">
                 <!-- MENU ITEM LINK -->
-                <router-link tag="a" class="menu-item-link" to="/lchuong-trinh-dao-tao" active-class="active">
+                <router-link tag="a" class="menu-item-link" to="/chuong-trinh-dao-tao-sv" active-class="active">
                     <svg class="menu-item-link-icon icon-newsfeed">
                         <use xlink:href="#svg-newsfeed"></use>
                     </svg>
