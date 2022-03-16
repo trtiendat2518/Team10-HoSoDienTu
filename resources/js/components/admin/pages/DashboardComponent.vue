@@ -109,10 +109,16 @@
                     <!-- /.section-content -->
                 </div>
             </div>
-            <div class="col-md-6">
-                <h4 style="text-align: center; font-weight: bold; margin-top: 60px;">Thống kê truy cập</h4>
-                <donut-chart id="donut" :data="donutData()" colors='[ "#1753fc", "#fdb901", "#28a745", "#dc3545" ]' resize="true">
-                </donut-chart>
+            <div class="col-md-6 pad-sty">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Thống kê truy cập</h3>
+                    </div>
+                    <div class="card-body">
+                        <donut-chart id="donut" :data="donutData()" colors='[ "#1753fc", "#fdb901", "#28a745", "#dc3545" ]' resize="true">
+                        </donut-chart>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -309,5 +315,8 @@ text,
 svg,
 tspan {
     font-family: 'Times New Roman' !important;
+}
+.pad-sty {
+    padding-top: 30px;
 }
 </style>

@@ -12,10 +12,10 @@
             <!-- End breadcrumb -->
         </div>
         <div class="form-group">
-            <button class="btn btn-info btn-lg mb-3 btn-3d" @click="create()">
+            <router-link class="btn btn-info btn-lg mb-3 btn-3d" tag="button" :to="{ name: 'calendarcreate' }">
                 <li class="fa fa-plus"></li>
                 Tạo mới
-            </button>
+            </router-link>
             <router-link class="btn btn-indigo btn-lg mb-3 btn-3d float-right" tag="button" :to="{ name: 'calendarreference' }"
                 ><li class="fa fa-calendar-o"></li>
                 Lịch thi
@@ -79,179 +79,6 @@
         <!-- Modal -->
         <div
             class="modal fade bd-example-modal-lg"
-            id="CalendarModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="CalendarModalTitle"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog modal-lg" role="document">
-                <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)">
-                    <span class="alert-danger" :form="form"></span>
-                    <div class="modal-content">
-                        <div class="modal-header styling-modal-header-update">
-                            <h5 class="modal-title" id="CalendarModalTitle">{{ editMode ? 'Cập nhật' : 'Thêm mới' }} Lịch biểu</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Tiêu đề <span class="text-danger">(*)</span></label>
-                                <input
-                                    v-model="form.title"
-                                    type="text"
-                                    name="title"
-                                    class="form-control"
-                                    placeholder="Nhập tiêu đề"
-                                    :class="{ 'is-invalid': form.errors.has('title') }"
-                                />
-                                <div class="text-danger" v-if="form.errors.has('title')" v-html="form.errors.get('title')"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Khoá học <span class="text-danger">(*)</span></label>
-                                <select
-                                    v-model="form.raw"
-                                    name="raw"
-                                    class="form-control"
-                                    :class="{ 'is-invalid': form.errors.has('raw') }"
-                                >
-                                    <option value="" selected disabled>Chọn khoá học</option>
-                                    <option v-for="course in courses" :key="course.course_id" :value="course.course_id">
-                                        {{ course.course_code }} - {{ course.course_name }}
-                                    </option>
-                                </select>
-                                <div class="text-danger" v-if="form.errors.has('raw')" v-html="form.errors.get('raw')"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Chuyên ngành <span class="text-danger">(*)</span></label>
-                                <select
-                                    v-model="form.body"
-                                    name="body"
-                                    class="form-control"
-                                    :class="{ 'is-invalid': form.errors.has('body') }"
-                                >
-                                    <option value="" selected disabled>Chọn chuyên ngành</option>
-                                    <option v-for="major in majors" :key="major.major_id" :value="major.major_id">
-                                        {{ major.major_name }}
-                                    </option>
-                                </select>
-                                <div class="text-danger" v-if="form.errors.has('body')" v-html="form.errors.get('body')"></div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="mt-3">Thời gian bắt đầu <span class="text-danger">(*)</span></label>
-                                        <input
-                                            v-model="form.start"
-                                            type="datetime-local"
-                                            name="start"
-                                            class="form-control"
-                                            :class="{ 'is-invalid': form.errors.has('start') }"
-                                        />
-                                        <div class="text-danger" v-if="form.errors.has('start')" v-html="form.errors.get('start')"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="mt-3">Thời gian kết thúc <span class="text-danger">(*)</span></label>
-                                        <input
-                                            v-model="form.end"
-                                            type="datetime-local"
-                                            name="end"
-                                            class="form-control"
-                                            :class="{ 'is-invalid': form.errors.has('end') }"
-                                        />
-                                        <div class="text-danger" v-if="form.errors.has('end')" v-html="form.errors.get('end')"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6" :class="{ 'col-md-12': form.calendarId > 1 }">
-                                    <div class="form-group">
-                                        <label class="mt-3">Loại sự kiện <span class="text-danger">(*)</span></label>
-                                        <select
-                                            v-model="form.calendarId"
-                                            name="calendarId"
-                                            class="form-control select-option"
-                                            :class="{ 'is-invalid': form.errors.has('calendarId') }"
-                                        >
-                                            <option value="" selected disabled>Chọn sự kiện</option>
-                                            <option disabled>---------------</option>
-                                            <option value="0">Đăng ký kế hoạch học tập</option>
-                                            <option value="1">Đăng ký môn học</option>
-                                            <option value="2">Thi học kỳ lần 1</option>
-                                            <option value="3">Thi học kỳ lần 2</option>
-                                            <option value="4">Đánh giá điểm rèn luyện</option>
-                                        </select>
-                                        <div
-                                            class="text-danger mb-3"
-                                            v-if="form.errors.has('calendarId')"
-                                            v-html="form.errors.get('calendarId')"
-                                        ></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div v-show="form.calendarId <= 1">
-                                        <div class="form-group">
-                                            <label class="mt-3">Học kỳ <span class="text-danger">(*)</span></label>
-                                            <input
-                                                type="number"
-                                                v-model="form.location"
-                                                name="location"
-                                                class="form-control"
-                                                placeholder="Nhập HK"
-                                                :class="{ 'is-invalid': form.errors.has('location') }"
-                                            />
-                                            <div
-                                                class="text-danger mb-3"
-                                                v-if="form.errors.has('location')"
-                                                v-html="form.errors.get('location')"
-                                            ></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div v-show="form.calendarId <= 1">
-                                        <div class="form-group">
-                                            <label class="mt-3">TC bắt buộc <span class="text-danger">(*)</span></label>
-                                            <input
-                                                type="number"
-                                                v-model="form.recurrenceRule"
-                                                name="recurrenceRule"
-                                                class="form-control"
-                                                placeholder="Nhập số TC bắt buộc"
-                                                :class="{ 'is-invalid': form.errors.has('recurrenceRule') }"
-                                            />
-                                            <div
-                                                class="text-danger mb-3"
-                                                v-if="form.errors.has('recurrenceRule')"
-                                                v-html="form.errors.get('recurrenceRule')"
-                                            ></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn-3d btn btn-secondary" data-dismiss="modal">Đóng</button>
-                            <button :disabled="form.busy" type="submit" class="btn-3d btn btn-primary background-update">
-                                {{ editMode ? 'Cập nhật' : 'Thêm mới' }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- Modal end-->
-
-        <!-- Modal -->
-        <div
-            class="modal fade bd-example-modal-lg"
             id="DetailModal"
             tabindex="-1"
             role="dialog"
@@ -286,7 +113,17 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        Chuyên ngành: <strong style="word-break:break-word;"> {{ form.major_name }}</strong>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                Chuyên ngành: <strong style="word-break:break-word;"> {{ form.major_name }}</strong>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div v-if="form.location == 0"></div>
+                                                <div v-else>
+                                                    Học kỳ: <strong>{{ form.location }}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -301,9 +138,14 @@
                                                 <strong v-else-if="form.calendarId == 4"> Đánh giá điểm rèn luyện</strong>
                                             </div>
                                             <div class="col-md-6">
-                                                <div v-if="form.location == 0"></div>
-                                                <div v-else>
-                                                    Học kỳ: <strong>{{ form.location }}</strong>
+                                                <div v-if="form.calendarId <= 1">
+                                                    Tổng TC bắt buộc:
+                                                    <strong>{{ form.recurrenceRule }}</strong>
+                                                </div>
+                                                <div v-else-if="form.calendarId == 4">
+                                                    <div v-if="form.recurrenceRule == 0">Loại: <strong>Sinh viên tự đánh giá</strong></div>
+                                                    <div v-else-if="form.recurrenceRule == 1">Loại: <strong>GVCN đánh giá</strong></div>
+                                                    <div v-else-if="form.recurrenceRule == 2">Loại: <strong>BCN Khoa đánh giá</strong></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -330,7 +172,7 @@
                                 <button
                                     type="button"
                                     class="btn-3d btn btn-lg btn-block btn-success fa fa-pencil-square-o"
-                                    @click="show(form.id)"
+                                    @click="update(form.id)"
                                 >
                                     Cập nhật
                                 </button>
@@ -376,7 +218,6 @@ export default {
     },
     data() {
         return {
-            lecturer_id: this.$facultyId,
             selectedView: 'month',
             dateRange: '',
             calendars: [],
@@ -449,7 +290,7 @@ export default {
     methods: {
         fetchMajors(page_url) {
             let vm = this
-            page_url = `../../api/admin/edu-major/chuyen-nganh/lecturer_major/${this.lecturer_id}`
+            page_url = '../../api/admin/edu-major/chuyen-nganh/major'
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
@@ -523,132 +364,44 @@ export default {
                 this.setRenderRangeText()
             }
         },
-        create() {
-            this.editMode = false
-            this.form.reset()
-            this.form.clear()
-            $('#CalendarModal').modal('show')
-        },
-        store() {
-            this.form.busy = true
-            this.form
-                .post('../../api/admin/calendar-schedule/lich-bieu')
-                .then(res => {
-                    this.fetchCalendars()
-                    $('#CalendarModal').modal('hide')
-                    if (this.form.successful) {
-                        this.form.clear()
-                        this.form.reset()
-                        this.$snotify.success('Thêm mới thành công!')
-                    } else {
-                        this.$snotify.error('Không thể thêm', 'Lỗi')
-                    }
-                })
-                .catch(err => console.log(err))
-        },
         onBeforeCreateSchedule(e) {
-            console.log(e)
-            this.editMode = false
-            this.form.clear()
-            this.form.reset()
-            $('#CalendarModal').modal('show')
+            //     console.log(e)
+            //     this.editMode = false
+            //     this.form.clear()
+            //     this.form.reset()
+            //     $('#CalendarModal').modal('show')
 
-            var time_start = new Date(e.start._date)
-            var time_end = new Date(e.end._date)
+            //     var time_start = new Date(e.start._date)
+            //     var time_end = new Date(e.end._date)
 
-            var month_start = time_start.getMonth() + 1
-            var date_start = time_start.getDate()
-            var hour_start = time_start.getHours()
-            var minute_start = time_start.getMinutes()
+            //     var month_start = time_start.getMonth() + 1
+            //     var date_start = time_start.getDate()
+            //     var hour_start = time_start.getHours()
+            //     var minute_start = time_start.getMinutes()
 
-            var month_end = time_end.getMonth() + 1
-            var date_end = time_end.getDate()
-            var hour_end = time_end.getHours()
-            var minute_end = time_end.getMinutes()
+            //     var month_end = time_end.getMonth() + 1
+            //     var date_end = time_end.getDate()
+            //     var hour_end = time_end.getHours()
+            //     var minute_end = time_end.getMinutes()
 
-            month_start = month_start < 10 ? `0` + month_start : month_start
-            date_start = date_start < 10 ? `0` + date_start : date_start
-            hour_start = hour_start < 10 ? `0` + hour_start : hour_start
-            minute_start = minute_start < 10 ? `0` + minute_start : minute_start
+            //     month_start = month_start < 10 ? `0` + month_start : month_start
+            //     date_start = date_start < 10 ? `0` + date_start : date_start
+            //     hour_start = hour_start < 10 ? `0` + hour_start : hour_start
+            //     minute_start = minute_start < 10 ? `0` + minute_start : minute_start
 
-            month_end = month_end < 10 ? `0` + month_end : month_end
-            date_end = date_end < 10 ? `0` + date_end : date_end
-            hour_end = hour_end < 10 ? `0` + hour_end : hour_end
-            minute_end = minute_end < 10 ? `0` + minute_end : minute_end
+            //     month_end = month_end < 10 ? `0` + month_end : month_end
+            //     date_end = date_end < 10 ? `0` + date_end : date_end
+            //     hour_end = hour_end < 10 ? `0` + hour_end : hour_end
+            //     minute_end = minute_end < 10 ? `0` + minute_end : minute_end
 
-            var datetime_start = time_start.getFullYear() + '-' + month_start + '-' + date_start + 'T' + hour_start + ':' + minute_start
-            var datetime_end = time_end.getFullYear() + '-' + month_end + '-' + date_end + 'T' + hour_end + ':' + minute_end
+            //     var datetime_start = time_start.getFullYear() + '-' + month_start + '-' + date_start + 'T' + hour_start + ':' + minute_start
+            //     var datetime_end = time_end.getFullYear() + '-' + month_end + '-' + date_end + 'T' + hour_end + ':' + minute_end
 
-            this.form.start = datetime_start
-            this.form.end = datetime_end
+            //     this.form.start = datetime_start
+            //     this.form.end = datetime_end
             e.guide.clearGuideElement()
         },
-        show(id, page_url) {
-            this.editMode = true
-            this.form.reset()
-            this.form.clear()
-            $('#DetailModal').modal('hide')
-            let vm = this
-            page_url = `../../api/admin/calendar-schedule/lich-bieu/${id}`
-            fetch(page_url)
-                .then(res => res.json())
-                .then(res => {
-                    var time_start = new Date(res.data[0].start)
-                    var time_end = new Date(res.data[0].end)
-
-                    var month_start = time_start.getMonth() + 1
-                    var date_start = time_start.getDate()
-                    var hour_start = time_start.getHours()
-                    var minute_start = time_start.getMinutes()
-
-                    var month_end = time_end.getMonth() + 1
-                    var date_end = time_end.getDate()
-                    var hour_end = time_end.getHours()
-                    var minute_end = time_end.getMinutes()
-
-                    month_start = month_start < 10 ? `0` + month_start : month_start
-                    date_start = date_start < 10 ? `0` + date_start : date_start
-                    hour_start = hour_start < 10 ? `0` + hour_start : hour_start
-                    minute_start = minute_start < 10 ? `0` + minute_start : minute_start
-
-                    month_end = month_end < 10 ? `0` + month_end : month_end
-                    date_end = date_end < 10 ? `0` + date_end : date_end
-                    hour_end = hour_end < 10 ? `0` + hour_end : hour_end
-                    minute_end = minute_end < 10 ? `0` + minute_end : minute_end
-
-                    var datetime_start =
-                        time_start.getFullYear() + '-' + month_start + '-' + date_start + 'T' + hour_start + ':' + minute_start
-                    var datetime_end = time_end.getFullYear() + '-' + month_end + '-' + date_end + 'T' + hour_end + ':' + minute_end
-
-                    this.form.id = id
-                    this.form.start = datetime_start
-                    this.form.end = datetime_end
-                    this.form.title = res.data[0].title
-                    this.form.raw = res.data[0].raw
-                    this.form.body = res.data[0].body
-                    this.form.calendarId = res.data[0].calendarId
-                    this.form.location = res.data[0].location
-                    this.form.recurrenceRule = res.data[0].recurrenceRule
-                    $('#CalendarModal').modal('show')
-                })
-                .catch(err => console.log(err))
-        },
-        update() {
-            this.form
-                .put('../../api/admin/calendar-schedule/lich-bieu/' + this.form.id)
-                .then(res => {
-                    this.fetchCalendars()
-                    $('#CalendarModal').modal('hide')
-                    if (this.form.successful) {
-                        this.$snotify.success('Cập nhật thành công!')
-                    } else {
-                        this.$snotify.error('Không thể cập nhật')
-                    }
-                })
-                .catch(err => console.log(err))
-        },
         onClickSchedule(e) {
-            console.log(e)
             var time_start = new Date(e.schedule.start._date)
             var time_end = new Date(e.schedule.end._date)
 
@@ -683,6 +436,7 @@ export default {
             this.form.end = datetime_end
             this.form.location = e.schedule.location
             this.form.raw = e.schedule.raw
+            this.form.recurrenceRule = e.schedule.recurrenceRule
 
             const course = this.courses.find(course => course.course_id == e.schedule.raw)
             this.form.course_code = course.course_code
@@ -724,6 +478,10 @@ export default {
                     }
                 ]
             })
+        },
+        update(id) {
+            $('#DetailModal').modal('hide')
+            this.$router.push({ name: 'calendarupdate', params: { idCalendar: id } })
         }
     }
 }
