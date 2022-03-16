@@ -9,7 +9,7 @@ class Calendar extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'title', 'body', 'category', 'start', 'end', 'calendarId'
+        'title', 'body', 'category', 'start', 'end', 'calendarId', 'raw', 'location', 'recurrenceRule'
     ];
     protected $primaryKey = 'id';
     protected $table = 'tbl_calendar';

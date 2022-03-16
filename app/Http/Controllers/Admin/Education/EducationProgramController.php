@@ -331,4 +331,18 @@ class EducationProgramController extends Controller
 
         return ProgramDetailResource::collection($joins);
     }
+
+    public function education_program_calendar($course, $lecturer_id, $semester)
+    {
+        $find = Lecturer::find($lecturer_id);
+        $joins = ProgramDetail::join('tbl_education_program', 'tbl_education_program.education_program_code', '=', 'tbl_program_detail.program_detail_code')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_education_program.education_program_course')
+            ->join('tbl_lecturer', 'tbl_lecturer.lecturer_faculty', '=', 'tbl_education_program.education_program_faculty')
+            ->join('tbl_subject', 'tbl_subject.subject_code', '=', 'tbl_program_detail.program_detail_subject')
+            ->where('tbl_course.course_id', $course)
+            ->where('tbl_program_detail.program_detail_semester', $semester)
+            ->where('tbl_lecturer.lecturer_id', $lecturer_id)->get();
+
+        return ProgramDetailResource::collection($joins);
+    }
 }

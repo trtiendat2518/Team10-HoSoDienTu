@@ -10,7 +10,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" v-model="course">
                         <option value="" disabled selected>Chọn khoá học</option>
@@ -20,7 +20,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" v-model="major">
                         <option value="" disabled selected>Chọn chuyên ngành</option>
@@ -28,7 +28,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" v-model="semester">
                         <option value="" disabled>Học kỳ</option>
@@ -36,9 +36,16 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <button class="btn btn-lg btn-block btn-primary" @click="filter()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <button class="btn btn-lg btn-block background-green" @click="exportData()" :disabled="barData.length == 0">
+                        Export
+                    </button>
                 </div>
             </div>
         </div>
@@ -55,29 +62,41 @@
                 </div>
             </div>
             <div v-else>
-                <h4 class="text-center">Thống kê tổng quan</h4>
                 <router-link
                     tag="a"
                     :to="{ name: 'statisticsubjectdetail', params: { idCourse: course, idMajor: major, idSemester: semester } }"
                 >
-                    <donut-chart id="donut4" :data="donutData()" colors='[ "#FF99FF", "#9999FF", "#3399FF" ]'></donut-chart>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thống kê tổng quan</h3>
+                        </div>
+                        <div class="card-body">
+                            <donut-chart id="donut4" :data="donutData()" colors='[ "#FF99FF", "#9999FF", "#3399FF" ]'></donut-chart>
+                        </div>
+                    </div>
                 </router-link>
-                <h4 class="text-center mt-5">Thống kê số lượng lớp ít ĐK</h4>
-                <div v-show="!barData.length">
-                    <div class="alert alert-danger text-center">
-                        Chưa có môn nào được đăng ký
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Thống kê số lượng lớp ít ĐK</h3>
+                    </div>
+                    <div class="card-body">
+                        <div v-show="!barData.length">
+                            <div class="alert alert-danger text-center">
+                                Chưa có môn nào được đăng ký
+                            </div>
+                        </div>
+                        <bar-chart
+                            id="bar2"
+                            :data="barData"
+                            :bar-colors="arrayColors"
+                            :xkey="xkey"
+                            :ykeys="ykeys"
+                            :labels="labels"
+                            grid-text-weight="bold"
+                            grid-text-size="10"
+                        ></bar-chart>
                     </div>
                 </div>
-                <bar-chart
-                    id="bar2"
-                    :data="barData"
-                    :bar-colors="arrayColors"
-                    :xkey="xkey"
-                    :ykeys="ykeys"
-                    :labels="labels"
-                    grid-text-weight="bold"
-                    grid-text-size="10"
-                ></bar-chart>
             </div>
         </div>
     </div>
@@ -218,6 +237,9 @@ export default {
             this.fetchStudentCourseMajor()
             this.fetchStudentRegistered()
             this.fetchQuantitySubject()
+        },
+        exportData() {
+            window.location.href = `../../api/admin/register-subject/dang-ky-mon-hoc-sv/export/${this.course}/${this.major}/${this.semester}`
         }
     }
 }
@@ -227,5 +249,13 @@ export default {
 .text-center {
     border: none;
     font-weight: bold;
+}
+.background-green {
+    background-color: darkgreen;
+    color: white;
+}
+.background-green:hover {
+    background-color: green;
+    color: white;
 }
 </style>

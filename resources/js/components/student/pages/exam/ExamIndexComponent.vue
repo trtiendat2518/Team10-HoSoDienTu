@@ -57,7 +57,14 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="filter == ''">
+                        <tr>
+                            <td colspan="12">
+                                <div class="alert alert-warning">Chưa có lịch thi</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
                         <tr v-for="(value, index) in exams[filter]" :key="value.calendar_exam_id">
                             <td class="td-table text-center">
                                 {{ (index += 1) }}
