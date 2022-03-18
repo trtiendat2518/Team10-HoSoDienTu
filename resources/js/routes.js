@@ -138,7 +138,9 @@ import TrainPointStudent from './components/student/pages/train_point/TrainPoint
 import TrainPointStudentIndex from './components/student/pages/train_point/TrainPointStudentIndexComponent.vue'
 
 import RequestMess from './components/student/pages/request/RequestComponent.vue'
+import RequestMessSend from './components/student/pages/request/RequestCreateComponent.vue'
 import RequestMessIndex from './components/student/pages/request/RequestIndexComponent.vue'
+import RequestMessUpdate from './components/student/pages/request/RequestUpdateComponent.vue'
 
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
@@ -1093,8 +1095,18 @@ export default new VueRouter({
             children: [
                 {
                     path: '/',
+                    name: 'requestsend',
+                    component: RequestMessSend
+                },
+                {
+                    path: '/danh-sach',
                     name: 'requestindex',
                     component: RequestMessIndex
+                },
+                {
+                    path: '/:idReq',
+                    name: 'requestupdate',
+                    component: RequestMessUpdate
                 }
             ],
             beforeEnter: (to, from, next) => {
