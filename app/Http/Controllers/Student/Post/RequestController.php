@@ -111,28 +111,7 @@ class RequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $data = $request->validate([
-        //     'request_title' => ['required', 'max:200', 'min:10'],
-        //     'request_content' => ['required', 'max:1000', 'min:50']
-        // ], [
-        //     'request_title.required' => 'Tiêu đề không được để trống!',
-        //     'request_title.max' => 'Tiêu đề không nhập quá 200 ký tự chữ!',
-        //     'request_title.min' => 'Tiêu đề phải có 10 ký tự chữ trở lên!',
-        //     'request_title.unique' => 'Tiêu đề đã tồn tại!',
-
-        //     'request_content.required' => 'Nội dung không được để trống!',
-        //     'request_content.max' => 'Nội dung không nhập quá 1000 ký tự chữ!',
-        //     'request_content.min' => 'Nội dung phải có 50 ký tự chữ trở lên!'
-        // ]);
-
-        // $request_student = RequestSudent::find($id);
-        // $request_student->request_student = $request->student_id;
-        // $request_student->request_title = $data['request_title'];
-        // $request_student->request_content = $data['request_content'];
-        // date_default_timezone_set('Asia/Ho_Chi_Minh');
-
-        // $request_student->created_at = now();
-        // $request_student->save();
+        //
     }
 
     public function update_data(Request $request, $request_id)
