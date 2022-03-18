@@ -137,6 +137,9 @@ import InfoStudentUpdate from './components/student/pages/info/InfoUpdateCompone
 import TrainPointStudent from './components/student/pages/train_point/TrainPointStudentComponent.vue'
 import TrainPointStudentIndex from './components/student/pages/train_point/TrainPointStudentIndexComponent.vue'
 
+import RequestMess from './components/student/pages/request/RequestComponent.vue'
+import RequestMessIndex from './components/student/pages/request/RequestIndexComponent.vue'
+
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
@@ -1070,6 +1073,28 @@ export default new VueRouter({
                     path: '/',
                     name: 'trainpointindex',
                     component: TrainPointStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/gui-yeu-cau',
+            name: 'request',
+            components: {
+                student: RequestMess
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'requestindex',
+                    component: RequestMessIndex
                 }
             ],
             beforeEnter: (to, from, next) => {
