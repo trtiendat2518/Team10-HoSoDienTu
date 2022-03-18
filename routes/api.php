@@ -324,6 +324,9 @@ Route::prefix('student')->group(function () {
     });
 
     Route::prefix('request-to-ft')->group(function () {
+        Route::post('gui-yeu-cau/updatedata/{request_id}', 'Student\Post\RequestController@update_data');
+        Route::post('gui-yeu-cau/updatefile/{request_id}', 'Student\Post\RequestController@update_file');
+        Route::post('gui-yeu-cau/file', 'Student\Post\RequestController@store_file');
         Route::get('gui-yeu-cau/search/{student_id}/{query}/{currentEntries}', 'Student\Post\RequestController@search');
         Route::get('gui-yeu-cau/filter/{student_id}/{value}/{currentEntries}', 'Student\Post\RequestController@filter');
         Route::get('gui-yeu-cau/showdata/{student_id}/{currentEntries}', 'Student\Post\RequestController@showdata');

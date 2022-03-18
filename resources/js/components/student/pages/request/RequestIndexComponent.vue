@@ -2,10 +2,18 @@
     <div class="container">
         <div class="section-banner">
             <img class="section-banner-icon" :src="`../public/student/img/banner/newsfeed-icon.png`" alt="newsfeed-icon" />
-            <p class="section-banner-title">Gửi yêu cầu cho chủ nhiệm sinh viên</p>
+            <p class="section-banner-title">Danh sách yêu cầu đã gửi</p>
         </div>
 
         <div class="grid">
+            <div class="row">
+                <div class="col-md-2">
+                    <router-link tag="button" class="btn btn-primary" :to="{ name: 'requestsend' }">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        Quay lại
+                    </router-link>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12 col-lg-12">
                     <div class="card">
@@ -77,18 +85,19 @@
                                                 {{ req.request_title.substring(0, 100) + '...' }}
                                             </div>
                                         </td>
-                                        <td>{{ req.created_at | formatDate }}</td>
+                                        <td class="text-center">{{ req.created_at | formatFullTime }}</td>
                                         <td class="td-styling text-center">
                                             <div v-if="req.request_status == 0">Chờ xác nhận</div>
                                             <div v-else-if="req.request_status == 1">Đã chấp nhận</div>
                                             <div v-else-if="req.request_status == 2">Đã bị hủy</div>
                                         </td>
                                         <td style="text-align: center">
-                                            <a
-                                                href="javascript:void(0)"
-                                                class="btn-3d btn btn-success btn-lg fa fa-pencil"
-                                                @click="show(req)"
-                                            ></a>
+                                            <router-link
+                                                :disabled="req.request_status != 0"
+                                                class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o"
+                                                tag="button"
+                                                :to="{ name: 'requestupdate', params: { idReq: req.request_id } }"
+                                            ></router-link>
                                         </td>
                                         <td>
                                             <button
@@ -125,6 +134,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -234,6 +244,32 @@ export default {
                     this.pagination = res.meta
                 })
                 .catch(err => console.log(err))
+        },
+        destroy(request_id) {
+            this.$swal({
+                title: 'Bạn có chắc chắn xoá?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Xoá !',
+                cancelButtonText: 'Quay lại !'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    axios
+                        .delete(`../../api/student/request-to-ft/gui-yeu-cau/${request_id}`)
+                        .then(res => {
+                            this.fetchRequests()
+                            this.$swal({
+                                title: 'Xoá thành công!',
+                                icon: 'success',
+                                confirmButtonText: 'OK!',
+                                timer: 3500
+                            })
+                        })
+                        .catch(err => console.log(err))
+                }
+            })
         }
     }
 }
