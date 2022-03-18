@@ -292,7 +292,11 @@
                                     <td>
                                         Tệp đính kèm:
                                         <strong>
-                                            {{ form.request_file }}
+                                            <a
+                                                :href="`../public/attachments/${form.request_file}`"
+                                                v-text="form.request_file"
+                                                @click.prevent="downloadItem(form.request_file)"
+                                            ></a>
                                         </strong>
                                     </td>
                                 </tr>
@@ -384,7 +388,11 @@
                                         <td>
                                             Tệp đính kèm:
                                             <strong>
-                                                {{ form.request_file }}
+                                                <a
+                                                    :href="`../public/attachments/${form.request_file}`"
+                                                    v-text="form.request_file"
+                                                    @click.prevent="downloadItem(form.request_file)"
+                                                ></a>
                                             </strong>
                                         </td>
                                     </tr>
@@ -684,6 +692,19 @@ export default {
                     })
                     .catch(err => console.log(err))
             }
+        },
+        downloadItem(request_file) {
+            axios
+                .get(`../public/attachments/${request_file}`, { responseType: 'blob' })
+                .then(response => {
+                    const blob = new Blob([response.data], { type: 'application/pdf' })
+                    const link = document.createElement('a')
+                    link.href = URL.createObjectURL(blob)
+                    link.download = request_file
+                    link.click()
+                    URL.revokeObjectURL(link.href)
+                })
+                .catch(console.error)
         }
     }
 }
