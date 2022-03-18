@@ -10,7 +10,10 @@ use App\Models\CalendarSubject;
 use App\Models\ProgramDetail;
 use App\Models\RegisterSubject;
 use App\Http\Resources\CalendarResource;
+use App\Http\Resources\CalendarSubjectResource;
+use App\Http\Resources\RegisterPlanResource;
 use App\Http\Resources\RegisterSubjectResource;
+use App\Models\RegisterPlan;
 use Illuminate\Support\Facades\Mail;
 
 class SubjectController extends Controller
@@ -136,11 +139,27 @@ class SubjectController extends Controller
             ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_student.student_faculty')
             ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_student.student_major')
             ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->where('tbl_register_plan.register_plan_again', 0)
             ->where('tbl_calendar.location', $semester)
             ->where('tbl_student.student_id', $student_id)
             ->where('tbl_calendar.calendarId', 1)->get();
 
         return CalendarResource::collection($joins);
+    }
+
+    public function show_subject_inplan_again($student_id, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->join('tbl_course', 'tbl_course.course_id', '=', 'tbl_student.student_course')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_student.student_faculty')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_student.student_major')
+            ->join('tbl_class', 'tbl_class.class_id', '=', 'tbl_student.student_class')
+            ->where('register_plan_student', $student_id)
+            ->where('register_plan_semester', $semester)
+            ->where('register_plan_again', 1)->get();
+
+        return RegisterPlanResource::collection($joins);
     }
 
     public function show_subject_outplan($student_id, $semester)
@@ -185,6 +204,20 @@ class SubjectController extends Controller
         return CalendarResource::collection($joins);
     }
 
+    public function quantity_again($student_id, $calendar_id)
+    {
+        $find = Student::find($student_id);
+        $joins = CalendarSubject::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_subject.calendar_id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')
+            ->where('tbl_calendar.id', $calendar_id)
+            ->where('tbl_faculty.faculty_id', $find->student_faculty)
+            ->where('tbl_calendar.calendarId', 1)->get();
+
+        return CalendarResource::collection($joins);
+    }
+
     public function register_subject($student_id, $semester, $subject_id)
     {
         $find = Student::find($student_id);
@@ -195,6 +228,19 @@ class SubjectController extends Controller
             ->where('tbl_calendar.body', $find->student_major)
             ->where('tbl_calendar.raw', $find->student_course)
             ->where('tbl_calendar.calendarId', 1)->get();
+        return CalendarResource::collection($joins);
+    }
+
+    public function register_subject_again($student_id, $calendar_id, $subject_id)
+    {
+        $find = Student::find($student_id);
+        $joins = CalendarSubject::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_subject.calendar_id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')
+            ->where('tbl_calendar_subject.subject_id', $subject_id)
+            ->where('tbl_calendar.id', $calendar_id)
+            ->where('tbl_faculty.faculty_id', $find->student_faculty)->get();
         return CalendarResource::collection($joins);
     }
 
@@ -215,7 +261,12 @@ class SubjectController extends Controller
         $joins = CalendarSubject::join('tbl_register_subject', 'tbl_register_subject.register_subject_program', '=', 'tbl_calendar_subject.calendar_subject_id')
             ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
             ->where('tbl_register_subject.register_subject_student', $student_id)
-            ->where('tbl_register_subject.register_subject_semester', $semester)->get();
+            ->where('tbl_register_subject.register_subject_semester', $semester)
+            ->where('tbl_register_subject.register_subject_exam', null)
+            ->where('tbl_register_subject.register_subject_exercise', null)
+            ->where('tbl_register_subject.register_subject_final', null)
+            ->where('tbl_register_subject.register_subject_again', 0)
+            ->get();
         return CalendarResource::collection($joins);
     }
 
@@ -283,5 +334,45 @@ class SubjectController extends Controller
                 $message->from($to_email, $to_name);
             }
         );
+    }
+
+    public function my_all_subject($student_id)
+    {
+        $query = RegisterSubject::where('register_subject_student', $student_id)
+            ->orderBy('register_subject_semester', 'DESC')->get();
+        return RegisterSubjectResource::collection($query);
+    }
+
+    public function subject_fail($student_id)
+    {
+        $joins = CalendarSubject::join('tbl_register_subject', 'tbl_register_subject.register_subject_program', '=', 'tbl_calendar_subject.calendar_subject_id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->where('tbl_register_subject.register_subject_final', '<', 4)
+            ->where('tbl_register_subject.register_subject_second', '>', 0)
+            ->where('tbl_register_subject.register_subject_second', '<', 4)
+            ->where('tbl_register_subject.register_subject_student', $student_id)->get();
+        return CalendarSubjectResource::collection($joins);
+    }
+
+    public function learn_again($student_id)
+    {
+        $find = Student::find($student_id);
+
+        $times = Calendar::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->where('tbl_course.course_id', $find->student_course)
+            ->where('tbl_major.major_id', $find->student_major)
+            ->where('tbl_calendar.calendarId', 1)->get();
+
+        $joins = Calendar::join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')
+            ->where('tbl_calendar.body', $find->student_major)
+            ->where('tbl_calendar.calendarId', 1);
+
+        foreach ($times as $key => $value) {
+            $joins->where('tbl_calendar.raw', '!=', $value->raw);
+        }
+        $results = $joins->get();
+        return CalendarResource::collection($results);
     }
 }

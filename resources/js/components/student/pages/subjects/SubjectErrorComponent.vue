@@ -19,11 +19,14 @@
 export default {
     data() {
         return {
-            student_id: this.$studentId
+            student_id: this.$studentId,
+            id_again: '',
+            subjects: []
         }
     },
     mounted() {
         this.fetchCalendarRegister()
+        this.fetchSubjectFail()
     },
     methods: {
         fetchCalendarRegister(page_url) {
@@ -39,6 +42,33 @@ export default {
                             this.$router.push({ name: 'subjectregisterindex' })
                         }
                     })
+                })
+                .catch(err => console.log(err))
+        },
+        fetchRegisterAgain(page_url) {
+            page_url = `../../api/student/subject-register/dang-ky-mon-hoc/learn-again/${this.student_id}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    const today = new Date()
+                    res.data.filter(el => {
+                        const start = new Date(el.start)
+                        const end = new Date(el.end)
+                        if (today >= start && today <= end) {
+                            this.$router.push({ name: 'subjectregisterindex' })
+                        }
+                    })
+                })
+                .catch(err => console.log(err))
+        },
+        fetchSubjectFail(page_url) {
+            page_url = `../../api/student/subject-register/dang-ky-mon-hoc/subject-fail/${this.student_id}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    if (res.data.length > 0) {
+                        this.fetchRegisterAgain()
+                    }
                 })
                 .catch(err => console.log(err))
         }

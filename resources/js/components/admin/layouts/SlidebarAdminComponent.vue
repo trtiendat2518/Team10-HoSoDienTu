@@ -113,6 +113,12 @@
                                 </span>
                             </router-link>
                         </li>
+                        <li class="slide">
+                            <router-link tag="a" class="side-menu__item" to="/lich-bieu" active-class="active">
+                                <i class="side-menu__icon fa fa-calendar"></i>
+                                <span class="side-menu__label">Lịch biểu</span>
+                            </router-link>
+                        </li>
                     </ul>
                 </div>
             </div>
