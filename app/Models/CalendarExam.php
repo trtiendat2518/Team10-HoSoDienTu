@@ -10,10 +10,7 @@ class CalendarExam extends Model
     public $timestamps = false;
     protected $fillable = [
         'calendar_exam_schedule',
-        'calendar_exam_faculty',
-        'calendar_exam_course',
-        'calendar_exam_faculty',
-        'calendar_exam_major',
+        'calendar_exam_subject',
         'calendar_exam_room',
         'calendar_exam_method',
         'calendar_exam_semester',

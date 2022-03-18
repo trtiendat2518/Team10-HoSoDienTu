@@ -15,7 +15,9 @@ class RegisterSubject extends Model
         'register_subject_exam',
         'register_subject_final',
         'register_subject_yearstart',
-        'register_subject_yearend'
+        'register_subject_yearend',
+        'register_subject_date',
+        'register_subject_again',
     ];
     protected $primaryKey = 'register_subject_id';
     protected $table = 'tbl_register_subject';

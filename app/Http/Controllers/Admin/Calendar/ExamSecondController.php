@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Calendar;
 use App\Http\Controllers\Controller;
 use App\Models\ExamSecond;
 use App\Http\Resources\ExamSecondResource;
+use App\Models\Lecturer;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -135,5 +136,30 @@ class ExamSecondController extends Controller
                 $value->delete();
             }
         }
+    }
+
+    public function showdata($lecturer_id, $currentEntries)
+    {
+        $lecturer = Lecturer::find($lecturer_id);
+        $exam = ExamSecond::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_exam_second.exam_second_course')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_exam_second.exam_second_major')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_exam_second.exam_second_subject')
+            ->where('tbl_faculty.faculty_id', $lecturer->lecturer_faculty)
+            ->orderby('tbl_exam_second.exam_second_id', 'DESC')->paginate($currentEntries);
+        return ExamSecondResource::collection($exam);
+    }
+
+    public function searchdata($lecturer_id, $query, $currentEntries)
+    {
+        $lecturer = Lecturer::find($lecturer_id);
+        $exam = ExamSecond::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_exam_second.exam_second_course')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_exam_second.exam_second_major')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_exam_second.exam_second_subject')
+            ->where('tbl_faculty.faculty_id', $lecturer->lecturer_faculty)
+            ->where('tbl_subject.subject_name', 'LIKE', '%' . $query . '%')
+            ->orderby('tbl_exam_second.exam_second_id', 'DESC')->paginate($currentEntries);
+        return ExamSecondResource::collection($exam);
     }
 }

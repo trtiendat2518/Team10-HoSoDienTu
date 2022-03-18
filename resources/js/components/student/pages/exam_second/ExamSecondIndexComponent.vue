@@ -86,7 +86,7 @@ export default {
     },
     methods: {
         fetchScore(page_url) {
-            page_url = `../../api/admin/register-subject/dang-ky-mon-hoc-sv/xem-diem/${this.student_id}`
+            page_url = `../../api/admin/register-subject/dang-ky-mon-hoc-sv/xem-thi-lan-2/${this.student_id}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
@@ -102,12 +102,7 @@ export default {
                         ) {
                             scoreExercise = (res.data[i].register_subject_exercise * res.data[i].subject_score_exercise) / 100
                             scoreExam = (res.data[i].register_subject_exam * res.data[i].subject_score_exam) / 100
-
-                            if (res.data[i].register_subject_final >= res.data[i].register_subject_second) {
-                                scoreFinal = (res.data[i].register_subject_final * res.data[i].subject_score_final) / 100
-                            } else {
-                                scoreFinal = (res.data[i].register_subject_second * res.data[i].subject_score_final) / 100
-                            }
+                            scoreFinal = (res.data[i].register_subject_final * res.data[i].subject_score_final) / 100
 
                             sum = (scoreExercise + scoreExam + scoreFinal).toFixed(1)
                             if (sum < 4) {

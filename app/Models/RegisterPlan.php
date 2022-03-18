@@ -16,6 +16,7 @@ class RegisterPlan extends Model
         'register_plan_yearend',
         'register_plan_date',
         'register_plan_type',
+        'register_plan_again',
     ];
     protected $primaryKey = 'register_plan_id';
     protected $table = 'tbl_register_plan';

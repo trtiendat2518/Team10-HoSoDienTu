@@ -10,7 +10,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" v-model="course">
                         <option value="" disabled selected>Chọn khoá học</option>
@@ -20,7 +20,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" v-model="major">
                         <option value="" disabled selected>Chọn chuyên ngành</option>
@@ -28,7 +28,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" v-model="semester">
                         <option value="" disabled>Học kỳ</option>
@@ -36,9 +36,16 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <button class="btn btn-lg btn-block btn-primary" @click="filter()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <button class="btn btn-lg btn-block background-green" @click="exportData()" :disabled="barData.length == 0">
+                        Export
+                    </button>
                 </div>
             </div>
         </div>
@@ -57,50 +64,74 @@
             <div v-else>
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <h4 class="text-center">Thống kê tổng quan</h4>
-                        <router-link
-                            tag="a"
-                            :to="{ name: 'statisticplanstudent', params: { idCourse: course, idMajor: major, idSemester: semester } }"
-                        >
-                            <donut-chart id="donut3" :data="donutData()" colors='[ "#FF99FF", "#9999FF", "#3399FF" ]'></donut-chart>
-                        </router-link>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Thống kê tổng quan</h3>
+                            </div>
+                            <div class="card-body">
+                                <router-link
+                                    tag="a"
+                                    :to="{
+                                        name: 'statisticplanstudent',
+                                        params: { idCourse: course, idMajor: major, idSemester: semester }
+                                    }"
+                                >
+                                    <donut-chart id="donut3" :data="donutData()" colors='[ "#FF99FF", "#9999FF", "#3399FF" ]'></donut-chart>
+                                </router-link>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <h4 class="text-center">Thống kê loại đăng ký</h4>
-                        <div v-show="!checkDonutDataDetail()">
-                            <router-link
-                                tag="a"
-                                :to="{ name: 'statisticplantype', params: { idCourse: course, idMajor: major, idSemester: semester } }"
-                            >
-                                <donut-chart
-                                    id="donut2"
-                                    :data="donutDataDetail()"
-                                    colors='[ "#FF9999", "#996699", "#339999" ]'
-                                ></donut-chart>
-                            </router-link>
-                        </div>
-                        <div v-show="checkDonutDataDetail()">
-                            <div class="alert alert-danger">
-                                Chưa có sinh viên nào đăng ký
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Thống kê loại đăng ký</h3>
+                            </div>
+                            <div class="card-body">
+                                <div v-show="checkDonutDataDetail()">
+                                    <div class="alert alert-danger">
+                                        Chưa có sinh viên nào đăng ký
+                                    </div>
+                                </div>
+                                <div v-show="!checkDonutDataDetail()">
+                                    <router-link
+                                        tag="a"
+                                        :to="{
+                                            name: 'statisticplantype',
+                                            params: { idCourse: course, idMajor: major, idSemester: semester }
+                                        }"
+                                    >
+                                        <donut-chart
+                                            id="donut2"
+                                            :data="donutDataDetail()"
+                                            colors='[ "#FF9999", "#996699", "#339999" ]'
+                                        ></donut-chart>
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <h4 class="text-center mt-5">Thống kế số lượng môn học được đăng ký kế hoạch</h4>
-                <div v-show="barData.length == 0">
-                    <div class="alert alert-danger text-center">
-                        Chưa có môn nào được đăng ký
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h3 class="card-title">Thống kế số lượng môn học được đăng ký kế hoạch</h3>
+                    </div>
+                    <div class="card-body">
+                        <div v-show="barData.length == 0">
+                            <div class="alert alert-danger text-center">
+                                Chưa có môn nào được đăng ký
+                            </div>
+                        </div>
+                        <bar-chart
+                            id="bar"
+                            :data="barData"
+                            :bar-colors="arrayColors"
+                            :xkey="xkey"
+                            :ykeys="ykeys"
+                            grid-text-weight="bold"
+                            grid-text-size="10"
+                        ></bar-chart>
                     </div>
                 </div>
-                <bar-chart
-                    id="bar"
-                    :data="barData"
-                    :bar-colors="arrayColors"
-                    :xkey="xkey"
-                    :ykeys="ykeys"
-                    grid-text-weight="bold"
-                    grid-text-size="10"
-                ></bar-chart>
             </div>
         </div>
     </div>
@@ -316,6 +347,9 @@ export default {
             if (this.suggest_all.length == 0 && this.suggest_only.length == 0 && this.plan_mine.length == 0) {
                 return true
             }
+        },
+        exportData() {
+            window.location.href = `../../api/admin/register-plan/dang-ky-ke-hoach-hoc-tap-sv/export/${this.course}/${this.major}/${this.semester}`
         }
     }
 }
@@ -325,5 +359,13 @@ export default {
 .text-center {
     border: none;
     font-weight: bold;
+}
+.background-green {
+    background-color: darkgreen;
+    color: white;
+}
+.background-green:hover {
+    background-color: green;
+    color: white;
 }
 </style>
