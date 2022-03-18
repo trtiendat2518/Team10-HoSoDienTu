@@ -169,7 +169,7 @@
                                             <option value="" selected disabled>Chọn môn học</option>
                                             <option disabled>---------------</option>
                                             <option
-                                                v-for="subject in subjectPrograms"
+                                                v-for="subject in subjects_calendar"
                                                 :value="subject.subject_id"
                                                 :key="subject.subject_id"
                                                 :hidden="subject.subject_status > 0"
@@ -400,10 +400,10 @@ import 'vue-snotify/styles/material.css'
 export default {
     data() {
         return {
-            lecturer_id: this.$facultyId,
             subjects: [],
             schedules: [],
             lecturers: [],
+            subjects_calendar: [],
             subjectPrograms: [],
             pagination: {
                 current_page: 1
@@ -449,6 +449,11 @@ export default {
                 this.pagination.current_page = 1
                 this.search()
             }
+        },
+        'form.calendar_id'(value) {
+            if (value != '') {
+                this.fetchSubjectsForCalendar()
+            }
         }
     },
     mounted() {
@@ -493,6 +498,16 @@ export default {
                 .then(res => res.json())
                 .then(res => {
                     this.lecturers = res.data
+                })
+                .catch(err => console.log(err))
+        },
+        fetchSubjectsForCalendar(page_url) {
+            let vm = this
+            page_url = `../../api/admin/calendar-subject/lich-mo-lop-hoc/show-subjects/${this.form.calendar_id}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.subjects_calendar = res.data
                 })
                 .catch(err => console.log(err))
         },

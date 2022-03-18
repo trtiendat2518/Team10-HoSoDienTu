@@ -350,4 +350,29 @@ class StudentManageController extends Controller
         $joins = Student::where('student_course', $course)->where('student_major', $major)->get();
         return StudentResource::collection($joins);
     }
+
+    public function update_info_personal($student_id, Request $request)
+    {
+        $stu = Student::find($student_id);
+
+        $data = $request->validate([
+            'student_phone' => ['required', 'max:11', 'min:10', 'notspecial_spaces'],
+            'student_other_email' => ['required', 'max:250', 'email'],
+
+        ], [
+            'student_phone.required' => 'Số điện thoại không được để trống!',
+            'student_phone.max' => 'Số điện thoại không nhập quá 11 ký tự số!',
+            'student_phone.min' => 'Số điện thoại cần nhập 10 hoặc 11 số!',
+            'student_phone.notspecial_spaces' => 'Số điện thoại không chứa ký tự đặc biệt!',
+
+            'student_other_email.required' => 'Email không được để trống!',
+            'student_other_email.max' => 'Email không nhập quá 250 ký tự!',
+            'student_other_email.email' => 'Thiếu @ cho Email!',
+        ]);
+
+        $stu->student_phone = $request->student_phone;
+        $stu->student_other_email = $request->student_other_email;
+
+        $stu->save();
+    }
 }
