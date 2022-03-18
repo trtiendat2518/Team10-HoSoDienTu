@@ -322,4 +322,11 @@ Route::prefix('student')->group(function () {
         Route::get('danh-gia-diem-ren-luyen/thoi-gian-danh-gia-sinh-vien/{student_id}', 'Student\Registration\TrainPointController@calendar_timestudent_trainpoint');
         Route::resource('danh-gia-diem-ren-luyen', 'Student\Registration\TrainPointController');
     });
+
+    Route::prefix('request-to-ft')->group(function () {
+        Route::get('gui-yeu-cau/search/{student_id}/{query}/{currentEntries}', 'Student\Post\RequestController@search');
+        Route::get('gui-yeu-cau/filter/{student_id}/{value}/{currentEntries}', 'Student\Post\RequestController@filter');
+        Route::get('gui-yeu-cau/showdata/{student_id}/{currentEntries}', 'Student\Post\RequestController@showdata');
+        Route::resource('gui-yeu-cau', 'Student\Post\RequestController');
+    });
 });
