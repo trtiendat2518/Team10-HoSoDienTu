@@ -1,17 +1,16 @@
 <template>
     <div>
-        <vue-snotify></vue-snotify>
         <div class="page-header">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <router-link tag="a" :to="{ name: 'dashboard' }">Dashboard</router-link>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Thống kê số lượng đăng ký kế hoạch sinh viên</li>
+                <li class="breadcrumb-item active" aria-current="page">Thống kê số lượng sinh viên đăng ký môn học</li>
             </ol>
         </div>
 
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" v-model="course">
                         <option value="" disabled selected>Chọn khoá học</option>
@@ -21,7 +20,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" v-model="major">
                         <option value="" disabled selected>Chọn chuyên ngành</option>
@@ -29,7 +28,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" v-model="semester">
                         <option value="" disabled>Học kỳ</option>
@@ -37,16 +36,23 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <button class="btn btn-lg btn-block btn-primary" @click="filter()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <button class="btn btn-lg btn-block background-green" @click="exportData()" :disabled="barData.length == 0">
+                        Export
+                    </button>
                 </div>
             </div>
         </div>
 
         <div v-show="check() == true">
             <div class="alert alert-warning">
-                Vui lòng chọn các trường thông tin trên để xem kết quả thống kê đăng ký kế hoạch học tập sinh viên
+                Vui lòng chọn các trường thông tin trên để xem kết quả thống kê đăng ký kế môn học sinh viên
             </div>
         </div>
         <div v-show="check() == false">
@@ -56,24 +62,39 @@
                 </div>
             </div>
             <div v-else>
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <h4 class="text-center">Thống kê tổng quan</h4>
-                        <router-link
-                            tag="a"
-                            :to="{ name: 'statisticplanstudent', params: { idCourse: course, idMajor: major, idSemester: semester } }"
-                        >
-                            <donut-chart id="donut" :data="donutData()" colors='[ "#FF99FF", "#9999FF", "#3399FF" ]'></donut-chart>
-                        </router-link>
+                <router-link
+                    tag="a"
+                    :to="{ name: 'statisticsubjectdetail', params: { idCourse: course, idMajor: major, idSemester: semester } }"
+                >
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thống kê tổng quan</h3>
+                        </div>
+                        <div class="card-body">
+                            <donut-chart id="donut4" :data="donutData()" colors='[ "#FF99FF", "#9999FF", "#3399FF" ]'></donut-chart>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <h4 class="text-center">Thống kê loại đăng ký</h4>
-                        <router-link
-                            tag="a"
-                            :to="{ name: 'statisticplantype', params: { idCourse: course, idMajor: major, idSemester: semester } }"
-                        >
-                            <donut-chart id="donut2" :data="donutDataDetail()" colors='[ "#FF9999", "#996699", "#339999" ]'></donut-chart>
-                        </router-link>
+                </router-link>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Thống kê số lượng lớp ít ĐK</h3>
+                    </div>
+                    <div class="card-body">
+                        <div v-show="!barData.length">
+                            <div class="alert alert-danger text-center">
+                                Chưa có môn nào được đăng ký
+                            </div>
+                        </div>
+                        <bar-chart
+                            id="bar2"
+                            :data="barData"
+                            :bar-colors="arrayColors"
+                            :xkey="xkey"
+                            :ykeys="ykeys"
+                            :labels="labels"
+                            grid-text-weight="bold"
+                            grid-text-size="10"
+                        ></bar-chart>
                     </div>
                 </div>
             </div>
@@ -82,12 +103,14 @@
 </template>
 
 <script>
-import { DonutChart } from 'vue-morris'
+import { DonutChart, LineChart, BarChart } from 'vue-morris'
 import Raphael from 'raphael/raphael'
 global.Raphael = Raphael
 export default {
     components: {
-        DonutChart
+        DonutChart,
+        LineChart,
+        BarChart
     },
     data() {
         return {
@@ -97,14 +120,16 @@ export default {
             semesters: [],
             students: [],
             registered: [],
-            donutM: [],
-            donutMDetail: [],
-            suggest_all: [],
-            suggest_only: [],
-            plan_mine: [],
             semester: '',
             course: '',
-            major: ''
+            major: '',
+            donutM: [],
+
+            barData: [],
+            xkey: 'subject_name',
+            arrayColors: ['#73c000', '#cc45ff'],
+            ykeys: ['calendar_subject_registered', 'calendar_subject_slot'],
+            labels: ['SL ĐK', 'SL Đủ']
         }
     },
     watch: {
@@ -126,13 +151,6 @@ export default {
                 { label: 'Sinh viên chưa đăng ký', value: this.students.length - this.registered.length }
             ])
         },
-        donutDataDetail() {
-            return (this.donutMDetail = [
-                { label: 'ĐK theo gợi ý cả lớp', value: this.suggest_all.length },
-                { label: 'ĐK theo gợi ý cá nhân', value: this.suggest_only.length },
-                { label: 'ĐK theo cá nhân', value: this.plan_mine.length }
-            ])
-        },
         fetchCourses(page_url) {
             let vm = this
             page_url = '../../api/admin/edu-course/khoa-hoc/course'
@@ -140,7 +158,6 @@ export default {
                 .then(res => res.json())
                 .then(res => {
                     this.courses = res.data
-                    //this.course = res.data[0].course_id
                 })
                 .catch(err => console.log(err))
         },
@@ -151,7 +168,6 @@ export default {
                 .then(res => res.json())
                 .then(res => {
                     this.majors = res.data
-                    //this.major = res.data[0].major_id
                 })
                 .catch(err => console.log(err))
         },
@@ -170,11 +186,6 @@ export default {
 
                     let key = Object.keys(semesters)
                     this.semesters = key
-                    // if (key.length > 0) {
-                    //     this.semester = key[0]
-                    // } else {
-                    //     this.semester = ''
-                    // }
                 })
                 .catch(err => console.log(err))
         },
@@ -190,14 +201,14 @@ export default {
         },
         fetchStudentRegistered(page_url) {
             let vm = this
-            page_url = `../../api/admin/register-plan/dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky/${this.course}/${this.major}/${this.semester}`
+            page_url = `../../api/admin/register-subject/dang-ky-mon-hoc-sv/da-dang-ky/${this.course}/${this.major}/${this.semester}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
                     const registers = res.data.reduce((registers, item) => {
-                        const register = registers[item.register_plan_student] || []
+                        const register = registers[item.register_subject_student] || []
                         register.push(item)
-                        registers[item.register_plan_student] = register
+                        registers[item.register_subject_student] = register
                         return registers
                     }, {})
                     let value = Object.values(registers)
@@ -205,63 +216,15 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
-        fetchSuggestAll(page_url) {
+        fetchQuantitySubject(page_url) {
             let vm = this
-            page_url = `../../api/admin/register-plan/dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-goi-y-tat-ca/${this.course}/${this.major}/${this.semester}`
+            page_url = `../../api/admin/register-subject/dang-ky-mon-hoc-sv/so-luong-lop-it/${this.course}/${this.major}/${this.semester}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
-                    const registers = res.data.reduce((registers, item) => {
-                        const register = registers[item.register_plan_student] || []
-                        register.push(item)
-                        registers[item.register_plan_student] = register
-                        return registers
-                    }, {})
-                    let value = Object.values(registers)
-                    this.suggest_all = value
+                    this.barData = res.data
                 })
                 .catch(err => console.log(err))
-        },
-        fetchSuggestOnly(page_url) {
-            let vm = this
-            page_url = `../../api/admin/register-plan/dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-goi-y-ca-nhan/${this.course}/${this.major}/${this.semester}`
-            fetch(page_url)
-                .then(res => res.json())
-                .then(res => {
-                    const registers = res.data.reduce((registers, item) => {
-                        const register = registers[item.register_plan_student] || []
-                        register.push(item)
-                        registers[item.register_plan_student] = register
-                        return registers
-                    }, {})
-                    let value = Object.values(registers)
-                    this.suggest_only = value
-                })
-                .catch(err => console.log(err))
-        },
-        fetchPlanMine(page_url) {
-            let vm = this
-            page_url = `../../api/admin/register-plan/dang-ky-ke-hoach-hoc-tap-sv/da-dang-ky-ca-nhan/${this.course}/${this.major}/${this.semester}`
-            fetch(page_url)
-                .then(res => res.json())
-                .then(res => {
-                    const registers = res.data.reduce((registers, item) => {
-                        const register = registers[item.register_plan_student] || []
-                        register.push(item)
-                        registers[item.register_plan_student] = register
-                        return registers
-                    }, {})
-                    let value = Object.values(registers)
-                    this.plan_mine = value
-                })
-                .catch(err => console.log(err))
-        },
-        filter() {
-            this.fetchStudentCourseMajor()
-            this.fetchStudentRegistered()
-            this.fetchSuggestAll()
-            this.fetchSuggestOnly()
-            this.fetchPlanMine()
         },
         check() {
             if (this.course == '' && this.major == '' && this.semester == '') {
@@ -269,6 +232,14 @@ export default {
             } else {
                 return false
             }
+        },
+        filter() {
+            this.fetchStudentCourseMajor()
+            this.fetchStudentRegistered()
+            this.fetchQuantitySubject()
+        },
+        exportData() {
+            window.location.href = `../../api/admin/register-subject/dang-ky-mon-hoc-sv/export/${this.course}/${this.major}/${this.semester}`
         }
     }
 }
@@ -278,5 +249,13 @@ export default {
 .text-center {
     border: none;
     font-weight: bold;
+}
+.background-green {
+    background-color: darkgreen;
+    color: white;
+}
+.background-green:hover {
+    background-color: green;
+    color: white;
 }
 </style>

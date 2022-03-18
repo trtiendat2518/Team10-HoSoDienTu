@@ -35,6 +35,8 @@ import ProcedureUpdate from './components/admin/pages/procedures/ProcedureUpdate
 import ProcedureRequire from './components/admin/pages/procedures/ProcedureRequireComponent.vue'
 
 import Calendar from './components/admin/pages/calendar/CalendarComponent.vue'
+import CalendarCreate from './components/admin/pages/calendar/CalendarCreateComponent.vue'
+import CalendarUpdate from './components/admin/pages/calendar/CalendarUpdateComponent.vue'
 import CalendarIndex from './components/admin/pages/calendar/CalendarIndexComponent.vue'
 import CalendarReference from './components/admin/pages/calendar/CalendarReferenceComponent.vue'
 import CalendarSubjectSlot from './components/admin/pages/calendar/CalendarSubjectSlotComponent.vue'
@@ -44,6 +46,7 @@ import ClassStudentIndex from './components/admin/pages/class/ClassStudentIndexC
 import ClassStudentDetail from './components/admin/pages/class/ClassStudentDetailComponent.vue'
 import ClassStudentScore from './components/admin/pages/class/ClassStudentScoreComponent.vue'
 import ClassStudentPlan from './components/admin/pages/class/ClassStudentPlanComponent.vue'
+import ClassStudentPoint from './components/admin/pages/class/ClassStudentPointComponent.vue'
 
 import EducationProgramStudent from './components/admin/pages/education_program_student/EducationProgramStudentComponent.vue'
 import EducationProgramStudentIndex from './components/admin/pages/education_program_student/EducationProgramStudentIndexComponent.vue'
@@ -72,16 +75,24 @@ import FormTeacherClassIndex from './components/admin/pages/formteacher_class/Fo
 import FormTeacherClassDetail from './components/admin/pages/formteacher_class/FormTeacherClassDetailComponent.vue'
 import FormTeacherClassScore from './components/admin/pages/formteacher_class/FormTeacherClassScoreComponent.vue'
 import FormTeacherClassPlan from './components/admin/pages/formteacher_class/FormTeacherClassPlanComponent.vue'
+import FormTeacherClassPoint from './components/admin/pages/formteacher_class/FormTeacherClassPointComponent.vue'
 
 import StudyPlanSuggest from './components/admin/pages/suggest/StudyPlanSuggestComponent.vue'
 import StudyPlanSuggestIndex from './components/admin/pages/suggest/StudyPlanSuggestIndexComponent.vue'
 import StudyPlanSuggestCreate from './components/admin/pages/suggest/StudyPlanSuggestCreateComponent.vue'
 import StudyPlanSuggestUpdate from './components/admin/pages/suggest/StudyPlanSuggestUpdateComponent.vue'
 
-import StatisticPLan from './components/admin/pages/statistic_plan/StatisticPLanComponent.vue'
-import StatisticPLanIndex from './components/admin/pages/statistic_plan/StatisticPLanIndexComponent.vue'
-import StatisticPLanStudent from './components/admin/pages/statistic_plan/StatisticPLanStudentComponent.vue'
-import StatisticPLanType from './components/admin/pages/statistic_plan/StatisticPLanTypeComponent.vue'
+import StatisticPLan from './components/admin/pages/statistic_plan/StatisticComponent.vue'
+import StatisticPLanIndex from './components/admin/pages/statistic_plan/StatisticIndexComponent.vue'
+import StatisticPLanStudent from './components/admin/pages/statistic_plan/StatisticStudentComponent.vue'
+import StatisticPLanType from './components/admin/pages/statistic_plan/StatisticTypeComponent.vue'
+
+import StatisticSubject from './components/admin/pages/statistic_subject/StatisticSubjectComponent.vue'
+import StatisticSubjectIndex from './components/admin/pages/statistic_subject/StatisticSubjectIndexComponent.vue'
+import StatisticSubjectDetail from './components/admin/pages/statistic_subject/StatisticSubjectDetailComponent.vue'
+
+import ExamSecondManage from './components/admin/pages/exam_second/ExamSecondManageComponent.vue'
+import ExamSecondManageIndex from './components/admin/pages/exam_second/ExamSecondManageIndexComponent.vue'
 
 //---------------------------------- STUDENT --------------------------------------------------------
 import Home from './components/student/pages/HomeComponent.vue'
@@ -112,6 +123,22 @@ import TimetableIndex from './components/student/pages/timetable/TimetableIndexC
 
 import EducationProStudent from './components/student/pages/education_program/EducationProgramComponent.vue'
 import EducationProStudentIndex from './components/student/pages/education_program/EducationProgramIndexComponent.vue'
+
+import ExamStudent from './components/student/pages/exam/ExamComponent.vue'
+import ExamStudentIndex from './components/student/pages/exam/ExamIndexComponent.vue'
+
+import ExamSecondStudent from './components/student/pages/exam_second/ExamSecondComponent.vue'
+import ExamSecondStudentIndex from './components/student/pages/exam_second/ExamSecondIndexComponent.vue'
+
+import InfoStudent from './components/student/pages/info/InfoComponent.vue'
+import InfoStudentIndex from './components/student/pages/info/InfoIndexComponent.vue'
+import InfoStudentUpdate from './components/student/pages/info/InfoUpdateComponent.vue'
+
+import TrainPointStudent from './components/student/pages/train_point/TrainPointStudentComponent.vue'
+import TrainPointStudentIndex from './components/student/pages/train_point/TrainPointStudentIndexComponent.vue'
+
+import RequestMess from './components/student/pages/request/RequestComponent.vue'
+import RequestMessIndex from './components/student/pages/request/RequestIndexComponent.vue'
 
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
@@ -328,6 +355,46 @@ export default new VueRouter({
             }
         },
 
+        {
+            path: '/lich-bieu',
+            name: 'calendar',
+            component: Calendar,
+            children: [
+                {
+                    path: '',
+                    name: 'calendarindex',
+                    component: CalendarIndex
+                },
+                {
+                    path: 'tao-moi',
+                    name: 'calendarcreate',
+                    component: CalendarCreate
+                },
+                {
+                    path: 'cap-nhat/:idCalendar',
+                    name: 'calendarupdate',
+                    component: CalendarUpdate
+                },
+                {
+                    path: 'rang-buoc-lich-bieu',
+                    name: 'calendarreference',
+                    component: CalendarReference
+                },
+                {
+                    path: 'mo-lop-mon-hoc',
+                    name: 'calendarsubjectslot',
+                    component: CalendarSubjectSlot
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
         //---------------------- DEAN OF FACULTY ---------------------
         {
             path: '/mon-hoc',
@@ -408,35 +475,45 @@ export default new VueRouter({
             }
         },
 
-        {
-            path: '/lich-bieu',
-            name: 'calendar',
-            component: Calendar,
-            children: [
-                {
-                    path: '',
-                    name: 'calendarindex',
-                    component: CalendarIndex
-                },
-                {
-                    path: 'rang-buoc-lich-bieu',
-                    name: 'calendarreference',
-                    component: CalendarReference
-                },
-                {
-                    path: 'mo-lop-mon-hoc',
-                    name: 'calendarsubjectslot',
-                    component: CalendarSubjectSlot
-                }
-            ],
-            beforeEnter: (to, from, next) => {
-                if (Vue.prototype.$facultyId != null) {
-                    next()
-                } else {
-                    next(false)
-                }
-            }
-        },
+        // {
+        //     path: '/lich-bieu',
+        //     name: 'calendar',
+        //     component: Calendar,
+        //     children: [
+        //         {
+        //             path: '',
+        //             name: 'calendarindex',
+        //             component: CalendarIndex
+        //         },
+        //         {
+        //             path: 'tao-moi',
+        //             name: 'calendarcreate',
+        //             component: CalendarCreate
+        //         },
+        //         {
+        //             path: 'cap-nhat/:idCalendar',
+        //             name: 'calendarupdate',
+        //             component: CalendarUpdate
+        //         },
+        //         {
+        //             path: 'rang-buoc-lich-bieu',
+        //             name: 'calendarreference',
+        //             component: CalendarReference
+        //         },
+        //         {
+        //             path: 'mo-lop-mon-hoc',
+        //             name: 'calendarsubjectslot',
+        //             component: CalendarSubjectSlot
+        //         }
+        //     ],
+        //     beforeEnter: (to, from, next) => {
+        //         if (Vue.prototype.$facultyId != null) {
+        //             next()
+        //         } else {
+        //             next(false)
+        //         }
+        //     }
+        // },
 
         {
             path: '/lop-hoc',
@@ -462,6 +539,11 @@ export default new VueRouter({
                     path: 'ke-hoach-hoc-tap/:idClass/:idStudent',
                     name: 'classstudentplan',
                     component: ClassStudentPlan
+                },
+                {
+                    path: 'bcn-khoa-cham-diem-ren-luyen/:idClass/:idStudent',
+                    name: 'classstudentpoint',
+                    component: ClassStudentPoint
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -522,6 +604,51 @@ export default new VueRouter({
                     path: 'chi-tiet-dang-ky-loai-ke-hoach-sinh-vien/:idCourse/:idMajor/:idSemester',
                     name: 'statisticplantype',
                     component: StatisticPLanType
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/thong-ke-so-luong-dang-ky-mon-hoc',
+            name: 'statisticsubject',
+            component: StatisticSubject,
+            children: [
+                {
+                    path: '',
+                    name: 'statisticsubjectindex',
+                    component: StatisticSubjectIndex
+                },
+                {
+                    path: 'chi-tiet-dang-ky-mon-hoc-sinh-vien/:idCourse/:idMajor/:idSemester',
+                    name: 'statisticsubjectdetail',
+                    component: StatisticSubjectDetail
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$facultyId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/quan-ly-thi-lan-2',
+            name: 'examndmanage',
+            component: ExamSecondManage,
+            children: [
+                {
+                    path: '',
+                    name: 'examndmanageindex',
+                    component: ExamSecondManageIndex
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -608,6 +735,11 @@ export default new VueRouter({
                     path: 'ke-hoach-hoc-tap/:idFTClass/:idStudent',
                     name: 'formteacherclassplan',
                     component: FormTeacherClassPlan
+                },
+                {
+                    path: 'cham-diem-ren-luyen/:idFTClass/:idStudent',
+                    name: 'formteacherclasspoint',
+                    component: FormTeacherClassPoint
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -848,6 +980,121 @@ export default new VueRouter({
                     path: '/',
                     name: 'educationprostudentindex',
                     component: EducationProStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/lich-thi',
+            name: 'examstudent',
+            components: {
+                student: ExamStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'examstudentindex',
+                    component: ExamStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/dang-ky-thi-lan-2',
+            name: 'examsecondstudent',
+            components: {
+                student: ExamSecondStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'examsecondstudentindex',
+                    component: ExamSecondStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/thong-tin-ca-nhan-sinh-vien',
+            name: 'info',
+            components: {
+                student: InfoStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'infostudentindex',
+                    component: InfoStudentIndex
+                },
+                {
+                    path: '/cap-nhat',
+                    name: 'infostudentupdate',
+                    component: InfoStudentUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/danh-gia-diem-ren-luyen',
+            name: 'trainpoint',
+            components: {
+                student: TrainPointStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'trainpointindex',
+                    component: TrainPointStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/gui-yeu-cau',
+            name: 'request',
+            components: {
+                student: RequestMess
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'requestindex',
+                    component: RequestMessIndex
                 }
             ],
             beforeEnter: (to, from, next) => {

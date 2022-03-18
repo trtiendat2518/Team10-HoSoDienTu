@@ -2,7 +2,7 @@
     <div class="container">
         <div class="section-banner">
             <img class="section-banner-icon" :src="`../public/student/img/banner/newsfeed-icon.png`" alt="newsfeed-icon" />
-            <p class="section-banner-title">Kế hoạch học tập</p>
+            <p class="section-banner-title">Kế hoạch học tập học kỳ {{ semester }}</p>
         </div>
 
         <div class="grid">
@@ -34,9 +34,9 @@
                 <div class="col-md-6">
                     <div class="form-group form-select">
                         <select class="form-control" v-model="select_type">
-                            <option value="1">Đăng ký kế hoạch theo gợi ý của chủ nhiệm (cả lớp)</option>
-                            <option value="2">Đăng ký kế hoạch theo gợi ý của chủ nhiệm (cá nhân)</option>
-                            <option value="3">Đăng ký kế hoạch theo cá nhân</option>
+                            <option value="1">Đăng ký kế hoạch theo cá nhân</option>
+                            <option value="2">Đăng ký kế hoạch theo gợi ý của chủ nhiệm (cả lớp)</option>
+                            <option value="3">Đăng ký kế hoạch theo gợi ý của chủ nhiệm (cá nhân)</option>
                         </select>
                     </div>
                 </div>
@@ -97,158 +97,6 @@
             </div>
 
             <div v-show="show_type == 1" class="table-responsive">
-                <div v-if="suggest_all.length > 0">
-                    <table class="table table-nowrap">
-                        <thead class="blue-background text-white">
-                            <tr>
-                                <th class="text-center w-5" scope="col" rowspan="2">
-                                    STT
-                                </th>
-                                <th class="text-center w-15" scope="col" rowspan="2">
-                                    Mã môn học
-                                </th>
-                                <th class="text-center w-50" scope="col" rowspan="2">
-                                    Tên môn học
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Số TC
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Đã học
-                                </th>
-                                <th class="w-10 text-center">Kế hoạch</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(value, index) in programs" :key="value.subject_id">
-                                <td class="td-table text-center">
-                                    {{ (index += 1) }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_code }}
-                                </td>
-                                <td class="td-table">
-                                    {{ value.subject_name }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_credit }}
-                                </td>
-                                <td class="text-center">
-                                    <div v-if="scoreSum(value) == false"></div>
-                                    <div v-else-if="scoreSum(value) == true">
-                                        <div v-if="checkSum(value) < 4">
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </div>
-                                        <div v-else-if="checkSum(value) >= 4">
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="checkbox"
-                                        name="plansuggest_detail_program"
-                                        :value="value.subject_id"
-                                        :checked="checkValue(value)"
-                                        @change="select($event.target.checked, value.subject_id)"
-                                        disabled
-                                    />
-                                </td>
-                            </tr>
-                            <tr v-show="!programs.length">
-                                <td colspan="9">
-                                    <div class="alert alert-danger">
-                                        Không tìm thấy kết quả phù hợp!
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-else>
-                    <div class="alert alert-danger">
-                        Không tìm thấy kết quả phù hợp!
-                    </div>
-                </div>
-            </div>
-
-            <div v-show="show_type == 2" class="table-responsive">
-                <div v-if="suggest_only.length > 0">
-                    <table class="table table-nowrap">
-                        <thead class="blue-background text-white">
-                            <tr>
-                                <th class="text-center w-5" scope="col" rowspan="2">
-                                    STT
-                                </th>
-                                <th class="text-center w-15" scope="col" rowspan="2">
-                                    Mã môn học
-                                </th>
-                                <th class="text-center w-50" scope="col" rowspan="2">
-                                    Tên môn học
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Số TC
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Đã học
-                                </th>
-                                <th class="w-10 text-center">Kế hoạch</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(value, index) in programs" :key="value.subject_id">
-                                <td class="td-table text-center">
-                                    {{ (index += 1) }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_code }}
-                                </td>
-                                <td class="td-table">
-                                    {{ value.subject_name }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_credit }}
-                                </td>
-                                <td class="text-center">
-                                    <div v-if="scoreSum(value) == false"></div>
-                                    <div v-else-if="scoreSum(value) == true">
-                                        <div v-if="checkSum(value) < 4">
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </div>
-                                        <div v-else-if="checkSum(value) >= 4">
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="checkbox"
-                                        name="plansuggest_detail_program"
-                                        :value="value.subject_id"
-                                        :checked="checkValue(value)"
-                                        @change="select($event.target.checked, value.subject_id)"
-                                        disabled
-                                    />
-                                </td>
-                            </tr>
-                            <tr v-show="!programs.length">
-                                <td colspan="9">
-                                    <div class="alert alert-danger">
-                                        Không tìm thấy kết quả phù hợp!
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-else>
-                    <div class="alert alert-danger">
-                        Không tìm thấy kết quả phù hợp!
-                    </div>
-                </div>
-            </div>
-
-            <div v-show="show_type == 3" class="table-responsive">
                 <table class="table table-nowrap">
                     <thead class="blue-background text-white">
                         <tr>
@@ -314,6 +162,158 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <div v-show="show_type == 2" class="table-responsive">
+                <div v-if="suggest_all.length > 0">
+                    <table class="table table-nowrap">
+                        <thead class="blue-background text-white">
+                            <tr>
+                                <th class="text-center w-5" scope="col" rowspan="2">
+                                    STT
+                                </th>
+                                <th class="text-center w-15" scope="col" rowspan="2">
+                                    Mã môn học
+                                </th>
+                                <th class="text-center w-50" scope="col" rowspan="2">
+                                    Tên môn học
+                                </th>
+                                <th class="text-center w-10" scope="col" rowspan="2">
+                                    Số TC
+                                </th>
+                                <th class="text-center w-10" scope="col" rowspan="2">
+                                    Đã học
+                                </th>
+                                <th class="w-10 text-center">Kế hoạch</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(value, index) in suggest_all" :key="value.subject_id">
+                                <td class="td-table text-center">
+                                    {{ (index += 1) }}
+                                </td>
+                                <td class="text-center td-table">
+                                    {{ value.subject_code }}
+                                </td>
+                                <td class="td-table">
+                                    {{ value.subject_name }}
+                                </td>
+                                <td class="text-center td-table">
+                                    {{ value.subject_credit }}
+                                </td>
+                                <td class="text-center">
+                                    <div v-if="scoreSum(value) == false"></div>
+                                    <div v-else-if="scoreSum(value) == true">
+                                        <div v-if="checkSum(value) < 4">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                        <div v-else-if="checkSum(value) >= 4">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <input
+                                        type="checkbox"
+                                        name="plansuggest_detail_program"
+                                        :value="value.subject_id"
+                                        :checked="checkValue(value)"
+                                        @change="select($event.target.checked, value.subject_id)"
+                                        disabled
+                                    />
+                                </td>
+                            </tr>
+                            <tr v-show="!suggest_all.length">
+                                <td colspan="9">
+                                    <div class="alert alert-danger">
+                                        Không tìm thấy kết quả phù hợp!
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div v-else>
+                    <div class="alert alert-danger">
+                        Không tìm thấy kết quả phù hợp!
+                    </div>
+                </div>
+            </div>
+
+            <div v-show="show_type == 3" class="table-responsive">
+                <div v-if="suggest_only.length > 0">
+                    <table class="table table-nowrap">
+                        <thead class="blue-background text-white">
+                            <tr>
+                                <th class="text-center w-5" scope="col" rowspan="2">
+                                    STT
+                                </th>
+                                <th class="text-center w-15" scope="col" rowspan="2">
+                                    Mã môn học
+                                </th>
+                                <th class="text-center w-50" scope="col" rowspan="2">
+                                    Tên môn học
+                                </th>
+                                <th class="text-center w-10" scope="col" rowspan="2">
+                                    Số TC
+                                </th>
+                                <th class="text-center w-10" scope="col" rowspan="2">
+                                    Đã học
+                                </th>
+                                <th class="w-10 text-center">Kế hoạch</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(value, index) in suggest_only" :key="value.subject_id">
+                                <td class="td-table text-center">
+                                    {{ (index += 1) }}
+                                </td>
+                                <td class="text-center td-table">
+                                    {{ value.subject_code }}
+                                </td>
+                                <td class="td-table">
+                                    {{ value.subject_name }}
+                                </td>
+                                <td class="text-center td-table">
+                                    {{ value.subject_credit }}
+                                </td>
+                                <td class="text-center">
+                                    <div v-if="scoreSum(value) == false"></div>
+                                    <div v-else-if="scoreSum(value) == true">
+                                        <div v-if="checkSum(value) < 4">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                        <div v-else-if="checkSum(value) >= 4">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <input
+                                        type="checkbox"
+                                        name="plansuggest_detail_program"
+                                        :value="value.subject_id"
+                                        :checked="checkValue(value)"
+                                        @change="select($event.target.checked, value.subject_id)"
+                                        disabled
+                                    />
+                                </td>
+                            </tr>
+                            <tr v-show="!suggest_only.length">
+                                <td colspan="9">
+                                    <div class="alert alert-danger">
+                                        Không tìm thấy kết quả phù hợp!
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div v-else>
+                    <div class="alert alert-danger">
+                        Không tìm thấy kết quả phù hợp!
+                    </div>
+                </div>
             </div>
 
             <VueHtml2pdf
@@ -462,9 +462,7 @@ export default {
         }
     },
     mounted() {
-        this.fetchPrograms()
         this.fetchScore()
-        this.fetchSuggestAll()
         this.fetchCalendarPlan()
         this.fetchTimePlan()
     },
@@ -473,21 +471,28 @@ export default {
             if (value == 1) {
                 this.show_type = 1
                 this.selected = []
-                this.fetchSuggestAll()
+                this.fetchMyPlan()
             } else if (value == 2) {
                 this.show_type = 2
                 this.selected = []
-                this.fetchSuggestOnly()
+                this.fetchSuggestAll()
             } else if (value == 3) {
                 this.show_type = 3
                 this.selected = []
+                this.fetchSuggestOnly()
+            }
+        },
+        semester(value) {
+            if (value != '') {
+                this.fetchSubjectPlan()
                 this.fetchMyPlan()
             }
         }
     },
     methods: {
-        fetchPrograms(page_url) {
-            page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/${this.student_id}`
+        // Hien thi cac mon hoc co the dang ky ke hoach hoc tap
+        fetchSubjectPlan(page_url) {
+            page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/subject-plan/${this.student_id}/${this.semester}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
@@ -495,6 +500,7 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
+        // Hien thi goi y cua chu nhiem cho tat ca sinh vien trong lop
         fetchSuggestAll(page_url) {
             page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/goi-y-ca-lop/${this.student_id}`
             fetch(page_url)
@@ -507,6 +513,7 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
+        // Hien thi goi y cua chu nhiem cho ca nhan sinh vien
         fetchSuggestOnly(page_url) {
             page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/goi-y-ca-nhan/${this.student_id}`
             fetch(page_url)
@@ -519,6 +526,7 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
+        // Lay cac thong tin de hien thi trong In PDF
         fetchCalendarPlan(page_url) {
             page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/lich-ke-hoach/${this.student_id}`
             fetch(page_url)
@@ -534,9 +542,6 @@ export default {
                     })
                     this.plans = plan
 
-                    const start = new Date(plan[0].start)
-                    this.yearstart = start.getFullYear()
-                    this.credit_ref = plan[0].recurrenceRule
                     this.student_info.student_fullname = plan[0].student_fullname
                     this.student_info.student_code = plan[0].student_code
                     this.student_info.student_course = plan[0].course_name
@@ -552,6 +557,7 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
+        // Lay thong tin hoc ky, nam hoc
         fetchTimePlan(page_url) {
             page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/thoi-gian-dang-ky/${this.student_id}`
             fetch(page_url)
@@ -563,18 +569,22 @@ export default {
                         const end = new Date(el.end)
                         if (today >= start && today <= end) {
                             this.semester = el.location
+                            this.credit_ref = el.recurrenceRule
+                            const date = new Date(el.start)
+                            this.yearstart = date.getFullYear()
                         }
                     })
                 })
                 .catch(err => console.log(err))
         },
+        // Hien thi cac mon da dang ky
         fetchMyPlan(page_url) {
             page_url = `../../api/student/study-plan/dang-ky-ke-hoach-hoc-tap/my-plan/${this.student_id}/${this.semester}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
                     for (let i = 0; i <= res.data.length; i++) {
-                        this.selected.push(res.data[i].register_plan_program)
+                        this.selected.push(res.data[i].subject_id)
                     }
                 })
                 .catch(err => console.log(err))
@@ -618,23 +628,23 @@ export default {
         },
         checkValue(value) {
             if (this.show_type == 1) {
-                const check = this.suggest_all.find(sub => sub.plansuggest_detail_program == value.subject_id)
+                const check = this.plans.find(
+                    sub => sub.register_plan_program == value.subject_id && sub.register_plan_student == this.student_id
+                )
                 if (check) {
                     return true
                 } else {
                     return false
                 }
             } else if (this.show_type == 2) {
-                const check = this.suggest_only.find(sub => sub.plansuggest_detail_program == value.subject_id)
+                const check = this.suggest_all.find(sub => sub.plansuggest_detail_program == value.subject_id)
                 if (check) {
                     return true
                 } else {
                     return false
                 }
             } else if (this.show_type == 3) {
-                const check = this.plans.find(
-                    sub => sub.register_plan_program == value.subject_id && sub.register_plan_student == this.student_id
-                )
+                const check = this.suggest_only.find(sub => sub.plansuggest_detail_program == value.subject_id)
                 if (check) {
                     return true
                 } else {

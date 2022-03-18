@@ -17,6 +17,7 @@ Vue.component('pagination', require('./components/pagination/PaginationComponent
 Vue.component('admin-avatar', require('./components/avatar/AdminAvatarComponent.vue').default)
 Vue.component('deanfaculty-avatar', require('./components/avatar/DeanFacultyAvatarComponent.vue').default)
 Vue.component('formteacher-avatar', require('./components/avatar/FormTeacherAvatarComponent.vue').default)
+Vue.component('student-avatar', require('./components/avatar/StudentAvatarComponent.vue').default)
 
 //----------------------------------- STUDENT -------------------------------------------
 Vue.component('small-slidebar-component', require('./components/student/layouts/SmallSlidebarComponent.vue').default)

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin\Calendar;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CalendarResource;
 use App\Models\CalendarSubject;
 use App\Http\Resources\CalendarSubjectResource;
+use App\Models\Calendar;
+use App\Models\CalendarPlan;
 use Illuminate\Http\Request;
 
 class CalendarSubjectController extends Controller
@@ -186,5 +189,15 @@ class CalendarSubjectController extends Controller
             ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_calendar_subject.calendar_subject_lecturer')
             ->where('tbl_calendar_subject.calendar_subject_id', $calendar_subject_id)->get();
         return CalendarSubjectResource::collection($joins);
+    }
+
+    public function show_subject($id)
+    {
+        $calendar = Calendar::find($id);
+        $calendarPlan = Calendar::join('tbl_calendar_plan', 'tbl_calendar_plan.calendar_id', '=', 'tbl_calendar.id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_plan.calendar_plan_subject')
+            ->where('tbl_calendar.raw', $calendar->raw)
+            ->where('tbl_calendar.body', $calendar->body)->get();
+        return CalendarResource::collection($calendarPlan);
     }
 }

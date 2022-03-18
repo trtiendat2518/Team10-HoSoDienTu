@@ -8,6 +8,8 @@ use App\Models\RegisterSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\RegisterPlanResource;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StatisticPLanExport;
 
 class RegisterPlanController extends Controller
 {
@@ -107,6 +109,7 @@ class RegisterPlanController extends Controller
     public function statistic_student_plan($course, $major, $semester)
     {
         $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
             ->where('student_course', $course)->where('student_major', $major)
             ->where('tbl_register_plan.register_plan_semester', $semester)->get();
         return RegisterPlanResource::collection($joins);
@@ -142,9 +145,33 @@ class RegisterPlanController extends Controller
     public function statistic_detail_type($course, $major, $semester)
     {
         $joins = RegisterPlan::join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->select(
+                'tbl_register_plan.register_plan_student',
+                'tbl_register_plan.register_plan_type',
+                DB::raw('student_code, student_fullname, student_email')
+            )
+            ->groupBy('tbl_register_plan.register_plan_student', 'tbl_register_plan.register_plan_type')
             ->where('student_course', $course)->where('student_major', $major)
-            ->where('tbl_register_plan.register_plan_semester', $semester)->get()
-            ->unique('tbl_register_plan.register_plan_student');
+            ->where('tbl_register_plan.register_plan_semester', $semester)->get();
         return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_subject_plan($course, $major, $semester)
+    {
+        $joins = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
+            ->select(
+                'tbl_register_plan.register_plan_program',
+                DB::raw('subject_name, subject_code, count(*) as total')
+            )
+            ->groupBy('tbl_register_plan.register_plan_program')
+            ->where('tbl_student.student_course', $course)->where('tbl_student.student_major', $major)
+            ->where('tbl_register_plan.register_plan_semester', $semester)->get();
+        return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_export($course, $major, $semester)
+    {
+        return Excel::download(new StatisticPLanExport($course, $major, $semester), 'statistic_register_plan.xlsx');
     }
 }

@@ -44,6 +44,7 @@ class StudyPlanController extends Controller
 
         $quey = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
             ->where('tbl_register_plan.register_plan_student', $request->student_id)
+            ->where('tbl_register_plan.register_plan_again', 0)
             ->where('tbl_register_plan.register_plan_semester', $request->semester)->get();
 
         if ($quey) {
@@ -111,6 +112,7 @@ class StudyPlanController extends Controller
     {
         $joins = PlanSuggest::join('tbl_plansuggest_detail', 'tbl_plansuggest_detail.plansuggest_detail_ref', '=', 'tbl_plan_suggest.plan_suggest_id')
             ->join('tbl_student', 'tbl_student.student_class', '=', 'tbl_plan_suggest.plan_suggest_class')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_plansuggest_detail.plansuggest_detail_program')
             ->where('tbl_student.student_id', $student_id)
             ->where('tbl_plan_suggest.plan_suggest_student', 0)->get();
         return PlanSuggestResource::collection($joins);
@@ -120,6 +122,7 @@ class StudyPlanController extends Controller
     {
         $joins = PlanSuggest::join('tbl_plansuggest_detail', 'tbl_plansuggest_detail.plansuggest_detail_ref', '=', 'tbl_plan_suggest.plan_suggest_id')
             ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_plan_suggest.plan_suggest_student')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_plansuggest_detail.plansuggest_detail_program')
             ->where('tbl_student.student_id', $student_id)->get();
         return PlanSuggestResource::collection($joins);
     }
@@ -147,6 +150,29 @@ class StudyPlanController extends Controller
         //
     }
 
+    public function subject_plan($student_id, $semester)
+    {
+        $find = Student::find($student_id);
+        $joins = Calendar::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->join('tbl_calendar_plan', 'tbl_calendar_plan.calendar_id', '=', 'tbl_calendar.id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_plan.calendar_plan_subject')
+            ->where('tbl_calendar.raw', $find->student_course)
+            ->where('tbl_calendar.body', $find->student_major)
+            ->where('tbl_calendar.location', $semester)->get();
+        return CalendarResource::collection($joins);
+    }
+
+    public function subject_fail_plan($id)
+    {
+        $joins = Calendar::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->join('tbl_calendar_plan', 'tbl_calendar_plan.calendar_id', '=', 'tbl_calendar.id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_plan.calendar_plan_subject')
+            ->where('tbl_calendar.id', $id)->get();
+        return CalendarResource::collection($joins);
+    }
+
     public function calendar_plan($student_id)
     {
         $find = Student::find($student_id);
@@ -160,6 +186,7 @@ class StudyPlanController extends Controller
             ->where('tbl_course.course_id', $find->student_course)
             ->where('tbl_major.major_id', $find->student_major)
             ->where('tbl_register_plan.register_plan_student', $student_id)
+            ->where('tbl_register_plan.register_plan_again', 0)
             ->where('tbl_calendar.calendarId', 0)->get();
 
         return CalendarResource::collection($joins);
@@ -180,14 +207,24 @@ class StudyPlanController extends Controller
     public function my_plan($student_id, $semester)
     {
         $query = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
-            ->where('register_plan_student', $student_id)->where('register_plan_semester', $semester)->get();
+            ->where('register_plan_student', $student_id)->where('register_plan_semester', $semester)
+            ->where('register_plan_again', 0)->get();
+        return RegisterPlanResource::collection($query);
+    }
+
+    public function my_plan_again($student_id, $semester)
+    {
+        $query = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+            ->where('register_plan_student', $student_id)->where('register_plan_semester', $semester)
+            ->where('register_plan_again', 1)->get();
         return RegisterPlanResource::collection($query);
     }
 
     public function my_all_plan($student_id)
     {
         $query = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
-            ->where('register_plan_student', $student_id)->get();
+            ->where('register_plan_student', $student_id)
+            ->orderBy('register_plan_semester', 'DESC')->get();
         return RegisterPlanResource::collection($query);
     }
 
@@ -219,5 +256,65 @@ class StudyPlanController extends Controller
                 $message->from($to_email, $to_name);
             }
         );
+    }
+
+    public function learn_again($student_id)
+    {
+        $find = Student::find($student_id);
+        $joins = Calendar::join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')
+            ->where('tbl_calendar.body', $find->student_major)
+            ->where('tbl_calendar.calendarId', 0)->get();
+        return CalendarResource::collection($joins);
+    }
+
+    public function plan_again(Request $request)
+    {
+        $data = $request->validate([
+            'subject' => ['required'],
+        ], [
+            'subject.required' => 'Vui lòng chọn môn học!'
+        ]);
+
+        foreach ($request->subject as $subject_id) {
+            $quey = RegisterPlan::join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
+                ->where('tbl_register_plan.register_plan_student', $request->student_id)
+                ->where('tbl_register_plan.register_plan_program', $subject_id)->get();
+
+            if ($quey) {
+                foreach ($quey as $key => $value) {
+                    $value->delete();
+                }
+
+                $study_plan = new RegisterPlan();
+                $study_plan->register_plan_student = $request->student_id;
+                $study_plan->register_plan_program = $subject_id;
+                $study_plan->register_plan_semester = $request->semester;
+                $study_plan->register_plan_yearstart = $request->year_start;
+                $study_plan->register_plan_yearend = $request->year_start + 1;
+                date_default_timezone_set('Asia/Ho_Chi_Minh');
+                $study_plan->register_plan_date = now();
+                $study_plan->register_plan_type =  1;
+                $study_plan->register_plan_again =  1;
+                $study_plan->save();
+            }
+        }
+    }
+
+    public function cancel_plan_again($subject_id)
+    {
+        $plan = RegisterPlan::where('register_plan_program', $subject_id)->get();
+        foreach ($plan as $key => $value) {
+            $value->register_plan_semester = $value->register_plan_semester - 1;
+            $value->register_plan_again = 0;
+            $value->save();
+        }
+    }
+
+    public function subject_again_1($student_id)
+    {
+        $regiserPlan = RegisterPlan::where('register_plan_student', $student_id)
+            ->where('register_plan_again', 1)->get();
+        return RegisterPlanResource::collection($regiserPlan);
     }
 }
