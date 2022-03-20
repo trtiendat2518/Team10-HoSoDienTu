@@ -152,6 +152,7 @@ ul {
 button,
 input[type='password'],
 input[type='text'],
+input[type='file'],
 label,
 select,
 textarea {
@@ -168,6 +169,7 @@ label {
 button,
 input[type='password'],
 input[type='text'],
+input[type='file'],
 select,
 textarea {
     width: 100%;
@@ -178,6 +180,7 @@ textarea {
 
 input[type='password'],
 input[type='text'],
+input[type='file'],
 select,
 textarea {
     background-color: #fff;
@@ -188,47 +191,54 @@ textarea {
 
 input[type='password']:focus,
 input[type='text']:focus,
+input[type='file']:focus,
 select:focus,
 textarea:focus {
     border-color: #dd571c;
 }
 
 input[type='password'],
-input[type='text'] {
+input[type='text'],
+input[type='file'] {
     height: 54px;
     padding: 0 18px;
 }
 
 input[type='password']::-webkit-input-placeholder,
-input[type='text']::-webkit-input-placeholder {
+input[type='text']::-webkit-input-placeholder,
+input[type='file']::-webkit-input-placeholder {
     color: #adafca;
     font-size: 0.875rem;
     font-weight: 500;
 }
 
 input[type='password']::-moz-placeholder,
-input[type='text']::-moz-placeholder {
+input[type='text']::-moz-placeholder,
+input[type='file']::-moz-placeholder {
     color: #adafca;
     font-size: 0.875rem;
     font-weight: 500;
 }
 
 input[type='password']:-ms-input-placeholder,
-input[type='text']:-ms-input-placeholder {
+input[type='text']:-ms-input-placeholder,
+input[type='file']:-ms-input-placeholder {
     color: #adafca;
     font-size: 0.875rem;
     font-weight: 500;
 }
 
 input[type='password']::-ms-input-placeholder,
-input[type='text']::-ms-input-placeholder {
+input[type='text']::-ms-input-placeholder,
+input[type='file']::-ms-input-placeholder {
     color: #adafca;
     font-size: 0.875rem;
     font-weight: 500;
 }
 
 input[type='password']::placeholder,
-input[type='text']::placeholder {
+input[type='text']::placeholder,
+input[type='file']::placeholder {
     color: #adafca;
     font-size: 0.875rem;
     font-weight: 500;
@@ -356,7 +366,8 @@ textarea::placeholder {
     position: relative;
 }
 
-.form-input-decorated input[type='text'] {
+.form-input-decorated input[type='text'],
+.form-input-decorated input[type='file'] {
     padding-right: 60px;
 }
 
@@ -375,6 +386,7 @@ textarea::placeholder {
 
 .form-input.dark input[type='password'],
 .form-input.dark input[type='text'],
+.form-input.dark input[type='file'],
 .form-input.dark textarea {
     border: none;
     background-color: #4e4ac8;
@@ -383,6 +395,7 @@ textarea::placeholder {
 
 .form-input.dark input[type='password']::-webkit-input-placeholder,
 .form-input.dark input[type='text']::-webkit-input-placeholder,
+.form-input.dark input[type='file']::-webkit-input-placeholder,
 .form-input.dark textarea::-webkit-input-placeholder {
     color: #dc3545;
     opacity: 0.6;
@@ -390,6 +403,7 @@ textarea::placeholder {
 
 .form-input.dark input[type='password']::-moz-placeholder,
 .form-input.dark input[type='text']::-moz-placeholder,
+.form-input.dark input[type='file']::-moz-placeholder,
 .form-input.dark textarea::-moz-placeholder {
     color: #dc3545;
     opacity: 0.6;
@@ -397,6 +411,7 @@ textarea::placeholder {
 
 .form-input.dark input[type='password']:-ms-input-placeholder,
 .form-input.dark input[type='text']:-ms-input-placeholder,
+.form-input.dark input[type='file']:-ms-input-placeholder,
 .form-input.dark textarea:-ms-input-placeholder {
     color: #dc3545;
     opacity: 0.6;
@@ -404,6 +419,7 @@ textarea::placeholder {
 
 .form-input.dark input[type='password']::-ms-input-placeholder,
 .form-input.dark input[type='text']::-ms-input-placeholder,
+.form-input.dark input[type='file']::-ms-input-placeholder,
 .form-input.dark textarea::-ms-input-placeholder {
     color: #dc3545;
     opacity: 0.6;
@@ -411,6 +427,7 @@ textarea::placeholder {
 
 .form-input.dark input[type='password']::placeholder,
 .form-input.dark input[type='text']::placeholder,
+.form-input.dark input[type='file']::placeholder,
 .form-input.dark textarea::placeholder {
     color: #dc3545;
     opacity: 0.6;
@@ -2539,7 +2556,7 @@ figure > img {
 }
 
 .user-short-description {
-    padding-top: 84px;
+    padding-top: 20px;
     position: relative;
 }
 
@@ -4259,8 +4276,6 @@ figure > img {
     height: 24px;
     padding: 0 8px;
     border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 2px 3px 10px 0 rgba(94, 92, 154, 0.12);
     font-size: 0.75rem;
     font-weight: 700;
     line-height: 24px;

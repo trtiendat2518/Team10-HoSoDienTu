@@ -8,6 +8,8 @@ use App\Models\RegisterSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\RegisterPlanResource;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StatisticPLanExport;
 
 class RegisterPlanController extends Controller
 {
@@ -166,5 +168,10 @@ class RegisterPlanController extends Controller
             ->where('tbl_student.student_course', $course)->where('tbl_student.student_major', $major)
             ->where('tbl_register_plan.register_plan_semester', $semester)->get();
         return RegisterPlanResource::collection($joins);
+    }
+
+    public function statistic_export($course, $major, $semester)
+    {
+        return Excel::download(new StatisticPLanExport($course, $major, $semester), 'statistic_register_plan.xlsx');
     }
 }
