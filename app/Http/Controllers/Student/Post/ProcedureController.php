@@ -39,7 +39,8 @@ class ProcedureController extends Controller
      */
     public function show($id)
     {
-        //
+        $show = Procedure::where('procedure_id', $id)->where('procedure_status', 0)->get();
+        return ProcedureResource::collection($show);
     }
 
     /**
