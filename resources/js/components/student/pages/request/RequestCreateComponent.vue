@@ -67,13 +67,13 @@ export default {
             this.request_file = e.target.files[0]
         },
         send() {
-            if (this.$refs.file.value == '') {
+            if (this.request_file == '') {
                 let formData = new FormData()
                 formData.append('student_id', this.student_id)
                 formData.append('request_title', this.request_title)
                 formData.append('request_content', this.request_content)
                 axios
-                    .post('../../api/student/request-to-ft/gui-yeu-cau/file', formData)
+                    .post('../../api/student/request-to-ft/gui-yeu-cau', formData)
                     .then(res => {
                         this.request_title = ''
                         this.request_content = ''
@@ -121,7 +121,7 @@ export default {
                 let file = this.$refs.file.files[0]
                 formData.append('file', file)
                 axios
-                    .post('../../api/student/request-to-ft/gui-yeu-cau', formData)
+                    .post('../../api/student/request-to-ft/gui-yeu-cau/file', formData)
                     .then(res => {
                         this.request_title = ''
                         this.request_content = ''

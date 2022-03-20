@@ -39,7 +39,7 @@
                         <div class="form-item mt-3">
                             <div class="form-input small active">
                                 <label for="profile-name" class="mb-5">Tệp đính kèm (tệp &#8804; 5MB)</label>
-                                <input type="file" class="half" name="request_file" ref="file" />
+                                <input type="file" class="half" name="request_file" ref="file" @change="onFileChange" />
                             </div>
                         </div>
                         <div class="form-item mt-3">
@@ -82,6 +82,9 @@ export default {
         }
     },
     methods: {
+        onFileChange(e) {
+            this.request_file = e.target.files[0]
+        },
         show(page_url) {
             let vm = this
             page_url = `../../api/student/request-to-ft/gui-yeu-cau/${this.request_id}`
@@ -95,7 +98,7 @@ export default {
                 .catch(err => console.log(err))
         },
         update() {
-            if (this.$refs.file.value == '') {
+            if (this.request_file == '') {
                 let formData = new FormData()
                 formData.append('student_id', this.student_id)
                 formData.append('request_title', this.request_title)
