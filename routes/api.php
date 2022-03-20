@@ -332,4 +332,8 @@ Route::prefix('student')->group(function () {
         Route::get('gui-yeu-cau/showdata/{student_id}/{currentEntries}', 'Student\Post\RequestController@showdata');
         Route::resource('gui-yeu-cau', 'Student\Post\RequestController');
     });
+
+    Route::prefix('procedure')->group(function () {
+        Route::resource('yeu-cau-thuc-tuc-sv', 'Student\Post\ProcedureController');
+    });
 });
