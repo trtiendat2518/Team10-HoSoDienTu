@@ -137,6 +137,15 @@ import InfoStudentUpdate from './components/student/pages/info/InfoUpdateCompone
 import TrainPointStudent from './components/student/pages/train_point/TrainPointStudentComponent.vue'
 import TrainPointStudentIndex from './components/student/pages/train_point/TrainPointStudentIndexComponent.vue'
 
+import RequestMess from './components/student/pages/request/RequestComponent.vue'
+import RequestMessSend from './components/student/pages/request/RequestCreateComponent.vue'
+import RequestMessIndex from './components/student/pages/request/RequestIndexComponent.vue'
+import RequestMessUpdate from './components/student/pages/request/RequestUpdateComponent.vue'
+
+import ProcedureStudent from './components/student/pages/procedures/ProcedureStudentComponent.vue'
+import ProcedureStudentIndex from './components/student/pages/procedures/ProcedureStudentIndexComponent.vue'
+import ProcedureStudentDetail from './components/student/pages/procedures/ProcedureStudentDetailComponent.vue'
+
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
 if (document.querySelector("meta[name='admin-fullname']") && document.querySelector("meta[name='admin-id']")) {
@@ -1045,7 +1054,7 @@ export default new VueRouter({
                     component: InfoStudentIndex
                 },
                 {
-                    path: '/cap-nhat',
+                    path: 'cap-nhat',
                     name: 'infostudentupdate',
                     component: InfoStudentUpdate
                 }
@@ -1070,6 +1079,65 @@ export default new VueRouter({
                     path: '/',
                     name: 'trainpointindex',
                     component: TrainPointStudentIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/gui-yeu-cau',
+            name: 'request',
+            components: {
+                student: RequestMess
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'requestsend',
+                    component: RequestMessSend
+                },
+                {
+                    path: 'danh-sach',
+                    name: 'requestindex',
+                    component: RequestMessIndex
+                },
+                {
+                    path: ':idReq',
+                    name: 'requestupdate',
+                    component: RequestMessUpdate
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/yeu-cau-thu-tuc-sinh-vien',
+            name: 'procedurestudent',
+            components: {
+                student: ProcedureStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'procedurestudentindex',
+                    component: ProcedureStudentIndex
+                },
+                {
+                    path: ':idProcedureStudent',
+                    name: 'procedurestudentdetail',
+                    component: ProcedureStudentDetail
                 }
             ],
             beforeEnter: (to, from, next) => {
