@@ -163,7 +163,7 @@ Route::prefix('admin')->group(function () {
     Route::prefix('procedure-require')->group(function () {
         Route::get('yeu-cau-thu-tuc/filter/{value}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@filter');
         Route::get('yeu-cau-thu-tuc/search/{query}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@search');
-        Route::patch('yeu-cau-thu-tuc/change/{procedure_require_id}', 'Admin\Posts\ProcedureRequireController@change');
+        Route::patch('yeu-cau-thu-tuc/change/{procedure_require_id}/{admin_id}', 'Admin\Posts\ProcedureRequireController@change');
         Route::resource('yeu-cau-thu-tuc', 'Admin\Posts\ProcedureRequireController');
     });
 
@@ -209,6 +209,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('calendar-subject')->group(function () {
+        Route::patch('lich-mo-lop-hoc/change/{calendar_subject_id}', 'Admin\Calendar\CalendarSubjectController@change');
         Route::get('lich-mo-lop-hoc/show-subjects/{id}', 'Admin\Calendar\CalendarSubjectController@show_subject');
         Route::get('lich-mo-lop-hoc/detail/{calendar_subject_id}', 'Admin\Calendar\CalendarSubjectController@detail');
         Route::get('lich-mo-lop-hoc/search/{query}/{currentEntries}', 'Admin\Calendar\CalendarSubjectController@search');
@@ -334,6 +335,7 @@ Route::prefix('student')->group(function () {
     });
 
     Route::prefix('procedure')->group(function () {
+        Route::get('yeu-cau-thuc-tuc-sv/my-procedures/{student_id}', 'Student\Post\ProcedureController@my_procedures');
         Route::resource('yeu-cau-thuc-tuc-sv', 'Student\Post\ProcedureController');
     });
 });

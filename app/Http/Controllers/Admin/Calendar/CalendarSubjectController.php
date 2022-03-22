@@ -46,7 +46,8 @@ class CalendarSubjectController extends Controller
             'calendar_subject_type' => ['required'],
             'calendar_subject_slot' => ['required', 'max:11', 'gte:1'],
             'calendar_subject_lecturer' => ['required'],
-            'calendar_subject_schedule' => ['required', 'max:255'],
+            'calendar_subject_day' => ['required'],
+            'calendar_subject_time' => ['required'],
             'calendar_subject_start' => ['required', 'after:today'],
             'calendar_subject_end' => ['required', 'after:calendar_subject_start'],
         ], [
@@ -60,9 +61,8 @@ class CalendarSubjectController extends Controller
             'calendar_subject_slot.notspecial_spaces' => 'Số lượng lớp học không được chứa ký tự đặc biệt!',
             'calendar_subject_slot.gte' => 'Số lượng lớp học lớn hơn hoặc bằng 1!',
 
-            'calendar_subject_schedule.required' => 'Lịch học không được để trống!',
-            'calendar_subject_schedule.max' => 'Lịch học không nhập quá 255 chữ!',
-            'calendar_subject_schedule.notspecial_spaces' => 'Lịch học không được chứa ký tự đặc biệt!',
+            'calendar_subject_day.required' => 'Ngày học không được để trống!',
+            'calendar_subject_time.required' => 'Thời gian học không được để trống!',
 
             'calendar_subject_start.required' => 'Vui lòng chọn ngày bắt đầu môn học!',
             'calendar_subject_start.after' => 'Ngày bắt đầu môn học phải chọn từ ngày hôm nay trở đi!',
@@ -77,7 +77,8 @@ class CalendarSubjectController extends Controller
         $calendar->calendar_subject_type = $data['calendar_subject_type'];
         $calendar->calendar_subject_slot = $data['calendar_subject_slot'];
         $calendar->calendar_subject_lecturer = $data['calendar_subject_lecturer'];
-        $calendar->calendar_subject_schedule = $data['calendar_subject_schedule'];
+        $calendar->calendar_subject_day = $data['calendar_subject_day'];
+        $calendar->calendar_subject_time = $data['calendar_subject_time'];
         $calendar->calendar_subject_start = $data['calendar_subject_start'];
         $calendar->calendar_subject_end = $data['calendar_subject_end'];
         $calendar->save();
@@ -124,7 +125,8 @@ class CalendarSubjectController extends Controller
             'calendar_subject_type' => ['required'],
             'calendar_subject_slot' => ['required', 'max:11', 'gte:1'],
             'calendar_subject_lecturer' => ['required'],
-            'calendar_subject_schedule' => ['required', 'max:255'],
+            'calendar_subject_day' => ['required'],
+            'calendar_subject_time' => ['required'],
             'calendar_subject_start' => ['required'],
             'calendar_subject_end' => ['required', 'after:calendar_subject_start'],
         ], [
@@ -138,9 +140,8 @@ class CalendarSubjectController extends Controller
             'calendar_subject_slot.notspecial_spaces' => 'Số lượng lớp học không được chứa ký tự đặc biệt!',
             'calendar_subject_slot.gte' => 'Số lượng lớp học lớn hơn hoặc bằng 1!',
 
-            'calendar_subject_schedule.required' => 'Lịch học không được để trống!',
-            'calendar_subject_schedule.max' => 'Lịch học không nhập quá 255 chữ!',
-            'calendar_subject_schedule.notspecial_spaces' => 'Lịch học không được chứa ký tự đặc biệt!',
+            'calendar_subject_day.required' => 'Ngày học không được để trống!',
+            'calendar_subject_time.required' => 'Thời gian học không được để trống!',
 
             'calendar_subject_start.required' => 'Vui lòng chọn ngày bắt đầu môn học!',
 
@@ -154,7 +155,8 @@ class CalendarSubjectController extends Controller
         $calendar->calendar_subject_type = $data['calendar_subject_type'];
         $calendar->calendar_subject_slot = $data['calendar_subject_slot'];
         $calendar->calendar_subject_lecturer = $data['calendar_subject_lecturer'];
-        $calendar->calendar_subject_schedule = $data['calendar_subject_schedule'];
+        $calendar->calendar_subject_day = $data['calendar_subject_day'];
+        $calendar->calendar_subject_time = $data['calendar_subject_time'];
         $calendar->calendar_subject_start = $data['calendar_subject_start'];
         $calendar->calendar_subject_end = $data['calendar_subject_end'];
         $calendar->save();
@@ -199,5 +201,17 @@ class CalendarSubjectController extends Controller
             ->where('tbl_calendar.raw', $calendar->raw)
             ->where('tbl_calendar.body', $calendar->body)->get();
         return CalendarResource::collection($calendarPlan);
+    }
+
+    public function change($calendar_subject_id)
+    {
+        $find = CalendarSubject::find($calendar_subject_id);
+        if ($find->calendar_subject_status == 0) {
+            $find->calendar_subject_status = 1;
+            $find->save();
+        } else {
+            $find->calendar_subject_status = 0;
+            $find->save();
+        }
     }
 }

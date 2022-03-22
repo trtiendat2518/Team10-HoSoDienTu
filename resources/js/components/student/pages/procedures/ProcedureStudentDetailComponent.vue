@@ -16,7 +16,10 @@
                 <div class="widget-box mt-3 backgound-footer">
                     <div class="row">
                         <div class="col-md-4">Thời gian xử lý: {{ procedure.procedure_time }} ngày</div>
-                        <div class="col-md-3">Phí thủ tục: {{ procedure.procedure_fee | formatNumber }} VNĐ</div>
+                        <div class="col-md-3">
+                            <div v-if="procedure.procedure_fee == 0">Phí thủ tục: Miễn phí</div>
+                            <div v-else>Phí thủ tục: {{ procedure.procedure_fee | formatNumber }} VNĐ</div>
+                        </div>
                         <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-3">Số lượng:</div>
@@ -39,9 +42,19 @@
                                 Quay lại
                             </router-link>
                         </div>
-                        <div class="col-md-4">Tổng tiền: {{ (procedure.procedure_fee * quantity) | formatNumber }} VNĐ</div>
                         <div class="col-md-4">
-                            <router-link class=" btn btn-danger w-50 float-right" tag="button" :to="{ name: 'procedurestudentindex' }">
+                            <div v-if="procedure.procedure_fee == 0">Tổng tiền: Miễn phí</div>
+                            <div v-else>Tổng tiền: {{ (procedure.procedure_fee * quantity) | formatNumber }} VNĐ</div>
+                        </div>
+                        <div class="col-md-4">
+                            <router-link
+                                class=" btn btn-danger w-50 float-right"
+                                tag="button"
+                                :to="{
+                                    name: 'procedurestudentrequire',
+                                    params: { idProcedureStudent: procedure.procedure_id, totalQuantity: quantity }
+                                }"
+                            >
                                 Tiếp tục
                             </router-link>
                         </div>

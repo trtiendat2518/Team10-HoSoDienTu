@@ -83,6 +83,7 @@ class CalendarController extends Controller
         if ($calendar->calendarId == 0) {
             $calendar->location = $data['location'];
             $calendar->recurrenceRule = $data['recurrenceRule'];
+            $calendar->bgColor = '#f4cc60';
             $calendar->save();
 
             foreach ($request->subject as $subject) {
@@ -91,11 +92,21 @@ class CalendarController extends Controller
                 $plan->calendar_plan_subject = $subject;
                 $plan->save();
             }
-        } else if ($calendar->calendarId == 1 || $calendar->calendarId == 4) {
+        } else if ($calendar->calendarId == 1) {
             $calendar->location = $data['location'];
             $calendar->recurrenceRule = $data['recurrenceRule'];
+            $calendar->bgColor = '#fd7a86';
             $calendar->save();
-        } else {
+        } else if ($calendar->calendarId == 2) {
+            $calendar->bgColor = '#85a2f2';
+            $calendar->save();
+        } else if ($calendar->calendarId == 3) {
+            $calendar->bgColor = '#78d9f1';
+            $calendar->save();
+        } else if ($calendar->calendarId == 4) {
+            $calendar->location = $data['location'];
+            $calendar->recurrenceRule = $data['recurrenceRule'];
+            $calendar->bgColor = '#86dc9a';
             $calendar->save();
         }
     }

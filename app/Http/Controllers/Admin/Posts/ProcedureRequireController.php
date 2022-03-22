@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProcedureRequire;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProcedureRequireResource;
+use App\Models\Admin;
 
 class ProcedureRequireController extends Controller
 {
@@ -105,10 +106,12 @@ class ProcedureRequireController extends Controller
         return ProcedureRequireResource::collection($join);
     }
 
-    public function change(Request $request, $procedure_require_id)
+    public function change(Request $request, $procedure_require_id, $admin_id)
     {
+        $admin = Admin::find($admin_id);
         $pst = ProcedureRequire::find($procedure_require_id);
         $pst->procedure_require_status = $request->procedure_require_status;
+        $pst->procedure_require_admin = $admin->admin_fullname;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $pst->procedure_require_dateget = now();
         $pst->save();

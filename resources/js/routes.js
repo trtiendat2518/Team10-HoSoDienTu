@@ -120,6 +120,7 @@ import PostNewsDetail from './components/student/pages/news/PostNewsDetailCompon
 
 import Timetable from './components/student/pages/timetable/TimetableComponent.vue'
 import TimetableIndex from './components/student/pages/timetable/TimetableIndexComponent.vue'
+import TimetableCalendar from './components/student/pages/timetable/TimetableCalendarComponent.vue'
 
 import EducationProStudent from './components/student/pages/education_program/EducationProgramComponent.vue'
 import EducationProStudentIndex from './components/student/pages/education_program/EducationProgramIndexComponent.vue'
@@ -145,6 +146,8 @@ import RequestMessUpdate from './components/student/pages/request/RequestUpdateC
 import ProcedureStudent from './components/student/pages/procedures/ProcedureStudentComponent.vue'
 import ProcedureStudentIndex from './components/student/pages/procedures/ProcedureStudentIndexComponent.vue'
 import ProcedureStudentDetail from './components/student/pages/procedures/ProcedureStudentDetailComponent.vue'
+import ProcedureStudentRequire from './components/student/pages/procedures/ProcedureStudentRequireComponent.vue'
+import ProcedureStudentList from './components/student/pages/procedures/ProcedureStudentListComponent.vue'
 
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
@@ -964,6 +967,11 @@ export default new VueRouter({
                     path: '/',
                     name: 'timetableindex',
                     component: TimetableIndex
+                },
+                {
+                    path: 'thoi-khoa-bieu',
+                    name: 'timetablecalendar',
+                    component: TimetableCalendar
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -1135,9 +1143,19 @@ export default new VueRouter({
                     component: ProcedureStudentIndex
                 },
                 {
-                    path: ':idProcedureStudent',
+                    path: 'chi-tiet?id=:idProcedureStudent',
                     name: 'procedurestudentdetail',
                     component: ProcedureStudentDetail
+                },
+                {
+                    path: ':idProcedureStudent?&total=:totalQuantity/dien-thong-tin-yeu-cau',
+                    name: 'procedurestudentrequire',
+                    component: ProcedureStudentRequire
+                },
+                {
+                    path: 'danh-sach-da-yeu-cau',
+                    name: 'procedurestudentlist',
+                    component: ProcedureStudentList
                 }
             ],
             beforeEnter: (to, from, next) => {
