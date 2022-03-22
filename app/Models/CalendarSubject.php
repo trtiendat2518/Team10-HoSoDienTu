@@ -15,7 +15,8 @@ class CalendarSubject extends Model
         'calendar_subject_slot',
         'calendar_subject_registered',
         'calendar_subject_lecturer',
-        'calendar_subject_schedule',
+        'calendar_subject_day',
+        'calendar_subject_time',
         'calendar_subject_start',
         'calendar_subject_end',
     ];

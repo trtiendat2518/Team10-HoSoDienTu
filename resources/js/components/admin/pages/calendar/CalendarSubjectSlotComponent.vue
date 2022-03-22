@@ -59,11 +59,12 @@
                                 <tr>
                                     <th class="text-white">Mã môn học</th>
                                     <th class="text-white">Tên môn học</th>
-                                    <th class="text-white">Số lượng</th>
-                                    <th class="text-white">Đã ĐK</th>
-                                    <th class="text-white">Loại</th>
-                                    <th class="text-white">Ngày bắt đầu</th>
-                                    <th class="text-white">Ngày kết thúc</th>
+                                    <th class="text-white text-center">Số lượng</th>
+                                    <th class="text-white text-center">Đã ĐK</th>
+                                    <th class="text-white text-center">Loại</th>
+                                    <th class="text-white text-center">Ngày bắt đầu</th>
+                                    <th class="text-white text-center">Ngày kết thúc</th>
+                                    <th class="text-white text-center">Trạng thái</th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -74,14 +75,25 @@
                                         <a href="javascript:void(0)">{{ subject.subject_code }}</a>
                                     </td>
                                     <td>{{ subject.subject_name }}</td>
-                                    <td>{{ subject.calendar_subject_slot }}</td>
-                                    <td>{{ subject.calendar_subject_registered }}</td>
-                                    <td>
+                                    <td class="text-center">{{ subject.calendar_subject_slot }}</td>
+                                    <td class="text-center">{{ subject.calendar_subject_registered }}</td>
+                                    <td class="text-center">
                                         <div v-if="subject.calendar_subject_type == 0">Lý thuyết</div>
                                         <div v-else-if="subject.calendar_subject_type == 1">Thực hành</div>
                                     </td>
-                                    <td>{{ subject.calendar_subject_start | formatDate }}</td>
-                                    <td>{{ subject.calendar_subject_end | formatDate }}</td>
+                                    <td class="text-center">{{ subject.calendar_subject_start | formatDate }}</td>
+                                    <td class="text-center">{{ subject.calendar_subject_end | formatDate }}</td>
+                                    <td class="text-center">
+                                        <div v-if="subject.calendar_subject_status == 0">
+                                            <button class="fa fa-eye btn-eye" @click="change(subject.calendar_subject_id)"></button>
+                                        </div>
+                                        <div v-else>
+                                            <button
+                                                class="fa fa-eye-slash btn-eye-slash"
+                                                @click="change(subject.calendar_subject_id)"
+                                            ></button>
+                                        </div>
+                                    </td>
                                     <td style="text-align: center">
                                         <button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(subject)"></button>
                                     </td>
@@ -286,22 +298,57 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="mt-3">Lịch học <span class="text-danger">(*)</span></label>
-                                <textarea
-                                    type="number"
-                                    v-model="form.calendar_subject_schedule"
-                                    name="calendar_subject_schedule"
-                                    class="form-control"
-                                    :class="{ 'is-invalid': form.errors.has('calendar_subject_schedule') }"
-                                    rows="3"
-                                    placeholder="...."
-                                ></textarea>
-                                <div
-                                    class="text-danger mb-3"
-                                    v-if="form.errors.has('calendar_subject_schedule')"
-                                    v-html="form.errors.get('calendar_subject_schedule')"
-                                ></div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="mt-3">Ngày học <span class="text-danger">(*)</span></label>
+                                        <select
+                                            v-model="form.calendar_subject_day"
+                                            name="calendar_subject_day"
+                                            class="form-control select-option"
+                                            :class="{ 'is-invalid': form.errors.has('calendar_subject_day') }"
+                                        >
+                                            <option value="" selected disabled>Chọn ngày học</option>
+                                            <option disabled>---------------</option>
+                                            <option value="1">Chủ nhật</option>
+                                            <option value="2">Thứ Hai</option>
+                                            <option value="3">Thứ Ba</option>
+                                            <option value="4">Thứ Tư</option>
+                                            <option value="5">Thứ Năm</option>
+                                            <option value="6">Thứ Sáu</option>
+                                            <option value="7">Thứ Bảy</option>
+                                        </select>
+                                        <div
+                                            class="text-danger mb-3"
+                                            v-if="form.errors.has('calendar_subject_day')"
+                                            v-html="form.errors.get('calendar_subject_day')"
+                                        ></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="mt-3">Thời gian <span class="text-danger">(*)</span></label>
+                                        <select
+                                            v-model="form.calendar_subject_time"
+                                            name="calendar_subject_time"
+                                            class="form-control select-option"
+                                            :class="{ 'is-invalid': form.errors.has('calendar_subject_time') }"
+                                        >
+                                            <option value="" selected disabled>Chọn thời gian học</option>
+                                            <option disabled>---------------</option>
+                                            <option value="123">Tiết 1,2,3 (7h-9h25)</option>
+                                            <option value="456">Tiết 4,5,6 (9h35-12h)</option>
+                                            <option value="789">Tiết 7,8,9 (13h00-15h25)</option>
+                                            <option value="101112">Tiết 10,11,12 (15h35-18h00)</option>
+                                            <option value="131415">Tiết 13,14,15 (18h00-20h25)</option>
+                                        </select>
+                                        <div
+                                            class="text-danger mb-3"
+                                            v-if="form.errors.has('calendar_subject_time')"
+                                            v-html="form.errors.get('calendar_subject_time')"
+                                        ></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -378,7 +425,27 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        Lịch học: <strong> {{ form.calendar_subject_schedule }}</strong>
+                                        <div v-if="form.calendar_subject_day == 1">
+                                            <strong>
+                                                Chủ nhật -
+                                                <span v-if="form.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                <span v-if="form.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                <span v-if="form.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                <span v-if="form.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
+                                                <span v-if="form.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
+                                            </strong>
+                                        </div>
+                                        <div v-else>
+                                            Lịch học:
+                                            <strong>
+                                                Thứ {{ form.calendar_subject_day }} -
+                                                <span v-if="form.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                <span v-if="form.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                <span v-if="form.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                <span v-if="form.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
+                                                <span v-if="form.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
+                                            </strong>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -421,9 +488,11 @@ export default {
                 calendar_subject_slot: '',
                 calendar_subject_registered: '',
                 calendar_subject_lecturer: '',
-                calendar_subject_schedule: '',
+                calendar_subject_day: '',
+                calendar_subject_time: '',
                 calendar_subject_start: '',
                 calendar_subject_end: '',
+                calendar_subject_status: '',
 
                 subject_code: '',
                 subject_name: '',
@@ -610,6 +679,15 @@ export default {
                 .then(res => {
                     this.form.fill(subject)
                     $('#DetailModal').modal('show')
+                })
+                .catch(err => console.log(err))
+        },
+        change(calendar_subject_id) {
+            axios
+                .patch(`../../api/admin/calendar-subject/lich-mo-lop-hoc/change/${calendar_subject_id}`)
+                .then(res => {
+                    this.fetchCalendarSubjects()
+                    this.$snotify.warning('Đã thay đổi trạng thái')
                 })
                 .catch(err => console.log(err))
         }

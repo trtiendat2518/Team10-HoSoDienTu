@@ -6,301 +6,336 @@
         </div>
 
         <div class="grid" v-show="register_main == true">
-            <div class="form-group">
-                <input type="radio" value="1" v-model="select_radio" /> Đúng kế hoạch
-                <input type="radio" value="2" class="ml-2" v-model="select_radio" /> Theo CTĐT
-                <input type="radio" value="3" class="ml-2" v-model="select_radio" /> Ngoài kế hoạch
-            </div>
-
-            <div v-show="select_radio == 1" class="table-responsive">
-                <div v-if="subject_inplan.length > 0">
-                    <table class="table table-nowrap">
-                        <thead class="blue-background text-white">
-                            <tr>
-                                <th class="text-center w-5" scope="col" rowspan="2">
-                                    STT
-                                </th>
-                                <th class="text-center w-15" scope="col" rowspan="2">
-                                    Mã môn học
-                                </th>
-                                <th class="text-center w-50" scope="col" rowspan="2">
-                                    Tên môn học
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Số TC
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    SL lớp
-                                </th>
-                                <th class="w-10 text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(value, index) in subject_inplan" :key="value.subject_id">
-                                <td class="td-table text-center">
-                                    {{ (index += 1) }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_code }}
-                                </td>
-                                <td class="td-table">
-                                    {{ value.subject_name }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_credit }}
-                                </td>
-                                <td class="text-center">
-                                    {{ countSubject(value) }}
-                                </td>
-                                <td class="text-center">
-                                    <router-link
-                                        class="btn btn-block btn-primary"
-                                        tag="button"
-                                        :to="{ name: 'subjectregistering', params: { idRSubject: value.subject_id } }"
-                                    >
-                                        Đăng ký
-                                    </router-link>
-                                </td>
-                            </tr>
-                            <tr v-show="!subject_inplan.length">
-                                <td colspan="9">
-                                    <div class="alert alert-danger">
-                                        Không tìm thấy kết quả phù hợp!
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="widget-box">
+                <div class="form-group">
+                    <input type="radio" value="1" v-model="select_radio" /> Đúng kế hoạch
+                    <input type="radio" value="2" class="ml-2" v-model="select_radio" /> Theo CTĐT
+                    <input type="radio" value="3" class="ml-2" v-model="select_radio" /> Ngoài kế hoạch
                 </div>
-                <div v-else>
-                    <div class="alert alert-danger">
-                        Không tìm thấy kết quả phù hợp!
+
+                <div v-show="select_radio == 1" class="table-responsive">
+                    <div v-if="subject_inplan.length > 0">
+                        <table class="table table-nowrap">
+                            <thead class="blue-background text-white">
+                                <tr>
+                                    <th class="text-center w-5" scope="col" rowspan="2">
+                                        STT
+                                    </th>
+                                    <th class="text-center w-15" scope="col" rowspan="2">
+                                        Mã môn học
+                                    </th>
+                                    <th class="text-center w-50" scope="col" rowspan="2">
+                                        Tên môn học
+                                    </th>
+                                    <th class="text-center w-10" scope="col" rowspan="2">
+                                        Số TC
+                                    </th>
+                                    <th class="text-center w-10" scope="col" rowspan="2">
+                                        SL lớp
+                                    </th>
+                                    <th class="w-10 text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(value, index) in subject_inplan" :key="value.subject_id">
+                                    <td class="td-table text-center">
+                                        {{ (index += 1) }}
+                                    </td>
+                                    <td class="text-center td-table">
+                                        {{ value.subject_code }}
+                                    </td>
+                                    <td class="td-table">
+                                        {{ value.subject_name }}
+                                    </td>
+                                    <td class="text-center td-table">
+                                        {{ value.subject_credit }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ countSubject(value) }}
+                                    </td>
+                                    <td class="text-center">
+                                        <router-link
+                                            class="btn btn-block btn-primary"
+                                            tag="button"
+                                            :to="{ name: 'subjectregistering', params: { idRSubject: value.subject_id } }"
+                                        >
+                                            Đăng ký
+                                        </router-link>
+                                    </td>
+                                </tr>
+                                <tr v-show="!subject_inplan.length">
+                                    <td colspan="9">
+                                        <div class="alert alert-danger">
+                                            Không tìm thấy kết quả phù hợp!
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-else>
+                        <div class="alert alert-danger">
+                            Không tìm thấy kết quả phù hợp!
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div v-show="select_radio == 2" class="table-responsive">
-                <div v-if="subject_program.length > 0">
-                    <table class="table table-nowrap">
-                        <thead class="blue-background text-white">
-                            <tr>
-                                <th class="text-center w-5" scope="col" rowspan="2">
-                                    STT
-                                </th>
-                                <th class="text-center w-15" scope="col" rowspan="2">
-                                    Mã môn học
-                                </th>
-                                <th class="text-center w-50" scope="col" rowspan="2">
-                                    Tên môn học
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Số TC
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    SL lớp
-                                </th>
-                                <th class="w-10 text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(value, index) in subject_program" :key="value.subject_id">
-                                <td class="td-table text-center">
-                                    {{ (index += 1) }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_code }}
-                                </td>
-                                <td class="td-table">
-                                    {{ value.subject_name }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_credit }}
-                                </td>
-                                <td class="text-center">
-                                    {{ countSubject(value) }}
-                                </td>
-                                <td class="text-center">
-                                    <router-link
-                                        class="btn btn-block btn-primary"
-                                        tag="button"
-                                        :to="{ name: 'subjectregistering', params: { idRSubject: value.subject_id } }"
-                                    >
-                                        Đăng ký
-                                    </router-link>
-                                </td>
-                            </tr>
-                            <tr v-show="!subject_program.length">
-                                <td colspan="9">
-                                    <div class="alert alert-danger">
-                                        Không tìm thấy kết quả phù hợp!
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-else>
-                    <div class="alert alert-danger">
-                        Không tìm thấy kết quả phù hợp!
+                <div v-show="select_radio == 2" class="table-responsive">
+                    <div v-if="subject_program.length > 0">
+                        <table class="table table-nowrap">
+                            <thead class="blue-background text-white">
+                                <tr>
+                                    <th class="text-center w-5" scope="col" rowspan="2">
+                                        STT
+                                    </th>
+                                    <th class="text-center w-15" scope="col" rowspan="2">
+                                        Mã môn học
+                                    </th>
+                                    <th class="text-center w-50" scope="col" rowspan="2">
+                                        Tên môn học
+                                    </th>
+                                    <th class="text-center w-10" scope="col" rowspan="2">
+                                        Số TC
+                                    </th>
+                                    <th class="text-center w-10" scope="col" rowspan="2">
+                                        SL lớp
+                                    </th>
+                                    <th class="w-10 text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(value, index) in subject_program" :key="value.subject_id">
+                                    <td class="td-table text-center">
+                                        {{ (index += 1) }}
+                                    </td>
+                                    <td class="text-center td-table">
+                                        {{ value.subject_code }}
+                                    </td>
+                                    <td class="td-table">
+                                        {{ value.subject_name }}
+                                    </td>
+                                    <td class="text-center td-table">
+                                        {{ value.subject_credit }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ countSubject(value) }}
+                                    </td>
+                                    <td class="text-center">
+                                        <router-link
+                                            class="btn btn-block btn-primary"
+                                            tag="button"
+                                            :to="{ name: 'subjectregistering', params: { idRSubject: value.subject_id } }"
+                                        >
+                                            Đăng ký
+                                        </router-link>
+                                    </td>
+                                </tr>
+                                <tr v-show="!subject_program.length">
+                                    <td colspan="9">
+                                        <div class="alert alert-danger">
+                                            Không tìm thấy kết quả phù hợp!
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-else>
+                        <div class="alert alert-danger">
+                            Không tìm thấy kết quả phù hợp!
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div v-show="select_radio == 3" class="table-responsive">
-                <div v-if="subject_outplan.length > 0">
-                    <table class="table table-nowrap">
-                        <thead class="blue-background text-white">
-                            <tr>
-                                <th class="text-center w-5" scope="col" rowspan="2">
-                                    STT
-                                </th>
-                                <th class="text-center w-15" scope="col" rowspan="2">
-                                    Mã môn học
-                                </th>
-                                <th class="text-center w-50" scope="col" rowspan="2">
-                                    Tên môn học
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Số TC
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    SL lớp
-                                </th>
-                                <th class="w-10 text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(value, index) in subject_outplan" :key="value.subject_id">
-                                <td class="td-table text-center">
-                                    {{ (index += 1) }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_code }}
-                                </td>
-                                <td class="td-table">
-                                    {{ value.subject_name }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_credit }}
-                                </td>
-                                <td class="text-center">
-                                    {{ countSubject(value) }}
-                                </td>
-                                <td class="text-center">
-                                    <router-link
-                                        class="btn btn-block btn-primary"
-                                        tag="button"
-                                        :to="{ name: 'subjectregistering', params: { idRSubject: value.subject_id } }"
-                                    >
-                                        Đăng ký
-                                    </router-link>
-                                </td>
-                            </tr>
-                            <tr v-show="!subject_outplan.length">
-                                <td colspan="9">
-                                    <div class="alert alert-danger">
-                                        Không tìm thấy kết quả phù hợp!
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-else>
-                    <div class="alert alert-danger">
-                        Không tìm thấy kết quả phù hợp!
+                <div v-show="select_radio == 3" class="table-responsive">
+                    <div v-if="subject_outplan.length > 0">
+                        <table class="table table-nowrap">
+                            <thead class="blue-background text-white">
+                                <tr>
+                                    <th class="text-center w-5" scope="col" rowspan="2">
+                                        STT
+                                    </th>
+                                    <th class="text-center w-15" scope="col" rowspan="2">
+                                        Mã môn học
+                                    </th>
+                                    <th class="text-center w-50" scope="col" rowspan="2">
+                                        Tên môn học
+                                    </th>
+                                    <th class="text-center w-10" scope="col" rowspan="2">
+                                        Số TC
+                                    </th>
+                                    <th class="text-center w-10" scope="col" rowspan="2">
+                                        SL lớp
+                                    </th>
+                                    <th class="w-10 text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(value, index) in subject_outplan" :key="value.subject_id">
+                                    <td class="td-table text-center">
+                                        {{ (index += 1) }}
+                                    </td>
+                                    <td class="text-center td-table">
+                                        {{ value.subject_code }}
+                                    </td>
+                                    <td class="td-table">
+                                        {{ value.subject_name }}
+                                    </td>
+                                    <td class="text-center td-table">
+                                        {{ value.subject_credit }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ countSubject(value) }}
+                                    </td>
+                                    <td class="text-center">
+                                        <router-link
+                                            class="btn btn-block btn-primary"
+                                            tag="button"
+                                            :to="{ name: 'subjectregistering', params: { idRSubject: value.subject_id } }"
+                                        >
+                                            Đăng ký
+                                        </router-link>
+                                    </td>
+                                </tr>
+                                <tr v-show="!subject_outplan.length">
+                                    <td colspan="9">
+                                        <div class="alert alert-danger">
+                                            Không tìm thấy kết quả phù hợp!
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-else>
+                        <div class="alert alert-danger">
+                            Không tìm thấy kết quả phù hợp!
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card mt-5">
-                <div class="card-header">
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h4 class="text-center">
+                                    Kết quả đăng ký: <i>{{ result_subject }} môn học</i>, <i>{{ result_credit }} tín chỉ</i>
+                                </h4>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-lg btn-primary float-right" @click="print()">In PDF</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-lg btn-info float-right" @click="sendMail()">Nhận Email</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
-                        <div class="col-md-7">
-                            <h4 class="text-center">
-                                Kết quả đăng ký: <i>{{ result_subject }} môn học</i>, <i>{{ result_credit }} tín chỉ</i>
-                            </h4>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-lg btn-primary float-right" @click="print()">In PDF</button>
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-lg btn-info float-right" @click="sendMail()">Nhận Email</button>
-                        </div>
+                        <div class="col-md-1"><input type="color" class="mt-2 float-right" value="#a52a2a" disabled /></div>
+                        <div class="col-md-11 mt-2">: Môn học bị huỷ (Không còn mở)</div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <div v-if="result_all.length > 0">
-                            <table class="table table-nowrap">
-                                <thead class="result-background text-white">
-                                    <tr>
-                                        <th class="text-center w10">
-                                            Loại
-                                        </th>
-                                        <th class="text-center w10">
-                                            Mã môn học
-                                        </th>
-                                        <th class="text-center w25">
-                                            Tên môn học
-                                        </th>
-                                        <th class="text-center w5">
-                                            TC
-                                        </th>
-                                        <th class="text-center w10">
-                                            Lịch học
-                                        </th>
-                                        <th class="text-center w10">
-                                            Ngày BĐ
-                                        </th>
-                                        <th class="text-center w10">
-                                            Ngày KT
-                                        </th>
-                                        <th class="w10"></th>
-                                        <th class="w10"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="value in result_all" :key="value.calendar_subject_id">
-                                        <td class="text-center td-table">
-                                            <div v-if="value.calendar_subject_type == 0">Lý thuyết</div>
-                                            <div v-else-if="value.calendar_subject_type == 1">Thực hành</div>
-                                        </td>
-                                        <td class="td-table">
-                                            {{ value.subject_code }}
-                                        </td>
-                                        <td class="text-center td-table">
-                                            {{ value.subject_name }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ value.subject_credit }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ value.calendar_subject_schedule }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ value.calendar_subject_start | formatDate }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ value.calendar_subject_end | formatDate }}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-block btn-primary" @click="changeMode(value)">
-                                                Xem thêm
-                                            </button>
-                                        </td>
-                                        <td class="text-center">
-                                            <button class="btn btn-block btn-danger" @click="cancel(value)">
-                                                Huỷ bỏ
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div v-else>
-                            <div class="alert alert-danger">
-                                Không tìm thấy kết quả phù hợp!
+
+                    <div class="row">
+                        <div class="col-md-1"><input type="color" class="mt-2 float-right" value="#e4b117" disabled /></div>
+                        <div class="col-md-11 mt-2">: Môn học bị trùng thời gian học</div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div v-if="result_all.length > 0">
+                                <table class="table table-nowrap">
+                                    <thead class="result-background text-white">
+                                        <tr>
+                                            <th class="text-center w10">
+                                                Loại
+                                            </th>
+                                            <th class="text-center w10">
+                                                Mã môn học
+                                            </th>
+                                            <th class="text-center w25">
+                                                Tên môn học
+                                            </th>
+                                            <th class="text-center w5">
+                                                TC
+                                            </th>
+                                            <th class="text-center w10">
+                                                Lịch học
+                                            </th>
+                                            <th class="text-center w10">
+                                                Ngày BĐ
+                                            </th>
+                                            <th class="text-center w10">
+                                                Ngày KT
+                                            </th>
+                                            <th class="w10"></th>
+                                            <th class="w10"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            v-for="value in result_all"
+                                            :key="value.calendar_subject_id"
+                                            :class="[
+                                                { 'background-cancel': value.calendar_subject_status == 1 },
+                                                { 'background-warning': checkTime(value) > 1 }
+                                            ]"
+                                        >
+                                            <td class="text-center td-table">
+                                                <div v-if="value.calendar_subject_type == 0">Lý thuyết</div>
+                                                <div v-else-if="value.calendar_subject_type == 1">Thực hành</div>
+                                            </td>
+                                            <td class="td-table">
+                                                {{ value.subject_code }}
+                                            </td>
+                                            <td class="text-center td-table">
+                                                {{ value.subject_name }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ value.subject_credit }}
+                                            </td>
+                                            <td class="text-center">
+                                                <div v-if="value.calendar_subject_day == 1">
+                                                    Chủ nhật -
+                                                    <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                    <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                    <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                    <span v-if="value.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
+                                                    <span v-if="value.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
+                                                </div>
+                                                <div v-else>
+                                                    Thứ {{ value.calendar_subject_day }} -
+                                                    <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                    <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                    <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                    <span v-if="value.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
+                                                    <span v-if="value.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                {{ value.calendar_subject_start | formatDate }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ value.calendar_subject_end | formatDate }}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-block btn-primary" @click="changeMode(value)">
+                                                    Xem thêm
+                                                </button>
+                                            </td>
+                                            <td class="text-center">
+                                                <button class="btn btn-block btn-danger" @click="cancel(value)">
+                                                    Huỷ bỏ
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div v-else>
+                                <div class="alert alert-danger">
+                                    Không tìm thấy kết quả phù hợp!
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -397,7 +432,30 @@
                                                         {{ value.subject_credit }}
                                                     </td>
                                                     <td class="text-center">
-                                                        {{ value.calendar_subject_schedule }}
+                                                        <div v-if="value.calendar_subject_day == 1">
+                                                            Chủ nhật -
+                                                            <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                            <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                            <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                            <span v-if="value.calendar_subject_time == 101112"
+                                                                >Tiết 10,11,12 (15h35-18h00)</span
+                                                            >
+                                                            <span v-if="value.calendar_subject_time == 131415"
+                                                                >Tiết 13,14,15 (18h00-20h25)</span
+                                                            >
+                                                        </div>
+                                                        <div v-else>
+                                                            Thứ {{ value.calendar_subject_day }} -
+                                                            <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                            <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                            <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                            <span v-if="value.calendar_subject_time == 101112"
+                                                                >Tiết 10,11,12 (15h35-18h00)</span
+                                                            >
+                                                            <span v-if="value.calendar_subject_time == 131415"
+                                                                >Tiết 13,14,15 (18h00-20h25)</span
+                                                            >
+                                                        </div>
                                                     </td>
                                                     <td class="text-center">
                                                         {{ value.calendar_subject_start | formatDate }}
@@ -432,161 +490,196 @@
         </div>
 
         <div class="grid" v-show="register_again == true">
-            <div class="table-responsive">
-                <div v-if="subject_inplan.length > 0">
-                    <table class="table table-nowrap">
-                        <thead class="blue-background text-white">
-                            <tr>
-                                <th class="text-center w-5" scope="col" rowspan="2">
-                                    STT
-                                </th>
-                                <th class="text-center w-15" scope="col" rowspan="2">
-                                    Mã môn học
-                                </th>
-                                <th class="text-center w-50" scope="col" rowspan="2">
-                                    Tên môn học
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    Số TC
-                                </th>
-                                <th class="text-center w-10" scope="col" rowspan="2">
-                                    SL lớp
-                                </th>
-                                <th class="w-10 text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(value, index) in subject_inplan" :key="value.subject_id">
-                                <td class="td-table text-center">
-                                    {{ (index += 1) }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_code }}
-                                </td>
-                                <td class="td-table">
-                                    {{ value.subject_name }}
-                                </td>
-                                <td class="text-center td-table">
-                                    {{ value.subject_credit }}
-                                </td>
-                                <td class="text-center">
-                                    {{ countSubject(value) }}
-                                </td>
-                                <td class="text-center">
-                                    <router-link
-                                        class="btn btn-block btn-primary"
-                                        tag="button"
-                                        :to="{ name: 'subjectregistering', params: { idRSubject: value.subject_id } }"
-                                    >
-                                        Đăng ký
-                                    </router-link>
-                                </td>
-                            </tr>
-                            <tr v-show="!subject_inplan.length">
-                                <td colspan="9">
-                                    <div class="alert alert-danger">
-                                        Không tìm thấy kết quả phù hợp!
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-else>
-                    <div class="alert alert-danger">
-                        Không tìm thấy kết quả phù hợp!
+            <div class="widget-box">
+                <div class="table-responsive">
+                    <div v-if="subject_inplan.length > 0">
+                        <table class="table table-nowrap">
+                            <thead class="blue-background text-white">
+                                <tr>
+                                    <th class="text-center w-5" scope="col" rowspan="2">
+                                        STT
+                                    </th>
+                                    <th class="text-center w-15" scope="col" rowspan="2">
+                                        Mã môn học
+                                    </th>
+                                    <th class="text-center w-50" scope="col" rowspan="2">
+                                        Tên môn học
+                                    </th>
+                                    <th class="text-center w-10" scope="col" rowspan="2">
+                                        Số TC
+                                    </th>
+                                    <th class="text-center w-10" scope="col" rowspan="2">
+                                        SL lớp
+                                    </th>
+                                    <th class="w-10 text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(value, index) in subject_inplan" :key="value.subject_id">
+                                    <td class="td-table text-center">
+                                        {{ (index += 1) }}
+                                    </td>
+                                    <td class="text-center td-table">
+                                        {{ value.subject_code }}
+                                    </td>
+                                    <td class="td-table">
+                                        {{ value.subject_name }}
+                                    </td>
+                                    <td class="text-center td-table">
+                                        {{ value.subject_credit }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ countSubject(value) }}
+                                    </td>
+                                    <td class="text-center">
+                                        <router-link
+                                            class="btn btn-block btn-primary"
+                                            tag="button"
+                                            :to="{ name: 'subjectregistering', params: { idRSubject: value.subject_id } }"
+                                        >
+                                            Đăng ký
+                                        </router-link>
+                                    </td>
+                                </tr>
+                                <tr v-show="!subject_inplan.length">
+                                    <td colspan="9">
+                                        <div class="alert alert-danger">
+                                            Không tìm thấy kết quả phù hợp!
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-else>
+                        <div class="alert alert-danger">
+                            Không tìm thấy kết quả phù hợp!
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card mt-5">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <h4 class="text-center">
-                                Kết quả đăng ký: <i>{{ result_subject }} môn học</i>, <i>{{ result_credit }} tín chỉ</i>
-                            </h4>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-lg btn-primary float-right" @click="print()">In PDF</button>
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-lg btn-info float-right" @click="sendMail()">Nhận Email</button>
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h4 class="text-center">
+                                    Kết quả đăng ký: <i>{{ result_subject }} môn học</i>, <i>{{ result_credit }} tín chỉ</i>
+                                </h4>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-lg btn-primary float-right" @click="print()">In PDF</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-lg btn-info float-right" @click="sendMail()">Nhận Email</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <div v-if="result_all.length > 0">
-                            <table class="table table-nowrap">
-                                <thead class="result-background text-white">
-                                    <tr>
-                                        <th class="text-center w10">
-                                            Loại
-                                        </th>
-                                        <th class="text-center w10">
-                                            Mã môn học
-                                        </th>
-                                        <th class="text-center w25">
-                                            Tên môn học
-                                        </th>
-                                        <th class="text-center w5">
-                                            TC
-                                        </th>
-                                        <th class="text-center w10">
-                                            Lịch học
-                                        </th>
-                                        <th class="text-center w10">
-                                            Ngày BĐ
-                                        </th>
-                                        <th class="text-center w10">
-                                            Ngày KT
-                                        </th>
-                                        <th class="w10"></th>
-                                        <th class="w10"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="value in result_all" :key="value.calendar_subject_id">
-                                        <td class="text-center td-table">
-                                            <div v-if="value.calendar_subject_type == 0">Lý thuyết</div>
-                                            <div v-else-if="value.calendar_subject_type == 1">Thực hành</div>
-                                        </td>
-                                        <td class="td-table">
-                                            {{ value.subject_code }}
-                                        </td>
-                                        <td class="text-center td-table">
-                                            {{ value.subject_name }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ value.subject_credit }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ value.calendar_subject_schedule }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ value.calendar_subject_start | formatDate }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ value.calendar_subject_end | formatDate }}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-block btn-primary" @click="changeMode(value)">
-                                                Xem thêm
-                                            </button>
-                                        </td>
-                                        <td class="text-center">
-                                            <button class="btn btn-block btn-danger" @click="cancel(value)">
-                                                Huỷ bỏ
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div v-else>
-                            <div class="alert alert-danger">
-                                Không tìm thấy kết quả phù hợp!
+
+                    <div class="row">
+                        <div class="col-md-1"><input type="color" class="mt-2 float-right" value="#a52a2a" disabled /></div>
+                        <div class="col-md-11 mt-2">: Môn học bị huỷ (Không còn mở)</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-1"><input type="color" class="mt-2 float-right" value="#e4b117" disabled /></div>
+                        <div class="col-md-11 mt-2">: Môn học bị trùng thời gian học</div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div v-if="result_all.length > 0">
+                                <table class="table table-nowrap">
+                                    <thead class="result-background text-white">
+                                        <tr>
+                                            <th class="text-center w10">
+                                                Loại
+                                            </th>
+                                            <th class="text-center w10">
+                                                Mã môn học
+                                            </th>
+                                            <th class="text-center w25">
+                                                Tên môn học
+                                            </th>
+                                            <th class="text-center w5">
+                                                TC
+                                            </th>
+                                            <th class="text-center w10">
+                                                Lịch học
+                                            </th>
+                                            <th class="text-center w10">
+                                                Ngày BĐ
+                                            </th>
+                                            <th class="text-center w10">
+                                                Ngày KT
+                                            </th>
+                                            <th class="w10"></th>
+                                            <th class="w10"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            v-for="value in result_all"
+                                            :key="value.calendar_subject_id"
+                                            :class="[
+                                                { 'background-cancel': value.calendar_subject_status == 1 },
+                                                { 'background-warning': checkTime(value) > 1 }
+                                            ]"
+                                        >
+                                            <td class="text-center td-table">
+                                                <div v-if="value.calendar_subject_type == 0">Lý thuyết</div>
+                                                <div v-else-if="value.calendar_subject_type == 1">Thực hành</div>
+                                            </td>
+                                            <td class="td-table">
+                                                {{ value.subject_code }}
+                                            </td>
+                                            <td class="text-center td-table">
+                                                {{ value.subject_name }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ value.subject_credit }}
+                                            </td>
+                                            <td class="text-center">
+                                                <div v-if="value.calendar_subject_day == 1">
+                                                    Chủ nhật -
+                                                    <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                    <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                    <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                    <span v-if="value.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
+                                                    <span v-if="value.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
+                                                </div>
+                                                <div v-else>
+                                                    Thứ {{ value.calendar_subject_day }} -
+                                                    <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                    <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                    <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                    <span v-if="value.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
+                                                    <span v-if="value.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                {{ value.calendar_subject_start | formatDate }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ value.calendar_subject_end | formatDate }}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-block btn-primary" @click="changeMode(value)">
+                                                    Xem thêm
+                                                </button>
+                                            </td>
+                                            <td class="text-center">
+                                                <button class="btn btn-block btn-danger" @click="cancel(value)">
+                                                    Huỷ bỏ
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div v-else>
+                                <div class="alert alert-danger">
+                                    Không tìm thấy kết quả phù hợp!
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -683,7 +776,30 @@
                                                         {{ value.subject_credit }}
                                                     </td>
                                                     <td class="text-center">
-                                                        {{ value.calendar_subject_schedule }}
+                                                        <div v-if="value.calendar_subject_day == 1">
+                                                            Chủ nhật -
+                                                            <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                            <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                            <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                            <span v-if="value.calendar_subject_time == 101112"
+                                                                >Tiết 10,11,12 (15h35-18h00)</span
+                                                            >
+                                                            <span v-if="value.calendar_subject_time == 131415"
+                                                                >Tiết 13,14,15 (18h00-20h25)</span
+                                                            >
+                                                        </div>
+                                                        <div v-else>
+                                                            Thứ {{ value.calendar_subject_day }} -
+                                                            <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                                            <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                                            <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                                            <span v-if="value.calendar_subject_time == 101112"
+                                                                >Tiết 10,11,12 (15h35-18h00)</span
+                                                            >
+                                                            <span v-if="value.calendar_subject_time == 131415"
+                                                                >Tiết 13,14,15 (18h00-20h25)</span
+                                                            >
+                                                        </div>
                                                     </td>
                                                     <td class="text-center">
                                                         {{ value.calendar_subject_start | formatDate }}
@@ -961,6 +1077,14 @@ export default {
             axios.get(`../../api/student/subject-register/dang-ky-mon-hoc/send-mail/${this.student_id}/${this.semester}`).catch(err => {
                 console.log(err)
             })
+        },
+        checkTime(value) {
+            let lengthSubject = this.result_all.filter(el => {
+                if (el.calendar_subject_time == value.calendar_subject_time && el.calendar_subject_day == value.calendar_subject_day) {
+                    return el
+                }
+            })
+            return lengthSubject.length
         }
     }
 }
@@ -969,5 +1093,13 @@ export default {
 <style scoped>
 .text-center {
     border: none;
+}
+.background-cancel {
+    background-color: #a52a2a;
+    color: white;
+}
+.background-warning {
+    background-color: #e4b117;
+    color: white;
 }
 </style>

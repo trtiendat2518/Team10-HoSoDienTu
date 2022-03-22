@@ -6,103 +6,120 @@
         </div>
 
         <div class="grid">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="form-group form-select">
-                        <select class="form-control" v-model="filter">
-                            <option value="" disabled>Chưa có lịch</option>
-                            <option v-for="i in semesters" :key="i" :value="i">Học kỳ {{ i }}</option>
-                        </select>
+            <div class="widget-box">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group form-select">
+                            <select class="form-control" v-model="filter">
+                                <option value="" disabled>Chưa có lịch</option>
+                                <option v-for="i in semesters" :key="i" :value="i">Học kỳ {{ i }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-nowrap">
-                    <thead class="blue-background text-white">
-                        <tr>
-                            <th class="text-center text-white">
-                                STT
-                            </th>
-                            <th class="text-center text-white">
-                                Mã môn học
-                            </th>
-                            <th class="text-center text-white">
-                                Tên môn học
-                            </th>
-                            <th class="text-center text-white">
-                                Loại
-                            </th>
-                            <th class="text-center">
-                                Số TC
-                            </th>
-                            <th class="text-center">
-                                Lịch học
-                            </th>
-                            <th class="text-center">
-                                Ngày bắt đầu
-                            </th>
-                            <th class="text-center">
-                                Ngày kết thúc
-                            </th>
-                            <th class="text-center">
-                                Giảng viên
-                            </th>
-                        </tr>
-                    </thead>
+                <div class="table-responsive">
+                    <table class="table table-nowrap">
+                        <thead class="blue-background text-white">
+                            <tr>
+                                <th class="text-center text-white">
+                                    STT
+                                </th>
+                                <th class="text-center text-white">
+                                    Mã môn học
+                                </th>
+                                <th class="text-center text-white">
+                                    Tên môn học
+                                </th>
+                                <th class="text-center text-white">
+                                    Loại
+                                </th>
+                                <th class="text-center">
+                                    Số TC
+                                </th>
+                                <th class="text-center">
+                                    Lịch học
+                                </th>
+                                <th class="text-center">
+                                    Ngày bắt đầu
+                                </th>
+                                <th class="text-center">
+                                    Ngày kết thúc
+                                </th>
+                                <th class="text-center">
+                                    Giảng viên
+                                </th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        <tr>
-                            <td colspan="8">
-                                <b>Năm học: {{ year_start }}-{{ year_end }} Học kỳ: {{ filter }} </b>
-                            </td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td colspan="8">
+                                    <b>Năm học: {{ year_start }}-{{ year_end }} Học kỳ: {{ filter }} </b>
+                                </td>
+                            </tr>
 
-                        <tr
-                            v-show="subjects[filter].length"
-                            v-for="(subject, index) in subjects[filter]"
-                            :key="subject.register_subject_id"
-                        >
-                            <td class="text-center">
-                                {{ (index += 1) }}
-                            </td>
-                            <td class="text-center">
-                                {{ subject.subject_code }}
-                            </td>
-                            <td>
-                                {{ subject.subject_name }}
-                            </td>
-                            <td>
-                                <div v-if="subject.calendar_subject_type == 0">Lý thuyết</div>
-                                <div v-else-if="subject.calendar_subject_type == 1">Thực hành</div>
-                            </td>
-                            <td class="text-center">
-                                {{ subject.subject_credit }}
-                            </td>
-                            <td class="text-center">
-                                {{ subject.calendar_subject_schedule }}
-                            </td>
-                            <td class="text-center">
-                                {{ subject.calendar_subject_start }}
-                            </td>
-                            <td class="text-center">
-                                {{ subject.calendar_subject_end }}
-                            </td>
-                            <td class="text-center">
-                                {{ subject.lecturer_fullname }}
-                            </td>
-                        </tr>
-                    </tbody>
+                            <tr
+                                v-show="subjects[filter].length"
+                                v-for="(subject, index) in subjects[filter]"
+                                :key="subject.register_subject_id"
+                            >
+                                <td class="text-center">
+                                    {{ (index += 1) }}
+                                </td>
+                                <td class="text-center">
+                                    {{ subject.subject_code }}
+                                </td>
+                                <td>
+                                    {{ subject.subject_name }}
+                                </td>
+                                <td>
+                                    <div v-if="subject.calendar_subject_type == 0">Lý thuyết</div>
+                                    <div v-else-if="subject.calendar_subject_type == 1">Thực hành</div>
+                                </td>
+                                <td class="text-center">
+                                    {{ subject.subject_credit }}
+                                </td>
+                                <td class="text-center">
+                                    <div v-if="subject.calendar_subject_day == 1">
+                                        Chủ nhật -
+                                        <span v-if="subject.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                        <span v-if="subject.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                        <span v-if="subject.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                        <span v-if="subject.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
+                                        <span v-if="subject.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
+                                    </div>
+                                    <div v-else>
+                                        Thứ {{ subject.calendar_subject_day }} -
+                                        <span v-if="subject.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
+                                        <span v-if="subject.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
+                                        <span v-if="subject.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
+                                        <span v-if="subject.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
+                                        <span v-if="subject.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    {{ subject.calendar_subject_start }}
+                                </td>
+                                <td class="text-center">
+                                    {{ subject.calendar_subject_end }}
+                                </td>
+                                <td class="text-center">
+                                    {{ subject.lecturer_fullname }}
+                                </td>
+                            </tr>
+                        </tbody>
 
-                    <tfoot>
-                        <tr v-show="!semesters.length">
-                            <td colspan="14">
-                                <div class="alert alert-danger">
-                                    Không tìm thấy kết quả phù hợp!
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                        <tfoot>
+                            <tr v-show="!semesters.length">
+                                <td colspan="14">
+                                    <div class="alert alert-danger">
+                                        Không tìm thấy kết quả phù hợp!
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

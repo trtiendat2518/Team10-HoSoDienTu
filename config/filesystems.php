@@ -63,6 +63,20 @@ return [
             'visibility' => 'public',
         ],
 
+        'attachment' => [
+            'driver' => 'local',
+            'root' => storage_path('../public/attachments/requests'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'fileprocedure' => [
+            'driver' => 'local',
+            'root' => storage_path('../public/attachments/procedures'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
