@@ -36,6 +36,7 @@ class ProcedureController extends Controller
             'procedure_fee' => ['required', 'max:10'],
             'procedure_category' => ['required'],
             'procedure_status' => ['required'],
+            'procedure_input' => ['required'],
         ], [
             'procedure_code.required' => 'Mã thủ tục không được để trống!',
             'procedure_code.max' => 'Mã thủ tục không nhập quá 10 ký tự!',
@@ -57,7 +58,8 @@ class ProcedureController extends Controller
 
             'procedure_method.required' => 'Vui lòng chọn phương thức cho thủ tục này!',
             'procedure_category.required' => 'Vui lòng chọn danh mục cho thủ tục này!',
-            'procedure_status.required' => 'Vui lòng chọn trạng thái cho thủ tục này!'
+            'procedure_status.required' => 'Vui lòng chọn trạng thái cho thủ tục này!',
+            'procedure_input.required' => 'Vui lòng chọn các thông tin yêu cầu cho thủ tục này!'
         ]);
 
         $procedure = new Procedure();
@@ -69,6 +71,16 @@ class ProcedureController extends Controller
         $procedure->procedure_fee = $data['procedure_fee'];
         $procedure->procedure_category = $data['procedure_category'];
         $procedure->procedure_status = $data['procedure_status'];
+        $procedure->procedure_input = $data['procedure_input'];
+        if ($request->procedure_area != null) {
+            $procedure->procedure_area = $request->procedure_area;
+        }
+        if ($request->procedure_select != null) {
+            $procedure->procedure_select = $request->procedure_select;
+        }
+        if ($request->procedure_file != null) {
+            $procedure->procedure_file = $request->procedure_file;
+        }
         $procedure->save();
     }
 
@@ -99,6 +111,7 @@ class ProcedureController extends Controller
             'procedure_method' => ['required'],
             'procedure_fee' => ['required', 'max:10'],
             'procedure_category' => ['required'],
+            'procedure_input' => ['required'],
         ], [
             'procedure_title.required' => 'Tiêu đề thủ tục không được để trống!',
             'procedure_title.max' => 'Tiêu đề thủ tục không nhập quá 200 ký tự!',
@@ -116,6 +129,7 @@ class ProcedureController extends Controller
 
             'procedure_method.required' => 'Vui lòng chọn phương thức cho thủ tục này!',
             'procedure_category.required' => 'Vui lòng chọn danh mục cho thủ tục này!',
+            'procedure_input.required' => 'Vui lòng chọn các thông tin yêu cầu cho thủ tục này!'
         ]);
 
         $procedure = Procedure::find($procedure_id);
@@ -125,6 +139,16 @@ class ProcedureController extends Controller
         $procedure->procedure_method = $data['procedure_method'];
         $procedure->procedure_fee = $data['procedure_fee'];
         $procedure->procedure_category = $data['procedure_category'];
+        $procedure->procedure_input = $data['procedure_input'];
+        if ($request->procedure_area != null) {
+            $procedure->procedure_area = $request->procedure_area;
+        }
+        if ($request->procedure_select != null) {
+            $procedure->procedure_select = $request->procedure_select;
+        }
+        if ($request->procedure_file != null) {
+            $procedure->procedure_file = $request->procedure_file;
+        }
         $procedure->save();
     }
 

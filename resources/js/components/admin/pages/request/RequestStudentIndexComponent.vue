@@ -293,7 +293,7 @@
                                         Tệp đính kèm:
                                         <strong>
                                             <a
-                                                :href="`../public/attachments/${form.request_file}`"
+                                                :href="`../public/attachments/requests/${form.request_file}`"
                                                 v-text="form.request_file"
                                                 @click.prevent="downloadItem(form.request_file)"
                                             ></a>
@@ -389,7 +389,7 @@
                                             Tệp đính kèm:
                                             <strong>
                                                 <a
-                                                    :href="`../public/attachments/${form.request_file}`"
+                                                    :href="`../public/attachments/requests/${form.request_file}`"
                                                     v-text="form.request_file"
                                                     @click.prevent="downloadItem(form.request_file)"
                                                 ></a>
@@ -695,7 +695,7 @@ export default {
         },
         downloadItem(request_file) {
             axios
-                .get(`../public/attachments/${request_file}`, { responseType: 'blob' })
+                .get(`../public/attachments/requests/${request_file}`, { responseType: 'blob' })
                 .then(response => {
                     const blob = new Blob([response.data], { type: 'application/pdf' })
                     const link = document.createElement('a')

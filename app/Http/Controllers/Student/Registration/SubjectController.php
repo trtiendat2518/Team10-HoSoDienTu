@@ -74,6 +74,7 @@ class SubjectController extends Controller
         $joins = RegisterSubject::join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
             ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
             ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_calendar_subject.calendar_subject_lecturer')
+            ->where('tbl_calendar_subject.calendar_subject_status', 0)
             ->where('tbl_register_subject.register_subject_student', $student_id)->get();
         return RegisterSubjectResource::collection($joins);
     }
@@ -132,6 +133,7 @@ class SubjectController extends Controller
 
     public function show_subject_inplan($student_id, $semester)
     {
+        $find = Student::find($student_id);
         $joins = Calendar::join('tbl_register_plan', 'tbl_register_plan.register_plan_semester', '=', 'tbl_calendar.location')
             ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_register_plan.register_plan_program')
             ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_register_plan.register_plan_student')
@@ -142,6 +144,7 @@ class SubjectController extends Controller
             ->where('tbl_register_plan.register_plan_again', 0)
             ->where('tbl_calendar.location', $semester)
             ->where('tbl_student.student_id', $student_id)
+            ->where('tbl_calendar.raw', $find->student_course)
             ->where('tbl_calendar.calendarId', 1)->get();
 
         return CalendarResource::collection($joins);
@@ -200,7 +203,8 @@ class SubjectController extends Controller
             ->where('tbl_calendar.location', $semester)
             ->where('tbl_calendar.body', $find->student_major)
             ->where('tbl_calendar.raw', $find->student_course)
-            ->where('tbl_calendar.calendarId', 1)->get();
+            ->where('tbl_calendar.calendarId', 1)
+            ->where('tbl_calendar_subject.calendar_subject_status', 0)->get();
         return CalendarResource::collection($joins);
     }
 
@@ -213,7 +217,8 @@ class SubjectController extends Controller
             ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')
             ->where('tbl_calendar.id', $calendar_id)
             ->where('tbl_faculty.faculty_id', $find->student_faculty)
-            ->where('tbl_calendar.calendarId', 1)->get();
+            ->where('tbl_calendar.calendarId', 1)
+            ->where('tbl_calendar_subject.calendar_subject_status', 0)->get();
 
         return CalendarResource::collection($joins);
     }
@@ -227,7 +232,8 @@ class SubjectController extends Controller
             ->where('tbl_calendar.location', $semester)
             ->where('tbl_calendar.body', $find->student_major)
             ->where('tbl_calendar.raw', $find->student_course)
-            ->where('tbl_calendar.calendarId', 1)->get();
+            ->where('tbl_calendar.calendarId', 1)
+            ->where('tbl_calendar_subject.calendar_subject_status', 0)->get();
         return CalendarResource::collection($joins);
     }
 
@@ -238,6 +244,7 @@ class SubjectController extends Controller
             ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
             ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
             ->join('tbl_faculty', 'tbl_faculty.faculty_id', '=', 'tbl_major.major_faculty')
+            ->where('tbl_calendar_subject.calendar_subject_status', 0)
             ->where('tbl_calendar_subject.subject_id', $subject_id)
             ->where('tbl_calendar.id', $calendar_id)
             ->where('tbl_faculty.faculty_id', $find->student_faculty)->get();
@@ -262,9 +269,9 @@ class SubjectController extends Controller
             ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
             ->where('tbl_register_subject.register_subject_student', $student_id)
             ->where('tbl_register_subject.register_subject_semester', $semester)
-            ->where('tbl_register_subject.register_subject_exam', null)
-            ->where('tbl_register_subject.register_subject_exercise', null)
-            ->where('tbl_register_subject.register_subject_final', null)
+            // ->where('tbl_register_subject.register_subject_exam', null)
+            // ->where('tbl_register_subject.register_subject_exercise', null)
+            // ->where('tbl_register_subject.register_subject_final', null)
             ->where('tbl_register_subject.register_subject_again', 0)
             ->get();
         return CalendarResource::collection($joins);
