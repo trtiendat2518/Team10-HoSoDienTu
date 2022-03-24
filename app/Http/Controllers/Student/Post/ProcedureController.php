@@ -117,6 +117,12 @@ class ProcedureController extends Controller
     public function destroy($id)
     {
         $del = ProcedureRequire::find($id);
+        if ($del->procedure_require_file != '' || $del->procedure_require_file != null) {
+            $splitFile = explode("; ", $del->procedure_require_file);
+            foreach ($splitFile as $key => $value) {
+                Storage::disk('fileprocedure')->delete($value);
+            }
+        }
         $del->delete();
     }
 

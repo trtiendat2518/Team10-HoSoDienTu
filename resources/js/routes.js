@@ -33,6 +33,7 @@ import ProcedureIndex from './components/admin/pages/procedures/ProcedureIndexCo
 import ProcedureCreate from './components/admin/pages/procedures/ProcedureCreateComponent.vue'
 import ProcedureUpdate from './components/admin/pages/procedures/ProcedureUpdateComponent.vue'
 import ProcedureRequire from './components/admin/pages/procedures/ProcedureRequireComponent.vue'
+import ProcedureRDetail from './components/admin/pages/procedures/ProcedureRDetailComponent.vue'
 
 import Calendar from './components/admin/pages/calendar/CalendarComponent.vue'
 import CalendarCreate from './components/admin/pages/calendar/CalendarCreateComponent.vue'
@@ -323,6 +324,12 @@ export default new VueRouter({
                     path: 'yeu-cau-cua-sinh-vien',
                     name: 'procedurerequire',
                     component: ProcedureRequire
+                },
+
+                {
+                    path: 'yeu-cau-cua-sinh-vien/:idRProcedure',
+                    name: 'procedurerequiredetail',
+                    component: ProcedureRDetail
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -965,13 +972,13 @@ export default new VueRouter({
             children: [
                 {
                     path: '/',
-                    name: 'timetableindex',
-                    component: TimetableIndex
-                },
-                {
-                    path: 'thoi-khoa-bieu',
                     name: 'timetablecalendar',
                     component: TimetableCalendar
+                },
+                {
+                    path: '/thoi-khoa-bieu-thu-tiet',
+                    name: 'timetableindex',
+                    component: TimetableIndex
                 }
             ],
             beforeEnter: (to, from, next) => {

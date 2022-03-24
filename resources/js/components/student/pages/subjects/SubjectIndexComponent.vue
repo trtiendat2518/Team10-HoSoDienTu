@@ -295,22 +295,7 @@
                                                 {{ value.subject_credit }}
                                             </td>
                                             <td class="text-center">
-                                                <div v-if="value.calendar_subject_day == 1">
-                                                    Chủ nhật -
-                                                    <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                    <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                    <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                    <span v-if="value.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
-                                                    <span v-if="value.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
-                                                </div>
-                                                <div v-else>
-                                                    Thứ {{ value.calendar_subject_day }} -
-                                                    <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                    <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                    <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                    <span v-if="value.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
-                                                    <span v-if="value.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
-                                                </div>
+                                                {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                             </td>
                                             <td class="text-center">
                                                 {{ value.calendar_subject_start | formatDate }}
@@ -432,30 +417,7 @@
                                                         {{ value.subject_credit }}
                                                     </td>
                                                     <td class="text-center">
-                                                        <div v-if="value.calendar_subject_day == 1">
-                                                            Chủ nhật -
-                                                            <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                            <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                            <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                            <span v-if="value.calendar_subject_time == 101112"
-                                                                >Tiết 10,11,12 (15h35-18h00)</span
-                                                            >
-                                                            <span v-if="value.calendar_subject_time == 131415"
-                                                                >Tiết 13,14,15 (18h00-20h25)</span
-                                                            >
-                                                        </div>
-                                                        <div v-else>
-                                                            Thứ {{ value.calendar_subject_day }} -
-                                                            <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                            <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                            <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                            <span v-if="value.calendar_subject_time == 101112"
-                                                                >Tiết 10,11,12 (15h35-18h00)</span
-                                                            >
-                                                            <span v-if="value.calendar_subject_time == 131415"
-                                                                >Tiết 13,14,15 (18h00-20h25)</span
-                                                            >
-                                                        </div>
+                                                        {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                                     </td>
                                                     <td class="text-center">
                                                         {{ value.calendar_subject_start | formatDate }}
@@ -639,22 +601,7 @@
                                                 {{ value.subject_credit }}
                                             </td>
                                             <td class="text-center">
-                                                <div v-if="value.calendar_subject_day == 1">
-                                                    Chủ nhật -
-                                                    <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                    <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                    <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                    <span v-if="value.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
-                                                    <span v-if="value.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
-                                                </div>
-                                                <div v-else>
-                                                    Thứ {{ value.calendar_subject_day }} -
-                                                    <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                    <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                    <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                    <span v-if="value.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
-                                                    <span v-if="value.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
-                                                </div>
+                                                {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                             </td>
                                             <td class="text-center">
                                                 {{ value.calendar_subject_start | formatDate }}
@@ -776,30 +723,7 @@
                                                         {{ value.subject_credit }}
                                                     </td>
                                                     <td class="text-center">
-                                                        <div v-if="value.calendar_subject_day == 1">
-                                                            Chủ nhật -
-                                                            <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                            <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                            <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                            <span v-if="value.calendar_subject_time == 101112"
-                                                                >Tiết 10,11,12 (15h35-18h00)</span
-                                                            >
-                                                            <span v-if="value.calendar_subject_time == 131415"
-                                                                >Tiết 13,14,15 (18h00-20h25)</span
-                                                            >
-                                                        </div>
-                                                        <div v-else>
-                                                            Thứ {{ value.calendar_subject_day }} -
-                                                            <span v-if="value.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                            <span v-if="value.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                            <span v-if="value.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                            <span v-if="value.calendar_subject_time == 101112"
-                                                                >Tiết 10,11,12 (15h35-18h00)</span
-                                                            >
-                                                            <span v-if="value.calendar_subject_time == 131415"
-                                                                >Tiết 13,14,15 (18h00-20h25)</span
-                                                            >
-                                                        </div>
+                                                        {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                                     </td>
                                                     <td class="text-center">
                                                         {{ value.calendar_subject_start | formatDate }}
@@ -1085,6 +1009,48 @@ export default {
                 }
             })
             return lengthSubject.length
+        },
+        valueCurrent(calendar_subject_day, calendar_subject_time) {
+            const day = calendar_subject_day.split(', ')
+            const time = calendar_subject_time.split(', ')
+            let arrayDay = []
+            let arrayTime = []
+            let stringDay = ''
+            let stringTime = ''
+            let allStringDay = ''
+            let allStringTime = ''
+
+            if (day.length > 0) {
+                for (let i = 0; i < day.length; i++) {
+                    if (day[i] == 0) {
+                        stringDay = 'Chủ nhật'
+                    } else {
+                        let key = Number(day[i]) + 1
+                        stringDay = 'Thứ ' + key
+                    }
+                    arrayDay.push(stringDay)
+                }
+                allStringDay = arrayDay.join(', ')
+            }
+
+            if (time.length > 0) {
+                for (let i = 0; i < time.length; i++) {
+                    if (time[i] == 123) {
+                        stringTime = 'Tiết 1-2-3'
+                    } else if (time[i] == 456) {
+                        stringTime = 'Tiết 4-5-6'
+                    } else if (time[i] == 789) {
+                        stringTime = 'Tiết 7-8-9'
+                    } else if (time[i] == 101112) {
+                        stringTime = 'Tiết 10-11-12'
+                    } else if (time[i] == 131415) {
+                        stringTime = 'Tiết 13-14-15'
+                    }
+                    arrayTime.push(stringTime)
+                }
+                allStringTime = arrayTime.join(', ')
+            }
+            return allStringDay + ' (' + allStringTime + ')'
         }
     }
 }

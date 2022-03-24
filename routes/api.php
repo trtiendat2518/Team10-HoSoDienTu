@@ -161,6 +161,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('procedure-require')->group(function () {
+        Route::get('yeu-cau-thu-tuc/detail/{procedure_require_id}', 'Admin\Posts\ProcedureRequireController@detail');
         Route::get('yeu-cau-thu-tuc/filter/{value}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@filter');
         Route::get('yeu-cau-thu-tuc/search/{query}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@search');
         Route::patch('yeu-cau-thu-tuc/change/{procedure_require_id}/{admin_id}', 'Admin\Posts\ProcedureRequireController@change');
