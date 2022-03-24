@@ -514,7 +514,7 @@ textarea::placeholder {
 }
 
 .form-input label {
-    color: #adafca;
+    color: #495057;
     font-size: 1rem;
     font-weight: 600;
     position: absolute;
@@ -591,7 +591,7 @@ textarea::placeholder {
 .form-select label {
     padding: 0 6px;
     background-color: #fff;
-    color: #adafca;
+    color: #495057;
     font-size: 0.75rem;
     font-weight: 600;
     position: absolute;

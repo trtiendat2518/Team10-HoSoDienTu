@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProcedureRequire;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProcedureRequireResource;
+use App\Models\Admin;
 
 class ProcedureRequireController extends Controller
 {
@@ -48,7 +49,9 @@ class ProcedureRequireController extends Controller
      */
     public function show($currentEntries)
     {
-        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_id','=','tbl_procedure_require.procedure_require_detail')->orderby('procedure_require_id','DESC')->paginate($currentEntries);
+        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_id', '=', 'tbl_procedure_require.procedure_require_detail')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_procedure_require.procedure_require_student')
+            ->orderby('procedure_require_id', 'DESC')->paginate($currentEntries);
         return ProcedureRequireResource::collection($join);
     }
 
@@ -88,22 +91,38 @@ class ProcedureRequireController extends Controller
 
     public function search($query, $currentEntries)
     {
-        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_id','=','tbl_procedure_require.procedure_require_detail')->orderby('procedure_id','DESC')->where('procedure_title','LIKE','%'.$query.'%')->paginate($currentEntries);
+        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_id', '=', 'tbl_procedure_require.procedure_require_detail')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_procedure_require.procedure_require_student')
+            ->orderby('procedure_id', 'DESC')->where('procedure_title', 'LIKE', '%' . $query . '%')->paginate($currentEntries);
         return ProcedureRequireResource::collection($join);
     }
 
     public function filter($value, $currentEntries)
     {
-        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_id','=','tbl_procedure_require.procedure_require_detail')->where('procedure_require_status','LIKE','%'.$value.'%')->orderby('procedure_require_id','DESC')->paginate($currentEntries);
+        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_id', '=', 'tbl_procedure_require.procedure_require_detail')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_procedure_require.procedure_require_student')
+            ->where('procedure_require_status', 'LIKE', '%' . $value . '%')->orderby('procedure_require_id', 'DESC')
+            ->paginate($currentEntries);
         return ProcedureRequireResource::collection($join);
     }
 
-    public function change(Request $request, $procedure_require_id)
+    public function change(Request $request, $procedure_require_id, $admin_id)
     {
+        $admin = Admin::find($admin_id);
         $pst = ProcedureRequire::find($procedure_require_id);
         $pst->procedure_require_status = $request->procedure_require_status;
+        $pst->procedure_require_admin = $admin->admin_fullname;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $pst->procedure_require_dateget = now();
         $pst->save();
+    }
+
+    public function detail($procedure_require_id)
+    {
+        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_id', '=', 'tbl_procedure_require.procedure_require_detail')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_procedure_require.procedure_require_student')
+            ->where('tbl_procedure_require.procedure_require_id', $procedure_require_id)
+            ->orderby('procedure_require_id', 'DESC')->get();
+        return ProcedureRequireResource::collection($join);
     }
 }

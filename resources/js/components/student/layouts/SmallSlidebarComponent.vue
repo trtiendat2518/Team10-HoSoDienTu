@@ -146,7 +146,7 @@
                     <svg class="menu-item-link-icon icon-forum">
                         <use xlink:href="#svg-forum"></use>
                     </svg>
-                    Thủ tục sinh viên
+                    Xin giấy xác nhận
                 </router-link>
                 <!-- /MENU ITEM LINK -->
             </li>

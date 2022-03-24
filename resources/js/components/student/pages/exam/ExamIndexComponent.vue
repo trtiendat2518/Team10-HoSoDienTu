@@ -5,117 +5,119 @@
             <p class="section-banner-title">Lịch thi</p>
         </div>
         <div class="grid">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="form-group form-select">
-                        <select class="form-control" v-model="filter">
-                            <option value="" disabled>Học kỳ</option>
-                            <option v-for="i in semesters" :key="i" :value="i">Học kỳ {{ i }}</option>
-                        </select>
+            <div class="widget-box">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group form-select">
+                            <select class="form-control" v-model="filter">
+                                <option value="" disabled>Học kỳ</option>
+                                <option v-for="i in semesters" :key="i" :value="i">Học kỳ {{ i }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-nowrap">
-                    <thead class="blue-background text-white">
-                        <tr>
-                            <th class="text-center">
-                                STT
-                            </th>
-                            <th class="text-center">
-                                Mã môn học
-                            </th>
-                            <th class="text-center">
-                                Tên môn học
-                            </th>
-                            <th class="text-center">
-                                Lần thi
-                            </th>
-                            <th class="text-center">
-                                Ngày thi
-                            </th>
-                            <th class="text-center">
-                                Giờ thi
-                            </th>
-                            <th class="text-center">
-                                Phòng thi
-                            </th>
-                            <th class="text-center">
-                                Hình thức thi
-                            </th>
-                            <th class="text-center">
-                                Thời gian làm bài (phút)
-                            </th>
-                            <th class="text-center">
-                                Địa điểm
-                            </th>
-                            <th class="text-center">
-                                Kỳ thi
-                            </th>
-                            <th class="text-center">
-                                Ghi chú
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody v-if="filter == ''">
-                        <tr>
-                            <td colspan="12">
-                                <div class="alert alert-warning">Chưa có lịch thi</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody v-else>
-                        <tr v-for="(value, index) in exams[filter]" :key="value.calendar_exam_id">
-                            <td class="td-table text-center">
-                                {{ (index += 1) }}
-                            </td>
-                            <td class="text-center td-table">
-                                {{ value.subject_code }}
-                            </td>
-                            <td class="td-table">
-                                {{ value.subject_name }}
-                            </td>
-                            <td class="text-center td-table">
-                                <div v-if="value.calendarId == 2">Lần 1</div>
-                                <div v-else-if="value.calendarId == 3">Lần 2</div>
-                            </td>
-                            <td class="text-center">
-                                {{ value.start | formatDate }}
-                            </td>
-                            <td class="text-center">
-                                {{ value.start | formatTime }}
-                            </td>
-                            <td class="text-center">
-                                {{ value.calendar_exam_room }}
-                            </td>
-                            <td class="text-center td-table">
-                                <div v-if="value.calendarId == 0">Tự luận</div>
-                                <div v-else-if="value.calendarId == 1">Trắc nghiệm</div>
-                                <div v-else-if="value.calendarId == 2">Tự luận + Trắc nghiệm</div>
-                                <div v-else-if="value.calendarId == 3">Vấn đáp</div>
-                                <div v-else-if="value.calendarId == 4">Thuyết trình</div>
-                                <div v-else-if="value.calendarId == 5">Đồ án</div>
-                            </td>
-                            <td class="text-center">
-                                {{ timeExam(value) }}
-                            </td>
-                            <td class="text-center">
-                                {{ value.calendar_exam_place }}
-                            </td>
-                            <td class="text-center">HK{{ value.calendar_exam_semester }}</td>
-                            <td class="text-center">
-                                {{ value.calendar_exam_note }}
-                            </td>
-                        </tr>
-                        <tr v-show="!exams[filter].length">
-                            <td colspan="9">
-                                <div class="alert alert-danger">
-                                    Không tìm thấy kết quả phù hợp!
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-nowrap">
+                        <thead class="blue-background text-white">
+                            <tr>
+                                <th class="text-center">
+                                    STT
+                                </th>
+                                <th class="text-center">
+                                    Mã môn học
+                                </th>
+                                <th class="text-center">
+                                    Tên môn học
+                                </th>
+                                <th class="text-center">
+                                    Lần thi
+                                </th>
+                                <th class="text-center">
+                                    Ngày thi
+                                </th>
+                                <th class="text-center">
+                                    Giờ thi
+                                </th>
+                                <th class="text-center">
+                                    Phòng thi
+                                </th>
+                                <th class="text-center">
+                                    Hình thức thi
+                                </th>
+                                <th class="text-center">
+                                    Thời gian làm bài (phút)
+                                </th>
+                                <th class="text-center">
+                                    Địa điểm
+                                </th>
+                                <th class="text-center">
+                                    Kỳ thi
+                                </th>
+                                <th class="text-center">
+                                    Ghi chú
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody v-if="filter == ''">
+                            <tr>
+                                <td colspan="12">
+                                    <div class="alert alert-warning">Chưa có lịch thi</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
+                            <tr v-for="(value, index) in exams[filter]" :key="value.calendar_exam_id">
+                                <td class="td-table text-center">
+                                    {{ (index += 1) }}
+                                </td>
+                                <td class="text-center td-table">
+                                    {{ value.subject_code }}
+                                </td>
+                                <td class="td-table">
+                                    {{ value.subject_name }}
+                                </td>
+                                <td class="text-center td-table">
+                                    <div v-if="value.calendarId == 2">Lần 1</div>
+                                    <div v-else-if="value.calendarId == 3">Lần 2</div>
+                                </td>
+                                <td class="text-center">
+                                    {{ value.start | formatDate }}
+                                </td>
+                                <td class="text-center">
+                                    {{ value.start | formatTime }}
+                                </td>
+                                <td class="text-center">
+                                    {{ value.calendar_exam_room }}
+                                </td>
+                                <td class="text-center td-table">
+                                    <div v-if="value.calendarId == 0">Tự luận</div>
+                                    <div v-else-if="value.calendarId == 1">Trắc nghiệm</div>
+                                    <div v-else-if="value.calendarId == 2">Tự luận + Trắc nghiệm</div>
+                                    <div v-else-if="value.calendarId == 3">Vấn đáp</div>
+                                    <div v-else-if="value.calendarId == 4">Thuyết trình</div>
+                                    <div v-else-if="value.calendarId == 5">Đồ án</div>
+                                </td>
+                                <td class="text-center">
+                                    {{ timeExam(value) }}
+                                </td>
+                                <td class="text-center">
+                                    {{ value.calendar_exam_place }}
+                                </td>
+                                <td class="text-center">HK{{ value.calendar_exam_semester }}</td>
+                                <td class="text-center">
+                                    {{ value.calendar_exam_note }}
+                                </td>
+                            </tr>
+                            <tr v-show="!exams[filter].length">
+                                <td colspan="9">
+                                    <div class="alert alert-danger">
+                                        Không tìm thấy kết quả phù hợp!
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
