@@ -62,7 +62,7 @@
                             <table class="table card-table table-vcenter text-nowrap table-nowrap">
                                 <thead class="blue-background text-white">
                                     <tr>
-                                        <th class="text-center text-white" width="60%">
+                                        <th class="text-center text-white" width="55%">
                                             Tiêu đề
                                         </th>
                                         <th class="text-center text-white w-15" width="15%">
@@ -71,6 +71,7 @@
                                         <th class="text-center text-white w-15" width="15%">
                                             Trạng thái
                                         </th>
+                                        <th class="w-5" width="5%"></th>
                                         <th class="w-5" width="5%"></th>
                                         <th class="w-5"></th>
                                     </tr>
@@ -105,6 +106,14 @@
                                                 :disabled="req.request_status != 0"
                                                 @click="destroy(req.request_id)"
                                             ></button>
+                                        </td>
+                                        <td>
+                                            <router-link
+                                                tag="button"
+                                                class="btn-3d btn btn-info btn-lg fa fa-eye"
+                                                :to="{ name: 'requestdetail', params: { idReq: req.request_id } }"
+                                            >
+                                            </router-link>
                                         </td>
                                     </tr>
                                     <tr v-show="!requests.length">

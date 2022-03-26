@@ -223,7 +223,7 @@ export default {
         change(event, procedure_require_id) {
             this.form.procedure_require_status = event.target.value
             this.form
-                .patch(`../../api/admin/procedure-require/yeu-cau-thu-tuc/change/${procedure_require_id}/${this.admin_id}`)
+                .post(`../../api/admin/procedure-require/yeu-cau-thu-tuc/change/${procedure_require_id}/${this.admin_id}`)
                 .then(res => {
                     this.fetchRequires()
                     this.$snotify.warning('Đã thay đổi trạng thái')

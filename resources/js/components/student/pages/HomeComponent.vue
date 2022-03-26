@@ -8,142 +8,173 @@
         <!-- /SECTION BANNER -->
 
         <!-- GRID -->
-        <div class="grid quick-post">
-            <!-- QUICK POST HEADER -->
-            <div class="quick-post-header">
-                <!-- OPTION ITEMS -->
-                <div class="option-items">
-                    <!-- OPTION ITEM -->
-                    <div class="option-item active">
-                        <!-- OPTION ITEM ICON -->
-                        <svg class="option-item-icon icon-status">
-                            <use xlink:href="#svg-status"></use>
-                        </svg>
-                        <!-- /OPTION ITEM ICON -->
+        <div class="grid">
+            <div class="notification-box-list">
+                <div class="notification-box" v-for="notification in notiprocedures" :key="notification.notification_id">
+                    <div class="user-status notification">
+                        <p class="user-status-title">
+                            <i class="fa fa-hand-o-right"></i>
+                            Yêu cầu thủ tục <strong>{{ notification.procedure_title }}</strong> của bạn
+                            <strong v-if="notification.procedure_require_status == 1">đang được xử lý</strong>
+                            <strong v-else-if="notification.procedure_require_status == 2">đã hoàn tất</strong>
+                            <strong v-else-if="notification.procedure_require_status == 3">đã bị huỷ</strong>
+                        </p>
+                        <p class="user-status-timestamp">{{ notification.notification_date | formatFullTime }}</p>
 
-                        <!-- OPTION ITEM TITLE -->
-                        <p class="option-item-title">Status</p>
-                        <!-- /OPTION ITEM TITLE -->
-                    </div>
-                    <!-- /OPTION ITEM -->
-
-                    <!-- OPTION ITEM -->
-                    <div class="option-item">
-                        <!-- OPTION ITEM ICON -->
-                        <svg class="option-item-icon icon-blog-posts">
-                            <use xlink:href="#svg-blog-posts"></use>
-                        </svg>
-                        <!-- /OPTION ITEM ICON -->
-
-                        <!-- OPTION ITEM TITLE -->
-                        <p class="option-item-title">Blog Post</p>
-                        <!-- /OPTION ITEM TITLE -->
-                    </div>
-                    <!-- /OPTION ITEM -->
-
-                    <!-- OPTION ITEM -->
-                    <div class="option-item">
-                        <!-- OPTION ITEM ICON -->
-                        <svg class="option-item-icon icon-poll">
-                            <use xlink:href="#svg-poll"></use>
-                        </svg>
-                        <!-- /OPTION ITEM ICON -->
-
-                        <!-- OPTION ITEM TITLE -->
-                        <p class="option-item-title">Poll</p>
-                        <!-- /OPTION ITEM TITLE -->
-                    </div>
-                    <!-- /OPTION ITEM -->
-                </div>
-                <!-- /OPTION ITEMS -->
-            </div>
-            <!-- /QUICK POST HEADER -->
-
-            <!-- QUICK POST BODY -->
-            <div class="quick-post-body">
-                <!-- FORM -->
-                <form class="form">
-                    <!-- FORM ROW -->
-                    <div class="form-row">
-                        <!-- FORM ITEM -->
-                        <div class="form-item">
-                            <!-- FORM TEXTAREA -->
-                            <div class="form-textarea">
-                                <textarea
-                                    id="quick-post-text"
-                                    name="quick-post-text"
-                                    placeholder="Hi Marina! Share your post here..."
-                                ></textarea>
-                                <!-- FORM TEXTAREA LIMIT TEXT -->
-                                <p class="form-textarea-limit-text">998/1000</p>
-                                <!-- /FORM TEXTAREA LIMIT TEXT -->
-                            </div>
-                            <!-- /FORM TEXTAREA -->
+                        <div class="user-status-icon">
+                            <svg class="icon-minus-small">
+                                <use xlink:href="#svg-minus-small"></use>
+                            </svg>
                         </div>
-                        <!-- /FORM ITEM -->
                     </div>
-                    <!-- /FORM ROW -->
-                </form>
-                <!-- /FORM -->
-            </div>
-            <!-- /QUICK POST BODY -->
-
-            <!-- QUICK POST FOOTER -->
-            <div class="quick-post-footer">
-                <!-- QUICK POST FOOTER ACTIONS -->
-                <div class="quick-post-footer-actions">
-                    <!-- QUICK POST FOOTER ACTION -->
-                    <div class="quick-post-footer-action text-tooltip-tft-medium" data-title="Insert Photo">
-                        <!-- QUICK POST FOOTER ACTION ICON -->
-                        <svg class="quick-post-footer-action-icon icon-camera">
-                            <use xlink:href="#svg-camera"></use>
-                        </svg>
-                        <!-- /QUICK POST FOOTER ACTION ICON -->
-                    </div>
-                    <!-- /QUICK POST FOOTER ACTION -->
-
-                    <!-- QUICK POST FOOTER ACTION -->
-                    <div class="quick-post-footer-action text-tooltip-tft-medium" data-title="Insert GIF">
-                        <!-- QUICK POST FOOTER ACTION ICON -->
-                        <svg class="quick-post-footer-action-icon icon-gif">
-                            <use xlink:href="#svg-gif"></use>
-                        </svg>
-                        <!-- /QUICK POST FOOTER ACTION ICON -->
-                    </div>
-                    <!-- /QUICK POST FOOTER ACTION -->
-
-                    <!-- QUICK POST FOOTER ACTION -->
-                    <div class="quick-post-footer-action text-tooltip-tft-medium" data-title="Insert Tag">
-                        <!-- QUICK POST FOOTER ACTION ICON -->
-                        <svg class="quick-post-footer-action-icon icon-tags">
-                            <use xlink:href="#svg-tags"></use>
-                        </svg>
-                        <!-- /QUICK POST FOOTER ACTION ICON -->
-                    </div>
-                    <!-- /QUICK POST FOOTER ACTION -->
                 </div>
-                <!-- /QUICK POST FOOTER ACTIONS -->
 
-                <!-- QUICK POST FOOTER ACTIONS -->
-                <div class="quick-post-footer-actions">
-                    <!-- BUTTON -->
-                    <p class="button small void">Discard</p>
-                    <!-- /BUTTON -->
+                <div
+                    class="notification-box"
+                    v-for="notification in notirequests"
+                    :key="notification.notification_id"
+                    :class="{ 'none-read': notification.notification_status == 0 }"
+                    @click="detail(notification.notification_title, notification.notification_id)"
+                >
+                    <div class="user-status notification">
+                        <p class="user-status-title">
+                            <i class="fa fa-hand-o-right"></i>
+                            Yêu cầu <strong>{{ notification.request_title }}</strong> của bạn
+                            <strong v-if="notification.request_status == 1">đã được chấp nhận</strong>
+                            <strong v-else-if="notification.request_status == 2">đã bị từ chối</strong>
+                            <span v-show="notification.request_reply != null">và đã trả lời yêu cầu</span>
+                        </p>
+                        <p class="user-status-timestamp">{{ notification.notification_date | formatFullTime }}</p>
 
-                    <!-- BUTTON -->
-                    <p class="button small secondary">Post</p>
-                    <!-- /BUTTON -->
+                        <div class="user-status-icon">
+                            <svg class="icon-minus-small">
+                                <use xlink:href="#svg-minus-small"></use>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
-                <!-- /QUICK POST FOOTER ACTIONS -->
             </div>
-            <!-- /QUICK POST FOOTER -->
         </div>
         <!-- /GRID -->
     </div>
 </template>
 
 <script>
-export default {}
+export default {
+    data() {
+        return {
+            student_id: this.$studentId,
+            notiprocedures: [],
+            notirequests: []
+        }
+    },
+    mounted() {
+        this.fetchNotiProcedure()
+        this.fetchNotiRequest()
+    },
+    methods: {
+        fetchNotiProcedure(page_url) {
+            page_url = `../../api/student/notification/thong-bao/thu-tuc/${this.student_id}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.notiprocedures = res.data
+                })
+                .catch(err => console.log(err))
+        },
+        fetchNotiRequest(page_url) {
+            page_url = `../../api/student/notification/thong-bao/yeu-cau/${this.student_id}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.notirequests = res.data
+                })
+                .catch(err => console.log(err))
+        },
+        timeFormat(time) {
+            switch (typeof time) {
+                case 'number':
+                    break
+                case 'string':
+                    time = +new Date(time)
+                    break
+                case 'object':
+                    if (time.constructor === Date) time = time.getTime()
+                    break
+                default:
+                    time = +new Date()
+            }
+            var time_formats = [
+                [60, 'Mới đây', 1], // 60
+                [120, '1 phút trước', '1 phút trước'], // 60*2
+                [3600, 'phút', 60], // 60*60, 60
+                [7200, '1 tiếng trước', '1 tiếng trước'], // 60*60*2
+                [86400, 'tiếng', 3600], // 60*60*24, 60*60
+                [172800, 'Hôm qua', 'Tomorrow'], // 60*60*24*2
+                [604800, 'ngày', 86400], // 60*60*24*7, 60*60*24
+                [1209600, 'Tuần trước', 'Next week'], // 60*60*24*7*4*2
+                [2419200, 'tuần', 604800], // 60*60*24*7*4, 60*60*24*7
+                [4838400, 'Tháng trước', 'Next month'], // 60*60*24*7*4*2
+                [29030400, 'tháng', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
+                [58060800, 'Năm trước', 'Next year'], // 60*60*24*7*4*12*2
+                [2903040000, 'năm,', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+                [5806080000, 'Thế kỉ trước', 'Next century'], // 60*60*24*7*4*12*100*2
+                [58060800000, 'thế kỉ', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
+            ]
+            var seconds = (+new Date() - time) / 1000,
+                token = 'trước',
+                list_choice = 1
+
+            if (seconds == 0) {
+                return 'Mới đây'
+            }
+            if (seconds < 0) {
+                seconds = Math.abs(seconds)
+                token = 'Từ giờ'
+                list_choice = 2
+            }
+            var i = 0,
+                format
+            while ((format = time_formats[i++]))
+                if (seconds < format[0]) {
+                    if (typeof format[2] == 'string') return format[list_choice]
+                    else return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token
+                }
+        },
+        read(notification_id) {
+            axios
+                .put(`../../api/admin/notification/thong-bao/${notification_id}`)
+                .then(res => {
+                    this.fetchNotification()
+                    this.fetchNoneRead()
+                })
+                .catch(err => console.log(err))
+        },
+        detail(request_id, notification_id) {
+            this.read(notification_id)
+            this.$router.push({ name: 'requestdetail', params: { idReq: request_id } })
+        }
+    }
+}
 </script>
 
-<style></style>
+<style scoped>
+.user-status-title {
+    font-size: 16px !important;
+}
+.user-status {
+    padding: 0px !important;
+}
+.notification-box {
+    border-bottom: 3px solid #6c757d;
+    border-right: 3px solid #6c757d;
+    cursor: pointer;
+    background: linear-gradient(360deg, #faa8af63 0%, #fcfcfd 40%);
+}
+.none-read {
+    border-bottom: 3px solid #6c757d;
+    border-right: 3px solid #6c757d;
+    cursor: pointer;
+    background: linear-gradient(360deg, #faa8af63 0%, #dadaf5 40%);
+}
+</style>

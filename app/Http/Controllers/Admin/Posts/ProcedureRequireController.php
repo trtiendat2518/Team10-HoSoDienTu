@@ -7,6 +7,7 @@ use App\Models\ProcedureRequire;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProcedureRequireResource;
 use App\Models\Admin;
+use App\Models\Notification;
 
 class ProcedureRequireController extends Controller
 {
@@ -114,7 +115,18 @@ class ProcedureRequireController extends Controller
         $pst->procedure_require_admin = $admin->admin_fullname;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $pst->procedure_require_dateget = now();
-        $pst->save();
+        $save = $pst->save();
+
+        if ($save) {
+            $noti = new Notification();
+            $noti->notification_title = $procedure_require_id;
+            $noti->notification_student = $pst->procedure_require_student;
+            $noti->notification_object = 3;
+            $noti->notification_type = 'procedure';
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $noti->notification_date = now();
+            $noti->save();
+        }
     }
 
     public function detail($procedure_require_id)

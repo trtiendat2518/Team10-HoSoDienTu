@@ -95,6 +95,9 @@ import StatisticSubjectDetail from './components/admin/pages/statistic_subject/S
 import ExamSecondManage from './components/admin/pages/exam_second/ExamSecondManageComponent.vue'
 import ExamSecondManageIndex from './components/admin/pages/exam_second/ExamSecondManageIndexComponent.vue'
 
+import NotificationLecturer from './components/admin/pages/notifications/NotificationComponent.vue'
+import NotificationLecturerIndex from './components/admin/pages/notifications/NotificationIndexComponent.vue'
+
 //---------------------------------- STUDENT --------------------------------------------------------
 import Home from './components/student/pages/HomeComponent.vue'
 
@@ -143,6 +146,7 @@ import RequestMess from './components/student/pages/request/RequestComponent.vue
 import RequestMessSend from './components/student/pages/request/RequestCreateComponent.vue'
 import RequestMessIndex from './components/student/pages/request/RequestIndexComponent.vue'
 import RequestMessUpdate from './components/student/pages/request/RequestUpdateComponent.vue'
+import RequestMessDetail from './components/student/pages/request/RequestDetailComponent.vue'
 
 import ProcedureStudent from './components/student/pages/procedures/ProcedureStudentComponent.vue'
 import ProcedureStudentIndex from './components/student/pages/procedures/ProcedureStudentIndexComponent.vue'
@@ -171,6 +175,26 @@ export default new VueRouter({
             components: {
                 default: Dashboard,
                 student: Home
+            }
+        },
+
+        {
+            path: '/thong-bao',
+            name: 'notificationlecturer',
+            component: NotificationLecturer,
+            children: [
+                {
+                    path: '',
+                    name: 'notificationlecturerindex',
+                    component: NotificationLecturerIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminCode != null || Vue.prototype.$facultyId != null || Vue.prototype.$teacherId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
             }
         },
 
@@ -1131,6 +1155,11 @@ export default new VueRouter({
                     path: ':idReq',
                     name: 'requestupdate',
                     component: RequestMessUpdate
+                },
+                {
+                    path: 'chi-tiet/:idReq',
+                    name: 'requestdetail',
+                    component: RequestMessDetail
                 }
             ],
             beforeEnter: (to, from, next) => {

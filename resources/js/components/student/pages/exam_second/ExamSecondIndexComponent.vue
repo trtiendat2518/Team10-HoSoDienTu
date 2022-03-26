@@ -4,6 +4,7 @@
             <img class="section-banner-icon" :src="`../public/student/img/banner/newsfeed-icon.png`" alt="newsfeed-icon" />
             <p class="section-banner-title">Đăng ký thi lần 2</p>
         </div>
+
         <div class="grid">
             <div class="widget-box">
                 <div class="table-responsive">
