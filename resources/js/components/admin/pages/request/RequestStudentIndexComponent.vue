@@ -281,7 +281,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td class="content-wrap">
                                         Nội dung:
                                         <strong>
                                             {{ form.request_content }}
@@ -377,7 +377,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td class="content-wrap">
                                             Nội dung:
                                             <strong>
                                                 {{ form.request_content }}
@@ -784,5 +784,8 @@ export default {
 }
 .resizenone {
     resize: none;
+}
+.content-wrap {
+    overflow-wrap: anywhere;
 }
 </style>

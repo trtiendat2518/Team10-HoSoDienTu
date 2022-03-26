@@ -7,6 +7,7 @@ use App\Models\ProcedureRequire;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProcedureRequireResource;
 use App\Models\Admin;
+use App\Models\Notification;
 
 class ProcedureRequireController extends Controller
 {
@@ -114,7 +115,27 @@ class ProcedureRequireController extends Controller
         $pst->procedure_require_admin = $admin->admin_fullname;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $pst->procedure_require_dateget = now();
-        $pst->save();
+        $save = $pst->save();
+
+        if ($save) {
+            $noti = new Notification();
+            $noti->notification_title = $procedure_require_id;
+            $noti->notification_student = $pst->procedure_require_student;
+            $noti->notification_object = 3;
+            $noti->notification_type = 'procedure';
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $noti->notification_date = now();
+            $noti->save();
+        }
+    }
+
+    public function detail($procedure_require_id)
+    {
+        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_id', '=', 'tbl_procedure_require.procedure_require_detail')
+            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_procedure_require.procedure_require_student')
+            ->where('tbl_procedure_require.procedure_require_id', $procedure_require_id)
+            ->orderby('procedure_require_id', 'DESC')->get();
+        return ProcedureRequireResource::collection($join);
     }
 
     public function detail($procedure_require_id)

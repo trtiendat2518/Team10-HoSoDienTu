@@ -1,5 +1,6 @@
 <template>
     <div>
+        <vue-snotify></vue-snotify>
         <div class="page-header">
             <ol class="breadcrumb">
                 <!-- breadcrumb -->
@@ -25,7 +26,29 @@
 
         <div class="card">
             <div class="card-header styling">
-                <h3 class="card-title">Chi tiết yêu cầu</h3>
+                <div class="row" v-for="prequire in details" :key="prequire.procedure_require_id">
+                    <div class="col-md-10">
+                        <h3 class="card-title">Chi tiết yêu cầu</h3>
+                    </div>
+                    <div class="col-md-2">
+                        <select
+                            class="form-control float-right"
+                            v-model="prequire.procedure_require_status"
+                            :class="[
+                                { 'btn-outline-success': prequire.procedure_require_status == 2 },
+                                { 'btn-outline-danger': prequire.procedure_require_status == 3 },
+                                { 'btn-outline-dark': prequire.procedure_require_status == 1 }
+                            ]"
+                            @change="change($event, prequire.procedure_require_id)"
+                            name="procedure_require_status"
+                        >
+                            <option value="0" :hidden="prequire.procedure_require_status != 0">Chờ xác nhận</option>
+                            <option value="1" :hidden="prequire.procedure_require_status > 1">Đang xử lý</option>
+                            <option value="2" :hidden="prequire.procedure_require_status == 3">Hoàn tất</option>
+                            <option value="3" :hidden="prequire.procedure_require_status == 2">Đã bị hủy</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <form>
@@ -96,6 +119,7 @@
 export default {
     data() {
         return {
+            admin_id: this.$adminCode,
             procedure_require_id: this.$route.params.idRProcedure,
             details: [],
             procedures_input: [],
@@ -106,7 +130,16 @@ export default {
             procedures_require_input: [],
             procedures_require_area: [],
             procedures_require_select: [],
-            procedures_require_file: []
+            procedures_require_file: [],
+            form: new Form({
+                procedure_require_id: '',
+                procedure_require_code: '',
+                procedure_require_detail: '',
+                procedure_require_datesend: '',
+                procedure_require_dateget: '',
+                procedure_require_status: '',
+                procedure_require_student: ''
+            })
         }
     },
     mounted() {
@@ -225,6 +258,16 @@ export default {
                         .catch(console.error)
                 }
             }
+        },
+        change(event, procedure_require_id) {
+            this.form.procedure_require_status = event.target.value
+            this.form
+                .post(`../../api/admin/procedure-require/yeu-cau-thu-tuc/change/${procedure_require_id}/${this.admin_id}`)
+                .then(res => {
+                    this.fetchDetail()
+                    this.$snotify.warning('Đã thay đổi trạng thái')
+                })
+                .catch(err => console.log(err))
         }
     }
 }
@@ -234,5 +277,8 @@ export default {
 label,
 input {
     font-size: 16px !important;
+}
+.card-header {
+    display: table-column !important;
 }
 </style>

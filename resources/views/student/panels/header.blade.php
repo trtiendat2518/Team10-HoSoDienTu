@@ -567,14 +567,6 @@
                 <!-- MENU MAIN ITEM -->
                 <li class="menu-main-item">
                     <!-- MENU MAIN ITEM LINK -->
-                    <a class="menu-main-item-link" href="#">Thanh toán học phí</a>
-                    <!-- /MENU MAIN ITEM LINK -->
-                </li>
-                <!-- /MENU MAIN ITEM -->
-
-                <!-- MENU MAIN ITEM -->
-                <li class="menu-main-item">
-                    <!-- MENU MAIN ITEM LINK -->
                     <a class="menu-main-item-link" href="{{ url('/home#/thong-bao-chung') }}">Thông báo chung</a>
                     <!-- /MENU MAIN ITEM LINK -->
                 </li>
@@ -584,22 +576,6 @@
                 <li class="menu-main-item">
                     <!-- MENU MAIN ITEM LINK -->
                     <a class="menu-main-item-link" href="{{ url('/home#/ban-tin-van-lang') }}">Bản tin VLU</a>
-                    <!-- /MENU MAIN ITEM LINK -->
-                </li>
-                <!-- /MENU MAIN ITEM -->
-
-                <!-- MENU MAIN ITEM -->
-                <li class="menu-main-item">
-                    <!-- MENU MAIN ITEM LINK -->
-                    <a class="menu-main-item-link" href="{{ url('/home#/tat-ca-thong-bao') }}">Tất cả thông báo</a>
-                    <!-- /MENU MAIN ITEM LINK -->
-                </li>
-                <!-- /MENU MAIN ITEM -->
-
-                <!-- MENU MAIN ITEM -->
-                <li class="menu-main-item">
-                    <!-- MENU MAIN ITEM LINK -->
-                    <a class="menu-main-item-link" href="{{ url('/home#/thong-tin-ca-nhan-sinh-vien') }}">Hồ sơ cá nhân</a>
                     <!-- /MENU MAIN ITEM LINK -->
                 </li>
                 <!-- /MENU MAIN ITEM -->
