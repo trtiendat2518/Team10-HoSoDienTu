@@ -33,6 +33,7 @@ import ProcedureIndex from './components/admin/pages/procedures/ProcedureIndexCo
 import ProcedureCreate from './components/admin/pages/procedures/ProcedureCreateComponent.vue'
 import ProcedureUpdate from './components/admin/pages/procedures/ProcedureUpdateComponent.vue'
 import ProcedureRequire from './components/admin/pages/procedures/ProcedureRequireComponent.vue'
+import ProcedureRDetail from './components/admin/pages/procedures/ProcedureRDetailComponent.vue'
 
 import Calendar from './components/admin/pages/calendar/CalendarComponent.vue'
 import CalendarCreate from './components/admin/pages/calendar/CalendarCreateComponent.vue'
@@ -40,6 +41,7 @@ import CalendarUpdate from './components/admin/pages/calendar/CalendarUpdateComp
 import CalendarIndex from './components/admin/pages/calendar/CalendarIndexComponent.vue'
 import CalendarReference from './components/admin/pages/calendar/CalendarReferenceComponent.vue'
 import CalendarSubjectSlot from './components/admin/pages/calendar/CalendarSubjectSlotComponent.vue'
+import CalendarSubjectTime from './components/admin/pages/calendar/CalendarSubjectTimeComponent.vue'
 
 import ClassStudent from './components/admin/pages/class/ClassStudentComponent.vue'
 import ClassStudentIndex from './components/admin/pages/class/ClassStudentIndexComponent.vue'
@@ -94,6 +96,9 @@ import StatisticSubjectDetail from './components/admin/pages/statistic_subject/S
 import ExamSecondManage from './components/admin/pages/exam_second/ExamSecondManageComponent.vue'
 import ExamSecondManageIndex from './components/admin/pages/exam_second/ExamSecondManageIndexComponent.vue'
 
+import NotificationLecturer from './components/admin/pages/notifications/NotificationComponent.vue'
+import NotificationLecturerIndex from './components/admin/pages/notifications/NotificationIndexComponent.vue'
+
 //---------------------------------- STUDENT --------------------------------------------------------
 import Home from './components/student/pages/HomeComponent.vue'
 
@@ -142,12 +147,19 @@ import RequestMess from './components/student/pages/request/RequestComponent.vue
 import RequestMessSend from './components/student/pages/request/RequestCreateComponent.vue'
 import RequestMessIndex from './components/student/pages/request/RequestIndexComponent.vue'
 import RequestMessUpdate from './components/student/pages/request/RequestUpdateComponent.vue'
+import RequestMessDetail from './components/student/pages/request/RequestDetailComponent.vue'
 
 import ProcedureStudent from './components/student/pages/procedures/ProcedureStudentComponent.vue'
 import ProcedureStudentIndex from './components/student/pages/procedures/ProcedureStudentIndexComponent.vue'
 import ProcedureStudentDetail from './components/student/pages/procedures/ProcedureStudentDetailComponent.vue'
 import ProcedureStudentRequire from './components/student/pages/procedures/ProcedureStudentRequireComponent.vue'
 import ProcedureStudentList from './components/student/pages/procedures/ProcedureStudentListComponent.vue'
+
+// import ProcedureStudent from './components/student/pages/procedures/ProcedureStudentComponent.vue'
+// import ProcedureStudentIndex from './components/student/pages/procedures/ProcedureStudentIndexComponent.vue'
+// import ProcedureStudentDetail from './components/student/pages/procedures/ProcedureStudentDetailComponent.vue'
+// import ProcedureStudentRequire from './components/student/pages/procedures/ProcedureStudentRequireComponent.vue'
+// import ProcedureStudentList from './components/student/pages/procedures/ProcedureStudentListComponent.vue'
 
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
@@ -170,6 +182,26 @@ export default new VueRouter({
             components: {
                 default: Dashboard,
                 student: Home
+            }
+        },
+
+        {
+            path: '/thong-bao',
+            name: 'notificationlecturer',
+            component: NotificationLecturer,
+            children: [
+                {
+                    path: '',
+                    name: 'notificationlecturerindex',
+                    component: NotificationLecturerIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminCode != null || Vue.prototype.$facultyId != null || Vue.prototype.$teacherId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
             }
         },
 
@@ -323,6 +355,12 @@ export default new VueRouter({
                     path: 'yeu-cau-cua-sinh-vien',
                     name: 'procedurerequire',
                     component: ProcedureRequire
+                },
+
+                {
+                    path: 'yeu-cau-cua-sinh-vien/:idRProcedure',
+                    name: 'procedurerequiredetail',
+                    component: ProcedureRDetail
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -393,6 +431,11 @@ export default new VueRouter({
                     path: 'mo-lop-mon-hoc',
                     name: 'calendarsubjectslot',
                     component: CalendarSubjectSlot
+                },
+                {
+                    path: 'lich-lop-mon-hoc',
+                    name: 'calendarsubjecttime',
+                    component: CalendarSubjectTime
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -965,6 +1008,11 @@ export default new VueRouter({
             children: [
                 {
                     path: '/',
+                    name: 'timetablecalendar',
+                    component: TimetableCalendar
+                },
+                {
+                    path: '/thoi-khoa-bieu-thu-tiet',
                     name: 'timetableindex',
                     component: TimetableIndex
                 },
@@ -1119,6 +1167,48 @@ export default new VueRouter({
                     path: ':idReq',
                     name: 'requestupdate',
                     component: RequestMessUpdate
+                },
+                {
+                    path: 'chi-tiet/:idReq',
+                    name: 'requestdetail',
+                    component: RequestMessDetail
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/yeu-cau-thu-tuc-sinh-vien',
+            name: 'procedurestudent',
+            components: {
+                student: ProcedureStudent
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'procedurestudentindex',
+                    component: ProcedureStudentIndex
+                },
+                {
+                    path: 'chi-tiet?id=:idProcedureStudent',
+                    name: 'procedurestudentdetail',
+                    component: ProcedureStudentDetail
+                },
+                {
+                    path: ':idProcedureStudent?&total=:totalQuantity/dien-thong-tin-yeu-cau',
+                    name: 'procedurestudentrequire',
+                    component: ProcedureStudentRequire
+                },
+                {
+                    path: 'danh-sach-da-yeu-cau',
+                    name: 'procedurestudentlist',
+                    component: ProcedureStudentList
                 }
             ],
             beforeEnter: (to, from, next) => {

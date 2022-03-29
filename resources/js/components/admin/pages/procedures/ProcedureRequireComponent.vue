@@ -71,7 +71,17 @@
                             </thead>
                             <tbody>
                                 <tr v-show="requires.length" v-for="prequire in requires" :key="prequire.procedure_require_id">
-                                    <td>{{ prequire.procedure_require_code }}</td>
+                                    <td>
+                                        <router-link
+                                            tag="a"
+                                            :to="{
+                                                name: 'procedurerequiredetail',
+                                                params: { idRProcedure: prequire.procedure_require_id }
+                                            }"
+                                        >
+                                            {{ prequire.procedure_require_code }}
+                                        </router-link>
+                                    </td>
                                     <td>
                                         <div v-if="prequire.procedure_title < 20">
                                             {{ prequire.procedure_title }}
@@ -190,7 +200,7 @@ export default {
         },
         fetchRequires(page_url) {
             let vm = this
-            page_url = '../../api/admin/procedure-require/yeu-cau-thu-tuc/' + this.currentEntries + '?page=' + this.pagination.current_page
+            page_url = `../../api/admin/procedure-require/yeu-cau-thu-tuc/${this.currentEntries}?page=${this.pagination.current_page}`
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
@@ -213,7 +223,7 @@ export default {
         change(event, procedure_require_id) {
             this.form.procedure_require_status = event.target.value
             this.form
-                .patch(`../../api/admin/procedure-require/yeu-cau-thu-tuc/change/${procedure_require_id}/${this.admin_id}`)
+                .post(`../../api/admin/procedure-require/yeu-cau-thu-tuc/change/${procedure_require_id}/${this.admin_id}`)
                 .then(res => {
                     this.fetchRequires()
                     this.$snotify.warning('Đã thay đổi trạng thái')

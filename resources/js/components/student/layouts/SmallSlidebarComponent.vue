@@ -2,7 +2,37 @@
     <div>
         <ul class="menu">
             <!-- NAVIGATION WIDGET SECTION TITLE -->
-            <p class="navigation-widget-section-title mb-3">Tra cứu thông tin</p>
+            <p class="navigation-widget-section-title mb-3">Thông tin cá nhân</p>
+            <!-- /NAVIGATION WIDGET SECTION TITLE -->
+
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/thong-tin-ca-nhan-sinh-vien" active-class="active">
+                    <svg class="menu-item-link-icon icon-members">
+                        <use xlink:href="#svg-members"></use>
+                    </svg>
+                    Hồ sơ cá nhân
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
+
+            <!-- MENU ITEM -->
+            <li class="menu-item">
+                <!-- MENU ITEM LINK -->
+                <router-link tag="a" class="menu-item-link" to="/" active-class="active" exact>
+                    <svg class="menu-item-link-icon icon-notification">
+                        <use xlink:href="#svg-notification"></use>
+                    </svg>
+                    Thông báo
+                </router-link>
+                <!-- /MENU ITEM LINK -->
+            </li>
+            <!-- /MENU ITEM -->
+
+            <!-- NAVIGATION WIDGET SECTION TITLE -->
+            <p class="navigation-widget-section-title mb-3 mt-5">Tra cứu thông tin</p>
             <!-- /NAVIGATION WIDGET SECTION TITLE -->
 
             <!-- MENU ITEM -->

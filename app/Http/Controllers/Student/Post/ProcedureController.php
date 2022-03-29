@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProcedureRequireResource;
 use App\Http\Resources\ProcedureResource;
+use App\Models\Notification;
 use App\Models\Procedure;
 use App\Models\ProcedureRequire;
 use Illuminate\Http\Request;
@@ -81,7 +82,18 @@ class ProcedureController extends Controller
             $stringFile = implode('; ', $arrayFile);
             $procedures->procedure_require_file = $stringFile;
         }
-        $procedures->save();
+        $send_procedure = $procedures->save();
+
+        if ($send_procedure) {
+            $noti = new Notification();
+            $noti->notification_title = $procedures->procedure_require_id;
+            $noti->notification_student = $request->student_id;
+            $noti->notification_object = 0;
+            $noti->notification_type = 'procedure';
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $noti->notification_date = now();
+            $noti->save();
+        }
     }
 
     /**
@@ -117,6 +129,19 @@ class ProcedureController extends Controller
     public function destroy($id)
     {
         $del = ProcedureRequire::find($id);
+        if ($del->procedure_require_file != '' || $del->procedure_require_file != null) {
+            $splitFile = explode("; ", $del->procedure_require_file);
+            foreach ($splitFile as $key => $value) {
+                Storage::disk('fileprocedure')->delete($value);
+            }
+        }
+        $del_noti = Notification::where('notification_title', $id)
+            ->where('notification_student', $del->procedure_require_student)
+            ->where('notification_object', 0)
+            ->where('notification_type', 'procedure')->get();
+        foreach ($del_noti as $key => $notification) {
+            $notification->delete();
+        }
         $del->delete();
     }
 

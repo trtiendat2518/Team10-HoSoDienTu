@@ -10,7 +10,7 @@
                 <li class="breadcrumb-item">
                     <router-link tag="a" :to="{ name: 'calendarindex' }">Lịch biểu </router-link>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Lịch mở lớp học</li>
+                <li class="breadcrumb-item active" aria-current="page">Mở lớp học</li>
             </ol>
             <!-- End breadcrumb -->
         </div>
@@ -22,7 +22,11 @@
                 </router-link>
             </div>
             <div class="col-md-6">
-                <button class="btn btn-info btn-lg mb-3 btn-3d float-right" @click="create()">
+                <router-link tag="button" class="btn btn-danger btn-lg mb-3 btn-3d float-right" :to="{ name: 'calendarsubjecttime' }">
+                    <li class="fa fa-calendar-plus-o"></li>
+                    Lịch lớp môn học
+                </router-link>
+                <button class="btn btn-info btn-lg mb-3 btn-3d float-right mr-2" @click="create()">
                     <li class="fa fa-plus"></li>
                     Tạo mới
                 </button>
@@ -37,18 +41,63 @@
                         </div>
                     </div>
 
-                    <div class="row ml-2 mr-2">
-                        <div class="col-md-10">
+                    <div class="row ml-2 mr-2 mb-2">
+                        <div class="col-md-9">
                             <input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm môn học..." />
                         </div>
                         <div class="col-md-2">
                             <div class="between:flex bottom:margin-3 ml-2">
-                                <div class="center:flex-items">
+                                <div class="center:flex-items float-right">
                                     <span class="right:marign-1">Hiển thị</span>
                                     <select class="select form-control-styling" v-model="currentEntries">
                                         <option v-for="entry in showEntries" :key="entry" :value="entry">{{ entry }} </option>
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button class="btn btn-primary mt-2 float-right block" @click="reload()">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> Tải lại
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row ml-2 mr-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select class="form-control" v-model="filter_course">
+                                    <option value="" disabled selected>Chọn khoá học</option>
+                                    <option v-for="course in courses" :key="course.course_id" :value="course.course_id">
+                                        {{ course.course_code }} - {{ course.course_name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select class="form-control" v-model="filter_major" :disabled="filter_course == ''">
+                                    <option value="" disabled selected>Chọn chuyên ngành</option>
+                                    <option v-for="major in majors" :key="major.major_id" :value="major.major_id">
+                                        {{ major.major_name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select class="form-control" v-model="filter_semester" :disabled="filter_major == ''">
+                                    <option value="" disabled selected>Chọn học kỳ</option>
+                                    <option v-for="semester in semesters" :key="semester" :value="semester"> Học kỳ {{ semester }} </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button class="btn btn-indigo block" @click="filter()">
+                                    <i class="fa fa-filter" aria-hidden="true"></i> Lọc
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -262,7 +311,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="mt-3">Ngày bắt đầu <span class="text-danger">(*)</span></label>
                                         <input
@@ -279,7 +328,7 @@
                                         ></div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="mt-3">Ngày kết thúc <span class="text-danger">(*)</span></label>
                                         <input
@@ -296,57 +345,90 @@
                                         ></div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="mt-3">Ngày học <span class="text-danger">(*)</span></label>
+                                        <label class="mt-3">Ngày học / Tuần <span class="text-danger">(*)</span></label>
                                         <select
-                                            v-model="form.calendar_subject_day"
-                                            name="calendar_subject_day"
+                                            v-model="dayofweek"
+                                            name="day_of_week"
                                             class="form-control select-option"
-                                            :class="{ 'is-invalid': form.errors.has('calendar_subject_day') }"
+                                            :class="{ 'is-invalid': check_dayofweek == false }"
                                         >
-                                            <option value="" selected disabled>Chọn ngày học</option>
+                                            <option value="0" selected disabled>Chọn số ngày</option>
                                             <option disabled>---------------</option>
-                                            <option value="1">Chủ nhật</option>
-                                            <option value="2">Thứ Hai</option>
-                                            <option value="3">Thứ Ba</option>
-                                            <option value="4">Thứ Tư</option>
-                                            <option value="5">Thứ Năm</option>
-                                            <option value="6">Thứ Sáu</option>
-                                            <option value="7">Thứ Bảy</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
                                         </select>
-                                        <div
-                                            class="text-danger mb-3"
-                                            v-if="form.errors.has('calendar_subject_day')"
-                                            v-html="form.errors.get('calendar_subject_day')"
-                                        ></div>
+                                        <div class="text-danger mb-3" v-if="check_dayofweek == false">
+                                            <p class="text-danger">Vui lòng chọn số ngày học trong tuần để tiếp tục</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="mt-3">Thời gian <span class="text-danger">(*)</span></label>
-                                        <select
-                                            v-model="form.calendar_subject_time"
-                                            name="calendar_subject_time"
-                                            class="form-control select-option"
-                                            :class="{ 'is-invalid': form.errors.has('calendar_subject_time') }"
-                                        >
-                                            <option value="" selected disabled>Chọn thời gian học</option>
-                                            <option disabled>---------------</option>
-                                            <option value="123">Tiết 1,2,3 (7h-9h25)</option>
-                                            <option value="456">Tiết 4,5,6 (9h35-12h)</option>
-                                            <option value="789">Tiết 7,8,9 (13h00-15h25)</option>
-                                            <option value="101112">Tiết 10,11,12 (15h35-18h00)</option>
-                                            <option value="131415">Tiết 13,14,15 (18h00-20h25)</option>
-                                        </select>
-                                        <div
-                                            class="text-danger mb-3"
-                                            v-if="form.errors.has('calendar_subject_time')"
-                                            v-html="form.errors.get('calendar_subject_time')"
-                                        ></div>
+                            </div>
+
+                            <div v-show="editMode">
+                                <h4 class="mt-3" v-show="editMode"><strong>Lịch hiện tại</strong></h4>
+                                <div class="form-group">
+                                    <input
+                                        class="form-control"
+                                        :value="valueCurrent(form.calendar_subject_day, form.calendar_subject_time)"
+                                        disabled
+                                    />
+                                </div>
+                                <h4 class="mt-5"><strong>Lịch mới</strong></h4>
+                            </div>
+
+                            <div v-for="i in dayWeek(dayofweek)" :key="i">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Ngày học <span class="text-danger">(*)</span></label>
+                                            <select
+                                                :id="'day_' + i"
+                                                name="calendar_subject_day"
+                                                class="form-control select-option"
+                                                :class="{ 'is-invalid': check_day == false }"
+                                            >
+                                                <option value="" selected disabled>Chọn ngày học</option>
+                                                <option disabled>---------------</option>
+                                                <option value="0">Chủ nhật</option>
+                                                <option value="1">Thứ Hai</option>
+                                                <option value="2">Thứ Ba</option>
+                                                <option value="3">Thứ Tư</option>
+                                                <option value="4">Thứ Năm</option>
+                                                <option value="5">Thứ Sáu</option>
+                                                <option value="6">Thứ Bảy</option>
+                                            </select>
+                                            <div class="text-danger mb-3" v-if="check_day == false">
+                                                <p class="text-danger">Vui lòng chọn các ngày học trong tuần để tiếp tục</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Thời gian <span class="text-danger">(*)</span></label>
+                                            <select
+                                                :id="'time_' + i"
+                                                name="calendar_subject_time"
+                                                class="form-control select-option"
+                                                :class="{ 'is-invalid': check_time == false }"
+                                            >
+                                                <option value="" selected disabled>Chọn thời gian học</option>
+                                                <option disabled>---------------</option>
+                                                <option value="123">Tiết 1,2,3 (7h-9h25)</option>
+                                                <option value="456">Tiết 4,5,6 (9h35-12h)</option>
+                                                <option value="789">Tiết 7,8,9 (13h00-15h25)</option>
+                                                <option value="101112">Tiết 10,11,12 (15h35-18h00)</option>
+                                                <option value="131415">Tiết 13,14,15 (18h00-20h25)</option>
+                                            </select>
+                                            <div class="text-danger mb-3" v-if="check_time == false">
+                                                <p class="text-danger">Vui lòng chọn thời gian học trong tuần để tiếp tục</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -425,27 +507,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div v-if="form.calendar_subject_day == 1">
-                                            <strong>
-                                                Chủ nhật -
-                                                <span v-if="form.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                <span v-if="form.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                <span v-if="form.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                <span v-if="form.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
-                                                <span v-if="form.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
-                                            </strong>
-                                        </div>
-                                        <div v-else>
-                                            Lịch học:
-                                            <strong>
-                                                Thứ {{ form.calendar_subject_day }} -
-                                                <span v-if="form.calendar_subject_time == 123">Tiết 1,2,3 (7h-9h25)</span>
-                                                <span v-if="form.calendar_subject_time == 456">Tiết 4,5,6 (9h35-12h)</span>
-                                                <span v-if="form.calendar_subject_time == 789">Tiết 7,8,9 (13h00-15h25)</span>
-                                                <span v-if="form.calendar_subject_time == 101112">Tiết 10,11,12 (15h35-18h00)</span>
-                                                <span v-if="form.calendar_subject_time == 131415">Tiết 13,14,15 (18h00-20h25)</span>
-                                            </strong>
-                                        </div>
+                                        Lịch học: <strong>{{ valueCurrent(form.calendar_subject_day, form.calendar_subject_time) }}</strong>
                                     </td>
                                 </tr>
                             </tbody>
@@ -467,6 +529,9 @@ import 'vue-snotify/styles/material.css'
 export default {
     data() {
         return {
+            courses: [],
+            semesters: [],
+            majors: [],
             subjects: [],
             schedules: [],
             lecturers: [],
@@ -479,6 +544,13 @@ export default {
             showEntries: [5, 10, 25, 50],
             query: '',
             editMode: false,
+            dayofweek: 0,
+            check_dayofweek: true,
+            check_day: true,
+            check_time: true,
+            filter_course: '',
+            filter_major: '',
+            filter_semester: '',
             form: new Form({
                 title: '',
                 calendar_subject_id: '',
@@ -523,12 +595,62 @@ export default {
             if (value != '') {
                 this.fetchSubjectsForCalendar()
             }
+        },
+        dayofweek(value) {
+            if (value != 0) {
+                return Number(value)
+            }
+        },
+        filter_major(value) {
+            if (value != '') {
+                this.fetchSemesters()
+            }
         }
     },
     mounted() {
         this.fetchCalendarSubjects()
+        this.fetchCourses()
+        this.fetchMajors()
     },
     methods: {
+        fetchMajors(page_url) {
+            let vm = this
+            page_url = `../../api/admin/edu-major/chuyen-nganh/major`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.majors = res.data
+                })
+                .catch(err => console.log(err))
+        },
+        fetchCourses(page_url) {
+            let vm = this
+            page_url = '../../api/admin/edu-course/khoa-hoc/course'
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.courses = res.data
+                })
+                .catch(err => console.log(err))
+        },
+        fetchSemesters(page_url) {
+            let vm = this
+            page_url = `../../api/admin/calendar-schedule/lich-bieu/hoc-ky/${this.filter_course}/${this.filter_major}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    const semesters = res.data.reduce((semesters, item) => {
+                        const semester = semesters[item.program_detail_semester] || []
+                        semester.push(item)
+                        semesters[item.program_detail_semester] = semester
+                        return semesters
+                    }, {})
+
+                    let key = Object.keys(semesters)
+                    this.semesters = key
+                })
+                .catch(err => console.log(err))
+        },
         fetchCalendarSubjects(page_url) {
             let vm = this
             page_url = `../../api/admin/calendar-subject/lich-mo-lop-hoc/${this.currentEntries}?page=${this.pagination.current_page}`
@@ -592,6 +714,7 @@ export default {
                 .catch(err => console.log(err))
         },
         create() {
+            this.dayofweek = 0
             this.editMode = false
             this.form.reset()
             this.form.clear()
@@ -601,6 +724,41 @@ export default {
             $('#CalendarSubjectModal').modal('show')
         },
         store() {
+            if (this.dayofweek == 0) {
+                this.check_dayofweek = false
+            } else {
+                this.check_dayofweek = true
+                let arrayDay = []
+                let arrayTime = []
+                let numberLength = Number(this.dayofweek)
+                for (let i = 1; i <= numberLength; i++) {
+                    const day = document.getElementById('day_' + i).value
+                    const time = document.getElementById('time_' + i).value
+                    if (day == '') {
+                        this.check_day = false
+                    } else {
+                        arrayDay.push(day)
+                        if (arrayDay.length < numberLength) {
+                            this.check_day = false
+                        } else {
+                            this.check_day = true
+                        }
+                    }
+
+                    if (time == '') {
+                        this.check_time = false
+                    } else {
+                        arrayTime.push(time)
+                        if (arrayTime.length < numberLength) {
+                            this.check_time = false
+                        } else {
+                            this.check_time = true
+                        }
+                    }
+                }
+                this.form.calendar_subject_day = arrayDay.join(', ')
+                this.form.calendar_subject_time = arrayTime.join(', ')
+            }
             this.form.busy = true
             this.form
                 .post('../../api/admin/calendar-subject/lich-mo-lop-hoc')
@@ -616,6 +774,7 @@ export default {
                 .catch(err => console.log(err))
         },
         show(subject) {
+            this.dayofweek = 0
             this.editMode = true
             this.form.reset()
             this.form.clear()
@@ -623,15 +782,57 @@ export default {
             this.fetchSchedules()
             this.fetchLecturers()
             this.form.fill(subject)
+            const day = subject.calendar_subject_day.split(', ')
+            this.dayofweek = day.length
+
             $('#CalendarSubjectModal').modal('show')
         },
         update() {
+            let arrayDayCur = []
+            let arrayTimeCur = []
+            let arrayDay = []
+            let arrayTime = []
+
+            arrayDayCur.push(this.form.calendar_subject_day)
+            arrayTimeCur.push(this.form.calendar_subject_time)
+
+            for (let i = 1; i <= Number(this.dayofweek); i++) {
+                const day = document.getElementById('day_' + i).value
+                const time = document.getElementById('time_' + i).value
+                if (day != '') {
+                    arrayDay.push(day)
+                    if (arrayDay.length < Number(this.dayofweek)) {
+                        this.check_day = false
+                    } else {
+                        this.check_day = true
+                    }
+                }
+
+                if (time != '') {
+                    arrayTime.push(time)
+                    if (arrayTime.length < Number(this.dayofweek)) {
+                        this.check_time = false
+                    } else {
+                        this.check_time = true
+                    }
+                }
+            }
+
+            if (arrayDay.length > 0) {
+                this.form.calendar_subject_day = arrayDay.join(', ')
+                this.form.calendar_subject_time = arrayTime.join(', ')
+            } else {
+                this.form.calendar_subject_day = arrayDayCur.join(', ')
+                this.form.calendar_subject_time = arrayTimeCur.join(', ')
+            }
+
             this.form
                 .put(`../../api/admin/calendar-subject/lich-mo-lop-hoc/${this.form.calendar_subject_id}`)
                 .then(res => {
                     this.fetchCalendarSubjects()
                     $('#CalendarSubjectModal').modal('hide')
                     if (this.form.successful) {
+                        this.dayofweek = 0
                         this.$snotify.success('Cập nhật thành công!')
                     } else {
                         this.$snotify.error('Không thể chỉnh sửa')
@@ -690,6 +891,71 @@ export default {
                     this.$snotify.warning('Đã thay đổi trạng thái')
                 })
                 .catch(err => console.log(err))
+        },
+        dayWeek(dayofweek) {
+            return Number(dayofweek)
+        },
+        valueCurrent(calendar_subject_day, calendar_subject_time) {
+            const day = calendar_subject_day.split(', ')
+            const time = calendar_subject_time.split(', ')
+            let arrayDay = []
+            let arrayTime = []
+            let stringDay = ''
+            let stringTime = ''
+            let allStringDay = ''
+            let allStringTime = ''
+
+            if (day.length > 0) {
+                for (let i = 0; i < day.length; i++) {
+                    if (day[i] == 0) {
+                        stringDay = 'Chủ nhật'
+                    } else {
+                        let key = Number(day[i]) + 1
+                        stringDay = 'Thứ ' + key
+                    }
+                    arrayDay.push(stringDay)
+                }
+                allStringDay = arrayDay.join(', ')
+            }
+
+            if (time.length > 0) {
+                for (let i = 0; i < time.length; i++) {
+                    if (time[i] == 123) {
+                        stringTime = 'Tiết 1-2-3'
+                    } else if (time[i] == 456) {
+                        stringTime = 'Tiết 4-5-6'
+                    } else if (time[i] == 789) {
+                        stringTime = 'Tiết 7-8-9'
+                    } else if (time[i] == 101112) {
+                        stringTime = 'Tiết 10-11-12'
+                    } else if (time[i] == 131415) {
+                        stringTime = 'Tiết 13-14-15'
+                    }
+                    arrayTime.push(stringTime)
+                }
+                allStringTime = arrayTime.join(', ')
+            }
+            return allStringDay + ' (' + allStringTime + ')'
+        },
+        filter(page_url) {
+            if (this.filter_course == '' || this.filter_major == '' || this.filter_semester == '') {
+                this.$snotify.error('Vui lòng chọn đầy đủ thông tin')
+            } else {
+                page_url = `../../api/admin/calendar-subject/lich-mo-lop-hoc/filter/${this.filter_course}/${this.filter_major}/${this.filter_semester}/${this.currentEntries}?page=${this.pagination.current_page}`
+                fetch(page_url)
+                    .then(res => res.json())
+                    .then(res => {
+                        this.subjects = res.data
+                        this.pagination = res.meta
+                    })
+                    .catch(err => console.log(err))
+            }
+        },
+        reload() {
+            this.filter_course = ''
+            this.filter_major = ''
+            this.filter_semester = ''
+            this.fetchCalendarSubjects()
         }
     }
 }
