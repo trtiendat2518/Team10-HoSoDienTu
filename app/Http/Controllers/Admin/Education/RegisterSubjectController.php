@@ -137,11 +137,17 @@ class RegisterSubjectController extends Controller
                     $value->save();
                 }
 
-                $delete = RegisterSubject::join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
+                $change = RegisterSubject::join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
                     ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
-                    ->where('tbl_subject.subject_id', $reg->subject_id)
-                    ->orderBy('tbl_register_subject.register_subject_id', 'ASC')->first();
-                $delete->delete();
+                    ->where('tbl_subject.subject_id', $reg->subject_id)->count();
+                if ($change > 1) {
+                    $again = RegisterSubject::join('tbl_calendar_subject', 'tbl_calendar_subject.calendar_subject_id', '=', 'tbl_register_subject.register_subject_program')
+                        ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+                        ->where('tbl_subject.subject_id', $reg->subject_id)
+                        ->orderby('tbl_register_subject.register_subject_id', 'ASC')->first();
+                    $again->register_subject_again = 1;
+                    $again->save();
+                }
             }
         }
         $reg->save();

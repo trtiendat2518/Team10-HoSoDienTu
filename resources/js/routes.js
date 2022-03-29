@@ -41,6 +41,7 @@ import CalendarUpdate from './components/admin/pages/calendar/CalendarUpdateComp
 import CalendarIndex from './components/admin/pages/calendar/CalendarIndexComponent.vue'
 import CalendarReference from './components/admin/pages/calendar/CalendarReferenceComponent.vue'
 import CalendarSubjectSlot from './components/admin/pages/calendar/CalendarSubjectSlotComponent.vue'
+import CalendarSubjectTime from './components/admin/pages/calendar/CalendarSubjectTimeComponent.vue'
 
 import ClassStudent from './components/admin/pages/class/ClassStudentComponent.vue'
 import ClassStudentIndex from './components/admin/pages/class/ClassStudentIndexComponent.vue'
@@ -430,6 +431,11 @@ export default new VueRouter({
                     path: 'mo-lop-mon-hoc',
                     name: 'calendarsubjectslot',
                     component: CalendarSubjectSlot
+                },
+                {
+                    path: 'lich-lop-mon-hoc',
+                    name: 'calendarsubjecttime',
+                    component: CalendarSubjectTime
                 }
             ],
             beforeEnter: (to, from, next) => {

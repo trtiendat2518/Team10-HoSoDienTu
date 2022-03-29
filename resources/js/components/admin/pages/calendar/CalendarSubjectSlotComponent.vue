@@ -10,7 +10,7 @@
                 <li class="breadcrumb-item">
                     <router-link tag="a" :to="{ name: 'calendarindex' }">Lịch biểu </router-link>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Lịch mở lớp học</li>
+                <li class="breadcrumb-item active" aria-current="page">Mở lớp học</li>
             </ol>
             <!-- End breadcrumb -->
         </div>
@@ -22,7 +22,11 @@
                 </router-link>
             </div>
             <div class="col-md-6">
-                <button class="btn btn-info btn-lg mb-3 btn-3d float-right" @click="create()">
+                <router-link tag="button" class="btn btn-danger btn-lg mb-3 btn-3d float-right" :to="{ name: 'calendarsubjecttime' }">
+                    <li class="fa fa-calendar-plus-o"></li>
+                    Lịch lớp môn học
+                </router-link>
+                <button class="btn btn-info btn-lg mb-3 btn-3d float-right mr-2" @click="create()">
                     <li class="fa fa-plus"></li>
                     Tạo mới
                 </button>
@@ -37,18 +41,63 @@
                         </div>
                     </div>
 
-                    <div class="row ml-2 mr-2">
-                        <div class="col-md-10">
+                    <div class="row ml-2 mr-2 mb-2">
+                        <div class="col-md-9">
                             <input type="text" class="form-control mt-2" v-model="query" placeholder="Tìm kiếm môn học..." />
                         </div>
                         <div class="col-md-2">
                             <div class="between:flex bottom:margin-3 ml-2">
-                                <div class="center:flex-items">
+                                <div class="center:flex-items float-right">
                                     <span class="right:marign-1">Hiển thị</span>
                                     <select class="select form-control-styling" v-model="currentEntries">
                                         <option v-for="entry in showEntries" :key="entry" :value="entry">{{ entry }} </option>
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button class="btn btn-primary mt-2 float-right block" @click="reload()">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> Tải lại
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row ml-2 mr-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select class="form-control" v-model="filter_course">
+                                    <option value="" disabled selected>Chọn khoá học</option>
+                                    <option v-for="course in courses" :key="course.course_id" :value="course.course_id">
+                                        {{ course.course_code }} - {{ course.course_name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select class="form-control" v-model="filter_major" :disabled="filter_course == ''">
+                                    <option value="" disabled selected>Chọn chuyên ngành</option>
+                                    <option v-for="major in majors" :key="major.major_id" :value="major.major_id">
+                                        {{ major.major_name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select class="form-control" v-model="filter_semester" :disabled="filter_major == ''">
+                                    <option value="" disabled selected>Chọn học kỳ</option>
+                                    <option v-for="semester in semesters" :key="semester" :value="semester"> Học kỳ {{ semester }} </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button class="btn btn-indigo block" @click="filter()">
+                                    <i class="fa fa-filter" aria-hidden="true"></i> Lọc
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -480,6 +529,9 @@ import 'vue-snotify/styles/material.css'
 export default {
     data() {
         return {
+            courses: [],
+            semesters: [],
+            majors: [],
             subjects: [],
             schedules: [],
             lecturers: [],
@@ -496,6 +548,9 @@ export default {
             check_dayofweek: true,
             check_day: true,
             check_time: true,
+            filter_course: '',
+            filter_major: '',
+            filter_semester: '',
             form: new Form({
                 title: '',
                 calendar_subject_id: '',
@@ -545,12 +600,57 @@ export default {
             if (value != 0) {
                 return Number(value)
             }
+        },
+        filter_major(value) {
+            if (value != '') {
+                this.fetchSemesters()
+            }
         }
     },
     mounted() {
         this.fetchCalendarSubjects()
+        this.fetchCourses()
+        this.fetchMajors()
     },
     methods: {
+        fetchMajors(page_url) {
+            let vm = this
+            page_url = `../../api/admin/edu-major/chuyen-nganh/major`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.majors = res.data
+                })
+                .catch(err => console.log(err))
+        },
+        fetchCourses(page_url) {
+            let vm = this
+            page_url = '../../api/admin/edu-course/khoa-hoc/course'
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.courses = res.data
+                })
+                .catch(err => console.log(err))
+        },
+        fetchSemesters(page_url) {
+            let vm = this
+            page_url = `../../api/admin/calendar-schedule/lich-bieu/hoc-ky/${this.filter_course}/${this.filter_major}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    const semesters = res.data.reduce((semesters, item) => {
+                        const semester = semesters[item.program_detail_semester] || []
+                        semester.push(item)
+                        semesters[item.program_detail_semester] = semester
+                        return semesters
+                    }, {})
+
+                    let key = Object.keys(semesters)
+                    this.semesters = key
+                })
+                .catch(err => console.log(err))
+        },
         fetchCalendarSubjects(page_url) {
             let vm = this
             page_url = `../../api/admin/calendar-subject/lich-mo-lop-hoc/${this.currentEntries}?page=${this.pagination.current_page}`
@@ -836,6 +936,26 @@ export default {
                 allStringTime = arrayTime.join(', ')
             }
             return allStringDay + ' (' + allStringTime + ')'
+        },
+        filter(page_url) {
+            if (this.filter_course == '' || this.filter_major == '' || this.filter_semester == '') {
+                this.$snotify.error('Vui lòng chọn đầy đủ thông tin')
+            } else {
+                page_url = `../../api/admin/calendar-subject/lich-mo-lop-hoc/filter/${this.filter_course}/${this.filter_major}/${this.filter_semester}/${this.currentEntries}?page=${this.pagination.current_page}`
+                fetch(page_url)
+                    .then(res => res.json())
+                    .then(res => {
+                        this.subjects = res.data
+                        this.pagination = res.meta
+                    })
+                    .catch(err => console.log(err))
+            }
+        },
+        reload() {
+            this.filter_course = ''
+            this.filter_major = ''
+            this.filter_semester = ''
+            this.fetchCalendarSubjects()
         }
     }
 }

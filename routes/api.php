@@ -210,6 +210,8 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('calendar-subject')->group(function () {
+        Route::get('lich-mo-lop-hoc/filter-in-calendar/{course_id}/{major_id}/{semester}', 'Admin\Calendar\CalendarSubjectController@filter_incalendar');
+        Route::get('lich-mo-lop-hoc/filter/{course_id}/{major_id}/{semester}/{currentEntries}', 'Admin\Calendar\CalendarSubjectController@filter');
         Route::patch('lich-mo-lop-hoc/change/{calendar_subject_id}', 'Admin\Calendar\CalendarSubjectController@change');
         Route::get('lich-mo-lop-hoc/show-subjects/{id}', 'Admin\Calendar\CalendarSubjectController@show_subject');
         Route::get('lich-mo-lop-hoc/detail/{calendar_subject_id}', 'Admin\Calendar\CalendarSubjectController@detail');
