@@ -161,9 +161,10 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('procedure-require')->group(function () {
+        Route::get('yeu-cau-thu-tuc/detail/{procedure_require_id}', 'Admin\Posts\ProcedureRequireController@detail');
         Route::get('yeu-cau-thu-tuc/filter/{value}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@filter');
         Route::get('yeu-cau-thu-tuc/search/{query}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@search');
-        Route::patch('yeu-cau-thu-tuc/change/{procedure_require_id}', 'Admin\Posts\ProcedureRequireController@change');
+        Route::post('yeu-cau-thu-tuc/change/{procedure_require_id}/{admin_id}', 'Admin\Posts\ProcedureRequireController@change');
         Route::resource('yeu-cau-thu-tuc', 'Admin\Posts\ProcedureRequireController');
     });
 
@@ -209,6 +210,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('calendar-subject')->group(function () {
+        Route::patch('lich-mo-lop-hoc/change/{calendar_subject_id}', 'Admin\Calendar\CalendarSubjectController@change');
         Route::get('lich-mo-lop-hoc/show-subjects/{id}', 'Admin\Calendar\CalendarSubjectController@show_subject');
         Route::get('lich-mo-lop-hoc/detail/{calendar_subject_id}', 'Admin\Calendar\CalendarSubjectController@detail');
         Route::get('lich-mo-lop-hoc/search/{query}/{currentEntries}', 'Admin\Calendar\CalendarSubjectController@search');
@@ -268,6 +270,22 @@ Route::prefix('admin')->group(function () {
         Route::get('thong-ke-truy-cap/thang-nay', 'Admin\AuthController@sum_thismonth');
         Route::get('thong-ke-truy-cap/mot-nam', 'Admin\AuthController@sum_year');
         Route::get('thong-ke-truy-cap/tat-ca', 'Admin\AuthController@sum_visitor');
+    });
+
+    Route::prefix('notification')->group(function () {
+        Route::post('thong-bao/bcn-khoa/doc-tat-ca/{lecturer_id}', 'Admin\Notification\NotificationController@read_all_lecturer');
+        Route::get('thong-bao/bcn-khoa/chua-doc/{lecturer_id}', 'Admin\Notification\NotificationController@notification_noneread_lecturer');
+        Route::get('thong-bao/bcn-khoa/tat-ca', 'Admin\Notification\NotificationController@notification_large_lecturer');
+        Route::get('thong-bao/bcn-khoa', 'Admin\Notification\NotificationController@notification_small_lecturer');
+        Route::post('thong-bao/gvcn/doc-tat-ca/{lecturer_id}', 'Admin\Notification\NotificationController@read_all_formteacher');
+        Route::get('thong-bao/gvcn/chua-doc/{lecturer_id}', 'Admin\Notification\NotificationController@notification_noneread_formteacher');
+        Route::get('thong-bao/gvcn/tat-ca/{lecturer_id}', 'Admin\Notification\NotificationController@notification_large_formteacher');
+        Route::get('thong-bao/gvcn/{lecturer_id}', 'Admin\Notification\NotificationController@notification_small_formteacher');
+        Route::post('thong-bao/quan-tri-vien/doc-tat-ca', 'Admin\Notification\NotificationController@read_all_admin');
+        Route::get('thong-bao/quan-tri-vien/chua-doc', 'Admin\Notification\NotificationController@notification_noneread_admin');
+        Route::get('thong-bao/quan-tri-vien/tat-ca', 'Admin\Notification\NotificationController@notification_large_admin');
+        Route::get('thong-bao/quan-tri-vien', 'Admin\Notification\NotificationController@notification_small_admin');
+        Route::resource('thong-bao', 'Admin\Notification\NotificationController');
     });
 });
 
@@ -331,5 +349,20 @@ Route::prefix('student')->group(function () {
         Route::get('gui-yeu-cau/filter/{student_id}/{value}/{currentEntries}', 'Student\Post\RequestController@filter');
         Route::get('gui-yeu-cau/showdata/{student_id}/{currentEntries}', 'Student\Post\RequestController@showdata');
         Route::resource('gui-yeu-cau', 'Student\Post\RequestController');
+    });
+
+    Route::prefix('procedure')->group(function () {
+        Route::get('yeu-cau-thuc-tuc-sv/my-procedures/{student_id}', 'Student\Post\ProcedureController@my_procedures');
+        Route::resource('yeu-cau-thuc-tuc-sv', 'Student\Post\ProcedureController');
+    });
+
+    Route::prefix('notification')->group(function () {
+        // Route::post('thong-bao/quan-tri-vien/doc-tat-ca', 'Admin\Notification\NotificationController@read_all_admin');
+        // Route::get('thong-bao/quan-tri-vien/chua-doc', 'Admin\Notification\NotificationController@notification_noneread_admin');
+        // Route::get('thong-bao/quan-tri-vien/tat-ca', 'Admin\Notification\NotificationController@notification_large_admin');
+        // Route::get('thong-bao/quan-tri-vien', 'Admin\Notification\NotificationController@notification_small_admin');
+        Route::get('thong-bao/yeu-cau/{student_id}', 'Student\Notification\NotificationController@noti_request');
+        Route::get('thong-bao/thu-tuc/{student_id}', 'Student\Notification\NotificationController@noti_procedure');
+        Route::resource('thong-bao', 'Student\Notification\NotificationController');
     });
 });

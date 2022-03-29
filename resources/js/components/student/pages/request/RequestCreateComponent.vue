@@ -90,14 +90,7 @@ export default {
                         const null_content = err.response.data.errors?.request_content?.length
                         const null_title = err.response.data.errors?.request_title?.length
 
-                        if (null_title > 0 && null_content > 0) {
-                            this.$swal({
-                                title: 'Vui lòng điền đầy đủ trường thông tin',
-                                icon: 'error',
-                                confirmButtonText: 'OK!',
-                                timer: 3500
-                            })
-                        } else if (null_title > 0) {
+                        if (null_title > 0) {
                             this.$swal({
                                 title: err.response.data.errors.request_title[0],
                                 icon: 'error',
@@ -139,14 +132,7 @@ export default {
                         const null_title = err.response.data.errors?.request_title?.length
                         const null_file = err.response.data.errors?.file?.length
 
-                        if (null_title > 0 && null_content > 0) {
-                            this.$swal({
-                                title: 'Vui lòng điền đầy đủ trường thông tin',
-                                icon: 'error',
-                                confirmButtonText: 'OK!',
-                                timer: 3500
-                            })
-                        } else if (null_title > 0) {
+                        if (null_title > 0) {
                             this.$swal({
                                 title: err.response.data.errors.request_title[0],
                                 icon: 'error',

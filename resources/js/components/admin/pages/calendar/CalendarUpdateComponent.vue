@@ -113,6 +113,7 @@
                                             name="calendarId"
                                             class="form-control select-option"
                                             :class="{ 'is-invalid': form.errors.has('calendarId') }"
+                                            disabled
                                         >
                                             <option value="null" selected disabled>Chọn sự kiện</option>
                                             <option disabled>---------------</option>

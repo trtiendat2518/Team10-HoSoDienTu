@@ -61,4 +61,10 @@ export default {
 .user-status {
     padding: 0px !important;
 }
+.notification-box {
+    border-bottom: 3px solid #6c757d;
+    border-right: 3px solid #6c757d;
+    cursor: pointer;
+    background: linear-gradient(360deg, #faa8af63 0%, #fcfcfd 40%);
+}
 </style>
