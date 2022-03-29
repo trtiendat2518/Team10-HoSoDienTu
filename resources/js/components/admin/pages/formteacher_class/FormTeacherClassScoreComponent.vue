@@ -415,17 +415,19 @@ export default {
             let scoreFinal = 0
             let scoreSum = 0
             for (let j = 0; j < this.subjects[i].length; j++) {
-                scoreExercise = (this.subjects[i][j].register_subject_exercise * this.subjects[i][j].subject_score_exercise) / 100
-                scoreExam = (this.subjects[i][j].register_subject_exam * this.subjects[i][j].subject_score_exam) / 100
-                if (this.subjects[i][j].register_subject_final >= this.subjects[i][j].register_subject_second) {
-                    scoreFinal = (this.subjects[i][j].register_subject_final * this.subjects[i][j].subject_score_final) / 100
-                } else {
-                    scoreFinal = (this.subjects[i][j].register_subject_second * this.subjects[i][j].subject_score_final) / 100
-                }
+                if (this.subjects[i][j].register_subject_again == 0) {
+                    scoreExercise = (this.subjects[i][j].register_subject_exercise * this.subjects[i][j].subject_score_exercise) / 100
+                    scoreExam = (this.subjects[i][j].register_subject_exam * this.subjects[i][j].subject_score_exam) / 100
+                    if (this.subjects[i][j].register_subject_final >= this.subjects[i][j].register_subject_second) {
+                        scoreFinal = (this.subjects[i][j].register_subject_final * this.subjects[i][j].subject_score_final) / 100
+                    } else {
+                        scoreFinal = (this.subjects[i][j].register_subject_second * this.subjects[i][j].subject_score_final) / 100
+                    }
 
-                scoreSum = scoreExercise + scoreExam + scoreFinal
-                if (scoreSum >= 4) {
-                    sum += parseFloat(this.subjects[i][j].subject_credit)
+                    scoreSum = scoreExercise + scoreExam + scoreFinal
+                    if (scoreSum >= 4) {
+                        sum += parseFloat(this.subjects[i][j].subject_credit)
+                    }
                 }
             }
             return sum
@@ -438,16 +440,18 @@ export default {
             let scoreFinal = 0
             let scoreSum = 0
             for (let j = 0; j < this.subjects[i].length; j++) {
-                scoreExercise = (this.subjects[i][j].register_subject_exercise * this.subjects[i][j].subject_score_exercise) / 100
-                scoreExam = (this.subjects[i][j].register_subject_exam * this.subjects[i][j].subject_score_exam) / 100
-                if (this.subjects[i][j].register_subject_final >= this.subjects[i][j].register_subject_second) {
-                    scoreFinal = (this.subjects[i][j].register_subject_final * this.subjects[i][j].subject_score_final) / 100
-                } else {
-                    scoreFinal = (this.subjects[i][j].register_subject_second * this.subjects[i][j].subject_score_final) / 100
+                if (this.subjects[i][j].register_subject_again == 0) {
+                    scoreExercise = (this.subjects[i][j].register_subject_exercise * this.subjects[i][j].subject_score_exercise) / 100
+                    scoreExam = (this.subjects[i][j].register_subject_exam * this.subjects[i][j].subject_score_exam) / 100
+                    if (this.subjects[i][j].register_subject_final >= this.subjects[i][j].register_subject_second) {
+                        scoreFinal = (this.subjects[i][j].register_subject_final * this.subjects[i][j].subject_score_final) / 100
+                    } else {
+                        scoreFinal = (this.subjects[i][j].register_subject_second * this.subjects[i][j].subject_score_final) / 100
+                    }
+                    scoreSum += (scoreExercise + scoreExam + scoreFinal) * this.subjects[i][j].subject_credit
+                    sumCredit += this.subjects[i][j].subject_credit
+                    sum = parseFloat(scoreSum / sumCredit)
                 }
-                scoreSum += (scoreExercise + scoreExam + scoreFinal) * this.subjects[i][j].subject_credit
-                sumCredit += this.subjects[i][j].subject_credit
-                sum = parseFloat(scoreSum / sumCredit)
             }
             return sum.toFixed(2)
         },
@@ -459,18 +463,20 @@ export default {
             let scoreSum = 0
             for (let l = 1; l <= i; l++) {
                 for (let j = 0; j < this.subjects[l].length; j++) {
-                    scoreExercise = (this.subjects[l][j].register_subject_exercise * this.subjects[l][j].subject_score_exercise) / 100
-                    scoreExam = (this.subjects[l][j].register_subject_exam * this.subjects[l][j].subject_score_exam) / 100
-                    if (this.subjects[l][j].register_subject_final >= this.subjects[l][j].register_subject_second) {
-                        scoreFinal = (this.subjects[l][j].register_subject_final * this.subjects[l][j].subject_score_final) / 100
-                    } else {
-                        scoreFinal = (this.subjects[l][j].register_subject_second * this.subjects[l][j].subject_score_final) / 100
-                    }
+                    if (this.subjects[l][j].register_subject_again == 0) {
+                        scoreExercise = (this.subjects[l][j].register_subject_exercise * this.subjects[l][j].subject_score_exercise) / 100
+                        scoreExam = (this.subjects[l][j].register_subject_exam * this.subjects[l][j].subject_score_exam) / 100
+                        if (this.subjects[l][j].register_subject_final >= this.subjects[l][j].register_subject_second) {
+                            scoreFinal = (this.subjects[l][j].register_subject_final * this.subjects[l][j].subject_score_final) / 100
+                        } else {
+                            scoreFinal = (this.subjects[l][j].register_subject_second * this.subjects[l][j].subject_score_final) / 100
+                        }
 
-                    scoreSum = scoreExercise + scoreExam + scoreFinal
+                        scoreSum = scoreExercise + scoreExam + scoreFinal
 
-                    if (scoreSum >= 4) {
-                        sum += parseFloat(this.subjects[l][j].subject_credit)
+                        if (scoreSum >= 4) {
+                            sum += parseFloat(this.subjects[l][j].subject_credit)
+                        }
                     }
                 }
             }
@@ -485,17 +491,19 @@ export default {
             let scoreSum = 0
             for (let l = 1; l <= i; l++) {
                 for (let j = 0; j < this.subjects[l].length; j++) {
-                    scoreExercise = (this.subjects[l][j].register_subject_exercise * this.subjects[l][j].subject_score_exercise) / 100
-                    scoreExam = (this.subjects[l][j].register_subject_exam * this.subjects[l][j].subject_score_exam) / 100
-                    if (this.subjects[l][j].register_subject_final >= this.subjects[l][j].register_subject_second) {
-                        scoreFinal = (this.subjects[l][j].register_subject_final * this.subjects[l][j].subject_score_final) / 100
-                    } else {
-                        scoreFinal = (this.subjects[l][j].register_subject_second * this.subjects[l][j].subject_score_final) / 100
-                    }
-                    scoreSum += (scoreExercise + scoreExam + scoreFinal) * this.subjects[l][j].subject_credit
-                    sumCredit += parseFloat(this.subjects[l][j].subject_credit)
+                    if (this.subjects[l][j].register_subject_again == 0) {
+                        scoreExercise = (this.subjects[l][j].register_subject_exercise * this.subjects[l][j].subject_score_exercise) / 100
+                        scoreExam = (this.subjects[l][j].register_subject_exam * this.subjects[l][j].subject_score_exam) / 100
+                        if (this.subjects[l][j].register_subject_final >= this.subjects[l][j].register_subject_second) {
+                            scoreFinal = (this.subjects[l][j].register_subject_final * this.subjects[l][j].subject_score_final) / 100
+                        } else {
+                            scoreFinal = (this.subjects[l][j].register_subject_second * this.subjects[l][j].subject_score_final) / 100
+                        }
+                        scoreSum += (scoreExercise + scoreExam + scoreFinal) * this.subjects[l][j].subject_credit
+                        sumCredit += parseFloat(this.subjects[l][j].subject_credit)
 
-                    sum = parseFloat(scoreSum / sumCredit)
+                        sum = parseFloat(scoreSum / sumCredit)
+                    }
                 }
             }
             return sum.toFixed(2)

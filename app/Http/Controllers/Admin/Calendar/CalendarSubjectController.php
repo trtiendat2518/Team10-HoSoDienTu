@@ -19,7 +19,12 @@ class CalendarSubjectController extends Controller
      */
     public function index()
     {
-        //
+        // show in calendar
+        $joins = CalendarSubject::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_subject.calendar_id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_calendar_subject.calendar_subject_lecturer')
+            ->get();
+        return CalendarSubjectResource::collection($joins);
     }
 
     /**
@@ -213,5 +218,26 @@ class CalendarSubjectController extends Controller
             $find->calendar_subject_status = 0;
             $find->save();
         }
+    }
+
+    public function filter($course_id, $major_id, $semester, $currentEntries)
+    {
+        $item = CalendarSubject::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_subject.calendar_id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_calendar_subject.calendar_subject_lecturer')
+            ->where('tbl_calendar.raw', $course_id)->where('tbl_calendar.body', $major_id)->where('tbl_calendar.location', $semester)
+            ->orderby('tbl_calendar_subject.calendar_subject_id', 'DESC')
+            ->paginate($currentEntries);
+        return CalendarSubjectResource::collection($item);
+    }
+
+    public function filter_incalendar($course_id, $major_id, $semester)
+    {
+        $item = CalendarSubject::join('tbl_calendar', 'tbl_calendar.id', '=', 'tbl_calendar_subject.calendar_id')
+            ->join('tbl_subject', 'tbl_subject.subject_id', '=', 'tbl_calendar_subject.subject_id')
+            ->join('tbl_lecturer', 'tbl_lecturer.lecturer_id', '=', 'tbl_calendar_subject.calendar_subject_lecturer')
+            ->where('tbl_calendar.raw', $course_id)->where('tbl_calendar.body', $major_id)->where('tbl_calendar.location', $semester)
+            ->orderby('tbl_calendar_subject.calendar_subject_id', 'DESC')->get();
+        return CalendarSubjectResource::collection($item);
     }
 }
