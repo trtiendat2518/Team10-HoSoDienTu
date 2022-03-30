@@ -75,6 +75,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('edu-major')->group(function () {
+        Route::get('chuyen-nganh/major-faculty/{faculty_id}', 'Admin\Education\MajorController@major_faculty');
         Route::get('chuyen-nganh/lecturer_major/{lecturer_id}', 'Admin\Education\MajorController@lecturer_major');
         Route::get('chuyen-nganh/major/', 'Admin\Education\MajorController@major');
         Route::patch('chuyen-nganh/change/{major}', 'Admin\Education\MajorController@change');
@@ -288,6 +289,15 @@ Route::prefix('admin')->group(function () {
         Route::get('thong-bao/quan-tri-vien/tat-ca', 'Admin\Notification\NotificationController@notification_large_admin');
         Route::get('thong-bao/quan-tri-vien', 'Admin\Notification\NotificationController@notification_small_admin');
         Route::resource('thong-bao', 'Admin\Notification\NotificationController');
+    });
+
+    Route::prefix('tuition-management')->group(function () {
+        Route::get('quan-ly-hoc-phi/filter-course-faculty-major/{course_id}/{faculty_id}/{major_id}/{currentEntries}', 'Admin\Tuition\TuitionController@filter_course_faculty_major');
+        Route::get('quan-ly-hoc-phi/filter-course-faculty/{course_id}/{faculty_id}/{currentEntries}', 'Admin\Tuition\TuitionController@filter_course_faculty');
+        Route::get('quan-ly-hoc-phi/filter-course/{course_id}/{currentEntries}', 'Admin\Tuition\TuitionController@filter_course');
+        Route::post('quan-ly-hoc-phi/destroyall', 'Admin\Tuition\TuitionController@destroyall');
+        Route::get('quan-ly-hoc-phi/not-in/{tuition_id}', 'Admin\Tuition\TuitionController@not_in');
+        Route::resource('quan-ly-hoc-phi', 'Admin\Tuition\TuitionController');
     });
 });
 

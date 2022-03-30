@@ -99,6 +99,9 @@ import ExamSecondManageIndex from './components/admin/pages/exam_second/ExamSeco
 import NotificationLecturer from './components/admin/pages/notifications/NotificationComponent.vue'
 import NotificationLecturerIndex from './components/admin/pages/notifications/NotificationIndexComponent.vue'
 
+import TuitionManagement from './components/admin/pages/tuitions/TuitionComponent.vue'
+import TuitionManagementIndex from './components/admin/pages/tuitions/TuitionIndexComponent.vue'
+
 //---------------------------------- STUDENT --------------------------------------------------------
 import Home from './components/student/pages/HomeComponent.vue'
 
@@ -436,6 +439,26 @@ export default new VueRouter({
                     path: 'lich-lop-mon-hoc',
                     name: 'calendarsubjecttime',
                     component: CalendarSubjectTime
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/hoc-phi',
+            name: 'tuitionmanage',
+            component: TuitionManagement,
+            children: [
+                {
+                    path: '',
+                    name: 'tuitionmanageindex',
+                    component: TuitionManagementIndex
                 }
             ],
             beforeEnter: (to, from, next) => {
