@@ -19,6 +19,11 @@ Vue.component('deanfaculty-avatar', require('./components/avatar/DeanFacultyAvat
 Vue.component('formteacher-avatar', require('./components/avatar/FormTeacherAvatarComponent.vue').default)
 Vue.component('student-avatar', require('./components/avatar/StudentAvatarComponent.vue').default)
 
+//Notifications
+Vue.component('admin-notification', require('./components/admin/notifications/AdminNotificationComponent.vue').default)
+Vue.component('lecturer-notification', require('./components/admin/notifications/LecturerNotificationComponent.vue').default)
+Vue.component('formteacher-notification', require('./components/admin/notifications/FormTeacherNotificationComponent.vue').default)
+
 //----------------------------------- STUDENT -------------------------------------------
 Vue.component('small-slidebar-component', require('./components/student/layouts/SmallSlidebarComponent.vue').default)
 Vue.component('main-student-component', require('./components/student/MainStudentComponent.vue').default)

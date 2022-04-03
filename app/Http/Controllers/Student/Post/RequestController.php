@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student\Post;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RequestResource;
+use App\Models\Notification;
 use App\Models\RequestSudent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -50,7 +51,18 @@ class RequestController extends Controller
         date_default_timezone_set('Asia/Ho_Chi_Minh');
 
         $request_student->created_at = now();
-        $request_student->save();
+        $save = $request_student->save();
+
+        if ($save) {
+            $noti = new Notification();
+            $noti->notification_title = $request_student->request_id;
+            $noti->notification_student = $request->student_id;
+            $noti->notification_object = 2;
+            $noti->notification_type = 'request';
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $noti->notification_date = now();
+            $noti->save();
+        }
     }
 
     public function store_file(Request $request)
@@ -86,7 +98,18 @@ class RequestController extends Controller
         $request_student->request_file = $new_name_file;
 
         $request_student->created_at = now();
-        $request_student->save();
+        $save = $request_student->save();
+
+        if ($save) {
+            $noti = new Notification();
+            $noti->notification_title = $request_student->request_id;
+            $noti->notification_student = $request->student_id;
+            $noti->notification_object = 2;
+            $noti->notification_type = 'request';
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $noti->notification_date = now();
+            $noti->save();
+        }
     }
 
     /**
@@ -187,6 +210,13 @@ class RequestController extends Controller
     {
         $del = RequestSudent::find($id);
         Storage::disk('attachment')->delete($del->request_file);
+        $del_noti = Notification::where('notification_title', $id)
+            ->where('notification_student', $del->procedure_require_student)
+            ->where('notification_object', 2)
+            ->where('notification_type', 'request')->get();
+        foreach ($del_noti as $key => $notification) {
+            $notification->delete();
+        }
         $del->delete();
     }
 

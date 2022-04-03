@@ -19,7 +19,7 @@
         <!-- /HEADER BRAND -->
 
         <!-- NAVIGATION -->
-        <nav class="navigation">
+        {{-- <nav class="navigation">
             <!-- MENU MAIN -->
             <ul class="menu-main">
                 <!-- MENU MAIN ITEM -->
@@ -57,6 +57,14 @@
                 <!-- MENU MAIN ITEM -->
                 <li class="menu-main-item">
                     <!-- MENU MAIN ITEM LINK -->
+                    <a class="menu-main-item-link" href="{{ url('/home#/tat-ca-thong-bao') }}">Tất cả thông báo</a>
+                    <!-- /MENU MAIN ITEM LINK -->
+                </li>
+                <!-- /MENU MAIN ITEM -->
+
+                <!-- MENU MAIN ITEM -->
+                <li class="menu-main-item">
+                    <!-- MENU MAIN ITEM LINK -->
                     <a class="menu-main-item-link" href="#">Faqs</a>
                     <!-- /MENU MAIN ITEM LINK -->
                 </li>
@@ -64,7 +72,7 @@
 
             </ul>
             <!-- /MENU MAIN -->
-        </nav>
+        </nav> --}}
         <!-- /NAVIGATION -->
     </div>
     <!-- /HEADER ACTIONS -->
@@ -77,8 +85,7 @@
     <!-- HEADER ACTIONS -->
     <div class="header-actions">
         <!-- ACTION LIST -->
-        <div class="action-list dark">
-
+        {{-- <div class="action-list dark">
             <!-- ACTION LIST ITEM WRAP -->
             <div class="action-list-item-wrap">
                 <!-- ACTION LIST ITEM -->
@@ -543,8 +550,46 @@
                 <!-- /DROPDOWN BOX -->
             </div>
             <!-- /ACTION LIST ITEM WRAP -->
-        </div>
+        </div> --}}
         <!-- /ACTION LIST -->
+
+        <nav class="navigation">
+            <!-- MENU MAIN -->
+            <ul class="menu-main">
+                <!-- MENU MAIN ITEM -->
+                <li class="menu-main-item">
+                    <!-- MENU MAIN ITEM LINK -->
+                    <a class="menu-main-item-link" href="{{ url('/') }}">Trang chủ</a>
+                    <!-- /MENU MAIN ITEM LINK -->
+                </li>
+                <!-- /MENU MAIN ITEM -->
+
+                <!-- MENU MAIN ITEM -->
+                <li class="menu-main-item">
+                    <!-- MENU MAIN ITEM LINK -->
+                    <a class="menu-main-item-link" href="{{ url('/home#/thong-bao-chung') }}">Thông báo chung</a>
+                    <!-- /MENU MAIN ITEM LINK -->
+                </li>
+                <!-- /MENU MAIN ITEM -->
+
+                <!-- MENU MAIN ITEM -->
+                <li class="menu-main-item">
+                    <!-- MENU MAIN ITEM LINK -->
+                    <a class="menu-main-item-link" href="{{ url('/home#/ban-tin-van-lang') }}">Bản tin VLU</a>
+                    <!-- /MENU MAIN ITEM LINK -->
+                </li>
+                <!-- /MENU MAIN ITEM -->
+
+                <!-- MENU MAIN ITEM -->
+                <li class="menu-main-item">
+                    <!-- MENU MAIN ITEM LINK -->
+                    <a class="menu-main-item-link" href="#">Faqs</a>
+                    <!-- /MENU MAIN ITEM LINK -->
+                </li>
+                <!-- /MENU MAIN ITEM -->
+            </ul>
+            <!-- /MENU MAIN -->
+        </nav>
 
         <!-- ACTION ITEM WRAP -->
         <div class="action-item-wrap">

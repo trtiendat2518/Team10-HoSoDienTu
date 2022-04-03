@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RequestSudent;
 use Illuminate\Http\Request;
 use App\Http\Resources\RequestResource;
+use App\Models\Notification;
 
 class RequestStudentController extends Controller
 {
@@ -100,7 +101,24 @@ class RequestStudentController extends Controller
         $find->request_reply = $request->request_reply;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $find->updated_at = now();
-        $find->save();
+        $save = $find->save();
+
+        if ($save) {
+            $del_once = Notification::where('notification_title', $requestSudent)
+                ->where('notification_student', $find->request_student)
+                ->where('notification_object', 3)->get();
+            foreach ($del_once as $key => $value) {
+                $value->delete();
+            }
+            $noti = new Notification();
+            $noti->notification_title = $requestSudent;
+            $noti->notification_student = $find->request_student;
+            $noti->notification_object = 3;
+            $noti->notification_type = 'request';
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $noti->notification_date = now();
+            $noti->save();
+        }
     }
 
     /**
@@ -121,7 +139,24 @@ class RequestStudentController extends Controller
         $req->request_status = $request->request_status;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $req->updated_at = now();
-        $req->save();
+        $save = $req->save();
+
+        if ($save) {
+            $del_once = Notification::where('notification_title', $requestSudent)
+                ->where('notification_student', $req->request_student)
+                ->where('notification_object', 3)->get();
+            foreach ($del_once as $key => $value) {
+                $value->delete();
+            }
+            $noti = new Notification();
+            $noti->notification_title = $requestSudent;
+            $noti->notification_student = $req->request_student;
+            $noti->notification_object = 3;
+            $noti->notification_type = 'request';
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $noti->notification_date = now();
+            $noti->save();
+        }
     }
 
     public function reject(Request $request, $requestSudent)
@@ -131,7 +166,24 @@ class RequestStudentController extends Controller
         $req->request_status = $request->request_status;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $req->updated_at = now();
-        $req->save();
+        $save = $req->save();
+
+        if ($save) {
+            $del_once = Notification::where('notification_title', $requestSudent)
+                ->where('notification_student', $req->request_student)
+                ->where('notification_object', 3)->get();
+            foreach ($del_once as $key => $value) {
+                $value->delete();
+            }
+            $noti = new Notification();
+            $noti->notification_title = $requestSudent;
+            $noti->notification_student = $req->request_student;
+            $noti->notification_object = 3;
+            $noti->notification_type = 'request';
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $noti->notification_date = now();
+            $noti->save();
+        }
     }
 
     public function filter($lecturer_id, $value, $currentEntries)
