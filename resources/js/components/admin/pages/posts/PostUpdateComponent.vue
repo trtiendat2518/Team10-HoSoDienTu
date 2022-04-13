@@ -30,6 +30,19 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label">Hình đại diện <span class="text-danger">(*)</span></label>
+                        <input
+                            type="file"
+                            class="form-control"
+                            ref="fileupload"
+                            id="post_avatar"
+                            name="post_avatar"
+                            @change="onAvatarChange"
+                        />
+                        <img class="styling-img-post center" v-if="form.post_avatar" :src="form.post_avatar" alt="profile" />
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Nội dung <span class="text-danger">(*)</span></label>
                         <vue-editor v-model="form.post_content" :editorToolbar="customToolbar"></vue-editor>
                     </div>
@@ -64,6 +77,7 @@ export default {
                 post_title: '',
                 post_content: '',
                 post_type: '',
+                post_avatar: '',
                 post_author: this.$adminId
             }),
             customToolbar: [
@@ -103,57 +117,111 @@ export default {
                 .then(res => {
                     this.posts = res.data
                     this.form.fill(this.posts[0])
+                    this.form.post_avatar = `../public/avatar/post/${res.data[0].post_avatar}`
                 })
                 .catch(err => console.log(err))
         },
         update() {
-            this.form
-                .put(`../../api/admin/post-news/bai-viet/${this.form.post_id}`)
-                .then(res => {
-                    if (this.form.successful) {
-                        this.$snotify.success('Cập nhật thành công!')
-                        this.$snotify.confirm('Bạn có muốn đi đến danh sách không?', {
-                            timeout: 5000,
-                            showProgressBar: true,
-                            closeOnClick: false,
-                            pauseOnHover: true,
-                            buttons: [
-                                {
-                                    text: 'Có',
-                                    action: toast => {
-                                        this.$snotify.remove(toast.id)
-                                        this.$router.push({ name: 'postindex' })
+            if (this.form.post_avatar == '') {
+                this.form
+                    .put(`../../api/admin/post-news/bai-viet/${this.form.post_id}`)
+                    .then(res => {
+                        if (this.form.successful) {
+                            this.fetchPosts()
+                            this.$snotify.confirm('Cập nhật thành công! Bạn có muốn đi đến danh sách không?', {
+                                timeout: 5000,
+                                showProgressBar: true,
+                                closeOnClick: false,
+                                pauseOnHover: true,
+                                buttons: [
+                                    {
+                                        text: 'Có',
+                                        action: toast => {
+                                            this.$snotify.remove(toast.id)
+                                            this.$router.push({ name: 'postindex' })
+                                        },
+                                        bold: false
                                     },
-                                    bold: false
-                                },
-                                {
-                                    text: 'Không',
-                                    action: toast => {
-                                        this.$snotify.remove(toast.id)
-                                    },
-                                    bold: true
-                                }
-                            ]
-                        })
-                    }
-                })
-                .catch(err => {
-                    const null_content = err.response.data.errors?.post_content?.length
-                    const null_title = err.response.data.errors?.post_title?.length
+                                    {
+                                        text: 'Không',
+                                        action: toast => {
+                                            this.$snotify.remove(toast.id)
+                                        },
+                                        bold: true
+                                    }
+                                ]
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        const null_content = err.response.data.errors?.post_content?.length
+                        const null_title = err.response.data.errors?.post_title?.length
 
-                    if (null_title > 0 && null_content > 0) {
-                        this.$snotify.error('Vui lòng không để trống!')
-                    } else if (null_title > 0) {
-                        this.$snotify.error(err.response.data.errors.post_title[0])
-                    } else if (null_content > 0) {
-                        this.$snotify.error(err.response.data.errors.post_content[0])
-                    } else {
-                        this.$snotify.error('Lỗi định dạng!')
-                    }
-                })
+                        if (null_title > 0 && null_content > 0) {
+                            this.$snotify.error('Vui lòng không để trống!')
+                        } else if (null_title > 0) {
+                            this.$snotify.error(err.response.data.errors.post_title[0])
+                        } else if (null_content > 0) {
+                            this.$snotify.error(err.response.data.errors.post_content[0])
+                        } else {
+                            this.$snotify.error('Lỗi định dạng!')
+                        }
+                    })
+            } else {
+                this.form.post_avatar = document.getElementById('post_avatar').files[0]
+                this.form
+                    .post(`../../api/admin/post-news/bai-viet/update-file/${this.form.post_id}`)
+                    .then(res => {
+                        if (this.form.successful) {
+                            this.$refs.fileupload.value = ''
+                            this.fetchPosts()
+                            this.$snotify.confirm('Cập nhật thành công! Bạn có muốn đi đến danh sách không?', {
+                                timeout: 5000,
+                                showProgressBar: true,
+                                closeOnClick: false,
+                                pauseOnHover: true,
+                                buttons: [
+                                    {
+                                        text: 'Có',
+                                        action: toast => {
+                                            this.$snotify.remove(toast.id)
+                                            this.$router.push({ name: 'postindex' })
+                                        },
+                                        bold: false
+                                    },
+                                    {
+                                        text: 'Không',
+                                        action: toast => {
+                                            this.$snotify.remove(toast.id)
+                                        },
+                                        bold: true
+                                    }
+                                ]
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        const null_content = err.response.data.errors?.post_content?.length
+                        const null_title = err.response.data.errors?.post_title?.length
+
+                        if (null_title > 0 && null_content > 0) {
+                            this.$snotify.error('Vui lòng không để trống!')
+                        } else if (null_title > 0) {
+                            this.$snotify.error(err.response.data.errors.post_title[0])
+                        } else if (null_content > 0) {
+                            this.$snotify.error(err.response.data.errors.post_content[0])
+                        } else {
+                            this.$snotify.error('Lỗi định dạng!')
+                        }
+                    })
+            }
         },
         back() {
             this.$router.push('/bai-viet')
+        },
+        onAvatarChange(e) {
+            const file = e.target.files[0]
+            this.form.post_avatar = URL.createObjectURL(file)
         }
     }
     // beforeRouteLeave(to, from, next) {
@@ -195,5 +263,12 @@ export default {
 .btn-3d {
     border-bottom: 3px solid #6c757db0;
     border-right: 3px solid #6c757db0;
+}
+.styling-img-post {
+    display: block;
+    width: 50vw;
+    height: 40vh;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>

@@ -40,8 +40,11 @@ import CalendarCreate from './components/admin/pages/calendar/CalendarCreateComp
 import CalendarUpdate from './components/admin/pages/calendar/CalendarUpdateComponent.vue'
 import CalendarIndex from './components/admin/pages/calendar/CalendarIndexComponent.vue'
 import CalendarReference from './components/admin/pages/calendar/CalendarReferenceComponent.vue'
-import CalendarSubjectSlot from './components/admin/pages/calendar/CalendarSubjectSlotComponent.vue'
-import CalendarSubjectTime from './components/admin/pages/calendar/CalendarSubjectTimeComponent.vue'
+
+import CalendarSubject from './components/admin/pages/calendar_subject/CalendarSubjectComponent.vue'
+import CalendarSubjectIndex from './components/admin/pages/calendar_subject/CalendarSubjectIndexComponent.vue'
+import CalendarSubjectCreate from './components/admin/pages/calendar_subject/CalendarSubjectCreateComponent.vue'
+import CalendarSubjectSchedule from './components/admin/pages/calendar_subject/CalendarSubjectScheduleComponent.vue'
 
 import ClassStudent from './components/admin/pages/class/ClassStudentComponent.vue'
 import ClassStudentIndex from './components/admin/pages/class/ClassStudentIndexComponent.vue'
@@ -158,11 +161,9 @@ import ProcedureStudentDetail from './components/student/pages/procedures/Proced
 import ProcedureStudentRequire from './components/student/pages/procedures/ProcedureStudentRequireComponent.vue'
 import ProcedureStudentList from './components/student/pages/procedures/ProcedureStudentListComponent.vue'
 
-// import ProcedureStudent from './components/student/pages/procedures/ProcedureStudentComponent.vue'
-// import ProcedureStudentIndex from './components/student/pages/procedures/ProcedureStudentIndexComponent.vue'
-// import ProcedureStudentDetail from './components/student/pages/procedures/ProcedureStudentDetailComponent.vue'
-// import ProcedureStudentRequire from './components/student/pages/procedures/ProcedureStudentRequireComponent.vue'
-// import ProcedureStudentList from './components/student/pages/procedures/ProcedureStudentListComponent.vue'
+import PayTuition from './components/student/pages/pay_tuition/PayTuitionComponent.vue'
+import PayTuitionIndex from './components/student/pages/pay_tuition/PayTuitionIndexComponent.vue'
+import PayTuitionError from './components/student/pages/pay_tuition/PayTuitionErrorComponent.vue'
 
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
@@ -429,16 +430,36 @@ export default new VueRouter({
                     path: 'rang-buoc-lich-bieu',
                     name: 'calendarreference',
                     component: CalendarReference
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$adminId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/mo-lop-mon-hoc',
+            name: 'calendarsubject',
+            component: CalendarSubject,
+            children: [
+                {
+                    path: '',
+                    name: 'calendarsubjectindex',
+                    component: CalendarSubjectIndex
                 },
                 {
-                    path: 'mo-lop-mon-hoc',
-                    name: 'calendarsubjectslot',
-                    component: CalendarSubjectSlot
+                    path: 'lich-cac-lop',
+                    name: 'calendarsubjectschedule',
+                    component: CalendarSubjectSchedule
                 },
                 {
-                    path: 'lich-lop-mon-hoc',
-                    name: 'calendarsubjecttime',
-                    component: CalendarSubjectTime
+                    path: 'tao-moi',
+                    name: 'calendarsubjectcreate',
+                    component: CalendarSubjectCreate
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -1269,6 +1290,33 @@ export default new VueRouter({
                     path: 'danh-sach-da-yeu-cau',
                     name: 'procedurestudentlist',
                     component: ProcedureStudentList
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/thanh-toan-hoc-phi',
+            name: 'paytuition',
+            components: {
+                student: PayTuition
+            },
+            children: [
+                {
+                    path: '/',
+                    name: 'paytuitionerror',
+                    component: PayTuitionError
+                },
+                {
+                    path: '/',
+                    name: 'paytuitionindex',
+                    component: PayTuitionIndex
                 }
             ],
             beforeEnter: (to, from, next) => {

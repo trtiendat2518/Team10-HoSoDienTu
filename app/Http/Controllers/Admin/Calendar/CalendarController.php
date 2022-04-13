@@ -8,7 +8,10 @@ use App\Http\Resources\CalendarResource;
 use App\Http\Resources\ProgramDetailResource;
 use App\Models\CalendarPlan;
 use App\Models\ProgramDetail;
+use App\Models\RegisterSubject;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CalendarController extends Controller
 {
@@ -108,6 +111,10 @@ class CalendarController extends Controller
             $calendar->recurrenceRule = $data['recurrenceRule'];
             $calendar->bgColor = '#86dc9a';
             $calendar->save();
+        } else if ($calendar->calendarId == 5) {
+            $calendar->location = $data['location'];
+            $calendar->bgColor = '#d50fd9';
+            $calendar->save();
         }
     }
 
@@ -184,6 +191,8 @@ class CalendarController extends Controller
         if ($data['calendarId'] == 1 || $data['calendarId'] == 4) {
             $calendar->location = $data['location'];
             $calendar->recurrenceRule = $data['recurrenceRule'];
+        } else if ($data['calendarId'] == 5) {
+            $calendar->location = $data['location'];
         } else {
             $calendar->location = 0;
             $calendar->recurrenceRule = 0;
@@ -274,6 +283,12 @@ class CalendarController extends Controller
         return CalendarResource::collection($query);
     }
 
+    public function schedule_paytuition()
+    {
+        $query = Calendar::where('calendarId', 5)->orderby('start', 'ASC')->get();
+        return CalendarResource::collection($query);
+    }
+
     public function subject_for_plan($calendar_id)
     {
         $joins = Calendar::join('tbl_calendar_plan', 'tbl_calendar_plan.calendar_id', '=', 'tbl_calendar.id')
@@ -304,5 +319,36 @@ class CalendarController extends Controller
             ->where('tbl_major.major_id', $major)->get();
 
         return ProgramDetailResource::collection($joins);
+    }
+
+    public function except_calendar($calendar_id)
+    {
+        $joins = Calendar::join('tbl_course', 'tbl_course.course_id', '=', 'tbl_calendar.raw')
+            ->join('tbl_major', 'tbl_major.major_id', '=', 'tbl_calendar.body')
+            ->whereNotIn('id', [$calendar_id])
+            ->get();
+        return CalendarResource::collection($joins);
+    }
+
+    public function send_mail($course, $major, $semester, $category)
+    {
+        $student = Student::where('student_role', 0)->where('student_status', 0)
+            ->where('student_course', $course)->where('student_major', $major)->get();
+        $calendar = Calendar::where('raw', $course)->where('body', $major)
+            ->where('location', $semester)->where('calendarId', $category)->first();
+
+        $subject_mail = $calendar->title;
+        $to_email = array();
+        foreach ($student as $key => $valueStudent) {
+            array_push($to_email, $valueStudent->student_email);
+        }
+
+        Mail::send(
+            'admin.pages.mail.calendar_mail',
+            ['calendar' => $calendar],
+            function ($message) use ($to_email, $subject_mail) {
+                $message->to($to_email)->subject($subject_mail);
+            }
+        );
     }
 }

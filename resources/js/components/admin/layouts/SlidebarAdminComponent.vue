@@ -119,6 +119,12 @@
                                 <span class="side-menu__label">Lịch biểu</span>
                             </router-link>
                         </li>
+                        <li class="slide">
+                            <router-link tag="a" class="side-menu__item" to="/mo-lop-mon-hoc" active-class="active">
+                                <i class="side-menu__icon fa fa-window-maximize"></i>
+                                <span class="side-menu__label">Mở lớp môn học</span>
+                            </router-link>
+                        </li>
                     </ul>
                 </div>
             </div>
