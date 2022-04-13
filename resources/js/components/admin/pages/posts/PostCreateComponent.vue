@@ -32,6 +32,19 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label">Hình đại diện <span class="text-danger">(*)</span></label>
+                        <input
+                            type="file"
+                            class="form-control"
+                            ref="fileupload"
+                            id="post_avatar"
+                            name="post_avatar"
+                            @change="onAvatarChange"
+                        />
+                        <img class="styling-img-post center" v-if="form.post_avatar" :src="form.post_avatar" alt="profile" />
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Nội dung <span class="text-danger">(*)</span></label>
                         <vue-editor v-model="form.post_content" :editorToolbar="customToolbar"></vue-editor>
                     </div>
@@ -81,7 +94,8 @@ export default {
                 post_content: '',
                 post_author: this.$adminId,
                 post_status: '',
-                post_type: ''
+                post_type: '',
+                post_avatar: ''
             }),
             customToolbar: [
                 [{ header: [false, 1, 2, 3, 4, 5, 6] }],
@@ -104,12 +118,14 @@ export default {
     },
     methods: {
         store() {
+            this.form.post_avatar = document.getElementById('post_avatar').files[0]
             this.form
                 .post('../../api/admin/post-news/bai-viet')
                 .then(res => {
                     if (this.form.successful) {
                         this.form.reset()
                         this.form.clear()
+                        this.$refs.fileupload.value = ''
                         this.$snotify.confirm('Thêm mới thành công! Bạn có muốn đi đến danh sách không?', {
                             timeout: 5000,
                             showProgressBar: true,
@@ -140,8 +156,9 @@ export default {
                     const null_title = err.response.data.errors?.post_title?.length
                     const null_status = err.response.data.errors?.post_status?.length
                     const null_type = err.response.data.errors?.post_type?.length
+                    const null_avatar = err.response.data.errors?.post_avatar?.length
 
-                    if (null_title > 0 && null_content > 0 && null_status > 0 && null_type > 0) {
+                    if (null_title > 0 && null_content > 0 && null_status > 0 && null_type > 0 && null_avatar > 0) {
                         this.$snotify.error('Vui lòng không để trống!')
                     } else if (null_title > 0) {
                         this.$snotify.error(err.response.data.errors.post_title[0])
@@ -158,6 +175,10 @@ export default {
         },
         back() {
             this.$router.push({ name: 'postindex' })
+        },
+        onAvatarChange(e) {
+            const file = e.target.files[0]
+            this.form.post_avatar = URL.createObjectURL(file)
         }
     },
     beforeRouteLeave(to, from, next) {
@@ -202,5 +223,12 @@ export default {
 .btn-3d {
     border-bottom: 3px solid #6c757db0;
     border-right: 3px solid #6c757db0;
+}
+.styling-img-post {
+    display: block;
+    width: 50vw;
+    height: 40vh;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>

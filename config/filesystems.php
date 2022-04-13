@@ -65,7 +65,21 @@ return [
 
         'attachment' => [
             'driver' => 'local',
-            'root' => storage_path('../public/attachments'),
+            'root' => storage_path('../public/attachments/requests'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'fileprocedure' => [
+            'driver' => 'local',
+            'root' => storage_path('../public/attachments/procedures'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'postavatar' => [
+            'driver' => 'local',
+            'root' => storage_path('../public/avatar/post'),
             'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],

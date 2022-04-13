@@ -75,6 +75,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('edu-major')->group(function () {
+        Route::get('chuyen-nganh/major-faculty/{faculty_id}', 'Admin\Education\MajorController@major_faculty');
         Route::get('chuyen-nganh/lecturer_major/{lecturer_id}', 'Admin\Education\MajorController@lecturer_major');
         Route::get('chuyen-nganh/major/', 'Admin\Education\MajorController@major');
         Route::patch('chuyen-nganh/change/{major}', 'Admin\Education\MajorController@change');
@@ -99,6 +100,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('post-news')->group(function () {
+        Route::post('bai-viet/update-file/{post}', 'Admin\Posts\PostController@update_file');
         Route::get('bai-viet/post-news-all', 'Admin\Posts\PostController@post_news_all');
         Route::get('bai-viet/post-notification-all', 'Admin\Posts\PostController@post_notification_all');
         Route::get('bai-viet/post-news', 'Admin\Posts\PostController@post_news');
@@ -161,9 +163,10 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('procedure-require')->group(function () {
+        Route::get('yeu-cau-thu-tuc/detail/{procedure_require_id}', 'Admin\Posts\ProcedureRequireController@detail');
         Route::get('yeu-cau-thu-tuc/filter/{value}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@filter');
         Route::get('yeu-cau-thu-tuc/search/{query}/{currentEntries}', 'Admin\Posts\ProcedureRequireController@search');
-        Route::patch('yeu-cau-thu-tuc/change/{procedure_require_id}', 'Admin\Posts\ProcedureRequireController@change');
+        Route::post('yeu-cau-thu-tuc/change/{procedure_require_id}/{admin_id}', 'Admin\Posts\ProcedureRequireController@change');
         Route::resource('yeu-cau-thu-tuc', 'Admin\Posts\ProcedureRequireController');
     });
 
@@ -183,10 +186,13 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('calendar-schedule')->group(function () {
+        Route::get('lich-bieu/send-mail/{course}/{major}/{semester}/{category}', 'Admin\Calendar\CalendarController@send_mail');
+        Route::get('lich-bieu/except-calendar/{calendar_id}', 'Admin\Calendar\CalendarController@except_calendar');
         Route::get('lich-bieu/chuong-trinh-dao-tao/{course}/{major}/{semester}', 'Admin\Calendar\CalendarController@get_programs');
         Route::get('lich-bieu/hoc-ky/{course}/{major}', 'Admin\Calendar\CalendarController@get_semester');
         Route::post('lich-bieu/update-plan/{calendar_id}', 'Admin\Calendar\CalendarController@update_plan');
         Route::get('lich-bieu/subject-plan/{calendar_id}', 'Admin\Calendar\CalendarController@subject_for_plan');
+        Route::get('lich-bieu/schedule-paytuition', 'Admin\Calendar\CalendarController@schedule_paytuition');
         Route::get('lich-bieu/schedule-subject', 'Admin\Calendar\CalendarController@schedule_subject');
         Route::get('lich-bieu/schedule-exam', 'Admin\Calendar\CalendarController@schedule_exam');
         Route::get('lich-bieu/schedule', 'Admin\Calendar\CalendarController@schedule');
@@ -209,6 +215,9 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('calendar-subject')->group(function () {
+        Route::get('lich-mo-lop-hoc/filter-in-calendar/{course_id}/{major_id}/{semester}', 'Admin\Calendar\CalendarSubjectController@filter_incalendar');
+        Route::get('lich-mo-lop-hoc/filter/{course_id}/{major_id}/{semester}/{currentEntries}', 'Admin\Calendar\CalendarSubjectController@filter');
+        Route::patch('lich-mo-lop-hoc/change/{calendar_subject_id}', 'Admin\Calendar\CalendarSubjectController@change');
         Route::get('lich-mo-lop-hoc/show-subjects/{id}', 'Admin\Calendar\CalendarSubjectController@show_subject');
         Route::get('lich-mo-lop-hoc/detail/{calendar_subject_id}', 'Admin\Calendar\CalendarSubjectController@detail');
         Route::get('lich-mo-lop-hoc/search/{query}/{currentEntries}', 'Admin\Calendar\CalendarSubjectController@search');
@@ -268,6 +277,31 @@ Route::prefix('admin')->group(function () {
         Route::get('thong-ke-truy-cap/thang-nay', 'Admin\AuthController@sum_thismonth');
         Route::get('thong-ke-truy-cap/mot-nam', 'Admin\AuthController@sum_year');
         Route::get('thong-ke-truy-cap/tat-ca', 'Admin\AuthController@sum_visitor');
+    });
+
+    Route::prefix('notification')->group(function () {
+        Route::post('thong-bao/bcn-khoa/doc-tat-ca/{lecturer_id}', 'Admin\Notification\NotificationController@read_all_lecturer');
+        Route::get('thong-bao/bcn-khoa/chua-doc/{lecturer_id}', 'Admin\Notification\NotificationController@notification_noneread_lecturer');
+        Route::get('thong-bao/bcn-khoa/tat-ca', 'Admin\Notification\NotificationController@notification_large_lecturer');
+        Route::get('thong-bao/bcn-khoa', 'Admin\Notification\NotificationController@notification_small_lecturer');
+        Route::post('thong-bao/gvcn/doc-tat-ca/{lecturer_id}', 'Admin\Notification\NotificationController@read_all_formteacher');
+        Route::get('thong-bao/gvcn/chua-doc/{lecturer_id}', 'Admin\Notification\NotificationController@notification_noneread_formteacher');
+        Route::get('thong-bao/gvcn/tat-ca/{lecturer_id}', 'Admin\Notification\NotificationController@notification_large_formteacher');
+        Route::get('thong-bao/gvcn/{lecturer_id}', 'Admin\Notification\NotificationController@notification_small_formteacher');
+        Route::post('thong-bao/quan-tri-vien/doc-tat-ca', 'Admin\Notification\NotificationController@read_all_admin');
+        Route::get('thong-bao/quan-tri-vien/chua-doc', 'Admin\Notification\NotificationController@notification_noneread_admin');
+        Route::get('thong-bao/quan-tri-vien/tat-ca', 'Admin\Notification\NotificationController@notification_large_admin');
+        Route::get('thong-bao/quan-tri-vien', 'Admin\Notification\NotificationController@notification_small_admin');
+        Route::resource('thong-bao', 'Admin\Notification\NotificationController');
+    });
+
+    Route::prefix('tuition-management')->group(function () {
+        Route::get('quan-ly-hoc-phi/filter-course-faculty-major/{course_id}/{faculty_id}/{major_id}/{currentEntries}', 'Admin\Tuition\TuitionController@filter_course_faculty_major');
+        Route::get('quan-ly-hoc-phi/filter-course-faculty/{course_id}/{faculty_id}/{currentEntries}', 'Admin\Tuition\TuitionController@filter_course_faculty');
+        Route::get('quan-ly-hoc-phi/filter-course/{course_id}/{currentEntries}', 'Admin\Tuition\TuitionController@filter_course');
+        Route::post('quan-ly-hoc-phi/destroyall', 'Admin\Tuition\TuitionController@destroyall');
+        Route::get('quan-ly-hoc-phi/not-in/{tuition_id}', 'Admin\Tuition\TuitionController@not_in');
+        Route::resource('quan-ly-hoc-phi', 'Admin\Tuition\TuitionController');
     });
 });
 
@@ -334,6 +368,22 @@ Route::prefix('student')->group(function () {
     });
 
     Route::prefix('procedure')->group(function () {
+        Route::get('yeu-cau-thuc-tuc-sv/my-procedures/{student_id}', 'Student\Post\ProcedureController@my_procedures');
         Route::resource('yeu-cau-thuc-tuc-sv', 'Student\Post\ProcedureController');
+    });
+
+    Route::prefix('notification')->group(function () {
+        // Route::post('thong-bao/quan-tri-vien/doc-tat-ca', 'Admin\Notification\NotificationController@read_all_admin');
+        // Route::get('thong-bao/quan-tri-vien/chua-doc', 'Admin\Notification\NotificationController@notification_noneread_admin');
+        // Route::get('thong-bao/quan-tri-vien/tat-ca', 'Admin\Notification\NotificationController@notification_large_admin');
+        // Route::get('thong-bao/quan-tri-vien', 'Admin\Notification\NotificationController@notification_small_admin');
+        Route::get('thong-bao/yeu-cau/{student_id}', 'Student\Notification\NotificationController@noti_request');
+        Route::get('thong-bao/thu-tuc/{student_id}', 'Student\Notification\NotificationController@noti_procedure');
+        Route::resource('thong-bao', 'Student\Notification\NotificationController');
+    });
+
+    Route::prefix('pay-tuition')->group(function () {
+        Route::get('thanh-toan-hoc-phi/thoi-gian-thanh-toan/{student_id}', 'Student\Registration\PayTuitionController@calendar_paytuition');
+        Route::resource('thanh-toan-hoc-phi', 'Student\Registration\PayTuitionController');
     });
 });

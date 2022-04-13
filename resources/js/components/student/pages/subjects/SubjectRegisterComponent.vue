@@ -79,7 +79,7 @@
                                     {{ value.calendar_subject_registered }}
                                 </td>
                                 <td class="text-center">
-                                    {{ value.calendar_subject_schedule }}
+                                    {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                 </td>
                             </tr>
                             <tr>
@@ -113,7 +113,7 @@
                                     {{ value.calendar_subject_registered }}
                                 </td>
                                 <td class="text-center">
-                                    {{ value.calendar_subject_schedule }}
+                                    {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                 </td>
                             </tr>
                         </tbody>
@@ -177,7 +177,7 @@
                                             {{ value.subject_credit }}
                                         </td>
                                         <td class="text-center">
-                                            {{ value.calendar_subject_schedule }}
+                                            {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                         </td>
                                         <td class="text-center">
                                             {{ value.calendar_subject_start | formatDate }}
@@ -283,7 +283,7 @@
                                     {{ value.calendar_subject_registered }}
                                 </td>
                                 <td class="text-center">
-                                    {{ value.calendar_subject_schedule }}
+                                    {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                 </td>
                             </tr>
                             <tr>
@@ -317,7 +317,7 @@
                                     {{ value.calendar_subject_registered }}
                                 </td>
                                 <td class="text-center">
-                                    {{ value.calendar_subject_schedule }}
+                                    {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                 </td>
                             </tr>
                         </tbody>
@@ -381,7 +381,7 @@
                                             {{ value.subject_credit }}
                                         </td>
                                         <td class="text-center">
-                                            {{ value.calendar_subject_schedule }}
+                                            {{ valueCurrent(value.calendar_subject_day, value.calendar_subject_time) }}
                                         </td>
                                         <td class="text-center">
                                             {{ value.calendar_subject_start | formatDate }}
@@ -755,6 +755,48 @@ export default {
                         })
                     }
                 })
+        },
+        valueCurrent(calendar_subject_day, calendar_subject_time) {
+            const day = calendar_subject_day.split(', ')
+            const time = calendar_subject_time.split(', ')
+            let arrayDay = []
+            let arrayTime = []
+            let stringDay = ''
+            let stringTime = ''
+            let allStringDay = ''
+            let allStringTime = ''
+
+            if (day.length > 0) {
+                for (let i = 0; i < day.length; i++) {
+                    if (day[i] == 0) {
+                        stringDay = 'Chủ nhật'
+                    } else {
+                        let key = Number(day[i]) + 1
+                        stringDay = 'Thứ ' + key
+                    }
+                    arrayDay.push(stringDay)
+                }
+                allStringDay = arrayDay.join(', ')
+            }
+
+            if (time.length > 0) {
+                for (let i = 0; i < time.length; i++) {
+                    if (time[i] == 123) {
+                        stringTime = 'Tiết 1-2-3'
+                    } else if (time[i] == 456) {
+                        stringTime = 'Tiết 4-5-6'
+                    } else if (time[i] == 789) {
+                        stringTime = 'Tiết 7-8-9'
+                    } else if (time[i] == 101112) {
+                        stringTime = 'Tiết 10-11-12'
+                    } else if (time[i] == 131415) {
+                        stringTime = 'Tiết 13-14-15'
+                    }
+                    arrayTime.push(stringTime)
+                }
+                allStringTime = arrayTime.join(', ')
+            }
+            return allStringDay + ' (' + allStringTime + ')'
         }
     }
 }

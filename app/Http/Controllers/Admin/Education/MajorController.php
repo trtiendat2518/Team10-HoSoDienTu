@@ -209,4 +209,10 @@ class MajorController extends Controller
             ->where('tbl_lecturer.lecturer_id', $lecturer_id)->get();
         return MajorResource::collection($joins);
     }
+
+    public function major_faculty($faculty_id)
+    {
+        $joins = Major::where('major_faculty', $faculty_id)->orderby('major_id', 'DESC')->get();
+        return MajorResource::collection($joins);
+    }
 }

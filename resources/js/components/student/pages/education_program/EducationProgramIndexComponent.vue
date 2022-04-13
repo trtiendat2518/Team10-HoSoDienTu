@@ -22,94 +22,96 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-nowrap">
-                    <thead class="blue-background text-white">
-                        <tr>
-                            <th class="text-center">
-                                STT
-                            </th>
-                            <th class="text-center">
-                                Mã môn học
-                            </th>
-                            <th class="text-center">
-                                Tên môn học
-                            </th>
-                            <th class="text-center">
-                                Số TC
-                            </th>
-                            <th class="text-center">
-                                Bắt buộc
-                            </th>
-                            <th class="text-center">
-                                Số tiết LT
-                            </th>
-                            <th class="text-center">
-                                Số tiết TH
-                            </th>
-                            <th class="text-center">
-                                Khoa/Bộ môn
-                            </th>
-                            <th class="text-center">
-                                Ghi chú
-                            </th>
-                            <th class="text-center">
-                                Đã học
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody v-for="i in semesters_program" :key="i">
-                        <tr class="background-result">
-                            <td colspan="10">
-                                <b> Học kỳ {{ i }} </b>
-                            </td>
-                        </tr>
-                        <tr
-                            v-show="subjects_programs[i].length"
-                            v-for="(subject, index) in subjects_programs[i]"
-                            :key="subject.register_subject_id"
-                        >
-                            <td class="td-table text-center">
-                                {{ (index += 1) }}
-                            </td>
-                            <td class="text-center td-table">
-                                {{ subject.subject_code }}
-                            </td>
-                            <td class="td-table">
-                                {{ subject.subject_name }}
-                            </td>
-                            <td class="text-center td-table">
-                                {{ subject.subject_credit }}
-                            </td>
-                            <td class="text-center td-table">
-                                <p v-if="subject.subject_type == 0">x</p>
-                                <p v-else></p>
-                            </td>
-                            <td class="text-center">
-                                {{ subject.subject_theory_period }}
-                            </td>
-                            <td class="text-center">
-                                {{ subject.subject_practice_period }}
-                            </td>
-                            <td class="text-center">
-                                {{ subject.faculty_name }}
-                            </td>
-                            <td class="text-center">
-                                {{ nameMajor(subject) }}
-                            </td>
-                            <td class="text-center">
-                                <div v-if="checkSubject(subject) > 0">
-                                    <div v-if="checkSum(subject) < 4">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
+            <div class="widget-box">
+                <div class="table-responsive">
+                    <table class="table table-nowrap">
+                        <thead class="blue-background text-white">
+                            <tr>
+                                <th class="text-center">
+                                    STT
+                                </th>
+                                <th class="text-center">
+                                    Mã môn học
+                                </th>
+                                <th class="text-center">
+                                    Tên môn học
+                                </th>
+                                <th class="text-center">
+                                    Số TC
+                                </th>
+                                <th class="text-center">
+                                    Bắt buộc
+                                </th>
+                                <th class="text-center">
+                                    Số tiết LT
+                                </th>
+                                <th class="text-center">
+                                    Số tiết TH
+                                </th>
+                                <th class="text-center">
+                                    Khoa/Bộ môn
+                                </th>
+                                <th class="text-center">
+                                    Ghi chú
+                                </th>
+                                <th class="text-center">
+                                    Đã học
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody v-for="i in semesters_program" :key="i">
+                            <tr class="background-result">
+                                <td colspan="10">
+                                    <b> Học kỳ {{ i }} </b>
+                                </td>
+                            </tr>
+                            <tr
+                                v-show="subjects_programs[i].length"
+                                v-for="(subject, index) in subjects_programs[i]"
+                                :key="subject.register_subject_id"
+                            >
+                                <td class="td-table text-center">
+                                    {{ (index += 1) }}
+                                </td>
+                                <td class="text-center td-table">
+                                    {{ subject.subject_code }}
+                                </td>
+                                <td class="td-table">
+                                    {{ subject.subject_name }}
+                                </td>
+                                <td class="text-center td-table">
+                                    {{ subject.subject_credit }}
+                                </td>
+                                <td class="text-center td-table">
+                                    <p v-if="subject.subject_type == 0">x</p>
+                                    <p v-else></p>
+                                </td>
+                                <td class="text-center">
+                                    {{ subject.subject_theory_period }}
+                                </td>
+                                <td class="text-center">
+                                    {{ subject.subject_practice_period }}
+                                </td>
+                                <td class="text-center">
+                                    {{ subject.faculty_name }}
+                                </td>
+                                <td class="text-center">
+                                    {{ nameMajor(subject) }}
+                                </td>
+                                <td class="text-center">
+                                    <div v-if="checkSubject(subject) > 0">
+                                        <div v-if="checkSum(subject) < 4">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                        <div v-else-if="checkSum(subject) >= 4">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
                                     </div>
-                                    <div v-else-if="checkSum(subject) >= 4">
-                                        <i class="fa fa-check" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

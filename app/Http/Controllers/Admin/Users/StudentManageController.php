@@ -356,13 +356,14 @@ class StudentManageController extends Controller
         $stu = Student::find($student_id);
 
         $data = $request->validate([
-            'student_phone' => ['required', 'max:11', 'min:10', 'notspecial_spaces'],
+            'student_phone' => ['required', 'max:11', 'min:10', 'numeric', 'notspecial_spaces'],
             'student_other_email' => ['required', 'max:250', 'email'],
 
         ], [
             'student_phone.required' => 'Số điện thoại không được để trống!',
             'student_phone.max' => 'Số điện thoại không nhập quá 11 ký tự số!',
             'student_phone.min' => 'Số điện thoại cần nhập 10 hoặc 11 số!',
+            'student_phone.numeric' => 'Số điện thoại phải là ký tự số!',
             'student_phone.notspecial_spaces' => 'Số điện thoại không chứa ký tự đặc biệt!',
 
             'student_other_email.required' => 'Email không được để trống!',

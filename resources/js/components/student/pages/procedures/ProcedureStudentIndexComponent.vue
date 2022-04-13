@@ -25,6 +25,10 @@
                 </div>
             </div>
 
+            <router-link class=" btn btn-info mt-3" tag="button" :to="{ name: 'procedurestudentlist' }">
+                Xem danh sách đã yêu cầu
+            </router-link>
+
             <div class="panel-group" role="tablist">
                 <div class="panel panel-default mt-3" v-for="i in categories" :key="i">
                     <div class="panel-heading" role="tab">

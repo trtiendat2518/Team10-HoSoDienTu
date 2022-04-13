@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ExamSecond;
 use App\Http\Resources\ExamSecondResource;
 use App\Models\Lecturer;
+use App\Models\Notification;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -56,13 +57,33 @@ class ExamSecondController extends Controller
                     $value->exam_second_quantity = 1 + $value->exam_second_quantity;
                     $value->save();
                 }
+                $noti = Notification::where('notification_title', $value->exam_second_id)
+                    ->where('notification_object', 1)
+                    ->where('notification_type', 'subject')
+                    ->where('notification_student', $find->student_major)
+                    ->get();
+                foreach ($noti as $key => $value) {
+                    $value->notification_status = 0;
+                    $value->save();
+                }
             } else {
                 $exam = new ExamSecond();
                 $exam->exam_second_course = $find->student_course;
                 $exam->exam_second_major = $find->student_major;
                 $exam->exam_second_subject = $subject_id;
                 $exam->exam_second_quantity = 1;
-                $exam->save();
+                $save = $exam->save();
+
+                if ($save) {
+                    $noti = new Notification();
+                    $noti->notification_title = $exam->exam_second_id;
+                    $noti->notification_student = $find->student_major;
+                    $noti->notification_object = 1;
+                    $noti->notification_type = 'subject';
+                    date_default_timezone_set('Asia/Ho_Chi_Minh');
+                    $noti->notification_date = now();
+                    $noti->save();
+                }
             }
         }
     }
@@ -132,7 +153,25 @@ class ExamSecondController extends Controller
             if ($value->exam_second_quantity > 1) {
                 $value->exam_second_quantity = $value->exam_second_quantity - 1;
                 $value->save();
+
+                $noti = Notification::where('notification_title', $value->exam_second_id)
+                    ->where('notification_object', 1)
+                    ->where('notification_type', 'subject')
+                    ->where('notification_student', $value->exam_second_major)
+                    ->get();
+                foreach ($noti as $key => $notification) {
+                    $notification->notification_status = 0;
+                    $notification->save();
+                }
             } else {
+                $noti = Notification::where('notification_title', $value->exam_second_id)
+                    ->where('notification_object', 1)
+                    ->where('notification_type', 'subject')
+                    ->where('notification_student', $value->exam_second_major)
+                    ->get();
+                foreach ($noti as $key => $notification) {
+                    $notification->delete();
+                }
                 $value->delete();
             }
         }

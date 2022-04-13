@@ -4,67 +4,70 @@
             <img class="section-banner-icon" :src="`../public/student/img/banner/newsfeed-icon.png`" alt="newsfeed-icon" />
             <p class="section-banner-title">Đăng ký thi lần 2</p>
         </div>
+
         <div class="grid">
-            <div class="table-responsive">
-                <table class="table table-nowrap">
-                    <thead class="blue-background text-white">
-                        <tr>
-                            <th class="text-center">
-                                STT
-                            </th>
-                            <th class="text-center">
-                                Mã môn học
-                            </th>
-                            <th class="text-center">
-                                Tên môn học
-                            </th>
-                            <th class="text-center">
-                                Điểm lần 1
-                            </th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(value, index) in exams" :key="value.calendar_exam_id">
-                            <td class="td-table text-center">
-                                {{ (index += 1) }}
-                            </td>
-                            <td class="text-center td-table">
-                                {{ value.subject_code }}
-                            </td>
-                            <td class="td-table">
-                                {{ value.subject_name }}
-                            </td>
-                            <td class="text-center td-table">
-                                {{ subject_socre(value) }}
-                            </td>
-                            <td class="text-center">
-                                <input
-                                    type="checkbox"
-                                    name="subject"
-                                    :value="value.subject_id"
-                                    @change="select($event.target.checked, value.subject_id)"
-                                    :checked="checkValue(value)"
-                                    :disabled="disableValue(value)"
-                                />
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-danger" @click="cancel(value)" :disabled="disableCancel(value)">
-                                    Huỷ
-                                </button>
-                            </td>
-                        </tr>
-                        <tr v-show="!exams.length">
-                            <td colspan="5">
-                                <div class="alert alert-danger">
-                                    Không tìm thấy kết quả phù hợp!
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button class="btn width-btn btn-info mt-3" @click="store()">Đăng ký</button>
+            <div class="widget-box">
+                <div class="table-responsive">
+                    <table class="table table-nowrap">
+                        <thead class="blue-background text-white">
+                            <tr>
+                                <th class="text-center">
+                                    STT
+                                </th>
+                                <th class="text-center">
+                                    Mã môn học
+                                </th>
+                                <th class="text-center">
+                                    Tên môn học
+                                </th>
+                                <th class="text-center">
+                                    Điểm lần 1
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(value, index) in exams" :key="value.calendar_exam_id">
+                                <td class="td-table text-center">
+                                    {{ (index += 1) }}
+                                </td>
+                                <td class="text-center td-table">
+                                    {{ value.subject_code }}
+                                </td>
+                                <td class="td-table">
+                                    {{ value.subject_name }}
+                                </td>
+                                <td class="text-center td-table">
+                                    {{ subject_socre(value) }}
+                                </td>
+                                <td class="text-center">
+                                    <input
+                                        type="checkbox"
+                                        name="subject"
+                                        :value="value.subject_id"
+                                        @change="select($event.target.checked, value.subject_id)"
+                                        :checked="checkValue(value)"
+                                        :disabled="disableValue(value)"
+                                    />
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-danger" @click="cancel(value)" :disabled="disableCancel(value)">
+                                        Huỷ
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr v-show="!exams.length">
+                                <td colspan="5">
+                                    <div class="alert alert-danger">
+                                        Không tìm thấy kết quả phù hợp!
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn width-btn btn-info mt-3" @click="store()">Đăng ký</button>
+                </div>
             </div>
         </div>
     </div>
