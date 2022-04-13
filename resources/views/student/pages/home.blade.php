@@ -1,4 +1,4 @@
-@extends('student.layout');
+@extends('student.layout')
 @section('student-content')
 <!-- CONTENT GRID -->
 <div class="content-grid">
