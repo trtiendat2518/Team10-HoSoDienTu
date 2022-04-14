@@ -383,6 +383,12 @@ Route::prefix('student')->group(function () {
     });
 
     Route::prefix('pay-tuition')->group(function () {
+        Route::get('thanh-toan-hoc-phi/detail-payment/{payment_id}', 'Student\Registration\PayTuitionController@detail_payment');
+        Route::get('thanh-toan-hoc-phi/total-payment/{student_id}', 'Student\Registration\PayTuitionController@total_payment');
+        Route::get('thanh-toan-hoc-phi/check-payment/{student_id}/{semester}', 'Student\Registration\PayTuitionController@check_payment');
+        Route::post('thanh-toan-hoc-phi/momo/{student_id}/{semester}', 'Student\Registration\PayTuitionController@momo_paytuition');
+        Route::post('thanh-toan-hoc-phi/vnpay/{student_id}/{semester}', 'Student\Registration\PayTuitionController@vnpay_paytuition');
+        Route::get('thanh-toan-hoc-phi/mon-hoc/{student_id}/{semester}', 'Student\Registration\PayTuitionController@subject_paytuition');
         Route::get('thanh-toan-hoc-phi/thoi-gian-thanh-toan/{student_id}', 'Student\Registration\PayTuitionController@calendar_paytuition');
         Route::resource('thanh-toan-hoc-phi', 'Student\Registration\PayTuitionController');
     });

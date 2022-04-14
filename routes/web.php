@@ -42,3 +42,8 @@ Route::prefix('student')->group(function () {
     Route::get('/microsoft-student-callback', 'Admin\AuthController@callback_ms_stu');
     Route::get('/logout-student', 'Admin\AuthController@get_logout_student');
 });
+
+
+//---- Payment
+Route::get('home/thanh-toan-hoc-phi/return-vnpay', 'Student\Registration\PayTuitionController@return_vnpay');
+Route::get('home/thanh-toan-hoc-phi/return-momo', 'Student\Registration\PayTuitionController@return_momo');
