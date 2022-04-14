@@ -13,7 +13,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" v-show="check_time == true && tuitions.length > 0">
                     <div class="col-md-12">
                         <button @click="paymentVNPAY()" class="btn btn-lg btn-info btn-vnpay" name="redirect" :disabled="check_payment">
                             Thanh toán <b><span class="text-red">VN</span><span class="text-white">PAY</span></b>
