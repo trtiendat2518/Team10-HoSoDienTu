@@ -42,6 +42,7 @@ class TuitionController extends Controller
             'tuition_faculty' => ['required'],
             'tuition_major' => ['required'],
             'tuition_fee' => ['required', 'max: 11'],
+            'tuition_discount' => ['required', 'integer', 'between:0,100'],
         ], [
             'tuition_course.required' => 'Vui lòng chọn khoá học!',
             'tuition_faculty.required' => 'Vui lòng chọn khoa!',
@@ -49,6 +50,10 @@ class TuitionController extends Controller
 
             'tuition_fee.required' => 'Vui lòng nhập học phí!',
             'tuition_fee.max' => 'Học phí không nhập quá 11 số!',
+
+            'tuition_discount.required' => 'Giảm học phí không được để trống. Nếu không giảm vui lòng nhập số 0!',
+            'tuition_discount.integer' => 'Giảm học phí phải là số nguyên!',
+            'tuition_discount.between' => 'Giảm học phí chỉ nhập từ 0 dến 100!',
         ]);
 
         $tuition = new Tuition();
@@ -56,6 +61,7 @@ class TuitionController extends Controller
         $tuition->tuition_faculty = $data['tuition_faculty'];
         $tuition->tuition_major = $data['tuition_major'];
         $tuition->tuition_fee = $data['tuition_fee'];
+        $tuition->tuition_discount = $data['tuition_discount'];
         $tuition->save();
     }
 
@@ -100,6 +106,7 @@ class TuitionController extends Controller
             'tuition_faculty' => ['required'],
             'tuition_major' => ['required'],
             'tuition_fee' => ['required', 'max: 11'],
+            'tuition_discount' => ['required', 'integer', 'between:0,100'],
         ], [
             'tuition_course.required' => 'Vui lòng chọn khoá học!',
             'tuition_faculty.required' => 'Vui lòng chọn khoa!',
@@ -107,6 +114,10 @@ class TuitionController extends Controller
 
             'tuition_fee.required' => 'Vui lòng nhập học phí!',
             'tuition_fee.max' => 'Học phí không nhập quá 11 số!',
+
+            'tuition_discount.required' => 'Giảm học phí không được để trống. Nếu không giảm vui lòng nhập số 0!',
+            'tuition_discount.integer' => 'Giảm học phí phải là số nguyên!',
+            'tuition_discount.between' => 'Giảm học phí chỉ nhập từ 0 dến 100!',
         ]);
 
         $tuition = Tuition::find($tuition);
@@ -114,6 +125,7 @@ class TuitionController extends Controller
         $tuition->tuition_faculty = $data['tuition_faculty'];
         $tuition->tuition_major = $data['tuition_major'];
         $tuition->tuition_fee = $data['tuition_fee'];
+        $tuition->tuition_discount = $data['tuition_discount'];
         $tuition->save();
     }
 

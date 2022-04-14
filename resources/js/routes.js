@@ -163,7 +163,10 @@ import ProcedureStudentList from './components/student/pages/procedures/Procedur
 
 import PayTuition from './components/student/pages/pay_tuition/PayTuitionComponent.vue'
 import PayTuitionIndex from './components/student/pages/pay_tuition/PayTuitionIndexComponent.vue'
-import PayTuitionError from './components/student/pages/pay_tuition/PayTuitionErrorComponent.vue'
+
+import TuitionStudent from './components/student/pages/tuition/TuitionStudentComponent.vue'
+import TuitionStudentIndex from './components/student/pages/tuition/TuitionStudentIndexComponent.vue'
+import TuitionStudentDetail from './components/student/pages/tuition/TuitionStudentDetailComponent.vue'
 
 import Error404 from './components/admin/layouts/ErrorComponent.vue'
 
@@ -1309,14 +1312,36 @@ export default new VueRouter({
             },
             children: [
                 {
-                    path: '/',
-                    name: 'paytuitionerror',
-                    component: PayTuitionError
-                },
-                {
-                    path: '/',
+                    path: '',
                     name: 'paytuitionindex',
                     component: PayTuitionIndex
+                }
+            ],
+            beforeEnter: (to, from, next) => {
+                if (Vue.prototype.$studentId != null) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+        },
+
+        {
+            path: '/tong-hop-hoc-phi',
+            name: 'tuitionstudent',
+            components: {
+                student: TuitionStudent
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'tuitionstudentindex',
+                    component: TuitionStudentIndex
+                },
+                {
+                    path: ':idTuitionStudent',
+                    name: 'tuitionstudentdetail',
+                    component: TuitionStudentDetail
                 }
             ],
             beforeEnter: (to, from, next) => {
