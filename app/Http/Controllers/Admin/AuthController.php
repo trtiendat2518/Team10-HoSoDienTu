@@ -87,56 +87,70 @@ class AuthController extends Controller
     {
         $users = Socialite::driver('graph')->user();
 
-        $authUser = $this->findOrCreateUser($users);
+        $email = $users->email;
+        $splitEmail = explode('@', $email);
 
-        if ($authUser->lecturer_status == 0) {
-            if ($authUser) {
-                $request->session()->put('lecturer_fullname', $authUser->lecturer_fullname);
-                $request->session()->put('lecturer_email', $authUser->lecturer_email);
-                $request->session()->put('lecturer_id', $authUser->lecturer_code);
-                $request->session()->put('lecturer_code', $authUser->lecturer_id);
+        //cheat account student
+        if ($users->email == 'dat.187pm06566@vanlanguni.vn' || $users->email == 'tin.187pm14021@vanlanguni.vn') {
+            $splitEmail[1] = 'vlu.edu.vn';
+        }
+
+        if ($splitEmail[1] == 'vlu.edu.vn') {
+            $authUser = $this->findOrCreateUser($users);
+
+            if ($authUser->lecturer_status == 0) {
+                if ($authUser) {
+                    $request->session()->put('lecturer_fullname', $authUser->lecturer_fullname);
+                    $request->session()->put('lecturer_email', $authUser->lecturer_email);
+                    $request->session()->put('lecturer_id', $authUser->lecturer_code);
+                    $request->session()->put('lecturer_code', $authUser->lecturer_id);
+                } else {
+                    $request->session()->put('lecturer_fullname', $authUser->lecturer_fullname);
+                    $request->session()->put('lecturer_email', $authUser->lecturer_email);
+                    $request->session()->put('lecturer_id', $authUser->lecturer_code);
+                    $request->session()->put('lecturer_code', $authUser->lecturer_id);
+                }
+
+                $user_ip_address = $request->ip();
+                $visitor_current = Visitor::where('visitor_ipaddress', $user_ip_address)->get();
+                $visitor_count = $visitor_current->count();
+                if ($visitor_count < 1) {
+                    $visitor = new Visitor();
+                    $visitor->visitor_ipaddress = $user_ip_address;
+                    $visitor->visitor_date = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+                    $visitor->save();
+                }
+                return redirect()->intended('admin');
             } else {
-                $request->session()->put('lecturer_fullname', $authUser->lecturer_fullname);
-                $request->session()->put('lecturer_email', $authUser->lecturer_email);
-                $request->session()->put('lecturer_id', $authUser->lecturer_code);
-                $request->session()->put('lecturer_code', $authUser->lecturer_id);
+                return redirect()->intended('admin/login')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
             }
-
-            $user_ip_address = $request->ip();
-            $visitor_current = Visitor::where('visitor_ipaddress', $user_ip_address)->get();
-            $visitor_count = $visitor_current->count();
-            if ($visitor_count < 1) {
-                $visitor = new Visitor();
-                $visitor->visitor_ipaddress = $user_ip_address;
-                $visitor->visitor_date = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
-                $visitor->save();
-            }
-
-            return redirect()->intended('admin');
+        } else if ($splitEmail[1] == 'vanlanguni.vn') {
+            return redirect()->intended('admin/login')->with('fail', 'Tài khoản sinh viên không thể đăng nhập vào trang này!');
         } else {
-            return redirect()->intended('admin/login')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
+            return redirect()->intended('admin/login')->with('fail', 'Vui lòng đăng nhập bằng tài khoản giảng viên VLU!');
         }
     }
 
     public function findOrCreateUser($users)
     {
-        $authUser = Lecturer::where('tbl_lecturer.lecturer_email', $users->email)->first();
+        //cheat account student
+        $email = $users->email;
+        $splitEmail = explode('@', $email);
+        if ($splitEmail[0] == 'dat.187pm06566' || $splitEmail[0] == 'tin.187pm14021') {
+            $splitEmail[1] = 'vlu.edu.vn';
+            $users->email = $splitEmail[0] . '@' . $splitEmail[1];
+        }
 
+        $authUser = Lecturer::where('tbl_lecturer.lecturer_email', $users->email)->first();
         if ($authUser) {
             return $authUser;
         } else {
-            $first_name = $users->givenName;
-            $splitFirstName = explode(' - ', $first_name);
-
             $last_name = $users->surname;
             $splitLastName = explode(' - ', $last_name);
 
-            $first = $splitFirstName[1];
-            $last = !empty($splitLastName[1]) ? $splitLastName[0] : $splitLastName[1];
-
             $social_gg = new Lecturer([
                 'lecturer_email' => $users->email,
-                'lecturer_fullname' => $first . ' ' . $last,
+                'lecturer_fullname' => $users->givenName . ' ' . $splitLastName[0],
                 'lecturer_code' => $users->id
             ]);
             $social_gg->save();
@@ -153,9 +167,11 @@ class AuthController extends Controller
     {
         $users = Socialite::driver('microsoft')->user();
 
-        $authUser = Student::where('tbl_student.student_email', $users->email)->first();
+        $email = $users->email;
+        $splitEmail = explode('@', $email);
 
-        if ($authUser) {
+        if ($splitEmail[1] == 'vanlanguni.vn') {
+            $authUser = $this->findOrCreateStudent($users);
             if ($authUser->student_status == 0) {
                 if ($authUser) {
                     $request->session()->put('student_fullname', $authUser->student_fullname);
@@ -168,13 +184,40 @@ class AuthController extends Controller
                     $request->session()->put('student_id', $authUser->student_id);
                     $request->session()->put('student_code', $authUser->student_code);
                 }
-
                 return redirect()->intended('/home');
             } else {
                 return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
             }
+        } else if ($splitEmail[1] == 'vlu.edu.vn') {
+            return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản giảng viên không thể đăng nhập vào trang sinh viên');
         } else {
-            return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản không tồn tại');
+            return redirect()->intended('/dang-nhap')->with('fail', 'Vui lòng đăng nhập bằng tài khoản sinh viên VLU');
+        }
+    }
+
+    public function findOrCreateStudent($users)
+    {
+        $authUser = Student::where('tbl_student.student_email', $users->email)->first();
+        if ($authUser) {
+            return $authUser;
+        } else {
+            $first_name = $users->givenName;
+            $splitFirstName = explode(' - ', $first_name);
+
+            $last_name = $users->surname;
+            $splitLastName = explode(' - ', $last_name);
+
+            $code = $splitFirstName[0];
+            $first = $splitFirstName[1];
+            $last = $splitLastName[0];
+
+            $social_gg = new Student([
+                'student_email' => $users->email,
+                'student_fullname' => $first . ' ' . $last,
+                'student_code' => $code
+            ]);
+            $social_gg->save();
+            return $social_gg;
         }
     }
 
