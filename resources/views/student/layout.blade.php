@@ -22,7 +22,6 @@
 </head>
 
 <body>
-
     @include('student.panels.loader')
     <div id="app">
         @include('student.panels.slidebar')

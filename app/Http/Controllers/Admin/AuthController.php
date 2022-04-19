@@ -72,10 +72,11 @@ class AuthController extends Controller
     {
         $request->session()->flush();
         $request->session()->put('admin_id', null);
+        $request->session()->put('lecturer_id', null);
         $request->session()->put('admin_fullname', null);
         $request->session()->put('admin_email', null);
         $request->session()->put('lecturer_code', null);
-        return redirect()->intended('admin/login');
+        return redirect()->intended('dang-nhap');
     }
 
     public function login_ms()
@@ -85,49 +86,70 @@ class AuthController extends Controller
 
     public function callback_ms(Request $request)
     {
-        $users = Socialite::driver('graph')->user();
+        if (isset($_GET['code']) != null) {
+            $users = Socialite::driver('graph')->user();
 
-        $email = $users->email;
-        $splitEmail = explode('@', $email);
+            $email = $users->email;
+            $splitEmail = explode('@', $email);
 
-        //cheat account student
-        if ($users->email == 'dat.187pm06566@vanlanguni.vn' || $users->email == 'tin.187pm14021@vanlanguni.vn') {
-            $splitEmail[1] = 'vlu.edu.vn';
-        }
-
-        if ($splitEmail[1] == 'vlu.edu.vn') {
-            $authUser = $this->findOrCreateUser($users);
-
-            if ($authUser->lecturer_status == 0) {
-                if ($authUser) {
-                    $request->session()->put('lecturer_fullname', $authUser->lecturer_fullname);
-                    $request->session()->put('lecturer_email', $authUser->lecturer_email);
-                    $request->session()->put('lecturer_id', $authUser->lecturer_code);
-                    $request->session()->put('lecturer_code', $authUser->lecturer_id);
-                } else {
-                    $request->session()->put('lecturer_fullname', $authUser->lecturer_fullname);
-                    $request->session()->put('lecturer_email', $authUser->lecturer_email);
-                    $request->session()->put('lecturer_id', $authUser->lecturer_code);
-                    $request->session()->put('lecturer_code', $authUser->lecturer_id);
-                }
-
-                $user_ip_address = $request->ip();
-                $visitor_current = Visitor::where('visitor_ipaddress', $user_ip_address)->get();
-                $visitor_count = $visitor_current->count();
-                if ($visitor_count < 1) {
-                    $visitor = new Visitor();
-                    $visitor->visitor_ipaddress = $user_ip_address;
-                    $visitor->visitor_date = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
-                    $visitor->save();
-                }
-                return redirect()->intended('admin');
-            } else {
-                return redirect()->intended('admin/login')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
+            //cheat account student
+            if ($users->email == 'dat.187pm06566@vanlanguni.vn' || $users->email == 'tin.187pm14021@vanlanguni.vn') {
+                $splitEmail[1] = 'vlu.edu.vn';
             }
-        } else if ($splitEmail[1] == 'vanlanguni.vn') {
-            return redirect()->intended('admin/login')->with('fail', 'Tài khoản sinh viên không thể đăng nhập vào trang này!');
-        } else {
-            return redirect()->intended('admin/login')->with('fail', 'Vui lòng đăng nhập bằng tài khoản giảng viên VLU!');
+
+            if ($splitEmail[1] == 'vlu.edu.vn') {
+                $authUser = $this->findOrCreateUser($users);
+
+                if ($authUser->lecturer_status == 0) {
+                    if ($authUser) {
+                        $request->session()->put('lecturer_fullname', $authUser->lecturer_fullname);
+                        $request->session()->put('lecturer_email', $authUser->lecturer_email);
+                        $request->session()->put('lecturer_id', $authUser->lecturer_code);
+                        $request->session()->put('lecturer_code', $authUser->lecturer_id);
+                    } else {
+                        $request->session()->put('lecturer_fullname', $authUser->lecturer_fullname);
+                        $request->session()->put('lecturer_email', $authUser->lecturer_email);
+                        $request->session()->put('lecturer_id', $authUser->lecturer_code);
+                        $request->session()->put('lecturer_code', $authUser->lecturer_id);
+                    }
+
+                    $user_ip_address = $request->ip();
+                    $visitor_current = Visitor::where('visitor_ipaddress', $user_ip_address)->get();
+                    $visitor_count = $visitor_current->count();
+                    if ($visitor_count < 1) {
+                        $visitor = new Visitor();
+                        $visitor->visitor_ipaddress = $user_ip_address;
+                        $visitor->visitor_date = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+                        $visitor->save();
+                    }
+                    return redirect()->intended('admin');
+                } else {
+                    return redirect()->intended('dang-nhap')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
+                }
+            } else if ($splitEmail[1] == 'vanlanguni.vn') {
+                // return redirect()->intended('admin/login')->with('fail', 'Tài khoản sinh viên không thể đăng nhập vào trang này!');
+                $authUser = $this->findOrCreateStudent($users);
+                if ($authUser->student_status == 0) {
+                    if ($authUser) {
+                        $request->session()->put('student_fullname', $authUser->student_fullname);
+                        $request->session()->put('student_email', $authUser->student_email);
+                        $request->session()->put('student_id', $authUser->student_id);
+                        $request->session()->put('student_code', $authUser->student_code);
+                    } else {
+                        $request->session()->put('student_fullname', $authUser->student_fullname);
+                        $request->session()->put('student_email', $authUser->student_email);
+                        $request->session()->put('student_id', $authUser->student_id);
+                        $request->session()->put('student_code', $authUser->student_code);
+                    }
+                    return redirect()->intended('/home');
+                } else {
+                    return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
+                }
+            } else {
+                return redirect()->intended('dang-nhap')->with('fail', 'Vui lòng đăng nhập bằng tài khoản giảng viên VLU!');
+            }
+        } else if (isset($_GET['error']) == 'access_denied') {
+            return redirect()->intended('dang-nhap')->with('fail', 'Bạn cần cho phép ứng dụng để tiếp tục truy cập');
         }
     }
 
@@ -165,33 +187,37 @@ class AuthController extends Controller
 
     public function callback_ms_stu(Request $request)
     {
-        $users = Socialite::driver('microsoft')->user();
+        if (isset($_GET['code']) != null) {
+            $users = Socialite::driver('microsoft')->user();
 
-        $email = $users->email;
-        $splitEmail = explode('@', $email);
+            $email = $users->email;
+            $splitEmail = explode('@', $email);
 
-        if ($splitEmail[1] == 'vanlanguni.vn') {
-            $authUser = $this->findOrCreateStudent($users);
-            if ($authUser->student_status == 0) {
-                if ($authUser) {
-                    $request->session()->put('student_fullname', $authUser->student_fullname);
-                    $request->session()->put('student_email', $authUser->student_email);
-                    $request->session()->put('student_id', $authUser->student_id);
-                    $request->session()->put('student_code', $authUser->student_code);
+            if ($splitEmail[1] == 'vanlanguni.vn') {
+                $authUser = $this->findOrCreateStudent($users);
+                if ($authUser->student_status == 0) {
+                    if ($authUser) {
+                        $request->session()->put('student_fullname', $authUser->student_fullname);
+                        $request->session()->put('student_email', $authUser->student_email);
+                        $request->session()->put('student_id', $authUser->student_id);
+                        $request->session()->put('student_code', $authUser->student_code);
+                    } else {
+                        $request->session()->put('student_fullname', $authUser->student_fullname);
+                        $request->session()->put('student_email', $authUser->student_email);
+                        $request->session()->put('student_id', $authUser->student_id);
+                        $request->session()->put('student_code', $authUser->student_code);
+                    }
+                    return redirect()->intended('/home');
                 } else {
-                    $request->session()->put('student_fullname', $authUser->student_fullname);
-                    $request->session()->put('student_email', $authUser->student_email);
-                    $request->session()->put('student_id', $authUser->student_id);
-                    $request->session()->put('student_code', $authUser->student_code);
+                    return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
                 }
-                return redirect()->intended('/home');
+            } else if ($splitEmail[1] == 'vlu.edu.vn') {
+                return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản giảng viên không thể đăng nhập vào trang sinh viên');
             } else {
-                return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản đã bị vô hiệu hóa');
+                return redirect()->intended('/dang-nhap')->with('fail', 'Vui lòng đăng nhập bằng tài khoản sinh viên VLU');
             }
-        } else if ($splitEmail[1] == 'vlu.edu.vn') {
-            return redirect()->intended('/dang-nhap')->with('fail', 'Tài khoản giảng viên không thể đăng nhập vào trang sinh viên');
-        } else {
-            return redirect()->intended('/dang-nhap')->with('fail', 'Vui lòng đăng nhập bằng tài khoản sinh viên VLU');
+        } else if (isset($_GET['error']) == 'access_denied') {
+            return redirect()->intended('/dang-nhap')->with('fail', 'Bạn cần cho phép ứng dụng để tiếp tục truy cập');
         }
     }
 
