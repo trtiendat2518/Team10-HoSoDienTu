@@ -85,7 +85,7 @@
                                     </router-link>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr v-show="total.length">
                                 <td colspan="2" class="text-center text-red"><b>Tổng cộng</b></td>
                                 <td class="text-center text-red">
                                     <b>{{ sumFeeNotDiscount | formatNumber }}</b>
@@ -104,7 +104,7 @@
                                 </td>
                             </tr>
                             <tr v-show="!total.length">
-                                <td colspan="4">
+                                <td colspan="8">
                                     <div class="alert alert-danger">
                                         Không tìm thấy kết quả phù hợp!
                                     </div>

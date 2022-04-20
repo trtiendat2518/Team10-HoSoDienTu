@@ -47,6 +47,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('user-sv')->group(function () {
+        Route::get('sinh-vien/chua-co-thong-tin/{student_id}', 'Admin\Users\StudentManageController@nonedetail');
         Route::post('sinh-vien/cap-nhat-thong-tin/{student_id}', 'Admin\Users\StudentManageController@update_info_personal');
         Route::get('sinh-vien/course-major/{course}/{major}', 'Admin\Users\StudentManageController@student_course_major');
         Route::get('sinh-vien/student-form-teacher/{lecturer_id}', 'Admin\Users\StudentManageController@student_form_teacher');

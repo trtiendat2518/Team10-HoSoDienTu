@@ -312,6 +312,12 @@ class StudentManageController extends Controller
         return StudentResource::collection($joins);
     }
 
+    public function nonedetail($student)
+    {
+        $joins = Student::where('tbl_student.student_id', $student)->get();
+        return StudentResource::collection($joins);
+    }
+
     public function import(Request $request)
     {
         $request->validate([
