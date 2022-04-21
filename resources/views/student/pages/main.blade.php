@@ -156,7 +156,8 @@
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                     <div class="courses_box mb-5">
                         <div class="course-img-wrap">
-                            <img src="{{ asset('public/homestudent/images/courses_1.jpg') }}" class="img-fluid" alt="courses-img" />
+                            <img src="{{ asset('public/avatar/post/'.$post->post_avatar) }}" class="img-fluid" alt="courses-img"
+                                style="height: 20vh" />
                             <div class="courses_box-img">
                                 <div class="courses-link-wrap"></div>
                             </div>
@@ -236,7 +237,8 @@
                 <div class="col-md-4">
                     <a href="{{ url('/home#/ban-tin-van-lang/'.$post->post_id) }}" class="home_blog_link">
                         <div class="blog-img_box">
-                            <img src="{{ asset('public/homestudent/images/blog-img_3.jpg') }}" class="img-fluid blog_display" alt="blog-img" />
+                            <img src="{{ asset('public/avatar/post/'.$post->post_avatar) }}" class="img-fluid blog_display" alt="blog-img"
+                                style="height: 30vh" />
                             <div class="blogtitle">
                                 <h4>{{ Str::limit($post->post_title, 50) }}</h4>
                                 <p class="mt-2">

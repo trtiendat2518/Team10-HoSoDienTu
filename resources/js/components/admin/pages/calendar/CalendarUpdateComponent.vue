@@ -105,7 +105,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6" :class="{ 'col-md-12': form.calendarId > 1 && form.calendarId < 4 }">
+                                <div class="col-md-6" :class="{ 'col-md-12': form.calendarId == 2 || form.calendarId == 3 }">
                                     <div class="form-group">
                                         <label class="mt-3">Loại sự kiện <span class="text-danger">(*)</span></label>
                                         <select
@@ -122,6 +122,7 @@
                                             <option value="2">Thi học kỳ lần 1</option>
                                             <option value="3">Thi học kỳ lần 2</option>
                                             <option value="4">Đánh giá điểm rèn luyện</option>
+                                            <option value="5">Thanh toán học phí</option>
                                         </select>
                                         <div
                                             class="text-danger mb-3"
@@ -130,8 +131,8 @@
                                         ></div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div v-show="form.calendarId <= 1 || form.calendarId >= 4">
+                                <div class="col-md-2" :class="{ 'col-md-6': form.calendarId == 5 }">
+                                    <div :hidden="form.calendarId == 2 || form.calendarId == 3">
                                         <div class="form-group">
                                             <label class="mt-3">Học kỳ <span class="text-danger">(*)</span></label>
                                             <select
@@ -270,6 +271,7 @@ export default {
             programs: [],
             selected: [],
             calendars: [],
+            except: [],
             editMode: false,
             form: new Form({
                 id: '',
@@ -292,6 +294,7 @@ export default {
         this.fetchMajors()
         this.fetchCourses()
         this.fetchCalendar()
+        this.fetchExceptCalendars()
     },
     watch: {
         'form.raw'(value) {
@@ -320,6 +323,10 @@ export default {
         'form.calendarId'(value) {
             if (value == 0) {
                 this.fetchPrograms()
+            } else if (value == 2 || value == 3) {
+                this.form.location = 0
+                this.form.recurrenceRule = 0
+                this.programs = []
             } else {
                 this.programs = []
             }
@@ -329,6 +336,15 @@ export default {
         }
     },
     methods: {
+        fetchExceptCalendars(page_url) {
+            page_url = `../../api/admin/calendar-schedule/lich-bieu/except-calendar/${this.id}`
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.except = res.data
+                })
+                .catch(err => console.log(err))
+        },
         fetchMajors(page_url) {
             let vm = this
             page_url = `../../api/admin/edu-major/chuyen-nganh/major`
@@ -442,26 +458,78 @@ export default {
                 .catch(err => console.log(err))
         },
         update() {
-            if (this.form.calendarId == 0) {
-                if (this.selected.length == 0) {
-                    this.$snotify.error('Vui lòng chọn môn học', 'Lỗi')
-                } else {
-                    this.form.busy = true
-                    let formData = new FormData()
-                    for (let i = 0; i < this.selected.length; i++) {
-                        formData.append('subject[]', this.selected[i])
+            let exist = this.except.filter(el => {
+                if (this.form.calendarId == 2 || this.form.calendarId == 3) {
+                    if (el.body == this.form.body && el.raw == this.form.raw && el.calendarId == this.form.calendarId) {
+                        return el
                     }
-                    formData.append('title', this.form.title)
-                    formData.append('raw', this.form.raw)
-                    formData.append('body', this.form.body)
-                    formData.append('start', this.form.start)
-                    formData.append('end', this.form.end)
-                    formData.append('calendarId', this.form.calendarId)
-                    formData.append('location', this.form.location)
-                    formData.append('recurrenceRule', this.form.recurrenceRule)
-                    axios
-                        .post(`../../api/admin/calendar-schedule/lich-bieu/update-plan/${this.id}`, formData)
+                } else {
+                    if (
+                        el.body == this.form.body &&
+                        el.raw == this.form.raw &&
+                        el.location == this.form.location &&
+                        el.calendarId == this.form.calendarId
+                    ) {
+                        return el
+                    }
+                }
+            })
+            if (exist.length > 0) {
+                this.$snotify.error('Lịch này đã tồn tại', 'Lỗi')
+            } else {
+                if (this.form.calendarId == 0) {
+                    if (this.selected.length == 0) {
+                        this.$snotify.error('Vui lòng chọn môn học', 'Lỗi')
+                    } else {
+                        this.form.busy = true
+                        let formData = new FormData()
+                        for (let i = 0; i < this.selected.length; i++) {
+                            formData.append('subject[]', this.selected[i])
+                        }
+                        formData.append('title', this.form.title)
+                        formData.append('raw', this.form.raw)
+                        formData.append('body', this.form.body)
+                        formData.append('start', this.form.start)
+                        formData.append('end', this.form.end)
+                        formData.append('calendarId', this.form.calendarId)
+                        formData.append('location', this.form.location)
+                        formData.append('recurrenceRule', this.form.recurrenceRule)
+                        axios
+                            .post(`../../api/admin/calendar-schedule/lich-bieu/update-plan/${this.id}`, formData)
+                            .then(res => {
+                                this.sendMail(this.form.raw, this.form.body, this.form.location, this.form.calendarId)
+                                this.fetchSubjectCalendar()
+                                this.$snotify.confirm('Cập nhật thành công! Bạn có muốn quay lại danh sách?', {
+                                    timeout: 5000,
+                                    showProgressBar: true,
+                                    closeOnClick: false,
+                                    pauseOnHover: true,
+                                    buttons: [
+                                        {
+                                            text: 'Có',
+                                            action: toast => {
+                                                this.$snotify.remove(toast.id)
+                                                this.$router.push({ name: 'calendarindex' })
+                                            },
+                                            bold: false
+                                        },
+                                        {
+                                            text: 'Không',
+                                            action: toast => {
+                                                this.$snotify.remove(toast.id)
+                                            },
+                                            bold: true
+                                        }
+                                    ]
+                                })
+                            })
+                            .catch(err => console.log(err))
+                    }
+                } else {
+                    this.form
+                        .put(`../../api/admin/calendar-schedule/lich-bieu/${this.id}`)
                         .then(res => {
+                            this.sendMail(this.form.raw, this.form.body, this.form.location, this.form.calendarId)
                             this.fetchSubjectCalendar()
                             this.$snotify.confirm('Cập nhật thành công! Bạn có muốn quay lại danh sách?', {
                                 timeout: 5000,
@@ -489,36 +557,6 @@ export default {
                         })
                         .catch(err => console.log(err))
                 }
-            } else {
-                this.form
-                    .put(`../../api/admin/calendar-schedule/lich-bieu/${this.id}`)
-                    .then(res => {
-                        this.fetchSubjectCalendar()
-                        this.$snotify.confirm('Cập nhật thành công! Bạn có muốn quay lại danh sách?', {
-                            timeout: 5000,
-                            showProgressBar: true,
-                            closeOnClick: false,
-                            pauseOnHover: true,
-                            buttons: [
-                                {
-                                    text: 'Có',
-                                    action: toast => {
-                                        this.$snotify.remove(toast.id)
-                                        this.$router.push({ name: 'calendarindex' })
-                                    },
-                                    bold: false
-                                },
-                                {
-                                    text: 'Không',
-                                    action: toast => {
-                                        this.$snotify.remove(toast.id)
-                                    },
-                                    bold: true
-                                }
-                            ]
-                        })
-                    })
-                    .catch(err => console.log(err))
             }
         },
         select(e, value) {
@@ -536,6 +574,11 @@ export default {
             } else {
                 return false
             }
+        },
+        sendMail(course, major, location, calendarId) {
+            axios.get(`../../api/admin/calendar-schedule/lich-bieu/send-mail/${course}/${major}/${location}/${calendarId}`).catch(err => {
+                console.log(err)
+            })
         }
     }
 }

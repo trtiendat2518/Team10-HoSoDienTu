@@ -16,7 +16,7 @@ class CheckSessionStudent
      */
     public function handle(Request $request, Closure $next)
     {
-        if (session()->has('student_id')) {
+        if ((session()->has('student_id')) || (session()->has('admin_id')) || (session()->has('lecturer_id'))) {
             if (url('/dang-nhap') == $request->url()) {
                 return back();
             }

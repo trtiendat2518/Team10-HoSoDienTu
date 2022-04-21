@@ -103,6 +103,7 @@
                                     <th class="text-white">Khoa</th>
                                     <th class="text-white">Chuyên ngành</th>
                                     <th class="text-white">Học phí (1 tín chỉ)</th>
+                                    <th class="text-white w-5">Giảm học phí</th>
                                     <th class="w-5"></th>
                                     <th class="w-5"></th>
                                 </tr>
@@ -116,6 +117,10 @@
                                     <td>{{ tuition.faculty_name }}</td>
                                     <td>{{ tuition.major_name }}</td>
                                     <td>{{ tuition.tuition_fee | formatNumber }} VNĐ</td>
+                                    <td v-if="tuition.tuition_discount == 0">
+                                        -
+                                    </td>
+                                    <td v-else>{{ tuition.tuition_discount }}%</td>
                                     <td>
                                         <button class="btn-3d btn btn-success btn-lg fa fa-pencil-square-o" @click="show(tuition)"></button>
                                     </td>
@@ -216,16 +221,43 @@
                                 v-html="form.errors.get('tuition_major')"
                             ></div>
 
-                            <label class="mt-3">Học phí <span class="text-danger">(*)</span></label>
-                            <input
-                                v-model="form.tuition_fee"
-                                type="number"
-                                name="tuition_fee"
-                                class="form-control"
-                                placeholder="Nhập học phí"
-                                :class="{ 'is-invalid': form.errors.has('tuition_fee') }"
-                            />
-                            <div class="text-danger" v-if="form.errors.has('tuition_fee')" v-html="form.errors.get('tuition_fee')"></div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="mt-3">Học phí <span class="text-danger">(*)</span></label>
+                                    <input
+                                        v-model="form.tuition_fee"
+                                        type="number"
+                                        name="tuition_fee"
+                                        class="form-control"
+                                        placeholder="Nhập học phí"
+                                        min="0"
+                                        :class="{ 'is-invalid': form.errors.has('tuition_fee') }"
+                                    />
+                                    <div
+                                        class="text-danger"
+                                        v-if="form.errors.has('tuition_fee')"
+                                        v-html="form.errors.get('tuition_fee')"
+                                    ></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="mt-3">Giảm học phí <span class="text-danger">(*)</span></label>
+                                    <input
+                                        v-model="form.tuition_discount"
+                                        type="number"
+                                        name="tuition_discount"
+                                        class="form-control"
+                                        placeholder="Nhập % giảm học phí"
+                                        min="0"
+                                        max="100"
+                                        :class="{ 'is-invalid': form.errors.has('tuition_discount') }"
+                                    />
+                                    <div
+                                        class="text-danger"
+                                        v-if="form.errors.has('tuition_discount')"
+                                        v-html="form.errors.get('tuition_discount')"
+                                    ></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Đóng</button>
@@ -265,7 +297,8 @@ export default {
                 tuition_course: '',
                 tuition_faculty: '',
                 tuition_major: '',
-                tuition_fee: ''
+                tuition_fee: '',
+                tuition_discount: ''
             }),
             selected: [],
             selectAll: false

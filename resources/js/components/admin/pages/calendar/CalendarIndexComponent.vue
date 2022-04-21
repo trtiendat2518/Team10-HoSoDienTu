@@ -20,10 +20,6 @@
                 ><li class="fa fa-calendar-o"></li>
                 Lịch thi
             </router-link>
-            <router-link class="btn btn-primary btn-lg mb-3 btn-3d float-right mr-2" tag="button" :to="{ name: 'calendarsubjectslot' }"
-                ><li class="fa fa-window-maximize"></li>
-                Mở lớp môn học
-            </router-link>
         </div>
         <div class="row">
             <div class="col-md-12 col-lg-12">
@@ -136,6 +132,7 @@
                                                 <strong v-else-if="form.calendarId == 2"> Lịch thi học kỳ lần 1</strong>
                                                 <strong v-else-if="form.calendarId == 3"> Lịch thi học kỳ lần 2</strong>
                                                 <strong v-else-if="form.calendarId == 4"> Đánh giá điểm rèn luyện</strong>
+                                                <strong v-else-if="form.calendarId == 5"> Thanh toán học phí</strong>
                                             </div>
                                             <div class="col-md-6">
                                                 <div v-if="form.calendarId <= 1">

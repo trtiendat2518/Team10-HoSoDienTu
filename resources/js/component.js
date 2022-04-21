@@ -25,6 +25,7 @@ Vue.component('lecturer-notification', require('./components/admin/notifications
 Vue.component('formteacher-notification', require('./components/admin/notifications/FormTeacherNotificationComponent.vue').default)
 
 //----------------------------------- STUDENT -------------------------------------------
+Vue.component('mobile-slidebar-component', require('./components/student/layouts/MobileSlidebarComponent.vue').default)
 Vue.component('small-slidebar-component', require('./components/student/layouts/SmallSlidebarComponent.vue').default)
 Vue.component('main-student-component', require('./components/student/MainStudentComponent.vue').default)
 Vue.component('home-component', require('./components/student/pages/HomeComponent.vue').default)

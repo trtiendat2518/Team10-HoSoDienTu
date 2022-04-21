@@ -47,6 +47,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('user-sv')->group(function () {
+        Route::get('sinh-vien/chua-co-thong-tin/{student_id}', 'Admin\Users\StudentManageController@nonedetail');
         Route::post('sinh-vien/cap-nhat-thong-tin/{student_id}', 'Admin\Users\StudentManageController@update_info_personal');
         Route::get('sinh-vien/course-major/{course}/{major}', 'Admin\Users\StudentManageController@student_course_major');
         Route::get('sinh-vien/student-form-teacher/{lecturer_id}', 'Admin\Users\StudentManageController@student_form_teacher');
@@ -100,6 +101,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('post-news')->group(function () {
+        Route::post('bai-viet/update-file/{post}', 'Admin\Posts\PostController@update_file');
         Route::get('bai-viet/post-news-all', 'Admin\Posts\PostController@post_news_all');
         Route::get('bai-viet/post-notification-all', 'Admin\Posts\PostController@post_notification_all');
         Route::get('bai-viet/post-news', 'Admin\Posts\PostController@post_news');
@@ -185,10 +187,13 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('calendar-schedule')->group(function () {
+        Route::get('lich-bieu/send-mail/{course}/{major}/{semester}/{category}', 'Admin\Calendar\CalendarController@send_mail');
+        Route::get('lich-bieu/except-calendar/{calendar_id}', 'Admin\Calendar\CalendarController@except_calendar');
         Route::get('lich-bieu/chuong-trinh-dao-tao/{course}/{major}/{semester}', 'Admin\Calendar\CalendarController@get_programs');
         Route::get('lich-bieu/hoc-ky/{course}/{major}', 'Admin\Calendar\CalendarController@get_semester');
         Route::post('lich-bieu/update-plan/{calendar_id}', 'Admin\Calendar\CalendarController@update_plan');
         Route::get('lich-bieu/subject-plan/{calendar_id}', 'Admin\Calendar\CalendarController@subject_for_plan');
+        Route::get('lich-bieu/schedule-paytuition', 'Admin\Calendar\CalendarController@schedule_paytuition');
         Route::get('lich-bieu/schedule-subject', 'Admin\Calendar\CalendarController@schedule_subject');
         Route::get('lich-bieu/schedule-exam', 'Admin\Calendar\CalendarController@schedule_exam');
         Route::get('lich-bieu/schedule', 'Admin\Calendar\CalendarController@schedule');
@@ -376,5 +381,16 @@ Route::prefix('student')->group(function () {
         Route::get('thong-bao/yeu-cau/{student_id}', 'Student\Notification\NotificationController@noti_request');
         Route::get('thong-bao/thu-tuc/{student_id}', 'Student\Notification\NotificationController@noti_procedure');
         Route::resource('thong-bao', 'Student\Notification\NotificationController');
+    });
+
+    Route::prefix('pay-tuition')->group(function () {
+        Route::get('thanh-toan-hoc-phi/detail-payment/{payment_id}', 'Student\Registration\PayTuitionController@detail_payment');
+        Route::get('thanh-toan-hoc-phi/total-payment/{student_id}', 'Student\Registration\PayTuitionController@total_payment');
+        Route::get('thanh-toan-hoc-phi/check-payment/{student_id}/{semester}', 'Student\Registration\PayTuitionController@check_payment');
+        Route::post('thanh-toan-hoc-phi/momo/{student_id}/{semester}', 'Student\Registration\PayTuitionController@momo_paytuition');
+        Route::post('thanh-toan-hoc-phi/vnpay/{student_id}/{semester}', 'Student\Registration\PayTuitionController@vnpay_paytuition');
+        Route::get('thanh-toan-hoc-phi/mon-hoc/{student_id}/{semester}', 'Student\Registration\PayTuitionController@subject_paytuition');
+        Route::get('thanh-toan-hoc-phi/thoi-gian-thanh-toan/{student_id}', 'Student\Registration\PayTuitionController@calendar_paytuition');
+        Route::resource('thanh-toan-hoc-phi', 'Student\Registration\PayTuitionController');
     });
 });
