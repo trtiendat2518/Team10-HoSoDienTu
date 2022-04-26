@@ -137,13 +137,4 @@ class ProcedureRequireController extends Controller
             ->orderby('procedure_require_id', 'DESC')->get();
         return ProcedureRequireResource::collection($join);
     }
-
-    public function detail($procedure_require_id)
-    {
-        $join = ProcedureRequire::join('tbl_procedure', 'tbl_procedure.procedure_id', '=', 'tbl_procedure_require.procedure_require_detail')
-            ->join('tbl_student', 'tbl_student.student_id', '=', 'tbl_procedure_require.procedure_require_student')
-            ->where('tbl_procedure_require.procedure_require_id', $procedure_require_id)
-            ->orderby('procedure_require_id', 'DESC')->get();
-        return ProcedureRequireResource::collection($join);
-    }
 }
