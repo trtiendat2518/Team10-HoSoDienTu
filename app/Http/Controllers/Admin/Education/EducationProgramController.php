@@ -169,12 +169,21 @@ class EducationProgramController extends Controller
         $pro->delete();
     }
 
-    public function destroyall(Request $request, $educationProgram = null)
+    public function destroyall(Request $request)
     {
-        if ($request->educationProgram) {
-            foreach ($request->educationProgram as $id) {
-                EducationProgram::where('education_program_id', $id)->delete();
+        $data = $request->validate([
+            'educationProgram' => ['required']
+        ], [
+            'educationProgram.required' => 'Vui lòng chọn CTĐT muốn xoá!'
+        ]);
+
+        foreach ($data['educationProgram'] as $id) {
+            $eduPro = EducationProgram::find($id);
+            $eduDetail = ProgramDetail::where('program_detail_code', $eduPro->education_program_code)->get();
+            foreach ($eduDetail as $key => $value) {
+                $value->delete();
             }
+            EducationProgram::where('education_program_id', $id)->delete();
         }
     }
 
@@ -217,9 +226,9 @@ class EducationProgramController extends Controller
     public function destroy_subject_program($program_detail_id)
     {
         $del = ProgramDetail::find($program_detail_id);
-        $delete = $del->delete();
         $program_code = $del->program_detail_code;
         $sum = 0;
+        $delete = $del->delete();
         if ($delete) {
             $find = ProgramDetail::where('program_detail_code', $program_code)->get();
             $count = $find->count();
